@@ -2,6 +2,8 @@
 title: "Biplabendu Das"
 ---
 
+![ ](docs/images/dp.jpg)
+
 I am a doctoral student in the parasitic behavioral manipulation lab based at the [Department of Biology](http://sciences.ucf.edu/biology/) at the University of Central Florida. More specifically, our lab focusses on the enigmatic "zombie ant" fungus (*Ophiocordyceps unilateralis*) that infects and manipulates the behavior of the Florida carpenter ants, *Camponotus floridanus*. 
 My Ph.D. supervisor, [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), has been pioneering protocols for successfully culturing the fungus in the lab and performing infections that yield manipulations in laboratory conditions. Having gone through a few months of struggle, we have finally been able to obtain successful manipulations in *C. floridanus* ants. So, yay! 
 
