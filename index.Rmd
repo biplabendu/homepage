@@ -1,5 +1,6 @@
 ---
 title: "Biplabendu Das"
+output: html_document
 ---
 
 ![](docs/images/dp.jpg)
