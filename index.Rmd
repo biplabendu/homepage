@@ -9,7 +9,7 @@ If you aren't familiar with the "zombie ant" phenomenon, here is what happens. F
 
 I am currently doing field and lab studies on the Florida Carpenter ants to quantify their activity budget for foraging before and after fungal infections. I also want to understand how the fungus overrides the biological clocks of these nocturnal ants to make them undergo the characteristic biting behavior in the day-time.
 
------------------------------------
+----------------------------------
 
 Things that I intend to add here:
 
