@@ -10,5 +10,7 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+      icon: fa-home
     - text: "Research"
       href: research.html
+      icon: fa-bug
