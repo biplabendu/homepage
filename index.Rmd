@@ -18,7 +18,7 @@ knitr::include_graphics("dp.jpg")
 I am a doctoral student in the parasitic behavioral manipulation lab based at the [Department of Biology](http://sciences.ucf.edu/biology/) at the University of Central Florida. More specifically, our lab focusses on the enigmatic "zombie ant" fungus (*Ophiocordyceps unilateralis*) that infects and manipulates the behavior of the Florida carpenter ants, *Camponotus floridanus*. 
 My Ph.D. supervisor, [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), has been pioneering protocols for successfully culturing the fungus in the lab and performing infections that yield manipulations in laboratory conditions. Having gone through a few months of struggle, we have finally been able to obtain successful lab manipulations in *C. floridanus* ants. So, yay! 
 
-```{r echo=FALSE, out.width='100%', fig.align='center', fig.cap="A cadaver of the Florida carpenter ant (*Camponotus floridanus*) infected by the fungal parasite *Ophiocordyceps camponoti-floridani*. Photo courtesy: [Danny Goodding](https://www.dannygoodding.com/)"}
+```{r echo=FALSE, out.width='90%', fig.align='center', fig.cap="A cadaver of the Florida carpenter ant (*Camponotus floridanus*) infected by the fungal parasite *Ophiocordyceps camponoti-floridani*. Photo courtesy: [Danny Goodding](https://www.dannygoodding.com/)"}
 library(knitr)
 knitr::include_graphics("zombie_ant.png")
 ```
@@ -29,10 +29,12 @@ I am currently doing field and lab studies on the Florida Carpenter ants to quan
 
 ----------------------------------
 
-Things that I intend to add here:
+```{r, echo=F}
+#Things that I intend to add here:
 
-1. Current projects
-1. Past research 
-1. Cricket in Orlando
-1. Academic resources 
-1. Others
+#1. Current projects
+#1. Past research 
+#1. Cricket in Orlando
+#1. Academic resources 
+#1. Others
+```
