@@ -12,7 +12,8 @@ library(jpeg)
 ```{r, echo=FALSE, fig.cap="| A young, naive me |", out.width = '20%', fig.align='center'}
 knitr::include_graphics("dp.jpg")
 ```
-    
+   
+<h6 style="text-align: center;" markdown="1">Email: biplabendu.das@gmail.com</h6>     
        
 ### Bio ([CV](cv.html))   
     
