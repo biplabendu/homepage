@@ -18,5 +18,5 @@ navbar:
   - text: CV
     href: cv.html
     icon: fa-list
-    
+  - { icon: "fa-twitter", href: "https://twitter.com/another_ant_guy", align: right } 
 
