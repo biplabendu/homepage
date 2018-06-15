@@ -18,4 +18,5 @@ navbar:
   - text: CV
     href: cv.html
     icon: fa-list
+    
 
