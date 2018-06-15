@@ -6,4 +6,9 @@ output:
     self_contained: no  
     theme: flatly  
 navbar:  
-  title: "Homepage" 
+  title: "Biplabendu Das"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Research"
+      href: research.html
