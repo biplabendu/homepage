@@ -1,19 +1,21 @@
-name: "homepage"  
-author: "Biplabendu Das"  
-output_dir: "docs"  
-output:  
-  html_document:  
-    self_contained: no  
-    theme: flatly  
-navbar:  
-  title: "Biplabendu Das"
+name: homepage
+author: Biplabendu Das
+output_dir: docs
+output:
+  html_document:
+    theme: flatly
+    lib_dir: site_libs
+    self_contained: no
+navbar:
+  title: Biplabendu Das
   left:
-    - text: "Home"
-      href: index.html
-      icon: fa-home
-    - text: "Research"
-      href: research.html
-      icon: fa-bug
-    - text: "CV"
-      href: cv.html
-      icon: fa-file
+  - text: Home
+    href: index.html
+    icon: fa-home
+  - text: Research
+    href: research.html
+    icon: fa-bug
+  - text: CV
+    href: cv.html
+    icon: fa-user-graduate
+

@@ -1,9 +1,13 @@
 ---
-title: "CV"
+title: ""
 output: html_document
 ---
 
-```{r, echo=F, out.width="85%"}
-knitr::include_graphics("cv.pdf")
+
+
+```{r, echo=F, out.width="100%"}
+knitr::include_graphics("images/cv.png")
 ```
 
+
+<h6 style="text-align: right;" markdown="1">Last updated: June 1, 2018</h6>

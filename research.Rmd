@@ -3,4 +3,4 @@ title: "Research"
 output: html_document
 ---
 
- More about current and past research here!
+More about **current** and **past** research here!
