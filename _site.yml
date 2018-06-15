@@ -19,5 +19,9 @@ navbar:
     href: cv.html
     icon: fa-list
   right:
-  - { icon: "fa-twitter", href: "https://twitter.com/another_ant_guy", align: right } 
+  - icon: fa-twitter
+    href: https://twitter.com/another_ant_guy
+    align: right
+  - { icon: "fa-linkedin", href: "https://www.linkedin.com/in/biplabendu/", align: right }
+  - { icon: "fa-facebook", href: "https://www.facebook.com/biplabendu", align: right }
 
