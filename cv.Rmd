@@ -3,7 +3,7 @@ title: "CV"
 output: html_document
 ---
 
-```{r, echo=F}
+```{r, echo=F, out.width="85%"}
 knitr::include_graphics("cv.pdf")
 ```
 
