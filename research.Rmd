@@ -5,7 +5,7 @@ output: html_document
 
 #### June 18, 2018 | Monday   
     
-[UCF Today](https://today.ucf.edu/) released a descriptive yet super-cool infographic about the **The Science Behind Zombie Ants**. *Note:* For best viewing experience, download the image and read it on your phone in portrait mode.  
+[UCF Today](https://today.ucf.edu/) released a descriptive yet super-cool infographic about the **The Science Behind Zombie Ants**. *For best viewing experience, read it on your phone in portrait mode.*  
   
 ```{r, echo=FALSE, fig.cap="Infographic about the science behind *'zombie ants'*. Courtesy: UCF Today", out.width = '100%', fig.align='center'}
 knitr::include_graphics("Infographic.jpg")
@@ -14,7 +14,7 @@ knitr::include_graphics("Infographic.jpg")
 Click [here](https://today.ucf.edu/the-science-behind-zombie-ants/) to go to the actual article.    
     
 
-For now, please go to the [lab webpage](http://sciences.ucf.edu/biology/debekkerlab/) for more details.   
+You can check out the [lab webpage](http://sciences.ucf.edu/biology/debekkerlab/) for more details.   
    
 More about **current** and **past** research here!   
   
