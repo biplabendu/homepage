@@ -3,6 +3,23 @@ title: "Research"
 output: html_document
 ---
 
+```{r, echo=F}
+library(htmltools)
+library(vembedr)
+```
+
+
+#### June 19, 2018 | Tuesday 
+    
+Dr. de Bekker was interviewed today by the local news channel **Fox 35**. You can watch the news clip here.   
+    
+```{r, echo=F}
+knitr::include_url("http://www.fox35orlando.com/news/local-news/university-of-central-florida-researchers-creating-zombie-ants-")
+```
+
+
+----------------------------------
+
 #### June 18, 2018 | Monday   
     
 [UCF Today](https://today.ucf.edu/) released a descriptive yet super-cool infographic about the **The Science Behind Zombie Ants**. *For best viewing experience, read it on your phone in portrait mode.*  
