@@ -1,6 +1,9 @@
 ---
 title: "Research"
-output: html_document
+output:
+  html_document:
+    includes:
+      in_header: analytics.html
 ---
 
 ```{r, echo=F}

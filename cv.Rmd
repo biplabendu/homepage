@@ -1,6 +1,9 @@
 ---
 title: ""
-output: html_document
+output: 
+  html_document:
+    includes:
+      in_header: analytics.html
 ---
 
 <h6 style="text-align: right;" markdown="1">Last updated: June 1, 2018</h6>   
