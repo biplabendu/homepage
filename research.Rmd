@@ -11,9 +11,18 @@ library(htmltools)
 library(vembedr)
 ```
 
-### Lab News
+----------------------------------
 
-#### June 19, 2018 | Tuesday 
+### Lab News
+  
+##### Jun 19, 2018 - [Dr. Charissa de Bekker gets interviewed by Fox 35](#news2)
+  
+##### Jun 18, 2018 - [UCF releases infographic about "zombie ants"](#news1)
+     
+     
+----------------------------------
+  
+#### <a id="news2"></a>June 19, 2018 | Tuesday 
     
 Dr. de Bekker was interviewed today by the local news channel **Fox 35**. You can read the full article on their [website](http://www.fox35orlando.com/news/local-news/university-of-central-florida-researchers-creating-zombie-ants-).   
      
@@ -21,7 +30,7 @@ Dr. de Bekker was interviewed today by the local news channel **Fox 35**. You ca
 
 ----------------------------------
 
-#### June 18, 2018 | Monday   
+#### <a id="news1"></a>June 18, 2018 | Monday   
     
 [UCF Today](https://today.ucf.edu/) released a descriptive yet super-cool infographic about the **The Science Behind Zombie Ants**. *For best viewing experience, read it on your phone in portrait mode.*  
   
