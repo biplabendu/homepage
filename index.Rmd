@@ -17,6 +17,7 @@ library(knitr)
 library(jpeg)
 ```
 
+
 ```{r, echo=FALSE, fig.cap="| A young, naive me |", out.width = '20%', fig.align='center'}
 knitr::include_graphics("dp.jpg")
 ```

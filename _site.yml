@@ -3,7 +3,7 @@ author: Biplabendu Das
 output_dir: docs
 output:
   html_document:
-    theme: flatly
+    remote_theme: "mmistakes/minimal-mistakes"
     lib_dir: site_libs
     self_contained: no
 navbar:
@@ -11,7 +11,7 @@ navbar:
   left:
   - text: Home
     href: index.html
-    icon: fa-home
+    icon: fa-home_site
   - text: Research
     href: research.html
     icon: fa-bug
