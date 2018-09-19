@@ -7,8 +7,7 @@ output:
 ---
 
 <style>
-body {
-text-align: justify}
+body {text-align: justify}
 </style>
 
 ```{r, echo=F}
