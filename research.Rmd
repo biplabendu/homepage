@@ -16,7 +16,7 @@ library(vembedr)
 
 ### Lab News
 
-##### August, 2018 - [First review paper out in Myrmecological News](#news3)
+##### Aug 28, 2018 - [First review paper out in Myrmecological News](#news3)
   
 ##### Jun 19, 2018 - [Dr. Charissa de Bekker gets interviewed by Fox 35](#news2)
   
@@ -27,10 +27,12 @@ library(vembedr)
 <a id="news3"></a>
 ----------------------------------
   
-#### August, 2018
+#### August 28, 2018 | Tuesday
    
-*de Bekker, C., Will, I., **Das, B**., Adams, R.M.M. (2018)*, The ants (Hymenoptera: Formicidae) and their parasites: effects of parasitic manipulations and host responses on ant behavioral ecology. Myrmecological News 28:1-24 [*PDF*](https://myrmecologicalnews.org/cms/index.php?option=com_content&view=category&id=1528&Itemid=425)
-   
+*de Bekker, C., Will, I., **Das, B**., Adams, R.M.M. (2018)*, The ants (Hymenoptera: Formicidae) and their parasites: effects of parasitic manipulations and host responses on ant behavioral ecology. Myrmecological News 28:1-24 [*PDF*](https://myrmecologicalnews.org/cms/index.php?option=com_content&view=category&id=1528&Itemid=425)  
+    
+**Abstract:** Ants can display modified behaviors that represent the extended phenotypes of genes expressed by parasites that infect them. In such cases, the modifications benefit the parasite. Alternatively, displayed behaviors can represent host responses to infection that benefit colony fitness. Though some enigmatic examples of behavioral manipulation have been reported, parasitism of ants and its effects on ant behavior and ecology are generally poorly understood. Here, we summarize some of the present-day literature on parasite-ant interactions. Our main focus is on interactions that change host behavior so drastically that infected ants play a seemingly different societal and, perhaps, ecological role. We highlight the parallels that can be found across parasite-ant symbioses that result in manipulated behaviors, such as summiting, phototaxis, substrate biting, and wandering. We also point out the many present knowledge gaps that could be filled by efforts ranging from novel parasite discovery, to more detailed behavioral observations and next-generation sequencing to start uncovering mechanisms.    
+    
 [Go to top](#headlines)   
      
 <a id="news2"></a>
