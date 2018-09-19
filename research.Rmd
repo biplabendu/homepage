@@ -15,11 +15,23 @@ library(vembedr)
 ----------------------------------
 
 ### Lab News
+
+##### August, 2018 - [First review paper out in Myrmecological News](#news3)
   
 ##### Jun 19, 2018 - [Dr. Charissa de Bekker gets interviewed by Fox 35](#news2)
   
 ##### Jun 18, 2018 - [UCF releases infographic about "zombie ants"](#news1)
+
+
      
+<a id="news3"></a>
+----------------------------------
+  
+#### August, 2018
+   
+*de Bekker, C., Will, I., **Das, B**., Adams, R.M.M. (2018)*, The ants (Hymenoptera: Formicidae) and their parasites: effects of parasitic manipulations and host responses on ant behavioral ecology. Myrmecological News 28:1-24 [*PDF*](https://myrmecologicalnews.org/cms/index.php?option=com_content&view=category&id=1528&Itemid=425)
+   
+[Go to top](#headlines)   
      
 <a id="news2"></a>
 ----------------------------------
