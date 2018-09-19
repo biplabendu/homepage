@@ -6,6 +6,10 @@ output:
       in_header: analytics.html
 ---
 
+<style>
+body {text-align: justify}
+</style>
+
 ```{r, echo=F}
 library(htmltools)
 library(vembedr)
