@@ -23,6 +23,7 @@ library(vembedr)
 ### Lab Materials
 
 ##### 1. [F-test and T-test Cheat Sheet](#1)
+##### 2. [Plotting means and standard deviations in Excel](#2)
   
 
 <a id="1"></a>
@@ -44,15 +45,24 @@ knitr::include_graphics("images/cheatsheet-images/cheatsheet5.jpg")
 ```{r, echo=F, out.width = '75%', fig.align='center'}
 knitr::include_graphics("images/cheatsheet-images/cheatsheet6.jpg")
 ```
-   
-   
-   
-   
+
     
 [Go to top](#headlines)      
    
 ----------------------------------
+
+
+<a id="2"></a>
+----------------------------------
+
+#### Tutorial - Plotting means and standard deviations in Excel   
+
+<iframe scrolling="no" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen allow="autoplay; fullscreen" src="https://www.youtube.com/watch?v=3wo29oDkyG0"  width ="640" height="360"></iframe>
+    
    
+[Go to top](#headlines)      
+   
+----------------------------------
   
 ```{r}
 # Check this space for more materials!
