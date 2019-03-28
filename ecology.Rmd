@@ -57,8 +57,8 @@ knitr::include_graphics("images/cheatsheet-images/cheatsheet6.jpg")
 
 #### Tutorial - Plotting means and standard deviations in Excel   
 
-<iframe scrolling="no" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen allow="autoplay; fullscreen" src="https://www.youtube.com/watch?v=3wo29oDkyG0"  width ="640" height="360"></iframe>
-    
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3wo29oDkyG0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
    
 [Go to top](#headlines)      
    
