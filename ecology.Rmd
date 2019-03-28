@@ -6,6 +6,8 @@ output:
       in_header: analytics.html
 ---
 
+A site maintained by Biplabendu Das (Lab Instructor, Spring 2019)
+
 <style>
 body {text-align: justify}
 </style>
