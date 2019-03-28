@@ -6,7 +6,7 @@ output:
       in_header: analytics.html
 ---
 
-A site maintained by Biplabendu Das (Lab Instructor, Spring 2019)
+A site maintained by Biplabendu Das (Lab Instructor, PCB3044L-Spring2019, UCF-Biology)
 
 <style>
 body {text-align: justify}
