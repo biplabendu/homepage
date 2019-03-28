@@ -18,7 +18,7 @@ navbar:
   - text: CV
     href: cv.html
     icon: fa-list
-  - text: Ecology-Lab
+  - text: EcologyLab
     href: ecology.html
     icon: fa-list  
   right:
