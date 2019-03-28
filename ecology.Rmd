@@ -29,26 +29,32 @@ library(vembedr)
 ----------------------------------
 
 #### F-test and T-test Cheat Sheet  
-    
-[UCF Today](https://today.ucf.edu/) released a descriptive yet super-cool infographic about the **The Science Behind Zombie Ants**. *For best viewing experience, read it on your phone in portrait mode.*  
 
-Ta-da-da-da-da
+
   
-```{r, echo=FALSE, fig.cap="Infographic about the science behind *'zombie ants'*. Courtesy: UCF Today", out.width = '100%', fig.align='center'}
-knitr::include_graphics("Infographic.jpg")
+```{r, echo=F, out.width = '100%', fig.align='center', out.extra='style="background-color: #9ecff7; padding:10px; display: inline-block;"'}
+knitr::include_graphics("images/cheatsheet-images/cheatsheet1.jpg")
+knitr::include_graphics("images/cheatsheet-images/cheatsheet2.jpg")
+knitr::include_graphics("images/cheatsheet-images/cheatsheet3.jpg")
+knitr::include_graphics("images/cheatsheet-images/cheatsheet4.jpg")
+knitr::include_graphics("images/cheatsheet-images/cheatsheet5.jpg")
 ```  
    
-Click [here](https://today.ucf.edu/the-science-behind-zombie-ants/) to go to the actual article.    
+   
+```{r, echo=F, out.width = '75%', fig.align='center'}
+knitr::include_graphics("images/cheatsheet-images/cheatsheet6.jpg")
+```
+   
+   
+   
+   
     
 [Go to top](#headlines)      
    
 ----------------------------------
    
-Check out the [lab webpage](http://sciences.ucf.edu/biology/debekkerlab/) for more details.   
-   
-More about **current** and **past** research here!   
   
 ```{r}
-# Coming soon!
+# Check this space for more materials!
 ```
 
