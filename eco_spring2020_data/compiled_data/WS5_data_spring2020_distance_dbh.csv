@@ -1,4 +1,4 @@
-Location,Transect,Point,Quad,Category,Species,Distance,DBH (cm)
+Location,Transect,Point,Quad,Category,Species,Distance_m,DBH_cm
 Burned,1,1,1,Canopy,Pinus elliottii,7,22.5
 Burned,1,1,2,Canopy,Pinus elliottii,12.5,13
 Burned,1,1,3,Canopy,Pinus elliottii,39,28
