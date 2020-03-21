@@ -1,0 +1,1153 @@
+Location,Transect,Point,Quad,Category,Species,Distance,DBH (cm)
+Burned,1,1,1,Canopy,Pinus elliottii,7,22.5
+Burned,1,1,2,Canopy,Pinus elliottii,12.5,13
+Burned,1,1,3,Canopy,Pinus elliottii,39,28
+Burned,1,1,4,Canopy,Pinus elliottii,6,26.5
+Burned,1,2,1,Canopy,Pinus elliottii,16.2,18
+Burned,1,2,2,Canopy,Pinus elliottii,22.5,22
+Burned,1,2,3,Canopy,Pinus elliottii,23,20.5
+Burned,1,2,4,Canopy,,,
+Burned,1,3,1,Canopy,Pinus elliottii,25.6,19.5
+Burned,1,3,2,Canopy,Pinus palustris,12.7,16
+Burned,1,3,3,Canopy,Pinus palustris,22.2,24
+Burned,1,3,4,Canopy,Pinus palustris,20.8,17
+Burned,1,4,1,Canopy,Pinus elliottii,14.6,22.5
+Burned,1,4,2,Canopy,Pinus elliottii,7.3,16.5
+Burned,1,4,3,Canopy,Pinus elliottii,11.3,28.7
+Burned,1,4,4,Canopy,Pinus elliottii,21.7,17
+Burned,2,1,1,Canopy,Pinus elliottii,14,27
+Burned,2,1,2,Canopy,Pinus elliottii,8,20
+Burned,2,1,3,Canopy,Pinus elliottii,12,18
+Burned,2,1,4,Canopy,Pinus elliottii,8,22
+Burned,2,2,1,Canopy,Pinus elliottii,2.4,20
+Burned,2,2,2,Canopy,Pinus elliottii,4.6,25
+Burned,2,2,3,Canopy,Pinus elliottii,25,22
+Burned,2,2,4,Canopy,Pinus elliottii,10.45,18
+Burned,2,3,1,Canopy,Pinus elliottii,6.2,25
+Burned,2,3,2,Canopy,Pinus elliottii,9,15.5
+Burned,2,3,3,Canopy,Pinus elliottii,14.4,19
+Burned,2,3,4,Canopy,Pinus elliottii,18.7,18
+Burned,2,4,1,Canopy,Pinus elliottii,10.1,20
+Burned,2,4,2,Canopy,Pinus palustris,8.2,24
+Burned,2,4,3,Canopy,Pinus elliottii,6.6,21
+Burned,2,4,4,Canopy,Pinus elliottii,6.7,19
+Burned,3,1,1,Canopy,Pinus elliottii,3.8,25.5
+Burned,3,1,2,Canopy,Pinus elliottii,12,25.7
+Burned,3,1,3,Canopy,Pinus elliottii,15.3,22.4
+Burned,3,1,4,Canopy,,,
+Burned,3,2,1,Canopy,Pinus elliottii,9.9,28
+Burned,3,2,2,Canopy,Pinus elliottii,24.5,22.1
+Burned,3,2,3,Canopy,Pinus elliottii,4.65,23
+Burned,3,2,4,Canopy,Pinus elliottii,17.4,21.5
+Burned,3,3,1,Canopy,Pinus elliottii,17.2,25
+Burned,3,3,2,Canopy,Pinus elliottii,14.75,22
+Burned,3,3,3,Canopy,Pinus elliottii,12.8,23
+Burned,3,3,4,Canopy,Pinus elliottii,10.7,22.5
+Burned,3,4,1,Canopy,Pinus elliottii,22.3,20.5
+Burned,3,4,2,Canopy,Pinus elliottii,8.2,22
+Burned,3,4,3,Canopy,Pinus elliottii,10.25,18
+Burned,3,4,4,Canopy,Pinus elliottii,10.2,27.05
+Burned,4,1,1,Canopy,Pinus elliottii,8.8,18
+Burned,4,1,2,Canopy,Pinus elliottii,22.1,22.5
+Burned,4,1,3,Canopy,Pinus elliottii,9.9,12.4
+Burned,4,1,4,Canopy,Pinus elliottii,12.7,33
+Burned,4,2,1,Canopy,Pinus elliottii,6.6,16
+Burned,4,2,2,Canopy,Pinus elliottii,3.6,18
+Burned,4,2,3,Canopy,Pinus elliottii,11.5,32
+Burned,4,2,4,Canopy,Pinus elliottii,6.5,25.5
+Burned,4,3,1,Canopy,Pinus elliottii,15.7,11.4
+Burned,4,3,2,Canopy,Pinus elliottii,1,26
+Burned,4,3,3,Canopy,Pinus elliottii,13.6,32.5
+Burned,4,3,4,Canopy,Pinus elliottii,18,20
+Burned,4,4,1,Canopy,Pinus elliottii,12.9,24.5
+Burned,4,4,2,Canopy,Pinus elliottii,15.6,11
+Burned,4,4,3,Canopy,Pinus elliottii,20.8,20
+Burned,4,4,4,Canopy,Pinus elliottii,3.2,25
+Burned,5,1,1,Canopy,Pinus palustris,9,23.5
+Burned,5,1,2,Canopy,Pinus palustris,14.9,22.2
+Burned,5,1,3,Canopy,Pinus palustris,5.5,25.8
+Burned,5,1,4,Canopy,Pinus palustris,18.3,18.7
+Burned,5,2,1,Canopy,Pinus palustris,24.55,19
+Burned,5,2,2,Canopy,Pinus palustris,8.2,16
+Burned,5,2,3,Canopy,Pinus palustris,2.95,24
+Burned,5,2,4,Canopy,Pinus palustris,10.87,13.5
+Burned,5,3,1,Canopy,Pinus palustris,33.4,26.5
+Burned,5,3,2,Canopy,Pinus palustris,6.25,27
+Burned,5,3,3,Canopy,Pinus palustris,17.55,27
+Burned,5,3,4,Canopy,Pinus palustris,15.5,20.5
+Burned,5,4,1,Canopy,Pinus palustris,25,26.5
+Burned,5,4,2,Canopy,Pinus palustris,34.5,21
+Burned,5,4,3,Canopy,Pinus palustris,11.3,22.75
+Burned,5,4,4,Canopy,Pinus palustris,14.1,22.1
+Burned,6,1,1,Canopy,Pinus palustris,12,19.5
+Burned,6,1,2,Canopy,Pinus palustris,7.8,25
+Burned,6,1,3,Canopy,Pinus elliottii,12.4,23
+Burned,6,1,4,Canopy,Pinus palustris,26,20
+Burned,6,2,1,Canopy,Pinus elliottii,1.4,28
+Burned,6,2,2,Canopy,Pinus palustris,12,17
+Burned,6,2,3,Canopy,,,
+Burned,6,2,4,Canopy,Pinus elliottii,21.8,19.5
+Burned,6,3,1,Canopy,Pinus elliottii,15.7,20
+Burned,6,3,2,Canopy,Pinus palustris,6.6,25
+Burned,6,3,3,Canopy,Pinus elliottii,10.4,29
+Burned,6,3,4,Canopy,Pinus palustris,24.3,22
+Burned,6,4,1,Canopy,Pinus palustris,8.5,22
+Burned,6,4,2,Canopy,Pinus elliottii,10.8,27
+Burned,6,4,3,Canopy,Pinus elliottii,18,31
+Burned,6,4,4,Canopy,Pinus palustris,13.3,24
+Burned,7,1,1,Canopy,,,
+Burned,7,1,2,Canopy,,,
+Burned,7,1,3,Canopy,,,
+Burned,7,1,4,Canopy,,,
+Burned,7,2,1,Canopy,Pinus palustris ,4.02,14.8
+Burned,7,2,2,Canopy,,,
+Burned,7,2,3,Canopy,,,
+Burned,7,2,4,Canopy,,,
+Burned,7,3,1,Canopy,,,
+Burned,7,3,2,Canopy,,,
+Burned,7,3,3,Canopy,,,
+Burned,7,3,4,Canopy,,,
+Burned,7,4,1,Canopy,,,
+Burned,7,4,2,Canopy,,,
+Burned,7,4,3,Canopy,,,
+Burned,7,4,4,Canopy,,,
+Burned,8,1,1,Canopy,Pinus elliottii,10.75,24.5
+Burned,8,1,2,Canopy,Pinus palustris,8.7,25
+Burned,8,1,3,Canopy,Pinus palustris,14.8,25.8
+Burned,8,1,4,Canopy,Pinus elliottii,11.25,21.9
+Burned,8,2,1,Canopy,Pinus elliottii,11.95,28.5
+Burned,8,2,2,Canopy,Pinus elliottii,0.55,22.5
+Burned,8,2,3,Canopy,Pinus elliottii,4.1,25.6
+Burned,8,2,4,Canopy,Pinus elliottii,6.6,25.3
+Burned,8,3,1,Canopy,Pinus palustris,23,27.5
+Burned,8,3,2,Canopy,Pinus palustris,16.7,24.4
+Burned,8,3,3,Canopy,Pinus palustris,13.6,19.8
+Burned,8,3,4,Canopy,Pinus elliottii,4,27.7
+Burned,8,4,1,Canopy,Pinus elliottii,12.5,25.4
+Burned,8,4,2,Canopy,Pinus elliottii,12,39.9
+Burned,8,4,3,Canopy,Pinus elliottii,24.7,25.6
+Burned,8,4,4,Canopy,Pinus palustris,12.1,28.7
+Burned,1,1,1,Shrub,Serenoa repens,0.25,
+Burned,1,1,2,Shrub,Aristida stricta,0.8,
+Burned,1,1,3,Shrub,,,
+Burned,1,1,4,Shrub,Lyonia ferruginea,0.25,
+Burned,1,2,1,Shrub,Serenoa repens,0.3,
+Burned,1,2,2,Shrub,Lyonia lucida,0.6,
+Burned,1,2,3,Shrub,Serenoa repens,0.2,
+Burned,1,2,4,Shrub,Lyonia lucida,0.5,
+Burned,1,3,1,Shrub,Asimina reticulata,0.5,
+Burned,1,3,2,Shrub,Aristida stricta,0.4,
+Burned,1,3,3,Shrub,Lyonia lucida,0.6,
+Burned,1,3,4,Shrub,Lyonia lucida,0.6,
+Burned,1,4,1,Shrub,Serenoa repens,0.5,
+Burned,1,4,2,Shrub,Serenoa repens,0.3,
+Burned,1,4,3,Shrub,Ilex glabra,0.1,
+Burned,1,4,4,Shrub,Aristida stricta,0.5,
+Burned,2,1,1,Shrub,Serenoa repens,0.4,
+Burned,2,1,2,Shrub,Serenoa repens,0.75,
+Burned,2,1,3,Shrub,Serenoa repens,1.2,
+Burned,2,1,4,Shrub,Serenoa repens,1,
+Burned,2,2,1,Shrub,Serenoa repens,0.9,
+Burned,2,2,2,Shrub,Serenoa repens,0.9,
+Burned,2,2,3,Shrub,Lyonia lucida,0.9,
+Burned,2,2,4,Shrub,Serenoa repens,0.9,
+Burned,2,3,1,Shrub,Quercus chapmanii,0.7,
+Burned,2,3,2,Shrub,Serenoa repens,0.45,
+Burned,2,3,3,Shrub,Serenoa repens,1,
+Burned,2,3,4,Shrub,Quercus chapmanii,1.2,
+Burned,2,4,1,Shrub,Serenoa repens,1,
+Burned,2,4,2,Shrub,Asimina reticulata,1.2,
+Burned,2,4,3,Shrub,Serenoa repens,0.6,
+Burned,2,4,4,Shrub,Serenoa repens,0.7,
+Burned,3,1,1,Shrub,Serenoa repens,0,
+Burned,3,1,2,Shrub,Serenoa repens,0,
+Burned,3,1,3,Shrub,serenoa repens,1,
+Burned,3,1,4,Shrub,serenoa repens,0,
+Burned,3,2,1,Shrub,Serenoa repens,0.01,
+Burned,3,2,2,Shrub,Serenoa repens,0,
+Burned,3,2,3,Shrub,Serenoa repens,0,
+Burned,3,2,4,Shrub,Serenoa repens,0,
+Burned,3,3,1,Shrub,Serenoa repens,0,
+Burned,3,3,2,Shrub,Serenoa repens,0,
+Burned,3,3,3,Shrub,Serenoa repens,0,
+Burned,3,3,4,Shrub,Serenoa repens,0,
+Burned,3,4,1,Shrub,Serenoa repens,0,
+Burned,3,4,2,Shrub,Serenoa repens,0,
+Burned,3,4,3,Shrub,Serenoa repens,0,
+Burned,3,4,4,Shrub,Serenoa repens,0,
+Burned,4,1,1,Shrub,Lyonia lucida,1.85,
+Burned,4,1,2,Shrub,Licania michauxii,1,
+Burned,4,1,3,Shrub,,,
+Burned,4,1,4,Shrub,Lyonia lucida,1.7,
+Burned,4,2,1,Shrub,Lyonia lucida,0,
+Burned,4,2,2,Shrub,Lyonia lucida,0,
+Burned,4,2,3,Shrub,Lyonia lucida,0,
+Burned,4,2,4,Shrub,Vaccinum myrsynites,4.1,
+Burned,4,3,1,Shrub,Andropogon virginicus,1.1,
+Burned,4,3,2,Shrub,Lyonia lucida,1.2,
+Burned,4,3,3,Shrub,Rhus copallinum ,1.5,
+Burned,4,3,4,Shrub,Andropogon virginicus,1.1,
+Burned,4,4,1,Shrub,Lyonia lucida,1.5,
+Burned,4,4,2,Shrub,Asimina reticulata,0.7,
+Burned,4,4,3,Shrub,Asimina reticulata,0.3,
+Burned,4,4,4,Shrub,Lyonia ferruginea,1.5,
+Burned,5,1,1,Shrub,Serenoa repens,0,
+Burned,5,1,2,Shrub,Lyonia lucida,0.15,
+Burned,5,1,3,Shrub,Lyonia lucida,0.5,
+Burned,5,1,4,Shrub,Serenoa repens,1.5,
+Burned,5,2,1,Shrub,Lyonia lucida,1,
+Burned,5,2,2,Shrub,Asimina reticulata,0.7,
+Burned,5,2,3,Shrub,Lyonia lucida,0.95,
+Burned,5,2,4,Shrub,Lyonia lucida,0.88,
+Burned,5,3,1,Shrub,Lyonia lucida,1.7,
+Burned,5,3,2,Shrub,Lyonia lucida,0.3,
+Burned,5,3,3,Shrub,Serenoa repens,0,
+Burned,5,3,4,Shrub,Serenoa repens,1,
+Burned,5,4,1,Shrub,Lyonia lucida,0,
+Burned,5,4,2,Shrub,Opuntia humifusa ,0,
+Burned,5,4,3,Shrub,Lyonia lucida,0.8,
+Burned,5,4,4,Shrub,Lyonia lucida,0,
+Burned,6,1,1,Shrub,Serenoa repens,0.8,
+Burned,6,1,2,Shrub,Serenoa repens,1,
+Burned,6,1,3,Shrub,Myrica cerifera,0.5,
+Burned,6,1,4,Shrub,Serenoa repens,0.7,
+Burned,6,2,1,Shrub,Serenoa repens,0.7,
+Burned,6,2,2,Shrub,Lyonia lucida,0.8,
+Burned,6,2,3,Shrub,Serenoa repens,0.5,
+Burned,6,2,4,Shrub,Serenoa repens,0.7,
+Burned,6,3,1,Shrub,Lyonia lucida,0.4,
+Burned,6,3,2,Shrub,Myrica cerifera,0.3,
+Burned,6,3,3,Shrub,Myrica cerifera,0.6,
+Burned,6,3,4,Shrub,Serenoa repens,0.3,
+Burned,6,4,1,Shrub,Lyonia lucida,0.6,
+Burned,6,4,2,Shrub,Myrica cerifera,0.3,
+Burned,6,4,3,Shrub,Myrica cerifera,0.2,
+Burned,6,4,4,Shrub,Serenoa repens,0.3,
+Burned,7,1,1,Shrub,Lyonia lucida ,0.51,
+Burned,7,1,2,Shrub,Lyonia lucida ,0.21,
+Burned,7,1,3,Shrub,Lyonia lucida ,0.05,
+Burned,7,1,4,Shrub,Serenoa repens ,0.79,
+Burned,7,2,1,Shrub,Lyonia lucida ,0.42,
+Burned,7,2,2,Shrub,Serenoa repens ,0.44,
+Burned,7,2,3,Shrub,Quercus chapmanii,1.7,
+Burned,7,2,4,Shrub,Lyonia lucida ,0.65,
+Burned,7,3,1,Shrub,Lyonia lucida,1.2,
+Burned,7,3,2,Shrub,Serenoa repens,0,
+Burned,7,3,3,Shrub,Lyonia lucida,2.2,
+Burned,7,3,4,Shrub,Asimina reticulata,0.7,
+Burned,7,4,1,Shrub,Quercus chapmanii,0,
+Burned,7,4,2,Shrub,Lyonia lucida,0.4,
+Burned,7,4,3,Shrub,Quercus chapmanii,0,
+Burned,7,4,4,Shrub,Asimina reticulata,0,
+Burned,8,1,1,Shrub,Lyonia lucida,0.6,
+Burned,8,1,2,Shrub,Lyonia lucida,2.15,
+Burned,8,1,3,Shrub,Lyonia lucida,0.6,
+Burned,8,1,4,Shrub,Lyonia lucida,0,
+Burned,8,2,1,Shrub,Serenoa repens,1.1,
+Burned,8,2,2,Shrub,Serenoa repens,1.2,
+Burned,8,2,3,Shrub,Lyonia lucida,0.83,
+Burned,8,2,4,Shrub,Serenoa repens,0,
+Burned,8,3,1,Shrub,Serenoa repens,0,
+Burned,8,3,2,Shrub,Serenoa repens,1.7,
+Burned,8,3,3,Shrub,Serenoa repens,0.7,
+Burned,8,3,4,Shrub,Serenoa repens,0,
+Burned,8,4,1,Shrub,Serenoa repens,0.7,
+Burned,8,4,2,Shrub,Ilex glabra,1,
+Burned,8,4,3,Shrub,Serenoa repens,0,
+Burned,8,4,4,Shrub,Ilex glabra,0,
+Burned,1,1,1,Sub-Canopy,,,
+Burned,1,1,2,Sub-Canopy,Pinus palustris,13.7,11
+Burned,1,1,3,Sub-Canopy,Pinus palustris,12.5,13.5
+Burned,1,1,4,Sub-Canopy,,,
+Burned,1,2,1,Sub-Canopy,Pinus palustris,11.1,12.5
+Burned,1,2,2,Sub-Canopy,Pinus palustris,22.4,14.7
+Burned,1,2,3,Sub-Canopy,Pinus elliottii,15.5,8.5
+Burned,1,2,4,Sub-Canopy,Pinus palustris,8.5,12.5
+Burned,1,3,1,Sub-Canopy,Pinus palustris,17,11.5
+Burned,1,3,2,Sub-Canopy,Pinus palustris,10.3,14
+Burned,1,3,3,Sub-Canopy,,,
+Burned,1,3,4,Sub-Canopy,Pinus palustris,15.2,3.5
+Burned,1,4,1,Sub-Canopy,Quercus myrtifolia,7.4,5.5
+Burned,1,4,2,Sub-Canopy,Pinus palustris,7.7,14
+Burned,1,4,3,Sub-Canopy,,,
+Burned,1,4,4,Sub-Canopy,Pinus palustris,18.3,8
+Burned,2,1,1,Sub-Canopy,,,
+Burned,2,1,2,Sub-Canopy,,,
+Burned,2,1,3,Sub-Canopy,Pinus palustris,18.75,11
+Burned,2,1,4,Sub-Canopy,,,
+Burned,2,2,1,Sub-Canopy,,,
+Burned,2,2,2,Sub-Canopy,Pinus elliottii,13,12.5
+Burned,2,2,3,Sub-Canopy,,,
+Burned,2,2,4,Sub-Canopy,Pinus palustris,14.5,12
+Burned,2,3,1,Sub-Canopy,,,
+Burned,2,3,2,Sub-Canopy,,,
+Burned,2,3,3,Sub-Canopy,Pinus palustris,12,12
+Burned,2,3,4,Sub-Canopy,,,
+Burned,2,4,1,Sub-Canopy,,,
+Burned,2,4,2,Sub-Canopy,,,
+Burned,2,4,3,Sub-Canopy,Pinus elliottii,3.7,13
+Burned,2,4,4,Sub-Canopy,,,
+Burned,3,1,1,Sub-Canopy,,,
+Burned,3,1,2,Sub-Canopy,,,
+Burned,3,1,3,Sub-Canopy,Sabal palmetto,13.5,23.5
+Burned,3,1,4,Sub-Canopy,Pinus palustris,11.2,11
+Burned,3,2,1,Sub-Canopy,,,
+Burned,3,2,2,Sub-Canopy,Pinus elliottii,6.75,16.2
+Burned,3,2,3,Sub-Canopy,Sabal palmetto,10.9,23.5
+Burned,3,2,4,Sub-Canopy,Pinus elliottii,24.1,6
+Burned,3,3,1,Sub-Canopy,Pinus elliottii,25,18
+Burned,3,3,2,Sub-Canopy,Pinus elliottii,10.2,16.5
+Burned,3,3,3,Sub-Canopy,Pinus elliottii,29.3,7.5
+Burned,3,3,4,Sub-Canopy,Pinus elliottii,4.1,15.8
+Burned,3,4,1,Sub-Canopy,Pinus elliottii,11,19.09
+Burned,3,4,2,Sub-Canopy,Pinus elliottii,28.8,7.8
+Burned,3,4,3,Sub-Canopy,Pinus elliottii,24.1,7.5
+Burned,3,4,4,Sub-Canopy,Pinus elliottii,9.6,19.09
+Burned,4,1,1,Sub-Canopy,Sabal palmetto,20.2,24
+Burned,4,1,2,Sub-Canopy,Pinus palustris,17.7,8
+Burned,4,1,3,Sub-Canopy,,,
+Burned,4,1,4,Sub-Canopy,Pinus palustris,48.5,7
+Burned,4,2,1,Sub-Canopy,,,
+Burned,4,2,2,Sub-Canopy,,,
+Burned,4,2,3,Sub-Canopy,Quercus geminata,7.1,2
+Burned,4,2,4,Sub-Canopy,Quercus chapmanii,7.7,0.5
+Burned,4,3,1,Sub-Canopy,Quercus geminata,1.1,0.2
+Burned,4,3,2,Sub-Canopy,Quercus geminata,1.4,0.2
+Burned,4,3,3,Sub-Canopy,Quercus geminata,3.1,0.5
+Burned,4,3,4,Sub-Canopy,Quercus geminata,7.9,1
+Burned,4,4,1,Sub-Canopy,Myrica cerifera,10.4,0.1
+Burned,4,4,2,Sub-Canopy,,,
+Burned,4,4,3,Sub-Canopy,Sabal palmetto,5.9,18.5
+Burned,4,4,4,Sub-Canopy,Myrica cerifera,1.5,0.2
+Burned,5,1,1,Sub-Canopy,Pinus clausa,2,2.2
+Burned,5,1,2,Sub-Canopy,Pinus palustris,14,16.1
+Burned,5,1,3,Sub-Canopy,Pinus clausa,3.9,2.2
+Burned,5,1,4,Sub-Canopy,Quercus chapmanii,15.2,1.5
+Burned,5,2,1,Sub-Canopy,Quercus myrtifolia,1.8,3.2
+Burned,5,2,2,Sub-Canopy,Quercus myrtifolia,7.5,2.25
+Burned,5,2,3,Sub-Canopy,Quercus myrtifolia,2.25,0.2
+Burned,5,2,4,Sub-Canopy,Quercus myrtifolia,1.3,1.25
+Burned,5,3,1,Sub-Canopy,Pinus palustris,7.3,3.5
+Burned,5,3,2,Sub-Canopy,Quercus myrtifolia,2.15,2.34
+Burned,5,3,3,Sub-Canopy,Pinus clausa,6,2.5
+Burned,5,3,4,Sub-Canopy,Pinus palustris,8.45,22
+Burned,5,4,1,Sub-Canopy,Quercus myrtifolia,1.8,4.5
+Burned,5,4,2,Sub-Canopy,Quercus myrtifolia,1.2,2
+Burned,5,4,3,Sub-Canopy,Quercus myrtifolia,8.9,1.25
+Burned,5,4,4,Sub-Canopy,Pinus palustris,1.3,13.5
+Burned,6,1,1,Sub-Canopy,,,
+Burned,6,1,2,Sub-Canopy,Pinus clausa,12.5,4.75
+Burned,6,1,3,Sub-Canopy,,,
+Burned,6,1,4,Sub-Canopy,Pinus palustris,23.7,8
+Burned,6,2,1,Sub-Canopy,Pinus clausa,16,10
+Burned,6,2,2,Sub-Canopy,Pinus clausa,20.5,3
+Burned,6,2,3,Sub-Canopy,,,
+Burned,6,2,4,Sub-Canopy,Pinus palustris,14.9,8
+Burned,6,3,1,Sub-Canopy,Pinus clausa,4.9,9
+Burned,6,3,2,Sub-Canopy,,,
+Burned,6,3,3,Sub-Canopy,,,
+Burned,6,3,4,Sub-Canopy,Pinus palustris,16.3,9.5
+Burned,6,4,1,Sub-Canopy,Pinus clausa,15.8,2
+Burned,6,4,2,Sub-Canopy,Pinus clausa,2.1,12
+Burned,6,4,3,Sub-Canopy,Pinus palustris,19.7,11.5
+Burned,6,4,4,Sub-Canopy,,,
+Burned,7,1,1,Sub-Canopy,Pinus palustris ,5.52,25.5
+Burned,7,1,2,Sub-Canopy,,,
+Burned,7,1,3,Sub-Canopy,,,
+Burned,7,1,4,Sub-Canopy,Pinus palustris ,10.66,23.6
+Burned,7,2,1,Sub-Canopy,,,
+Burned,7,2,2,Sub-Canopy,,,
+Burned,7,2,3,Sub-Canopy,Pinus palustris ,0,23.5
+Burned,7,2,4,Sub-Canopy,Pinus palustris ,11.37,20.7
+Burned,7,3,1,Sub-Canopy,,,
+Burned,7,3,2,Sub-Canopy,Pinus palustris,11.38,10.3
+Burned,7,3,3,Sub-Canopy,,,
+Burned,7,3,4,Sub-Canopy,Pinus serotina,8.91,14.5
+Burned,7,4,1,Sub-Canopy,Pinus palustris,3.5,21.8
+Burned,7,4,2,Sub-Canopy,Pinus palustris,10.13,17
+Burned,7,4,3,Sub-Canopy,Pinus palustris,13.98,15.7
+Burned,7,4,4,Sub-Canopy,,,
+Burned,8,1,1,Sub-Canopy,Pinus palustris,27.5,3.85
+Burned,8,1,2,Sub-Canopy,Pinus palustris,14.1,16
+Burned,8,1,3,Sub-Canopy,,,
+Burned,8,1,4,Sub-Canopy,,,
+Burned,8,2,1,Sub-Canopy,Pinus palustris,42,25.4
+Burned,8,2,2,Sub-Canopy,Pinus palustris,37.3,19.5
+Burned,8,2,3,Sub-Canopy,Pinus palustris,11.7,16.3
+Burned,8,2,4,Sub-Canopy,,,
+Burned,8,3,1,Sub-Canopy,Pinus palustris,30.3,18.6
+Burned,8,3,2,Sub-Canopy,Pinus palustris,30.3,18.2
+Burned,8,3,3,Sub-Canopy,Pinus elliottii,29.1,19.1
+Burned,8,3,4,Sub-Canopy,,,
+Burned,8,4,1,Sub-Canopy,Pinus elliottii,18.6,18.4
+Burned,8,4,2,Sub-Canopy,Pinus palustris,32.4,21.6
+Burned,8,4,3,Sub-Canopy,Pinus palustris,31.4,18.7
+Burned,8,4,4,Sub-Canopy,,,
+Unburned,1,1,1,Canopy,Pinus palustris,6.832,24.5
+Unburned,1,1,2,Canopy,Pinus palustris,15.24,21
+Unburned,1,1,3,Canopy,Pinus palustris,8.585,27
+Unburned,1,1,4,Canopy,Pinus palustris,16.764,8.5
+Unburned,1,2,1,Canopy,Pinus palustris,7.722,23
+Unburned,1,2,2,Canopy,Pinus palustris,5.639,17
+Unburned,1,2,3,Canopy,Pinus palustris,3.175,20
+Unburned,1,2,4,Canopy,Pinus palustris,5.232,14
+Unburned,1,3,1,Canopy,Pinus palustris,2.377,16
+Unburned,1,3,2,Canopy,Pinus palustris,3.018,17
+Unburned,1,3,3,Canopy,Pinus palustris,11.156,15
+Unburned,1,3,4,Canopy,Pinus palustris,3.78,22
+Unburned,1,4,1,Canopy,Pinus palustris,4.27,21
+Unburned,1,4,2,Canopy,Pinus palustris,22.43,21
+Unburned,1,4,3,Canopy,Pinus palustris,5.03,16
+Unburned,1,4,4,Canopy,Pinus palustris,7.5,24
+Unburned,2,1,1,Canopy,Pinus palustris,12.71,23.25
+Unburned,2,1,2,Canopy,Pinus palustris,3.9,21.02
+Unburned,2,1,3,Canopy,Pinus palustris,9.4,30.25
+Unburned,2,1,4,Canopy,Pinus palustris,14.7,24.52
+Unburned,2,2,1,Canopy,Pinus palustris,20.4,22.29
+Unburned,2,2,2,Canopy,,,
+Unburned,2,2,3,Canopy,Pinus palustris,16.8,19.11
+Unburned,2,2,4,Canopy,Pinus palustris,3.11,15.92
+Unburned,2,3,1,Canopy,Pinus palustris,2.61,23.57
+Unburned,2,3,2,Canopy,Pinus palustris,5.17,13.38
+Unburned,2,3,3,Canopy,Pinus palustris,6.1,31.85
+Unburned,2,3,4,Canopy,Pinus palustris,14.5,24.84
+Unburned,2,4,1,Canopy,Pinus palustris,6,21.66
+Unburned,2,4,2,Canopy,Pinus palustris,8.53,23.89
+Unburned,2,4,3,Canopy,Pinus palustris,7.77,25.16
+Unburned,2,4,4,Canopy,Pinus palustris,7.73,21.34
+Unburned,3,1,1,Canopy,Pinus palustris,20.35,22.5
+Unburned,3,1,2,Canopy,,,
+Unburned,3,1,3,Canopy,Pinus elliottii,10.35,2.5
+Unburned,3,1,4,Canopy,Pinus palustris,21.95,11.5
+Unburned,3,2,1,Canopy,Pinus palustris,15.3,21
+Unburned,3,2,2,Canopy,,,
+Unburned,3,2,3,Canopy,,,
+Unburned,3,2,4,Canopy,Pinus elliottii,5.4,13
+Unburned,3,3,1,Canopy,Pinus elliottii,3.9,22.5
+Unburned,3,3,2,Canopy,Pinus elliottii,3.86,18
+Unburned,3,3,3,Canopy,Pinus palustris,11.95,20
+Unburned,3,3,4,Canopy,Pinus palustris,8.15,13.1
+Unburned,3,4,1,Canopy,Pinus palustris,22.2,19
+Unburned,3,4,2,Canopy,Pinus palustris,9.1,15.1
+Unburned,3,4,3,Canopy,Pinus palustris,5.9,19.5
+Unburned,3,4,4,Canopy,Pinus palustris,2.8,17.5
+Unburned,4,1,1,Canopy,,,
+Unburned,4,1,2,Canopy,,,
+Unburned,4,1,3,Canopy,,,
+Unburned,4,1,4,Canopy,,,
+Unburned,4,2,1,Canopy,Pinus palustris,20.9,32
+Unburned,4,2,2,Canopy,,,
+Unburned,4,2,3,Canopy,,,
+Unburned,4,2,4,Canopy,,,
+Unburned,4,3,1,Canopy,Pinus palustris,22.7,24
+Unburned,4,3,2,Canopy,,,
+Unburned,4,3,3,Canopy,,,
+Unburned,4,3,4,Canopy,,,
+Unburned,4,4,1,Canopy,,,
+Unburned,4,4,2,Canopy,,,
+Unburned,4,4,3,Canopy,,,
+Unburned,4,4,4,Canopy,,,
+Unburned,5,1,1,Canopy,Pinus palustris,6.832,24.5
+Unburned,5,1,2,Canopy,Pinus palustris,15.24,21
+Unburned,5,1,3,Canopy,Pinus palustris,8.585,27
+Unburned,5,1,4,Canopy,Pinus palustris,16.764,8.5
+Unburned,5,2,1,Canopy,Pinus palustris,7.722,23
+Unburned,5,2,2,Canopy,Pinus palustris,5.639,17
+Unburned,5,2,3,Canopy,Pinus palustris,3.175,20
+Unburned,5,2,4,Canopy,Pinus palustris,5.232,14
+Unburned,5,3,1,Canopy,Pinus palustris,2.377,16
+Unburned,5,3,2,Canopy,Pinus palustris,3.018,17
+Unburned,5,3,3,Canopy,Pinus palustris,11.156,15
+Unburned,5,3,4,Canopy,Pinus palustris,3.78,22
+Unburned,5,4,1,Canopy,Pinus palustris,4.27,21
+Unburned,5,4,2,Canopy,Pinus palustris,22.43,21
+Unburned,5,4,3,Canopy,Pinus palustris,5.03,16
+Unburned,5,4,4,Canopy,Pinus palustris,7.5,24
+Unburned,6,1,1,Canopy,Pinus palustris,12.71,23.25
+Unburned,6,1,2,Canopy,Pinus palustris,3.9,21.02
+Unburned,6,1,3,Canopy,Pinus palustris,9.4,30.25
+Unburned,6,1,4,Canopy,Pinus palustris,14.7,24.52
+Unburned,6,2,1,Canopy,Pinus palustris,20.4,22.29
+Unburned,6,2,2,Canopy,,,
+Unburned,6,2,3,Canopy,Pinus palustris,16.8,19.11
+Unburned,6,2,4,Canopy,Pinus palustris,3.11,15.92
+Unburned,6,3,1,Canopy,Pinus palustris,2.61,23.57
+Unburned,6,3,2,Canopy,Pinus palustris,5.17,13.38
+Unburned,6,3,3,Canopy,Pinus palustris,6.1,31.85
+Unburned,6,3,4,Canopy,Pinus palustris,14.5,24.84
+Unburned,6,4,1,Canopy,Pinus palustris,6,21.66
+Unburned,6,4,2,Canopy,Pinus palustris,8.53,23.89
+Unburned,6,4,3,Canopy,Pinus palustris,7.77,25.16
+Unburned,6,4,4,Canopy,Pinus palustris,7.73,21.34
+Unburned,7,1,1,Canopy,Pinus palustris,20.35,22.5
+Unburned,7,1,2,Canopy,,,
+Unburned,7,1,3,Canopy,Pinus elliottii,10.35,2.5
+Unburned,7,1,4,Canopy,Pinus palustris,21.95,11.5
+Unburned,7,2,1,Canopy,Pinus palustris,15.3,21
+Unburned,7,2,2,Canopy,,,
+Unburned,7,2,3,Canopy,,,
+Unburned,7,2,4,Canopy,Pinus elliottii,5.4,13
+Unburned,7,3,1,Canopy,Pinus elliottii,3.9,22.5
+Unburned,7,3,2,Canopy,Pinus elliottii,3.86,18
+Unburned,7,3,3,Canopy,Pinus palustris,11.95,20
+Unburned,7,3,4,Canopy,Pinus palustris,8.15,13.1
+Unburned,7,4,1,Canopy,Pinus palustris,22.2,19
+Unburned,7,4,2,Canopy,Pinus palustris,9.1,15.1
+Unburned,7,4,3,Canopy,Pinus palustris,5.9,19.5
+Unburned,7,4,4,Canopy,Pinus palustris,2.8,17.5
+Unburned,8,1,1,Canopy,,,
+Unburned,8,1,2,Canopy,,,
+Unburned,8,1,3,Canopy,,,
+Unburned,8,1,4,Canopy,,,
+Unburned,8,2,1,Canopy,Pinus palustris,20.9,32
+Unburned,8,2,2,Canopy,,,
+Unburned,8,2,3,Canopy,,,
+Unburned,8,2,4,Canopy,,,
+Unburned,8,3,1,Canopy,Pinus palustris,22.7,24
+Unburned,8,3,2,Canopy,,,
+Unburned,8,3,3,Canopy,,,
+Unburned,8,3,4,Canopy,,,
+Unburned,8,4,1,Canopy,,,
+Unburned,8,4,2,Canopy,,,
+Unburned,8,4,3,Canopy,,,
+Unburned,8,4,4,Canopy,,,
+Unburned,9,1,1,Canopy,Pinus palustris,6.45,16.5
+Unburned,9,1,2,Canopy,Pinus elliottii,26.24,16
+Unburned,9,1,3,Canopy,Pinus elliottii,11.32,26
+Unburned,9,1,4,Canopy,Pinus elliottii,6.1,22.5
+Unburned,9,2,1,Canopy,Pinus elliottii,4.72,24
+Unburned,9,2,2,Canopy,Pinus elliottii,4.3,27.6
+Unburned,9,2,3,Canopy,Pinus palustris,6.14,17.1
+Unburned,9,2,4,Canopy,Pinus palustris,6.35,21.8
+Unburned,9,3,1,Canopy,Pinus palustris,7.51,18.6
+Unburned,9,3,2,Canopy,Pinus elliottii,3.29,23.2
+Unburned,9,3,3,Canopy,Pinus palustris,13.35,22
+Unburned,9,3,4,Canopy,Pinus elliottii,9.19,19.6
+Unburned,9,4,1,Canopy,Pinus elliottii,32.47,22.7
+Unburned,9,4,2,Canopy,Pinus elliottii,18.19,22
+Unburned,9,4,3,Canopy,Pinus elliottii,11.13,23.7
+Unburned,9,4,4,Canopy,Pinus elliottii,4.21,18.2
+Unburned,10,1,1,Canopy,Pinus Palustris,2.92,16.3
+Unburned,10,1,2,Canopy,Pinus Palustris,11.1,14
+Unburned,10,1,3,Canopy,Pinus Palustris,3.5,21
+Unburned,10,1,4,Canopy,Pinus Palustris,3.9,14
+Unburned,10,2,1,Canopy,Pinus Palustris,9.6,20
+Unburned,10,2,2,Canopy,Pinus Palustris,10.5,28.5
+Unburned,10,2,3,Canopy,Pinus Palustris,13.4,20.5
+Unburned,10,2,4,Canopy,Pinus Palustris,20.2,18
+Unburned,10,3,1,Canopy,Pinus Palustris,27.3,14.8
+Unburned,10,3,2,Canopy,Pinus Palustris,8.6,19.6
+Unburned,10,3,3,Canopy,Pinus Palustris,7.26,29
+Unburned,10,3,4,Canopy,Pinus Palustris,7.5,22
+Unburned,10,4,1,Canopy,Pinus Palustris,33.6,14.8
+Unburned,10,4,2,Canopy,Pinus Palustris,11.75,22
+Unburned,10,4,3,Canopy,Pinus Palustris,11.3,16
+Unburned,10,4,4,Canopy,Pinus Palustris,2.7,22
+Unburned,11,1,1,Canopy,Pinus palustris,7.42,21
+Unburned,11,1,2,Canopy,Pinus palustris,8.74,18
+Unburned,11,1,3,Canopy,Pinus palustris,1.8,23
+Unburned,11,1,4,Canopy,Pinus elliottii,21.67,24
+Unburned,11,2,1,Canopy,Pinus palustris,9.85,23
+Unburned,11,2,2,Canopy,Pinus palustris,9.14,23
+Unburned,11,2,3,Canopy,Pinus palustris,28.73,23
+Unburned,11,2,4,Canopy,Pinus palustris,20.38,16
+Unburned,11,3,1,Canopy,Pinus palustris,16.1,23
+Unburned,11,3,2,Canopy,Pinus palustris,19.2,20
+Unburned,11,3,3,Canopy,Pinus palustris,16.18,23
+Unburned,11,3,4,Canopy,Pinus palustris,24.58,18
+Unburned,11,4,1,Canopy,Pinus palustris,23.94,23
+Unburned,11,4,2,Canopy,Pinus palustris,10.9,20
+Unburned,11,4,3,Canopy,Pinus palustris,11.23,14
+Unburned,11,4,4,Canopy,Pinus palustris,13.51,23
+Unburned,12,1,1,Canopy,Pinus palustris,8.2,15
+Unburned,12,1,2,Canopy,Pinus palustris,17.7,27.8
+Unburned,12,1,3,Canopy,Pinus palustris,11.3,25.6
+Unburned,12,1,4,Canopy,Pinus palustris,20.5,26.8
+Unburned,12,2,1,Canopy,,,
+Unburned,12,2,2,Canopy,Pinus palustris,15.2,23.8
+Unburned,12,2,3,Canopy,Pinus palustris,5.8,25.9
+Unburned,12,2,4,Canopy,Pinus palustris,19,15.1
+Unburned,12,3,1,Canopy,Pinus palustris,3.2,26
+Unburned,12,3,2,Canopy,Pinus palustris,15.4,24.1
+Unburned,12,3,3,Canopy,Pinus palustris,5.1,13.2
+Unburned,12,3,4,Canopy,Pinus palustris,13.5,10
+Unburned,12,4,1,Canopy,Pinus palustris,6.9,15
+Unburned,12,4,2,Canopy,Pinus palustris,8.9,21.8
+Unburned,12,4,3,Canopy,Pinus palustris,0.5,17.6
+Unburned,12,4,4,Canopy,Pinus palustris,10.8,10.3
+Unburned,13,1,1,Canopy,Pinus palustris,14,14.5
+Unburned,13,1,2,Canopy,Pinus palustris,6.9,22
+Unburned,13,1,3,Canopy,Pinus palustris,4.7,12
+Unburned,13,1,4,Canopy,Pinus palustris,11.9,20
+Unburned,13,2,1,Canopy,Pinus palustris,21,19.5
+Unburned,13,2,2,Canopy,Pinus palustris,10.4,24
+Unburned,13,2,3,Canopy,Pinus palustris,15.3,21
+Unburned,13,2,4,Canopy,Pinus palustris,5.5,25
+Unburned,13,3,1,Canopy,Pinus palustris,12.1,20
+Unburned,13,3,2,Canopy,Pinus palustris,12.4,20
+Unburned,13,3,3,Canopy,Pinus palustris,13.8,18
+Unburned,13,3,4,Canopy,Pinus palustris,10.1,25.5
+Unburned,13,4,1,Canopy,Pinus palustris,6.3,20
+Unburned,13,4,2,Canopy,Pinus palustris,17.1,18
+Unburned,13,4,3,Canopy,Pinus palustris,14.4,21
+Unburned,13,4,4,Canopy,Pinus palustris,16.6,16
+Unburned,14,1,1,Canopy,Pinus palustris,12.65,23.87
+Unburned,14,1,2,Canopy,Pinus palustris,16.4,31.83
+Unburned,14,1,3,Canopy,Pinus palustris,8.7,18
+Unburned,14,1,4,Canopy,,,
+Unburned,14,2,1,Canopy,Pinus palustris,20.5,19.3
+Unburned,14,2,2,Canopy,Pinus palustris,11.5,28
+Unburned,14,2,3,Canopy,Pinus palustris,29,23.6
+Unburned,14,2,4,Canopy,Pinus palustris,18.7,17
+Unburned,14,3,1,Canopy,Pinus palustris,22.8,19
+Unburned,14,3,2,Canopy,Pinus palustris,5.75,20
+Unburned,14,3,3,Canopy,,,
+Unburned,14,3,4,Canopy,Pinus palustris,26.55,21.7
+Unburned,14,4,1,Canopy,Pinus palustris,27.95,14.6
+Unburned,14,4,2,Canopy,,,
+Unburned,14,4,3,Canopy,Pinus palustris,22,19
+Unburned,14,4,4,Canopy,Pinus palustris,8.55,21.5
+Unburned,15,1,1,Canopy,Pinus elliottii,7.37,44.1
+Unburned,15,1,2,Canopy,Pinus palustris,7.18,23.3
+Unburned,15,1,3,Canopy,Pinus palustris,41.7,27.4
+Unburned,15,1,4,Canopy,Pinus palustris,22.45,20.2
+Unburned,15,2,1,Canopy,Pinus palustris,14.65,22.3
+Unburned,15,2,2,Canopy,Pinus palustris,10.4,25
+Unburned,15,2,3,Canopy,Pinus palustris,11.69,24.5
+Unburned,15,2,4,Canopy,Pinus palustris,9.95,27.7
+Unburned,15,3,1,Canopy,Pinus palustris,13.65,26.3
+Unburned,15,3,2,Canopy,Pinus elliottii,12.82,19.5
+Unburned,15,3,3,Canopy,Pinus elliottii,10.16,27
+Unburned,15,3,4,Canopy,Pinus palustris,3.68,24.1
+Unburned,15,4,1,Canopy,Pinus palustris,5.47,15.2
+Unburned,15,4,2,Canopy,Pinus palustris,14.23,19
+Unburned,15,4,3,Canopy,Pinus palustris,11.62,20.3
+Unburned,15,4,4,Canopy,Pinus elliottii,8.43,25.8
+Unburned,16,1,1,Canopy,Pinus palustris,7.1,19
+Unburned,16,1,2,Canopy,Pinus palustris,6.2,23.5
+Unburned,16,1,3,Canopy,Pinus palustris,22.9,16.5
+Unburned,16,1,4,Canopy,Pinus palustris,5.9,22
+Unburned,16,2,1,Canopy,Pinus palustris,1,22.5
+Unburned,16,2,2,Canopy,Pinus palustris,13.8,23
+Unburned,16,2,3,Canopy,Pinus palustris,18,17
+Unburned,16,2,4,Canopy,Pinus palustris,9.1,22
+Unburned,16,3,1,Canopy,Pinus palustris,10.3,17.5
+Unburned,16,3,2,Canopy,Pinus palustris,8.4,23.5
+Unburned,16,3,3,Canopy,Pinus palustris,30.7,23
+Unburned,16,3,4,Canopy,Pinus palustris,20.7,16
+Unburned,16,4,1,Canopy,Pinus palustris,10.8,24
+Unburned,16,4,2,Canopy,Pinus palustris,24.9,20.5
+Unburned,16,4,3,Canopy,Pinus palustris,23.1,23
+Unburned,16,4,4,Canopy,Pinus palustris,21.5,16.5
+Unburned,1,1,1,Shrub,Serenoa repens,1.041,
+Unburned,1,1,2,Shrub,Lyonia lucida,2.362,
+Unburned,1,1,3,Shrub,Asimina reticulata,0.635,
+Unburned,1,1,4,Shrub,Lyonia lucida,0.711,
+Unburned,1,2,1,Shrub,Lyonia lucida,2.032,
+Unburned,1,2,2,Shrub,Lyonia lucida,1.956,
+Unburned,1,2,3,Shrub,Lyonia lucida,1.092,
+Unburned,1,2,4,Shrub,Lyonia lucida,1.854,
+Unburned,1,3,1,Shrub,Lyonia lucida,2.896,
+Unburned,1,3,2,Shrub,Lyonia lucida,0.305,
+Unburned,1,3,3,Shrub,Lyonia lucida,0.975,
+Unburned,1,3,4,Shrub,Lyonia lucida,0.762,
+Unburned,1,4,1,Shrub,Lyonia lucida,1.75,
+Unburned,1,4,2,Shrub,Lyonia lucida,1.57,
+Unburned,1,4,3,Shrub,Lyonia lucida,1.75,
+Unburned,1,4,4,Shrub,Lyonia lucida,2.16,
+Unburned,2,1,1,Shrub,Licania michauxii,0.78,
+Unburned,2,1,2,Shrub,Asimina reticulata,0.69,
+Unburned,2,1,3,Shrub,Lyonia lucida,2.9,
+Unburned,2,1,4,Shrub,Lyonia lucida,1,
+Unburned,2,2,1,Shrub,Licania michauxii,0.8,
+Unburned,2,2,2,Shrub,Serenoa repens,1,
+Unburned,2,2,3,Shrub,Licania michauxii,0.7,
+Unburned,2,2,4,Shrub,Licania michauxii,0.76,
+Unburned,2,3,1,Shrub,Licania michauxii,1.51,
+Unburned,2,3,2,Shrub,Lyonia lucida,0.74,
+Unburned,2,3,3,Shrub,Serenoa repens,0.79,
+Unburned,2,3,4,Shrub,Serenoa repens,2,
+Unburned,2,4,1,Shrub,Serenoa repens,0.8,
+Unburned,2,4,2,Shrub,Serenoa repens,0.88,
+Unburned,2,4,3,Shrub,Serenoa repens,0.99,
+Unburned,2,4,4,Shrub,Lyonia lucida,0.72,
+Unburned,3,1,1,Shrub,Callicarpa americana,0.93,
+Unburned,3,1,2,Shrub,Serenoa repens,0.81,
+Unburned,3,1,3,Shrub,Serenoa repens,1.17,
+Unburned,3,1,4,Shrub,Serenoa repens,0.62,
+Unburned,3,2,1,Shrub,Serenoa repens,0.55,
+Unburned,3,2,2,Shrub,Serenoa repens,1.4,
+Unburned,3,2,3,Shrub,Serenoa repens,1.6,
+Unburned,3,2,4,Shrub,Serenoa repens,1.9,
+Unburned,3,3,1,Shrub,Serenoa repens,0.7,
+Unburned,3,3,2,Shrub,Serenoa repens,0.85,
+Unburned,3,3,3,Shrub,Lyonia lucida,0.65,
+Unburned,3,3,4,Shrub,Serenoa repens,0.55,
+Unburned,3,4,1,Shrub,Serenoa repens,3.1,
+Unburned,3,4,2,Shrub,Serenoa repens,1.6,
+Unburned,3,4,3,Shrub,Serenoa repens,3.2,
+Unburned,3,4,4,Shrub,Serenoa repens,0.97,
+Unburned,4,1,1,Shrub,Quercus chapmanii,0.64,
+Unburned,4,1,2,Shrub,Serenoa repens,0.31,
+Unburned,4,1,3,Shrub,Serenoa repens,0.43,
+Unburned,4,1,4,Shrub,Serenoa repens,0.74,
+Unburned,4,2,1,Shrub,Serenoa repens,0.15,
+Unburned,4,2,2,Shrub,Serenoa repens,0.3,
+Unburned,4,2,3,Shrub,Serenoa repens,0.76,
+Unburned,4,2,4,Shrub,Serenoa repens,0.94,
+Unburned,4,3,1,Shrub,Serenoa repens,0.35,
+Unburned,4,3,2,Shrub,Quercus chapmanii,0.68,
+Unburned,4,3,3,Shrub,Serenoa repens,1.24,
+Unburned,4,3,4,Shrub,Serenoa repens,0.96,
+Unburned,4,4,1,Shrub,Opuntia humifusa,1.43,
+Unburned,4,4,2,Shrub,Serenoa repens,0.61,
+Unburned,4,4,3,Shrub,Serenoa repens,0.18,
+Unburned,4,4,4,Shrub,Serenoa repens,1.02,
+Unburned,5,1,1,Shrub,Serenoa repens,1.041,
+Unburned,5,1,2,Shrub,Lyonia lucida,2.362,
+Unburned,5,1,3,Shrub,Asimina reticulata,0.635,
+Unburned,5,1,4,Shrub,Lyonia lucida,0.711,
+Unburned,5,2,1,Shrub,Lyonia lucida,2.032,
+Unburned,5,2,2,Shrub,Lyonia lucida,1.956,
+Unburned,5,2,3,Shrub,Lyonia lucida,1.092,
+Unburned,5,2,4,Shrub,Lyonia lucida,1.854,
+Unburned,5,3,1,Shrub,Lyonia lucida,2.896,
+Unburned,5,3,2,Shrub,Lyonia lucida,0.305,
+Unburned,5,3,3,Shrub,Lyonia lucida,0.975,
+Unburned,5,3,4,Shrub,Lyonia lucida,0.762,
+Unburned,5,4,1,Shrub,Lyonia lucida,1.75,
+Unburned,5,4,2,Shrub,Lyonia lucida,1.57,
+Unburned,5,4,3,Shrub,Lyonia lucida,1.75,
+Unburned,5,4,4,Shrub,Lyonia lucida,2.16,
+Unburned,6,1,1,Shrub,Licania michauxii,0.78,
+Unburned,6,1,2,Shrub,Asimina reticulata,0.69,
+Unburned,6,1,3,Shrub,Lyonia lucida,2.9,
+Unburned,6,1,4,Shrub,Lyonia lucida,1,
+Unburned,6,2,1,Shrub,Licania michauxii,0.8,
+Unburned,6,2,2,Shrub,Serenoa repens,1,
+Unburned,6,2,3,Shrub,Licania michauxii,0.7,
+Unburned,6,2,4,Shrub,Licania michauxii,0.76,
+Unburned,6,3,1,Shrub,Licania michauxii,1.51,
+Unburned,6,3,2,Shrub,Lyonia lucida,0.74,
+Unburned,6,3,3,Shrub,Serenoa repens,0.79,
+Unburned,6,3,4,Shrub,Serenoa repens,2,
+Unburned,6,4,1,Shrub,Serenoa repens,0.8,
+Unburned,6,4,2,Shrub,Serenoa repens,0.88,
+Unburned,6,4,3,Shrub,Serenoa repens,0.99,
+Unburned,6,4,4,Shrub,Lyonia lucida,0.72,
+Unburned,7,1,1,Shrub,Callicarpa americana,0.93,
+Unburned,7,1,2,Shrub,Serenoa repens,0.81,
+Unburned,7,1,3,Shrub,Serenoa repens,1.17,
+Unburned,7,1,4,Shrub,Serenoa repens,0.62,
+Unburned,7,2,1,Shrub,Serenoa repens,0.55,
+Unburned,7,2,2,Shrub,Serenoa repens,1.4,
+Unburned,7,2,3,Shrub,Serenoa repens,1.6,
+Unburned,7,2,4,Shrub,Serenoa repens,1.9,
+Unburned,7,3,1,Shrub,Serenoa repens,0.7,
+Unburned,7,3,2,Shrub,Serenoa repens,0.85,
+Unburned,7,3,3,Shrub,Lyonia lucida,0.65,
+Unburned,7,3,4,Shrub,Serenoa repens,0.55,
+Unburned,7,4,1,Shrub,Serenoa repens,3.1,
+Unburned,7,4,2,Shrub,Serenoa repens,1.6,
+Unburned,7,4,3,Shrub,Serenoa repens,3.2,
+Unburned,7,4,4,Shrub,Serenoa repens,0.97,
+Unburned,8,1,1,Shrub,Quercus chapmanii,0.64,
+Unburned,8,1,2,Shrub,Serenoa repens,0.31,
+Unburned,8,1,3,Shrub,Serenoa repens,0.43,
+Unburned,8,1,4,Shrub,Serenoa repens,0.74,
+Unburned,8,2,1,Shrub,Serenoa repens,0.15,
+Unburned,8,2,2,Shrub,Serenoa repens,0.3,
+Unburned,8,2,3,Shrub,Serenoa repens,0.76,
+Unburned,8,2,4,Shrub,Serenoa repens,0.94,
+Unburned,8,3,1,Shrub,Serenoa repens,0.35,
+Unburned,8,3,2,Shrub,Quercus chapmanii,0.68,
+Unburned,8,3,3,Shrub,Serenoa repens,1.24,
+Unburned,8,3,4,Shrub,Serenoa repens,0.96,
+Unburned,8,4,1,Shrub,Opuntia humifusa,1.43,
+Unburned,8,4,2,Shrub,Serenoa repens,0.61,
+Unburned,8,4,3,Shrub,Serenoa repens,0.18,
+Unburned,8,4,4,Shrub,Serenoa repens,1.02,
+Unburned,9,1,1,Shrub,Serenoa repens,1.16,
+Unburned,9,1,2,Shrub,Serenoa repens,0.43,
+Unburned,9,1,3,Shrub,Lyonia lucida,0.74,
+Unburned,9,1,4,Shrub,Serenoa repens,0.5,
+Unburned,9,2,1,Shrub,Lyonia lucida,2.12,
+Unburned,9,2,2,Shrub,Lyonia lucida,0.73,
+Unburned,9,2,3,Shrub,Serenoa repens,1.4,
+Unburned,9,2,4,Shrub,Serenoa repens,0.92,
+Unburned,9,3,1,Shrub,Serenoa repens,0.1,
+Unburned,9,3,2,Shrub,Lyonia lucida,0.72,
+Unburned,9,3,3,Shrub,Serenoa repens,2.43,
+Unburned,9,3,4,Shrub,Lyonia lucida,0.52,
+Unburned,9,4,1,Shrub,Lyonia lucida,0.51,
+Unburned,9,4,2,Shrub,Serenoa repens,0.19,
+Unburned,9,4,3,Shrub,Bejaria racemosa,1.2,
+Unburned,9,4,4,Shrub,Serenoa repens,0.82,
+Unburned,10,1,1,Shrub,Opuntia humifusa,1.6,
+Unburned,10,1,2,Shrub,Lyonia ferruginea,1.3,
+Unburned,10,1,3,Shrub,Lyonia ferruginea,1.7,
+Unburned,10,1,4,Shrub,Lyonia ferruginea,2.55,
+Unburned,10,2,1,Shrub,lyonia lucida,0.9,
+Unburned,10,2,2,Shrub,lyonia lucida,1.6,
+Unburned,10,2,3,Shrub,lyonia lucida,0.7,
+Unburned,10,2,4,Shrub,lyonia lucida,2.26,
+Unburned,10,3,1,Shrub,lyonia lucida,1.7,
+Unburned,10,3,2,Shrub,lyonia lucida,1.8,
+Unburned,10,3,3,Shrub,lyonia lucida,0.5,
+Unburned,10,3,4,Shrub,Licania michauxii,0.2,
+Unburned,10,4,1,Shrub,Lyonia ferruginea,3.7,
+Unburned,10,4,2,Shrub,lyonia lucida,40.86,
+Unburned,10,4,3,Shrub,Asimina reticulata,2.3,
+Unburned,10,4,4,Shrub,Lyonia ferruginea,4.42,
+Unburned,11,1,1,Shrub,Bejaria racemosa,0.54,
+Unburned,11,1,2,Shrub,Bejaria racemosa,0.62,
+Unburned,11,1,3,Shrub,Serenoa repens,2.35,
+Unburned,11,1,4,Shrub,Bejaria racemosa,1.52,
+Unburned,11,2,1,Shrub,Serenoa repens,0.89,
+Unburned,11,2,2,Shrub,Bejaria racemosa,2.82,
+Unburned,11,2,3,Shrub,Quercus myrtifolia,1.02,
+Unburned,11,2,4,Shrub,Bejaria racemosa,1.1,
+Unburned,11,3,1,Shrub,Quercus myrtifolia,0.52,
+Unburned,11,3,2,Shrub,Licania michauxii,0.89,
+Unburned,11,3,3,Shrub,Bejaria racemosa,0.65,
+Unburned,11,3,4,Shrub,Licania michauxii,0.97,
+Unburned,11,4,1,Shrub,Bejaria racemosa,0.87,
+Unburned,11,4,2,Shrub,Bejaria racemosa,1.44,
+Unburned,11,4,3,Shrub,Bejaria racemosa,1.05,
+Unburned,11,4,4,Shrub,Licania michauxii,1.2,
+Unburned,12,1,1,Shrub,Lyonia lucida,0,
+Unburned,12,1,2,Shrub,Serenoa repens,0.5,
+Unburned,12,1,3,Shrub,Lyonia lucida,0.6,
+Unburned,12,1,4,Shrub,Serenoa repens,0.2,
+Unburned,12,2,1,Shrub,Lyonia lucida,0.6,
+Unburned,12,2,2,Shrub,Serenoa repens,1.2,
+Unburned,12,2,3,Shrub,Lyonia lucida,0.7,
+Unburned,12,2,4,Shrub,Serenoa repens,0.7,
+Unburned,12,3,1,Shrub,Serenoa repens,0.8,
+Unburned,12,3,2,Shrub,Serenoa repens,0.9,
+Unburned,12,3,3,Shrub,Quercus myrtifolia,2.1,
+Unburned,12,3,4,Shrub,Serenoa repens,0.6,
+Unburned,12,4,1,Shrub,Serenoa repens,1,
+Unburned,12,4,2,Shrub,Lyonia lucida,1,
+Unburned,12,4,3,Shrub,Quercus myrtifolia,0,
+Unburned,12,4,4,Shrub,Serenoa repens,0.3,
+Unburned,13,1,1,Shrub,Bejaria racemosa,2.8,
+Unburned,13,1,2,Shrub,Sabal palmetto,1.1,
+Unburned,13,1,3,Shrub,Serenoa repens,1.2,
+Unburned,13,1,4,Shrub,Serenoa repens,1,
+Unburned,13,2,1,Shrub,Bejaria racemosa,1.1,
+Unburned,13,2,2,Shrub,Serenoa repens,1.2,
+Unburned,13,2,3,Shrub,Sabal palmetto,1.8,
+Unburned,13,2,4,Shrub,Sabal palmetto,0.9,
+Unburned,13,3,1,Shrub,Bejaria racemosa,2,
+Unburned,13,3,2,Shrub,Bejaria racemosa,2.2,
+Unburned,13,3,3,Shrub,Serenoa repens,1.6,
+Unburned,13,3,4,Shrub,Bejaria racemosa,1.2,
+Unburned,13,4,1,Shrub,Licania michauxii,1.4,
+Unburned,13,4,2,Shrub,Sabal palmetto,1.4,
+Unburned,13,4,3,Shrub,Bejaria racemosa,0.9,
+Unburned,13,4,4,Shrub,Bejaria racemosa,1.1,
+Unburned,14,1,1,Shrub,Serenoa repens,0.8,
+Unburned,14,1,2,Shrub,Serenoa repens,2.8,
+Unburned,14,1,3,Shrub,Lyonia lucida,0.5,
+Unburned,14,1,4,Shrub,Licania michauxii,0.5,
+Unburned,14,2,1,Shrub,Serenoa repens,0.5,
+Unburned,14,2,2,Shrub,Licania michauxii,0.5,
+Unburned,14,2,3,Shrub,Serenoa repens,0.5,
+Unburned,14,2,4,Shrub,Serenoa repens,0.5,
+Unburned,14,3,1,Shrub,Serenoa repens,3.6,
+Unburned,14,3,2,Shrub,Serenoa repens,3.55,
+Unburned,14,3,3,Shrub,Lyonia lucida,2.3,
+Unburned,14,3,4,Shrub,Serenoa repens,2.3,
+Unburned,14,4,1,Shrub,Asimina reticulata,0.4,
+Unburned,14,4,2,Shrub,Licania michauxii,0.5,
+Unburned,14,4,3,Shrub,Serenoa repens,3.8,
+Unburned,14,4,4,Shrub,Serenoa repens,0.5,
+Unburned,15,1,1,Shrub,Serenoa repens,0.34,
+Unburned,15,1,2,Shrub,Serenoa repens,0.3,
+Unburned,15,1,3,Shrub,Serenoa repens,0.25,
+Unburned,15,1,4,Shrub,Serenoa repens,0.9,
+Unburned,15,2,1,Shrub,Lyonia lucida,0.41,
+Unburned,15,2,2,Shrub,Lyonia lucida,1.43,
+Unburned,15,2,3,Shrub,Serenoa repens,0.31,
+Unburned,15,2,4,Shrub,Lyonia lucida,0.8,
+Unburned,15,3,1,Shrub,Lyonia lucida,2.56,
+Unburned,15,3,2,Shrub,Lyonia lucida,1.81,
+Unburned,15,3,3,Shrub,Lyonia lucida,0.92,
+Unburned,15,3,4,Shrub,Serenoa repens,0.27,
+Unburned,15,4,1,Shrub,Lyonia lucida,1.54,
+Unburned,15,4,2,Shrub,Serenoa repens,0.8,
+Unburned,15,4,3,Shrub,Lyonia lucida,0.59,
+Unburned,15,4,4,Shrub,Lyonia lucida,0.2,
+Unburned,16,1,1,Shrub,Lyonia lucida,1.8,
+Unburned,16,1,2,Shrub,Lyonia lucida,2.5,
+Unburned,16,1,3,Shrub,Serenoa repens,1,
+Unburned,16,1,4,Shrub,Opuntia humifusa,1,
+Unburned,16,2,1,Shrub,Serenoa repens,1.7,
+Unburned,16,2,2,Shrub,Serenoa repens,1,
+Unburned,16,2,3,Shrub,Serenoa repens,1.5,
+Unburned,16,2,4,Shrub,Quercus myrtifolia ,1.2,
+Unburned,16,3,1,Shrub,Lyonia lucida,1.9,
+Unburned,16,3,2,Shrub,Lyonia lucida,3.1,
+Unburned,16,3,3,Shrub,Asimina reticulata,1.2,
+Unburned,16,3,4,Shrub,Serenoa repens,1.2,
+Unburned,16,4,1,Shrub,Lyonia lucida,3.6,
+Unburned,16,4,2,Shrub,Serenoa repens,1,
+Unburned,16,4,3,Shrub,Quercus chapmanii,2.4,
+Unburned,16,4,4,Shrub,Serenoa repens,1.3,
+Unburned,1,1,1,Sub-Canopy,Quercus myrtifolia,3.738,
+Unburned,1,1,2,Sub-Canopy,Quercus myrtifolia,0.914,
+Unburned,1,1,3,Sub-Canopy,Quercus myrtifolia,0.737,
+Unburned,1,1,4,Sub-Canopy,Quercus myrtifolia,2.261,
+Unburned,1,2,1,Sub-Canopy,Quercus myrtifolia,1.041,
+Unburned,1,2,2,Sub-Canopy,Quercus myrtifolia,1.753,
+Unburned,1,2,3,Sub-Canopy,Quercus myrtifolia,2.259,
+Unburned,1,2,4,Sub-Canopy,Quercus myrtifolia,4.623,
+Unburned,1,3,1,Sub-Canopy,Quercus myrtifolia,2.804,
+Unburned,1,3,2,Sub-Canopy,Quercus myrtifolia,2.286,
+Unburned,1,3,3,Sub-Canopy,Quercus myrtifolia,0.975,
+Unburned,1,3,4,Sub-Canopy,Quercus chapmanii,1.433,
+Unburned,1,4,1,Sub-Canopy,Quercus myrtifolia,3.71,
+Unburned,1,4,2,Sub-Canopy,Quercus myrtifolia,7.4,
+Unburned,1,4,3,Sub-Canopy,Quercus chapmanii,2.97,
+Unburned,1,4,4,Sub-Canopy,Quercus myrtifolia,7.45,
+Unburned,2,1,1,Sub-Canopy,Pinus palustris,4.8,11.15
+Unburned,2,1,2,Sub-Canopy,,,
+Unburned,2,1,3,Sub-Canopy,,,
+Unburned,2,1,4,Sub-Canopy,,,
+Unburned,2,2,1,Sub-Canopy,,,
+Unburned,2,2,2,Sub-Canopy,,,
+Unburned,2,2,3,Sub-Canopy,Pinus palustris,11.6,12.74
+Unburned,2,2,4,Sub-Canopy,,,
+Unburned,2,3,1,Sub-Canopy,,,
+Unburned,2,3,2,Sub-Canopy,,,
+Unburned,2,3,3,Sub-Canopy,,,
+Unburned,2,3,4,Sub-Canopy,,,
+Unburned,2,4,1,Sub-Canopy,,,
+Unburned,2,4,2,Sub-Canopy,,,
+Unburned,2,4,3,Sub-Canopy,,,
+Unburned,2,4,4,Sub-Canopy,,,
+Unburned,3,1,1,Sub-Canopy,Pinus palustris,6.31,5
+Unburned,3,1,2,Sub-Canopy,Myrica cerifera,3,1.2
+Unburned,3,1,3,Sub-Canopy,Myrica cerifera,6.52,1.5
+Unburned,3,1,4,Sub-Canopy,Myrica cerifera,8.5,2.3
+Unburned,3,2,1,Sub-Canopy,,,
+Unburned,3,2,2,Sub-Canopy,Quercus myrtifolia,3.64,2.5
+Unburned,3,2,3,Sub-Canopy,,,
+Unburned,3,2,4,Sub-Canopy,,,
+Unburned,3,3,1,Sub-Canopy,,,
+Unburned,3,3,2,Sub-Canopy,,,
+Unburned,3,3,3,Sub-Canopy,Pinus palustris,4.95,10.2
+Unburned,3,3,4,Sub-Canopy,Quercus myrtifolia,3.35,3
+Unburned,3,4,1,Sub-Canopy,,,
+Unburned,3,4,2,Sub-Canopy,Quercus myrtifolia,2.2,
+Unburned,3,4,3,Sub-Canopy,,,
+Unburned,3,4,4,Sub-Canopy,,,
+Unburned,4,1,1,Sub-Canopy,Quercus myrtifolia,5.3,1.85
+Unburned,4,1,2,Sub-Canopy,Quercus chapmanii,8.37,5.79
+Unburned,4,1,3,Sub-Canopy,Quercus myrtifolia,3.05,1.4
+Unburned,4,1,4,Sub-Canopy,Quercus chapmanii,3.82,2.9
+Unburned,4,2,1,Sub-Canopy,Quercus chapmanii,2.9,2
+Unburned,4,2,2,Sub-Canopy,Quercus chapmanii,4.95,2.3
+Unburned,4,2,3,Sub-Canopy,Quercus chapmanii,2.92,3.2
+Unburned,4,2,4,Sub-Canopy,Quercus chapmanii,2.37,2
+Unburned,4,3,1,Sub-Canopy,Quercus myrtifolia,1.05,1.5
+Unburned,4,3,2,Sub-Canopy,Quercus myrtifolia,2.05,1
+Unburned,4,3,3,Sub-Canopy,,,
+Unburned,4,3,4,Sub-Canopy,Quercus myrtifolia,3.45,1.36
+Unburned,4,4,1,Sub-Canopy,Quercus chapmanii,1.15,0.75
+Unburned,4,4,2,Sub-Canopy,Quercus myrtifolia,2.23,1.26
+Unburned,4,4,3,Sub-Canopy,Quercus chapmanii,2.75,1.8
+Unburned,4,4,4,Sub-Canopy,Quercus chapmanii,1.28,0.82
+Unburned,5,1,1,Sub-Canopy,Quercus myrtifolia,3.738,
+Unburned,5,1,2,Sub-Canopy,Quercus myrtifolia,0.914,
+Unburned,5,1,3,Sub-Canopy,Quercus myrtifolia,0.737,
+Unburned,5,1,4,Sub-Canopy,Quercus myrtifolia,2.261,
+Unburned,5,2,1,Sub-Canopy,Quercus myrtifolia,1.041,
+Unburned,5,2,2,Sub-Canopy,Quercus myrtifolia,1.753,
+Unburned,5,2,3,Sub-Canopy,Quercus myrtifolia,2.259,
+Unburned,5,2,4,Sub-Canopy,Quercus myrtifolia,4.623,
+Unburned,5,3,1,Sub-Canopy,Quercus myrtifolia,2.804,
+Unburned,5,3,2,Sub-Canopy,Quercus myrtifolia,2.286,
+Unburned,5,3,3,Sub-Canopy,Quercus myrtifolia,0.975,
+Unburned,5,3,4,Sub-Canopy,Quercus chapmanii,1.433,
+Unburned,5,4,1,Sub-Canopy,Quercus myrtifolia,3.71,
+Unburned,5,4,2,Sub-Canopy,Quercus myrtifolia,7.4,
+Unburned,5,4,3,Sub-Canopy,Quercus chapmanii,2.97,
+Unburned,5,4,4,Sub-Canopy,Quercus myrtifolia,7.45,
+Unburned,6,1,1,Sub-Canopy,Pinus palustris,4.8,11.15
+Unburned,6,1,2,Sub-Canopy,,,
+Unburned,6,1,3,Sub-Canopy,,,
+Unburned,6,1,4,Sub-Canopy,,,
+Unburned,6,2,1,Sub-Canopy,,,
+Unburned,6,2,2,Sub-Canopy,,,
+Unburned,6,2,3,Sub-Canopy,Pinus palustris,11.6,12.74
+Unburned,6,2,4,Sub-Canopy,,,
+Unburned,6,3,1,Sub-Canopy,,,
+Unburned,6,3,2,Sub-Canopy,,,
+Unburned,6,3,3,Sub-Canopy,,,
+Unburned,6,3,4,Sub-Canopy,,,
+Unburned,6,4,1,Sub-Canopy,,,
+Unburned,6,4,2,Sub-Canopy,,,
+Unburned,6,4,3,Sub-Canopy,,,
+Unburned,6,4,4,Sub-Canopy,,,
+Unburned,7,1,1,Sub-Canopy,Pinus palustris,6.31,5
+Unburned,7,1,2,Sub-Canopy,Myrica cerifera,3,1.2
+Unburned,7,1,3,Sub-Canopy,Myrica cerifera,6.52,1.5
+Unburned,7,1,4,Sub-Canopy,Myrica cerifera,8.5,2.3
+Unburned,7,2,1,Sub-Canopy,,,
+Unburned,7,2,2,Sub-Canopy,Quercus myrtifolia,3.64,2.5
+Unburned,7,2,3,Sub-Canopy,,,
+Unburned,7,2,4,Sub-Canopy,,,
+Unburned,7,3,1,Sub-Canopy,,,
+Unburned,7,3,2,Sub-Canopy,,,
+Unburned,7,3,3,Sub-Canopy,Pinus palustris,4.95,10.2
+Unburned,7,3,4,Sub-Canopy,Quercus myrtifolia,3.35,3
+Unburned,7,4,1,Sub-Canopy,,,
+Unburned,7,4,2,Sub-Canopy,Quercus myrtifolia,2.2,
+Unburned,7,4,3,Sub-Canopy,,,
+Unburned,7,4,4,Sub-Canopy,,,
+Unburned,8,1,1,Sub-Canopy,Quercus myrtifolia,5.3,1.85
+Unburned,8,1,2,Sub-Canopy,Quercus chapmanii,8.37,5.79
+Unburned,8,1,3,Sub-Canopy,Quercus myrtifolia,3.05,1.4
+Unburned,8,1,4,Sub-Canopy,Quercus chapmanii,3.82,2.9
+Unburned,8,2,1,Sub-Canopy,Quercus chapmanii,2.9,2
+Unburned,8,2,2,Sub-Canopy,Quercus chapmanii,4.95,2.3
+Unburned,8,2,3,Sub-Canopy,Quercus chapmanii,2.92,3.2
+Unburned,8,2,4,Sub-Canopy,Quercus chapmanii,2.37,2
+Unburned,8,3,1,Sub-Canopy,Quercus myrtifolia,1.05,1.5
+Unburned,8,3,2,Sub-Canopy,Quercus myrtifolia,2.05,1
+Unburned,8,3,3,Sub-Canopy,,,
+Unburned,8,3,4,Sub-Canopy,Quercus myrtifolia,3.45,1.36
+Unburned,8,4,1,Sub-Canopy,Quercus chapmanii,1.15,0.75
+Unburned,8,4,2,Sub-Canopy,Quercus myrtifolia,2.23,1.26
+Unburned,8,4,3,Sub-Canopy,Quercus chapmanii,2.75,1.8
+Unburned,8,4,4,Sub-Canopy,Quercus chapmanii,1.28,0.82
+Unburned,9,1,1,Sub-Canopy,Quercus myrtifolia,5.15,
+Unburned,9,1,2,Sub-Canopy,Pinus palustris,26.78,10
+Unburned,9,1,3,Sub-Canopy,Pinus palustris,7.53,7.5
+Unburned,9,1,4,Sub-Canopy,Pinus clausa,8.94,5
+Unburned,9,2,1,Sub-Canopy,Pinus clausa,9.02,5.01
+Unburned,9,2,2,Sub-Canopy,Pinus clausa,5.33,2.5
+Unburned,9,2,3,Sub-Canopy,Pinus clausa,15.06,5.1
+Unburned,9,2,4,Sub-Canopy,Quercus myrtifolia,7.53,2.5
+Unburned,9,3,1,Sub-Canopy,Quercus chapmanii,6.37,2.9
+Unburned,9,3,2,Sub-Canopy,Pinus clausa,2.22,5.1
+Unburned,9,3,3,Sub-Canopy,Quercus myrtifolia,14.27,1.9
+Unburned,9,3,4,Sub-Canopy,Bejaria racemosa,9.32,2.2
+Unburned,9,4,1,Sub-Canopy,,,
+Unburned,9,4,2,Sub-Canopy,Pinus clausa,7.09,4.4
+Unburned,9,4,3,Sub-Canopy,Pinus clausa,7.47,5.1
+Unburned,9,4,4,Sub-Canopy,Quercus myrtifolia,3.82,2.4
+Unburned,10,1,1,Sub-Canopy,Pinus Palustris,12.4,10.9
+Unburned,10,1,2,Sub-Canopy,Pinus Palustris,28.2,11
+Unburned,10,1,3,Sub-Canopy,Pinus Palustris,12,8
+Unburned,10,1,4,Sub-Canopy,Pinus Palustris,36.3,6
+Unburned,10,2,1,Sub-Canopy,Pinus Palustris,4.2,6
+Unburned,10,2,2,Sub-Canopy,Pinus Palustris,28.5,5
+Unburned,10,2,3,Sub-Canopy,Pinus Palustris,37.7,8.8
+Unburned,10,2,4,Sub-Canopy,Pinus Palustris,35.78,7.8
+Unburned,10,3,1,Sub-Canopy,Pinus serotina,15.8,0.7
+Unburned,10,3,2,Sub-Canopy,Pinus Palustris,28.9,7.5
+Unburned,10,3,3,Sub-Canopy,Pinus Palustris,1.9,12
+Unburned,10,3,4,Sub-Canopy,Pinus Palustris,13.1,8
+Unburned,10,4,1,Sub-Canopy,Quercus virginiana,11,0.6
+Unburned,10,4,2,Sub-Canopy,Pinus Palustris,20.42,14
+Unburned,10,4,3,Sub-Canopy,Pinus Palustris,24.3,9
+Unburned,10,4,4,Sub-Canopy,Pinus Palustris,23.6,8
+Unburned,11,1,1,Sub-Canopy,Quercus myrtifolia,3.1,1
+Unburned,11,1,2,Sub-Canopy,Quercus myrtifolia,12.93,2
+Unburned,11,1,3,Sub-Canopy,Quercus myrtifolia,2.12,2
+Unburned,11,1,4,Sub-Canopy,Quercus myrtifolia,2.2,1
+Unburned,11,2,1,Sub-Canopy,Quercus myrtifolia,6.21,1
+Unburned,11,2,2,Sub-Canopy,Quercus myrtifolia,3.47,2
+Unburned,11,2,3,Sub-Canopy,Serenoa repens,2.09,2
+Unburned,11,2,4,Sub-Canopy,Quercus myrtifolia,3.68,2
+Unburned,11,3,1,Sub-Canopy,Quercus myrtifolia,8.19,2
+Unburned,11,3,2,Sub-Canopy,Quercus myrtifolia,10.72,1
+Unburned,11,3,3,Sub-Canopy,Quercus myrtifolia,10.2,3
+Unburned,11,3,4,Sub-Canopy,Quercus myrtifolia,6.06,1
+Unburned,11,4,1,Sub-Canopy,Quercus myrtifolia,7.61,2
+Unburned,11,4,2,Sub-Canopy,Quercus myrtifolia,7.6,2
+Unburned,11,4,3,Sub-Canopy,Quercus myrtifolia,12.6,2
+Unburned,11,4,4,Sub-Canopy,Quercus myrtifolia,6.7,2
+Unburned,12,1,1,Sub-Canopy,Lyonia lucida,6.1,3.5
+Unburned,12,1,2,Sub-Canopy,Lyonia lucida,4.9,2
+Unburned,12,1,3,Sub-Canopy,Quercus myrtifolia,2.6,1.7
+Unburned,12,1,4,Sub-Canopy,Quercus myrtifolia,4.8,2.3
+Unburned,12,2,1,Sub-Canopy,Lyonia lucida,5.4,2.5
+Unburned,12,2,2,Sub-Canopy,Quercus myrtifolia,4.9,2
+Unburned,12,2,3,Sub-Canopy,Quercus myrtifolia,1.3,7.8
+Unburned,12,2,4,Sub-Canopy,Lyonia lucida,2,0.7
+Unburned,12,3,1,Sub-Canopy,Lyonia lucida,1.7,0.6
+Unburned,12,3,2,Sub-Canopy,Quercus chapmanii,1,3
+Unburned,12,3,3,Sub-Canopy,Lyonia lucida,7.6,0.8
+Unburned,12,3,4,Sub-Canopy,Quercus myrtifolia,2.8,2.5
+Unburned,12,4,1,Sub-Canopy,Quercus chapmanii,2.8,1
+Unburned,12,4,2,Sub-Canopy,Lyonia lucida,2.2,10.3
+Unburned,12,4,3,Sub-Canopy,Lyonia lucida,2.4,1.2
+Unburned,12,4,4,Sub-Canopy,Lyonia lucida,7.6,1.6
+Unburned,13,1,1,Sub-Canopy,Pinus palustris,14,14.5
+Unburned,13,1,2,Sub-Canopy,Pinus palustris,6.9,22
+Unburned,13,1,3,Sub-Canopy,Pinus palustris,4.7,12
+Unburned,13,1,4,Sub-Canopy,Pinus palustris,5.1,5
+Unburned,13,2,1,Sub-Canopy,Pinus palustris,18.5,7.5
+Unburned,13,2,2,Sub-Canopy,Pinus palustris,10.4,24
+Unburned,13,2,3,Sub-Canopy,Pinus palustris,16.5,3.5
+Unburned,13,2,4,Sub-Canopy,Quercus myrtifolia,2.6,2
+Unburned,13,3,1,Sub-Canopy,Pinus palustris,12.1,20
+Unburned,13,3,2,Sub-Canopy,Pinus palustris,13,4
+Unburned,13,3,3,Sub-Canopy,Pinus palustris,15.1,24
+Unburned,13,3,4,Sub-Canopy,Pinus palustris,4.5,7
+Unburned,13,4,1,Sub-Canopy,Pinus palustris,6.3,20
+Unburned,13,4,2,Sub-Canopy,Pinus palustris,12.3,7.7
+Unburned,13,4,3,Sub-Canopy,Pinus clausa,11.4,3.5
+Unburned,13,4,4,Sub-Canopy,Pinus clausa,5.7,2.5
+Unburned,14,1,1,Sub-Canopy,Pinus palustris,9.7,20.69
+Unburned,14,1,2,Sub-Canopy,Pinus palustris,18.3,12.73
+Unburned,14,1,3,Sub-Canopy,Pinus palustris,9.8,7
+Unburned,14,1,4,Sub-Canopy,,,
+Unburned,14,2,1,Sub-Canopy,,,
+Unburned,14,2,2,Sub-Canopy,,,
+Unburned,14,2,3,Sub-Canopy,Pinus palustris,35.2,12.7
+Unburned,14,2,4,Sub-Canopy,Pinus palustris,27,3
+Unburned,14,3,1,Sub-Canopy,Pinus palustris,32.4,12
+Unburned,14,3,2,Sub-Canopy,Pinus clausa,21.8,6
+Unburned,14,3,3,Sub-Canopy,,,
+Unburned,14,3,4,Sub-Canopy,Pinus palustris,34.7,11
+Unburned,14,4,1,Sub-Canopy,Pinus clausa,15.8,1
+Unburned,14,4,2,Sub-Canopy,,,
+Unburned,14,4,3,Sub-Canopy,Pinus palustris,33.25,11
+Unburned,14,4,4,Sub-Canopy,,,
+Unburned,15,1,1,Sub-Canopy,Quercus myrtifolia,3.62,0.5
+Unburned,15,1,2,Sub-Canopy,,,
+Unburned,15,1,3,Sub-Canopy,,,
+Unburned,15,1,4,Sub-Canopy,Pinus palustris,15.29,4.44
+Unburned,15,2,1,Sub-Canopy,Pinus palustris,16.56,13
+Unburned,15,2,2,Sub-Canopy,Pinus palustris,18.6,13.6
+Unburned,15,2,3,Sub-Canopy,,,
+Unburned,15,2,4,Sub-Canopy,,,
+Unburned,15,3,1,Sub-Canopy,,,
+Unburned,15,3,2,Sub-Canopy,Pinus palustris,22.98,8.3
+Unburned,15,3,3,Sub-Canopy,Pinus palustris,28.13,15.2
+Unburned,15,3,4,Sub-Canopy,,,
+Unburned,15,4,1,Sub-Canopy,Pinus palustris,4.18,13
+Unburned,15,4,2,Sub-Canopy,Pinus palustris,18.49,13.4
+Unburned,15,4,3,Sub-Canopy,Pinus palustris,7.81,10.2
+Unburned,15,4,4,Sub-Canopy,,,
+Unburned,16,1,1,Sub-Canopy,,,
+Unburned,16,1,2,Sub-Canopy,,,
+Unburned,16,1,3,Sub-Canopy,,,
+Unburned,16,1,4,Sub-Canopy,,,
+Unburned,16,2,1,Sub-Canopy,,,
+Unburned,16,2,2,Sub-Canopy,,,
+Unburned,16,2,3,Sub-Canopy,,,
+Unburned,16,2,4,Sub-Canopy,,,
+Unburned,16,3,1,Sub-Canopy,,,
+Unburned,16,3,2,Sub-Canopy,,,
+Unburned,16,3,3,Sub-Canopy,,,
+Unburned,16,3,4,Sub-Canopy,,,
+Unburned,16,4,1,Sub-Canopy,,,
+Unburned,16,4,2,Sub-Canopy,,,
+Unburned,16,4,3,Sub-Canopy,,,
+Unburned,16,4,4,Sub-Canopy,,,
