@@ -1,4 +1,4 @@
-
+setwd("/Users/biplabendudas/Documents/GitHub/homepage/covid19_data_india")
 
 # Curate India’s data -----------------------------------------------------
 
