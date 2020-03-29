@@ -134,7 +134,7 @@
 "133","Andhra Pradesh","India",2020-03-26,11,1,0
 "134","Andhra Pradesh","India",2020-03-27,12,1,0
 "135","Andhra Pradesh","India",2020-03-28,14,1,0
-"136","Andhra Pradesh","India",2020-03-29,14,1,0
+"136","Andhra Pradesh","India",2020-03-29,19,1,0
 "137","Bihar","India",2020-01-22,0,0,0
 "138","Bihar","India",2020-01-23,0,0,0
 "139","Bihar","India",2020-01-24,0,0,0
@@ -202,7 +202,7 @@
 "201","Bihar","India",2020-03-26,6,0,1
 "202","Bihar","India",2020-03-27,6,0,1
 "203","Bihar","India",2020-03-28,9,0,1
-"204","Bihar","India",2020-03-29,9,0,1
+"204","Bihar","India",2020-03-29,11,0,1
 "205","Chandigarh","India",2020-01-22,0,0,0
 "206","Chandigarh","India",2020-01-23,0,0,0
 "207","Chandigarh","India",2020-01-24,0,0,0
@@ -338,7 +338,7 @@
 "337","Chhattisgarh","India",2020-03-26,6,0,0
 "338","Chhattisgarh","India",2020-03-27,6,0,0
 "339","Chhattisgarh","India",2020-03-28,6,0,0
-"340","Chhattisgarh","India",2020-03-29,6,0,0
+"340","Chhattisgarh","India",2020-03-29,7,0,0
 "341","Delhi","India",2020-01-22,0,0,0
 "342","Delhi","India",2020-01-23,0,0,0
 "343","Delhi","India",2020-01-24,0,0,0
@@ -395,18 +395,18 @@
 "394","Delhi","India",2020-03-15,7,2,1
 "395","Delhi","India",2020-03-16,7,2,1
 "396","Delhi","India",2020-03-17,8,2,1
-"397","Delhi","India",2020-03-18,9,2,1
-"398","Delhi","India",2020-03-19,11,3,1
-"399","Delhi","India",2020-03-20,16,5,1
-"400","Delhi","India",2020-03-21,25,5,1
-"401","Delhi","India",2020-03-22,28,5,1
-"402","Delhi","India",2020-03-23,28,5,1
-"403","Delhi","India",2020-03-24,29,6,1
-"404","Delhi","India",2020-03-25,30,6,1
-"405","Delhi","India",2020-03-26,35,6,1
-"406","Delhi","India",2020-03-27,35,6,1
-"407","Delhi","India",2020-03-28,38,6,1
-"408","Delhi","India",2020-03-29,38,6,2
+"397","Delhi","India",2020-03-18,10,2,1
+"398","Delhi","India",2020-03-19,12,3,1
+"399","Delhi","India",2020-03-20,17,5,1
+"400","Delhi","India",2020-03-21,26,5,1
+"401","Delhi","India",2020-03-22,29,5,1
+"402","Delhi","India",2020-03-23,29,5,1
+"403","Delhi","India",2020-03-24,30,6,1
+"404","Delhi","India",2020-03-25,31,6,1
+"405","Delhi","India",2020-03-26,36,6,1
+"406","Delhi","India",2020-03-27,36,6,1
+"407","Delhi","India",2020-03-28,39,6,1
+"408","Delhi","India",2020-03-29,49,6,2
 "409","Goa","India",2020-01-22,0,0,0
 "410","Goa","India",2020-01-23,0,0,0
 "411","Goa","India",2020-01-24,0,0,0
@@ -474,7 +474,7 @@
 "473","Goa","India",2020-03-26,3,0,0
 "474","Goa","India",2020-03-27,3,0,0
 "475","Goa","India",2020-03-28,3,0,0
-"476","Goa","India",2020-03-29,3,0,0
+"476","Goa","India",2020-03-29,5,0,0
 "477","Gujarat","India",2020-01-22,0,0,0
 "478","Gujarat","India",2020-01-23,0,0,0
 "479","Gujarat","India",2020-01-24,0,0,0
@@ -537,12 +537,12 @@
 "536","Gujarat","India",2020-03-21,7,0,0
 "537","Gujarat","India",2020-03-22,18,0,1
 "538","Gujarat","India",2020-03-23,29,0,1
-"539","Gujarat","India",2020-03-24,32,0,1
-"540","Gujarat","India",2020-03-25,37,0,1
-"541","Gujarat","India",2020-03-26,42,0,3
-"542","Gujarat","India",2020-03-27,42,0,3
-"543","Gujarat","India",2020-03-28,44,0,3
-"544","Gujarat","India",2020-03-29,52,0,4
+"539","Gujarat","India",2020-03-24,33,0,1
+"540","Gujarat","India",2020-03-25,38,0,1
+"541","Gujarat","India",2020-03-26,43,0,3
+"542","Gujarat","India",2020-03-27,43,0,3
+"543","Gujarat","India",2020-03-28,45,0,3
+"544","Gujarat","India",2020-03-29,58,1,5
 "545","Haryana","India",2020-01-22,0,0,0
 "546","Haryana","India",2020-01-23,0,0,0
 "547","Haryana","India",2020-01-24,0,0,0
@@ -585,32 +585,32 @@
 "584","Haryana","India",2020-03-01,0,0,0
 "585","Haryana","India",2020-03-02,0,0,0
 "586","Haryana","India",2020-03-03,0,0,0
-"587","Haryana","India",2020-03-04,0,0,0
-"588","Haryana","India",2020-03-05,0,0,0
-"589","Haryana","India",2020-03-06,0,0,0
-"590","Haryana","India",2020-03-07,0,0,0
-"591","Haryana","India",2020-03-08,0,0,0
-"592","Haryana","India",2020-03-09,0,0,0
-"593","Haryana","India",2020-03-10,0,0,0
-"594","Haryana","India",2020-03-11,0,0,0
-"595","Haryana","India",2020-03-12,0,0,0
-"596","Haryana","India",2020-03-13,0,0,0
-"597","Haryana","India",2020-03-14,0,0,0
-"598","Haryana","India",2020-03-15,0,0,0
-"599","Haryana","India",2020-03-16,0,0,0
-"600","Haryana","India",2020-03-17,1,0,0
-"601","Haryana","India",2020-03-18,3,0,0
-"602","Haryana","India",2020-03-19,3,0,0
-"603","Haryana","India",2020-03-20,3,0,0
-"604","Haryana","India",2020-03-21,3,0,0
-"605","Haryana","India",2020-03-22,7,0,0
-"606","Haryana","India",2020-03-23,12,11,0
-"607","Haryana","India",2020-03-24,14,11,0
-"608","Haryana","India",2020-03-25,14,11,0
-"609","Haryana","India",2020-03-26,16,11,0
-"610","Haryana","India",2020-03-27,16,11,0
-"611","Haryana","India",2020-03-28,19,12,0
-"612","Haryana","India",2020-03-29,19,12,0
+"587","Haryana","India",2020-03-04,2,0,0
+"588","Haryana","India",2020-03-05,2,0,0
+"589","Haryana","India",2020-03-06,2,0,0
+"590","Haryana","India",2020-03-07,2,0,0
+"591","Haryana","India",2020-03-08,2,0,0
+"592","Haryana","India",2020-03-09,2,0,0
+"593","Haryana","India",2020-03-10,2,0,0
+"594","Haryana","India",2020-03-11,14,0,0
+"595","Haryana","India",2020-03-12,14,0,0
+"596","Haryana","India",2020-03-13,14,0,0
+"597","Haryana","India",2020-03-14,14,0,0
+"598","Haryana","India",2020-03-15,14,0,0
+"599","Haryana","India",2020-03-16,14,0,0
+"600","Haryana","India",2020-03-17,15,0,0
+"601","Haryana","India",2020-03-18,17,0,0
+"602","Haryana","India",2020-03-19,17,0,0
+"603","Haryana","India",2020-03-20,17,0,0
+"604","Haryana","India",2020-03-21,17,0,0
+"605","Haryana","India",2020-03-22,21,0,0
+"606","Haryana","India",2020-03-23,26,11,0
+"607","Haryana","India",2020-03-24,28,11,0
+"608","Haryana","India",2020-03-25,28,11,0
+"609","Haryana","India",2020-03-26,30,11,0
+"610","Haryana","India",2020-03-27,30,11,0
+"611","Haryana","India",2020-03-28,33,12,0
+"612","Haryana","India",2020-03-29,33,17,0
 "613","Himachal Pradesh","India",2020-01-22,0,0,0
 "614","Himachal Pradesh","India",2020-01-23,0,0,0
 "615","Himachal Pradesh","India",2020-01-24,0,0,0
@@ -746,7 +746,7 @@
 "745","Jammu and Kashmir","India",2020-03-26,13,1,1
 "746","Jammu and Kashmir","India",2020-03-27,13,1,1
 "747","Jammu and Kashmir","India",2020-03-28,20,1,1
-"748","Jammu and Kashmir","India",2020-03-29,31,1,1
+"748","Jammu and Kashmir","India",2020-03-29,31,1,2
 "749","Karnataka","India",2020-01-22,0,0,0
 "750","Karnataka","India",2020-01-23,0,0,0
 "751","Karnataka","India",2020-01-24,0,0,0
@@ -870,19 +870,19 @@
 "869","Kerala","India",2020-03-14,19,3,0
 "870","Kerala","India",2020-03-15,22,3,0
 "871","Kerala","India",2020-03-16,23,3,0
-"872","Kerala","India",2020-03-17,24,3,0
-"873","Kerala","India",2020-03-18,25,3,0
-"874","Kerala","India",2020-03-19,25,3,0
-"875","Kerala","India",2020-03-20,26,3,0
-"876","Kerala","India",2020-03-21,33,3,0
-"877","Kerala","India",2020-03-22,45,3,0
-"878","Kerala","India",2020-03-23,60,3,0
-"879","Kerala","India",2020-03-24,87,4,0
-"880","Kerala","India",2020-03-25,101,4,0
-"881","Kerala","India",2020-03-26,110,6,0
-"882","Kerala","India",2020-03-27,129,11,0
-"883","Kerala","India",2020-03-28,168,11,0
-"884","Kerala","India",2020-03-29,174,15,1
+"872","Kerala","India",2020-03-17,26,3,0
+"873","Kerala","India",2020-03-18,27,3,0
+"874","Kerala","India",2020-03-19,27,3,0
+"875","Kerala","India",2020-03-20,28,3,0
+"876","Kerala","India",2020-03-21,40,3,0
+"877","Kerala","India",2020-03-22,52,3,0
+"878","Kerala","India",2020-03-23,67,3,0
+"879","Kerala","India",2020-03-24,95,4,0
+"880","Kerala","India",2020-03-25,109,4,0
+"881","Kerala","India",2020-03-26,118,6,0
+"882","Kerala","India",2020-03-27,137,11,0
+"883","Kerala","India",2020-03-28,176,11,0
+"884","Kerala","India",2020-03-29,182,15,1
 "885","Ladakh","India",2020-01-22,0,0,0
 "886","Ladakh","India",2020-01-23,0,0,0
 "887","Ladakh","India",2020-01-24,0,0,0
@@ -1074,19 +1074,19 @@
 "1073","Maharashtra","India",2020-03-14,14,0,0
 "1074","Maharashtra","India",2020-03-15,32,0,0
 "1075","Maharashtra","India",2020-03-16,32,0,0
-"1076","Maharashtra","India",2020-03-17,36,0,1
-"1077","Maharashtra","India",2020-03-18,39,0,1
-"1078","Maharashtra","India",2020-03-19,44,0,1
-"1079","Maharashtra","India",2020-03-20,49,0,1
-"1080","Maharashtra","India",2020-03-21,60,0,1
-"1081","Maharashtra","India",2020-03-22,64,0,2
-"1082","Maharashtra","India",2020-03-23,71,0,2
-"1083","Maharashtra","India",2020-03-24,86,0,2
-"1084","Maharashtra","India",2020-03-25,121,1,3
-"1085","Maharashtra","India",2020-03-26,121,1,3
-"1086","Maharashtra","India",2020-03-27,127,15,4
-"1087","Maharashtra","India",2020-03-28,177,25,5
-"1088","Maharashtra","India",2020-03-29,183,25,6
+"1076","Maharashtra","India",2020-03-17,39,0,1
+"1077","Maharashtra","India",2020-03-18,42,0,1
+"1078","Maharashtra","India",2020-03-19,47,0,1
+"1079","Maharashtra","India",2020-03-20,52,0,1
+"1080","Maharashtra","India",2020-03-21,63,0,1
+"1081","Maharashtra","India",2020-03-22,67,0,2
+"1082","Maharashtra","India",2020-03-23,74,0,2
+"1083","Maharashtra","India",2020-03-24,89,0,2
+"1084","Maharashtra","India",2020-03-25,124,1,3
+"1085","Maharashtra","India",2020-03-26,124,1,3
+"1086","Maharashtra","India",2020-03-27,130,15,4
+"1087","Maharashtra","India",2020-03-28,180,25,5
+"1088","Maharashtra","India",2020-03-29,186,25,6
 "1089","Manipur","India",2020-01-22,0,0,0
 "1090","Manipur","India",2020-01-23,0,0,0
 "1091","Manipur","India",2020-01-24,0,0,0
@@ -1468,33 +1468,33 @@
 "1467","Rajasthan","India",2020-02-29,0,0,0
 "1468","Rajasthan","India",2020-03-01,0,0,0
 "1469","Rajasthan","India",2020-03-02,0,0,0
-"1470","Rajasthan","India",2020-03-03,0,0,0
-"1471","Rajasthan","India",2020-03-04,1,0,0
-"1472","Rajasthan","India",2020-03-05,1,0,0
-"1473","Rajasthan","India",2020-03-06,1,0,0
-"1474","Rajasthan","India",2020-03-07,1,0,0
-"1475","Rajasthan","India",2020-03-08,1,0,0
-"1476","Rajasthan","India",2020-03-09,1,0,0
-"1477","Rajasthan","India",2020-03-10,1,0,0
-"1478","Rajasthan","India",2020-03-11,1,0,0
-"1479","Rajasthan","India",2020-03-12,1,0,0
-"1480","Rajasthan","India",2020-03-13,1,0,0
-"1481","Rajasthan","India",2020-03-14,1,1,0
-"1482","Rajasthan","India",2020-03-15,2,3,0
-"1483","Rajasthan","India",2020-03-16,2,3,0
-"1484","Rajasthan","India",2020-03-17,2,3,0
-"1485","Rajasthan","India",2020-03-18,2,3,0
-"1486","Rajasthan","India",2020-03-19,5,3,0
-"1487","Rajasthan","India",2020-03-20,15,3,0
-"1488","Rajasthan","India",2020-03-21,15,3,0
-"1489","Rajasthan","India",2020-03-22,22,3,0
-"1490","Rajasthan","India",2020-03-23,26,3,0
-"1491","Rajasthan","India",2020-03-24,30,3,0
-"1492","Rajasthan","India",2020-03-25,34,3,0
-"1493","Rajasthan","India",2020-03-26,39,3,0
-"1494","Rajasthan","India",2020-03-27,39,3,0
-"1495","Rajasthan","India",2020-03-28,52,3,0
-"1496","Rajasthan","India",2020-03-29,52,3,0
+"1470","Rajasthan","India",2020-03-03,1,0,0
+"1471","Rajasthan","India",2020-03-04,3,0,0
+"1472","Rajasthan","India",2020-03-05,3,0,0
+"1473","Rajasthan","India",2020-03-06,3,0,0
+"1474","Rajasthan","India",2020-03-07,3,0,0
+"1475","Rajasthan","India",2020-03-08,3,0,0
+"1476","Rajasthan","India",2020-03-09,3,0,0
+"1477","Rajasthan","India",2020-03-10,3,0,0
+"1478","Rajasthan","India",2020-03-11,3,0,0
+"1479","Rajasthan","India",2020-03-12,3,0,0
+"1480","Rajasthan","India",2020-03-13,3,0,0
+"1481","Rajasthan","India",2020-03-14,3,1,0
+"1482","Rajasthan","India",2020-03-15,4,3,0
+"1483","Rajasthan","India",2020-03-16,4,3,0
+"1484","Rajasthan","India",2020-03-17,4,3,0
+"1485","Rajasthan","India",2020-03-18,4,3,0
+"1486","Rajasthan","India",2020-03-19,7,3,0
+"1487","Rajasthan","India",2020-03-20,17,3,0
+"1488","Rajasthan","India",2020-03-21,17,3,0
+"1489","Rajasthan","India",2020-03-22,24,3,0
+"1490","Rajasthan","India",2020-03-23,28,3,0
+"1491","Rajasthan","India",2020-03-24,32,3,0
+"1492","Rajasthan","India",2020-03-25,36,3,0
+"1493","Rajasthan","India",2020-03-26,41,3,0
+"1494","Rajasthan","India",2020-03-27,41,3,0
+"1495","Rajasthan","India",2020-03-28,54,3,0
+"1496","Rajasthan","India",2020-03-29,55,3,0
 "1497","Tamil Nadu","India",2020-01-22,0,0,0
 "1498","Tamil Nadu","India",2020-01-23,0,0,0
 "1499","Tamil Nadu","India",2020-01-24,0,0,0
@@ -1555,14 +1555,14 @@
 "1554","Tamil Nadu","India",2020-03-19,2,1,0
 "1555","Tamil Nadu","India",2020-03-20,3,1,0
 "1556","Tamil Nadu","India",2020-03-21,3,1,0
-"1557","Tamil Nadu","India",2020-03-22,5,1,0
-"1558","Tamil Nadu","India",2020-03-23,7,1,0
-"1559","Tamil Nadu","India",2020-03-24,13,1,0
-"1560","Tamil Nadu","India",2020-03-25,16,1,0
-"1561","Tamil Nadu","India",2020-03-26,20,1,1
-"1562","Tamil Nadu","India",2020-03-27,23,1,1
-"1563","Tamil Nadu","India",2020-03-28,34,2,1
-"1564","Tamil Nadu","India",2020-03-29,36,2,1
+"1557","Tamil Nadu","India",2020-03-22,7,1,0
+"1558","Tamil Nadu","India",2020-03-23,9,1,0
+"1559","Tamil Nadu","India",2020-03-24,15,1,0
+"1560","Tamil Nadu","India",2020-03-25,18,1,0
+"1561","Tamil Nadu","India",2020-03-26,26,1,1
+"1562","Tamil Nadu","India",2020-03-27,29,1,1
+"1563","Tamil Nadu","India",2020-03-28,40,2,1
+"1564","Tamil Nadu","India",2020-03-29,49,4,1
 "1565","Telengana","India",2020-01-22,0,0,0
 "1566","Telengana","India",2020-01-23,0,0,0
 "1567","Telengana","India",2020-01-24,0,0,0
@@ -1618,19 +1618,19 @@
 "1617","Telengana","India",2020-03-14,1,0,0
 "1618","Telengana","India",2020-03-15,3,1,0
 "1619","Telengana","India",2020-03-16,3,1,0
-"1620","Telengana","India",2020-03-17,3,1,0
-"1621","Telengana","India",2020-03-18,4,1,0
-"1622","Telengana","India",2020-03-19,4,1,0
-"1623","Telengana","India",2020-03-20,8,1,0
-"1624","Telengana","India",2020-03-21,10,1,0
-"1625","Telengana","India",2020-03-22,11,1,0
-"1626","Telengana","India",2020-03-23,22,1,0
-"1627","Telengana","India",2020-03-24,25,1,0
-"1628","Telengana","India",2020-03-25,25,1,0
-"1629","Telengana","India",2020-03-26,34,1,0
-"1630","Telengana","India",2020-03-27,35,1,0
-"1631","Telengana","India",2020-03-28,46,1,0
-"1632","Telengana","India",2020-03-29,56,1,1
+"1620","Telengana","India",2020-03-17,5,1,0
+"1621","Telengana","India",2020-03-18,6,1,0
+"1622","Telengana","India",2020-03-19,6,1,0
+"1623","Telengana","India",2020-03-20,17,1,0
+"1624","Telengana","India",2020-03-21,21,1,0
+"1625","Telengana","India",2020-03-22,22,1,0
+"1626","Telengana","India",2020-03-23,32,1,0
+"1627","Telengana","India",2020-03-24,35,1,0
+"1628","Telengana","India",2020-03-25,35,1,0
+"1629","Telengana","India",2020-03-26,44,1,0
+"1630","Telengana","India",2020-03-27,45,1,0
+"1631","Telengana","India",2020-03-28,56,1,0
+"1632","Telengana","India",2020-03-29,66,1,1
 "1633","Uttar Pradesh","India",2020-01-22,0,0,0
 "1634","Uttar Pradesh","India",2020-01-23,0,0,0
 "1635","Uttar Pradesh","India",2020-01-24,0,0,0
@@ -1681,24 +1681,24 @@
 "1680","Uttar Pradesh","India",2020-03-09,7,0,0
 "1681","Uttar Pradesh","India",2020-03-10,7,0,0
 "1682","Uttar Pradesh","India",2020-03-11,9,0,0
-"1683","Uttar Pradesh","India",2020-03-12,10,0,0
-"1684","Uttar Pradesh","India",2020-03-13,10,0,0
-"1685","Uttar Pradesh","India",2020-03-14,11,5,0
-"1686","Uttar Pradesh","India",2020-03-15,12,5,0
-"1687","Uttar Pradesh","India",2020-03-16,12,5,0
-"1688","Uttar Pradesh","India",2020-03-17,14,5,0
-"1689","Uttar Pradesh","India",2020-03-18,15,5,0
-"1690","Uttar Pradesh","India",2020-03-19,18,9,0
-"1691","Uttar Pradesh","India",2020-03-20,22,9,0
-"1692","Uttar Pradesh","India",2020-03-21,23,9,0
-"1693","Uttar Pradesh","India",2020-03-22,26,9,0
-"1694","Uttar Pradesh","India",2020-03-23,30,9,0
-"1695","Uttar Pradesh","India",2020-03-24,32,11,0
-"1696","Uttar Pradesh","India",2020-03-25,36,11,0
-"1697","Uttar Pradesh","India",2020-03-26,40,11,0
-"1698","Uttar Pradesh","India",2020-03-27,40,11,0
-"1699","Uttar Pradesh","India",2020-03-28,54,11,0
-"1700","Uttar Pradesh","India",2020-03-29,54,11,0
+"1683","Uttar Pradesh","India",2020-03-12,11,0,0
+"1684","Uttar Pradesh","India",2020-03-13,11,0,0
+"1685","Uttar Pradesh","India",2020-03-14,12,5,0
+"1686","Uttar Pradesh","India",2020-03-15,13,5,0
+"1687","Uttar Pradesh","India",2020-03-16,13,5,0
+"1688","Uttar Pradesh","India",2020-03-17,15,5,0
+"1689","Uttar Pradesh","India",2020-03-18,16,5,0
+"1690","Uttar Pradesh","India",2020-03-19,19,9,0
+"1691","Uttar Pradesh","India",2020-03-20,23,9,0
+"1692","Uttar Pradesh","India",2020-03-21,24,9,0
+"1693","Uttar Pradesh","India",2020-03-22,27,9,0
+"1694","Uttar Pradesh","India",2020-03-23,31,9,0
+"1695","Uttar Pradesh","India",2020-03-24,33,11,0
+"1696","Uttar Pradesh","India",2020-03-25,37,11,0
+"1697","Uttar Pradesh","India",2020-03-26,41,11,0
+"1698","Uttar Pradesh","India",2020-03-27,41,11,0
+"1699","Uttar Pradesh","India",2020-03-28,55,11,0
+"1700","Uttar Pradesh","India",2020-03-29,65,11,0
 "1701","Uttarakhand","India",2020-01-22,0,0,0
 "1702","Uttarakhand","India",2020-01-23,0,0,0
 "1703","Uttarakhand","India",2020-01-24,0,0,0
@@ -1761,12 +1761,12 @@
 "1760","Uttarakhand","India",2020-03-21,3,0,0
 "1761","Uttarakhand","India",2020-03-22,3,0,0
 "1762","Uttarakhand","India",2020-03-23,3,0,0
-"1763","Uttarakhand","India",2020-03-24,3,0,0
-"1764","Uttarakhand","India",2020-03-25,3,0,0
-"1765","Uttarakhand","India",2020-03-26,4,0,0
-"1766","Uttarakhand","India",2020-03-27,4,0,0
-"1767","Uttarakhand","India",2020-03-28,4,0,0
-"1768","Uttarakhand","India",2020-03-29,5,1,0
+"1763","Uttarakhand","India",2020-03-24,4,0,0
+"1764","Uttarakhand","India",2020-03-25,4,0,0
+"1765","Uttarakhand","India",2020-03-26,5,0,0
+"1766","Uttarakhand","India",2020-03-27,5,0,0
+"1767","Uttarakhand","India",2020-03-28,5,0,0
+"1768","Uttarakhand","India",2020-03-29,7,2,0
 "1769","West Bengal","India",2020-01-22,0,0,0
 "1770","West Bengal","India",2020-01-23,0,0,0
 "1771","West Bengal","India",2020-01-24,0,0,0
@@ -1834,4 +1834,4 @@
 "1833","West Bengal","India",2020-03-26,10,0,1
 "1834","West Bengal","India",2020-03-27,10,0,1
 "1835","West Bengal","India",2020-03-28,15,0,1
-"1836","West Bengal","India",2020-03-29,17,0,1
+"1836","West Bengal","India",2020-03-29,18,0,1
