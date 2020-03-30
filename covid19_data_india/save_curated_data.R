@@ -1,15 +1,16 @@
 setwd("/Users/biplabendudas/Documents/GitHub/homepage/covid19_data_india")
 
+rm(list = ls())
 # Curate India’s data -----------------------------------------------------
 
 ## Last updated on: 25 Mar 2020,6:11 pm ET
 
 ## Data available until
-current.date <- "27/03/20"
+current.date <- "29/03/20"
 
 # Data downloaded from: https://www.kaggle.com/sudalairajkumar/covid19-in-india/version/7
 # Download timestamp: 0225 hrs, 20th March 2020
-urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_27Mar20.csv"
+urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_29Mar20_v2.csv"
 
 india <- read.csv(url(urlfile),
                   header = T, stringsAsFactors = F)
@@ -23,7 +24,7 @@ india$Date <- as.Date(india$Date, "%d/%m/%y")
 
 # Incorrect data entry | Fix it
 india[india$State.UnionTerritory == "Maharashtra" & 
-        india$Date == "2020-03-11",]$ConfirmedIndianNational <- 5
+        india$Date == "2020-03-11",]$total_confirmed <- 5
 
 ## Different names for the same state | Fix this
 # 1. Pondicherry = Puducherry
@@ -44,7 +45,7 @@ allData_india <-
   india %>%
   rename("State_or_Province" = State.UnionTerritory, date = Date) %>%
   mutate("Country" = "India") %>%
-  rename(Confirmed = ConfirmedIndianNational) %>%
+  rename(Confirmed = total_confirmed) %>%
   arrange(State_or_Province, date) %>% 
   ## need to fix this - filter to keep the right copy since there are multiple entries
   distinct(State_or_Province, Country, date, .keep_all = T) %>%   
