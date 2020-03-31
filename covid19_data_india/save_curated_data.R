@@ -10,7 +10,7 @@ current.date <- "30/03/20"
 
 # Data downloaded from: https://www.kaggle.com/sudalairajkumar/covid19-in-india/version/7
 # Download timestamp: 0225 hrs, 20th March 2020
-urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_30Mar20.csv"
+urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_30Mar20_v2.csv"
 
 india <- read.csv(url(urlfile),
                   header = T, stringsAsFactors = F)
