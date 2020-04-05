@@ -6,11 +6,11 @@ rm(list = ls())
 ## Last updated on: 25 Mar 2020,6:11 pm ET
 
 ## Data available until
-current.date <- "3/04/20"
+current.date <- "5/04/20"
 
 # Data downloaded from: https://www.kaggle.com/sudalairajkumar/covid19-in-india/version/7
 # Download timestamp: 0225 hrs, 20th March 2020
-urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_3Apr20.csv"
+urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_5Apr20.csv"
 
 india <- read.csv(url(urlfile),
                   header = T, stringsAsFactors = F)
