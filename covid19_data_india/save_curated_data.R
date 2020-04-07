@@ -6,11 +6,11 @@ rm(list = ls())
 ## Last updated on: 25 Mar 2020,6:11 pm ET
 
 ## Data available until
-current.date <- "6/04/20"
+current.date <- "7/04/20"
 
 # Data downloaded from: https://www.kaggle.com/sudalairajkumar/covid19-in-india/version/7
 # Download timestamp: 0225 hrs, 20th March 2020
-urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_6Apr20.csv"
+urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_7Apr20.csv"
 
 india <- read.csv(url(urlfile),
                   header = T, stringsAsFactors = F)
@@ -153,3 +153,4 @@ df.curated <-  rbind(df.curated.global %>% filter(!(`Country/Region` == "India")
 write.csv(df.curated, file="./curated_data/curated_data_BD.csv")
 write.csv(df.curated.india, file = "./curated_data/india_curated_data_BD.csv")
 write.csv(df.curated.global, file = "./curated_data/global_curated_data_BD.csv")
+
