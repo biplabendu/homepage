@@ -6,11 +6,11 @@ rm(list = ls())
 ## Last updated on: 25 Mar 2020,6:11 pm ET
 
 ## Data available until
-current.date <- "8/04/20"
+current.date <- "9/04/20"
 
 # Data downloaded from: https://www.kaggle.com/sudalairajkumar/covid19-in-india/version/7
 # Download timestamp: 0225 hrs, 20th March 2020
-urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_8Apr20.csv"
+urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_9Apr20.csv"
 
 india <- read.csv(url(urlfile),
                   header = T, stringsAsFactors = F)
@@ -52,7 +52,7 @@ allData_india <-
   rename(CumConfirmed = Confirmed,
          CumDeaths = Deaths,
          CumRecovered = Cured) %>%
-  select(State_or_Province, Country, date, CumConfirmed, CumRecovered, CumDeaths) %>% 
+  dplyr::select(State_or_Province, Country, date, CumConfirmed, CumRecovered, CumDeaths) %>% 
   as_tibble()
 
 # allData_india %>% 
@@ -90,7 +90,7 @@ df <- data.frame(State_or_Province = states,
                  stringsAsFactors = F)
 
 df <- df %>%
-  select(State_or_Province:date) %>% 
+  dplyr::select(State_or_Province:date) %>% 
   left_join(allData_india, by = c("State_or_Province", "Country", "date"))
 
 df[is.na(df)] <- 0  
@@ -117,7 +117,7 @@ minutesSinceLastUpdate = function(fileName) {
 loadData = function(fileName, columnName) {
   if(!file.exists(fileName) || minutesSinceLastUpdate(fileName) > 10) {
     data = read.csv(file.path(baseURL, fileName), check.names=FALSE, stringsAsFactors=FALSE) %>%
-      select(-Lat, -Long) %>%
+      dplyr::select(-Lat, -Long) %>%
       pivot_longer(-(1:2), names_to="date", values_to=columnName) %>%
       mutate(
         date=as.Date(date, format="%m/%d/%y"),
