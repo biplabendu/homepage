@@ -1,5 +1,14 @@
 setwd("/Users/biplabendudas/Documents/GitHub/homepage/covid19_data_india")
 
+
+###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
+###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
+# Date: 19 April 2020
+# Error: Cured and Deaths are swapped in the plot in app.
+# Status: Not fixed
+###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
+###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
+
 rm(list = ls())
 # Curate India’s data -----------------------------------------------------
 
@@ -16,7 +25,7 @@ india <- read.csv(url(urlfile),
 # save(india, file="india_data.csv")
 # load(file="india_data.csv")
 
-# india %>% glimpse()
+india %>% glimpse()
 
 
 india$Date <- as.Date(india$Date, "%d/%m/%y")
@@ -49,8 +58,8 @@ allData_india <-
   ## need to fix this - filter to keep the right copy since there are multiple entries
   distinct(State_or_Province, Country, date, .keep_all = T) %>%   
   rename(CumConfirmed = Confirmed,
-         CumDeaths = Deaths,
-         CumRecovered = Cured) %>%
+         CumRecovered = Cured,
+         CumDeaths = Deaths) %>%
   dplyr::select(State_or_Province, Country, date, CumConfirmed, CumRecovered, CumDeaths) %>% 
   as_tibble()
 
@@ -63,7 +72,7 @@ allData_india <-
 #   summarise_if(is.numeric, sum, na.rm=TRUE) %>% 
 #   View()
 
-# head(allData)
+head(allData_india)
 
 
 # Format the data for dates 22 Jan 2020 to current --------------------------------------------------------
