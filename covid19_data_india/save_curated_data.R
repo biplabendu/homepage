@@ -3,14 +3,13 @@ setwd("/Users/biplabendudas/Documents/GitHub/homepage/covid19_data_india")
 rm(list = ls())
 # Curate India’s data -----------------------------------------------------
 
-## Last updated on: 25 Mar 2020,6:11 pm ET
-
+## Last updated on:
 ## Data available until
-current.date <- "14/04/20"
+current.date <- "19/04/20"
 
 # Data downloaded from: https://www.kaggle.com/sudalairajkumar/covid19-in-india/version/7
 # Download timestamp: 0225 hrs, 20th March 2020
-urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_14Apr20.csv"
+urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_19Apr20.csv"
 
 india <- read.csv(url(urlfile),
                   header = T, stringsAsFactors = F)
