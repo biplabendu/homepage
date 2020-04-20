@@ -3,7 +3,7 @@ setwd("/Users/biplabendudas/Documents/GitHub/homepage/covid19_data_india")
 
 ###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
 ###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
-# Date: 19 April 2020
+# Date: 20 April 2020
 # Error: Cured and Deaths are swapped in the plot in app.
 # Status: Not fixed
 ###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
@@ -14,11 +14,11 @@ rm(list = ls())
 
 ## Last updated on:
 ## Data available until
-current.date <- "19/04/20"
+current.date <- "20/04/20"
 
 # Data downloaded from: https://www.kaggle.com/sudalairajkumar/covid19-in-india/version/7
 # Download timestamp: 0225 hrs, 20th March 2020
-urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_19Apr20.csv"
+urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_20Apr20.csv"
 
 india <- read.csv(url(urlfile),
                   header = T, stringsAsFactors = F)
@@ -72,7 +72,7 @@ allData_india <-
 #   summarise_if(is.numeric, sum, na.rm=TRUE) %>% 
 #   View()
 
-head(allData_india)
+tail(allData_india)
 
 
 # Format the data for dates 22 Jan 2020 to current --------------------------------------------------------
@@ -106,8 +106,10 @@ df[is.na(df)] <- 0
 df <- df %>% 
   filter(!(State_or_Province == ""))
 
-df.curated.india <- df
+df.curated.india <- df %>% 
+  dplyr::select(State_or_Province:date, CumConfirmed, CumDeaths, CumRecovered)
 
+tail(df.curated.india)
 
 # Curate JHU data ---------------------------------------------------------
 
@@ -151,6 +153,7 @@ allData =
 
 df.curated.global <- allData
 
+tail(df.curated.global)
 
 # Let’s push the updated file to GitHub -----------------------------------
 
