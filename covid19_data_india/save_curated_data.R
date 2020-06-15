@@ -1,5 +1,5 @@
+curr.dir <- getwd()
 setwd("/Users/biplabendudas/Documents/GitHub/homepage/covid19_data_india")
-
 
 ###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
 ###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
@@ -9,16 +9,16 @@ setwd("/Users/biplabendudas/Documents/GitHub/homepage/covid19_data_india")
 ###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
 ###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-###-
 
-rm(list = ls())
+# rm(list = ls())
 # Curate India’s data -----------------------------------------------------
 
 ## Last updated on:
 ## Data available until
-current.date <- "4/05/20"
+current.date <- "14/06/20"
 
 # Data downloaded from: https://www.kaggle.com/sudalairajkumar/covid19-in-india/version/7
 # Download timestamp: 0225 hrs, 20th March 2020
-urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_5May20.csv"
+urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_14Jun20.csv"
 
 india <- read.csv(url(urlfile),
                   header = T, stringsAsFactors = F)
@@ -27,6 +27,7 @@ india <- read.csv(url(urlfile),
 
 india %>% glimpse()
 
+# india <- india[1:6]
 
 india$Date <- as.Date(india$Date, "%d/%m/%y")
 
@@ -51,13 +52,13 @@ library(tidyverse)
 
 allData_india <-
   india %>%
-  rename("State_or_Province" = State.UnionTerritory, date = Date) %>%
+  dplyr::rename("State_or_Province" = State.UnionTerritory, date = Date) %>%
   mutate("Country" = "India") %>%
-  rename(Confirmed = total_confirmed) %>%
+  dplyr::rename(Confirmed = total_confirmed) %>%
   arrange(State_or_Province, date) %>% 
   ## need to fix this - filter to keep the right copy since there are multiple entries
   distinct(State_or_Province, Country, date, .keep_all = T) %>%   
-  rename(CumConfirmed = Confirmed,
+  dplyr::rename(CumConfirmed = Confirmed,
          CumRecovered = Cured,
          CumDeaths = Deaths) %>%
   dplyr::select(State_or_Province, Country, date, CumConfirmed, CumRecovered, CumDeaths) %>% 
@@ -165,3 +166,20 @@ write.csv(df.curated, file="./curated_data/curated_data_BD.csv")
 write.csv(df.curated.india, file = "./curated_data/india_curated_data_BD.csv")
 write.csv(df.curated.global, file = "./curated_data/global_curated_data_BD.csv")
 
+
+# Remove all the files and reset the working directory --------------------
+
+setwd(curr.dir)
+
+rm(allData)
+rm(allData_india)
+rm(df)
+rm(df.curated)
+rm(df.curated.global)
+rm(df.curated.india)
+rm(f1)
+rm(india)
+rm(baseURL)
+rm(confirmed)
+rm(country)
+rm(curr.dir, current.date, dates, deaths, indian_states, recovered, states, urlfile, loadData, minutesSinceLastUpdate)
