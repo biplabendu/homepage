@@ -14,17 +14,17 @@ setwd("/Users/biplabendudas/Documents/GitHub/homepage/covid19_data_india")
 
 ## Last updated on:
 ## Data available until
-current.date <- "14/06/20"
+current.date <- "19/06/20"
 
 # Data downloaded from: https://www.kaggle.com/sudalairajkumar/covid19-in-india/version/7
 # Download timestamp: 0225 hrs, 20th March 2020
-urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_14Jun20.csv"
+urlfile <- "https://github.com/biplabendu/homepage/raw/master/covid19_data_india/covid_19_india_19Jun20.csv"
 
 india <- read.csv(url(urlfile),
                   header = T, stringsAsFactors = F)
 # save(india, file="india_data.csv")
 # load(file="india_data.csv")
-
+library(tidyverse)
 india %>% glimpse()
 
 # india <- india[1:6]
@@ -47,8 +47,6 @@ india[india$State.UnionTerritory == "Union Territory of Chandigarh",]$State.Unio
 india[india$State.UnionTerritory == "Chattisgarh",]$State.UnionTerritory <- "Chhattisgarh"
 india[india$State.UnionTerritory == "Union Territory of Jammu and Kashmir",]$State.UnionTerritory <- "Jammu and Kashmir"
 india[india$State.UnionTerritory == "Union Territory of Ladakh",]$State.UnionTerritory <- "Ladakh"
-
-library(tidyverse)
 
 allData_india <-
   india %>%
