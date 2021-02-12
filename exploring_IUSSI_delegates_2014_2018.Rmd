@@ -1,0 +1,147 @@
+---
+title: "Who is attending IUSSI?"
+output:
+  html_document:
+    toc: true
+    theme: united
+    includes:
+      in_header: analytics.html
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+author: Biplabendu Das
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = F)
+knitr::opts_chunk$set(message = F)
+
+```
+
+***
+
+The goal is to explore the data for the past participants of IUSSI (2014 and 2018) to get a sense of the demography of the representatives. Note, this data is for the final list of participants that attended the conferences and not a comprehensive list of all applicants (see note below from Ben Oldroyd).
+
+## Data Note: from Ben Oldroyd (President, IUSSI 2014)
+"For the Cairns meeting, everyone who submitted an abstract and paid the registration (or had it paid by IUSSI) was allowed to speak or give a poster as per their stated preference. Everyone who submitted a symposium proposal got to chair/organize that symposium (in one or two cases we asked proposers to team up)."
+
+```{r, include=F, echo=F}
+# Let's load the data and get a glimpse.
+
+rm(list = ls())
+library(tidyverse)
+library(countrycode)
+dat.2014 <- read.csv("./data/2014_participants_list_final.csv", header = T, stringsAsFactors = F)
+
+# Get a glimpse
+dat.2014 %>% glimpse()
+
+# Let's summarize the paricipants by country
+dat.per.country.2014 <- 
+  dat.2014 %>% group_by(country) %>% 
+  summarise(participants_2014 = n()) %>% arrange(desc(participants_2014)) %>% 
+  # country names are in different formats;change them to a common one (iso3c format)
+  mutate(country.iso3c = countrycode(country,origin='country.name', destination='iso3c'))
+
+# How many countries were present?
+dat.per.country.2014 %>% nrow()
+
+# Any unknown countries?
+# dat.per.country.2014 %>% filter(is.na(country.iso3c)) # nope
+
+# What's the median number of participants per country?
+dat.per.country.2014 %>% pull(participants_2014) %>% median()
+
+# Let's take a look at the top 15 and bottom 15 countries by participation
+dat.per.country.2014 %>% head(15)
+dat.per.country.2014 %>% tail(15)
+
+
+```
+
+
+
+```{r, inlcude=F, echo=F}
+## Let's compare 2014 and 2018
+dat.2018 <- read.csv("./data/2018_participants_list.csv", header = T, stringsAsFactors = F)
+
+# # Get a glimpse
+# dat.2018 %>% glimpse()
+
+# Let's summarize the paricipants by country
+dat.per.country.2018 <- 
+  dat.2018 %>% group_by(country) %>% 
+  summarise(participants_2018 = n()) %>% arrange(desc(participants_2018)) %>% 
+  # country names are in different formats;change them to a common one (iso3c format)
+  mutate(country.iso3c = countrycode(country,origin='country.name', destination='iso3c'))
+
+# Check for unknown country inputs
+# dat.per.country.2018 %>% filter(is.na(country.iso3c)) # none found
+
+# there is one participant from an unknown country; excluding them from the data
+dat.per.country.2018 <- na.omit(dat.per.country.2018)
+
+# Calculate the perecentages for country-wise participation
+dat.per.country <- dat.per.country.2014 %>%
+  left_join(dat.per.country.2018, by="country.iso3c") %>% 
+  select(country.iso3c, participants_2014, participants_2018, everything()) %>% 
+  mutate(Aus_2014 = round(participants_2014/sum(participants_2014)*100,1)) %>% 
+  mutate(Bra_2018 = ifelse(is.na(participants_2018),
+                               NA,
+                               round(participants_2018/sum(na.omit(participants_2018))*100,1)))
+
+# convert counrty iso codes to names for easy labeling in plots
+dat.country.year <- 
+  dat.per.country %>% 
+  select(country.iso3c, Aus_2014, Bra_2018) %>% 
+  pivot_longer(-country.iso3c, names_to = "year", values_to = "percentage") %>% 
+  mutate(country.name = countrycode(country.iso3c, origin = 'iso3c', destination = 'country.name'))
+
+# mean percent of participants from a country
+mean.percent <- dat.country.year %>% pull(percentage) %>% na.omit() %>% mean()
+
+```
+
+## Data Summary: General Observations
+
+1. In 2014, there were `r sum(dat.per.country.2014$participants_2014)` participants from `r length(na.omit(dat.per.country.2014$country.iso3c))` countries, with a median of `r median(dat.per.country.2014$participants_2014)` participants/country.
+2. In 2018, there were `r sum(dat.per.country.2018$participants_2018)` participants from `r length(na.omit(dat.per.country.2018$country.iso3c))` countries, with a median of `r median(dat.per.country.2018$participants_2018)` participants/country.
+2. Folks from 5 countries (USA, Australia, Japan, Germany and UK) account for `r round(sum(dat.per.country.2014$participants_2014[1:5])/sum(dat.per.country.2014$participants_2014)*100, 2)`% of all participants in IUSSI 2014 and `r round(sum(dat.per.country.2018$participants_2018[c(1,3:6)])/sum(dat.per.country.2018$participants_2018)*100, 2)`% in IUSSI 2018. 
+
+
+## Plot: Country-wise representation at IUSSI
+
+The following plot presents the percentage of IUSSI participants from different countries from the previous two IUSSIs (Aus_2014 = IUSSI 2014 in Australia, Bra_2018 = IUSSI 2018 in Brazil)
+
+```{r, echo=F, fig.width=5,fig.height=10}
+source(file = "./functions/theme_publication.R")
+ggplot(dat.country.year,
+       aes(x=reorder(country.name, percentage), 
+           y=percentage, color=year)) +
+  geom_hline(yintercept = mean.percent, color="grey60", alpha=0.6, lty=2) +
+  geom_point(size=1.5, alpha=0.8) +
+  
+  labs(x = "",
+       y = "Participants at IUSSI (%)") +
+  coord_flip() +
+  theme_Publication() +
+  annotate("text", x = 4, y = 12, 
+           label = paste0("mean participation \n per country (",round(mean.percent,1),"%)"))
+
+```
+
+
+## Table: participation counts per country
+In case you like tables or absolute counts over proportions, here is a searchable table that provides the number of participants, per country, that attended the previous two IUSSIs. 
+
+```{r, echo=F}
+library(DT)
+participants.country.year <- 
+  dat.per.country %>% select(country = country.y, 
+                           IUSSI_2014 = participants_2014,
+                           IUSSI_2018 = participants_2018)
+DT::datatable(participants.country.year)
+```
+
+All code used for this document is available in the R-markdown file. If you have questions, feel free to reach me at biplabendu[dot]das@gmail.com
