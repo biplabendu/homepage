@@ -132,7 +132,7 @@ In case you like tables or absolute counts over proportions, here is a searchabl
 ```{r, echo=F}
 library(DT)
 participants.country.year <- 
-  dat.per.country %>% select(country = country.y, 
+  dat.per.country %>% select(country = country.x, 
                            IUSSI_2014 = participants_2014,
                            IUSSI_2018 = participants_2018)
 DT::datatable(participants.country.year)
