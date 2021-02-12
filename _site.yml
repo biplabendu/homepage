@@ -22,7 +22,7 @@ navbar:
     href: ecology.html
     icon: fa-leaf  
   - text: IUSSI_Demography
-    href: exploring_IUSSI_delegates_2014_2018.html
+    href: IUSSI.html
     icon: fa-bug
   right:
   - icon: fa-twitter
