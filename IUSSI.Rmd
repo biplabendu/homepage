@@ -19,7 +19,8 @@ knitr::opts_chunk$set(message = F)
 
 ***
 
-The goal is to explore the data for the past participants of IUSSI (2014 and 2018) to get a sense of the demography of the representatives. Note, this data is for the final list of participants that attended the conferences and not a comprehensive list of all applicants (see note below from Ben Oldroyd).
+The goal is to explore the data for the past participants of IUSSI (2014 and 2018) to get a sense of the demography of the representatives. Note, this data is for the final list of participants that attended the conferences and not a comprehensive list of all applicants (see note below from Ben Oldroyd). Please note, this is still a work in progress, and the document will change with time.
+
 
 ## Data Note: from Ben Oldroyd (President, IUSSI 2014)
 "For the Cairns meeting, everyone who submitted an abstract and paid the registration (or had it paid by IUSSI) was allowed to speak or give a poster as per their stated preference. Everyone who submitted a symposium proposal got to chair/organize that symposium (in one or two cases we asked proposers to team up)."
@@ -142,4 +143,4 @@ participants.country.year <-
 DT::datatable(participants.country.year)
 ```
 
-All code used for this document is available in the R-markdown file. If you have questions, feel free to reach me at biplabendu[dot]das@gmail.com
+All code used for this document is available on my [Github](https://github.com/biplabendu/IUSSI_Demography).
