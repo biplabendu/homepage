@@ -209,11 +209,14 @@ gender.ratio <-
               group_by(gender) %>%
               summarize(IUSSI_2018=sum(participants_2018))), by="gender")
 
-DT::datatable(gender.ratio)
+library(kableExtra)
+gender.ratio %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 
 ```
 
-> The, **estimated *female:male ratio* **among selected participants at **IUSSI 2014 was `r round(gender.ratio[1,2]/gender.ratio[2,2],2)` and at IUSSI 2018 was `r round(gender.ratio[1,3]/gender.ratio[2,3],2)`.**
+> The, **estimated *female:male ratio* **among selected participants at **IUSSI 2014 was `r round(gender.ratio[1,2]/gender.ratio[2,2],2)`** and at **IUSSI 2018 was `r round(gender.ratio[1,3]/gender.ratio[2,3],2)`.**
 
 ***
 
