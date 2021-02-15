@@ -357,7 +357,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Who is attending IUSSI?</h1>
 <h4 class="author">Biplabendu Das</h4>
-<h4 class="date">12 February, 2021</h4>
+<h4 class="date">15 February, 2021</h4>
 
 </div>
 
@@ -367,6 +367,7 @@ $(document).ready(function () {
 <li><a href="#data-summary-general-observations">Data Summary: General Observations</a></li>
 <li><a href="#plot-country-wise-representation-at-iussi">Plot: Country-wise representation at IUSSI</a></li>
 <li><a href="#table-participation-counts-per-country">Table: participation counts per country</a></li>
+<li><a href="#estimated-gender-ratios-for-iussi-2014-and-2018">Estimated gender ratios for IUSSI 2014 and 2018</a></li>
 </ul>
 </div>
 
@@ -392,8 +393,20 @@ $(document).ready(function () {
 <div id="table-participation-counts-per-country" class="section level2">
 <h2>Table: participation counts per country</h2>
 <p>In case you like tables or absolute counts over proportions, here is a searchable table that provides the number of participants, per country, that attended the previous two IUSSIs.</p>
-<div id="htmlwidget-6b7025a8dc8c5ff8dfb8" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6b7025a8dc8c5ff8dfb8">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"],["USA","AUSTRALIA","JAPAN","GERMANY","UNITED KINGDOM","FRANCE","DENMARK","BRAZIL","BELGIUM","SWITZERLAND","FINLAND","TAIWAN","ISRAEL","NEW ZEALAND","CANADA","CZECH REPUBLIC","AUSTRIA","INDIA","ITALY","SOUTH AFRICA","MALAYSIA","POLAND","THAILAND","CHINA","HUNGARY","PR CHINA","SINGAPORE","SPAIN","COLOMBIA","COSTA RICA","IRAN","JORDAN","NETHERLANDS","NORWAY","PHILIPPINES","PORTUGAL","RUSSIA","SAUDI ARABIA","SOUTH KOREA"],[128,77,61,44,40,34,24,17,16,16,14,14,11,11,10,7,6,5,5,5,4,3,3,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1],[142,24,36,50,32,18,13,88,11,15,5,3,9,7,8,6,3,5,3,7,null,5,null,4,null,4,1,5,9,1,null,null,1,null,null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>country<\/th>\n      <th>IUSSI_2014<\/th>\n      <th>IUSSI_2018<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-41d41ad56cb1c89b3ed4" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-41d41ad56cb1c89b3ed4">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"],["USA","AUSTRALIA","JAPAN","GERMANY","UNITED KINGDOM","FRANCE","DENMARK","BRAZIL","BELGIUM","SWITZERLAND","FINLAND","TAIWAN","ISRAEL","NEW ZEALAND","CANADA","CZECH REPUBLIC","AUSTRIA","INDIA","ITALY","SOUTH AFRICA","MALAYSIA","POLAND","THAILAND","CHINA","HUNGARY","PR CHINA","SINGAPORE","SPAIN","COLOMBIA","COSTA RICA","IRAN","JORDAN","NETHERLANDS","NORWAY","PHILIPPINES","PORTUGAL","RUSSIA","SAUDI ARABIA","SOUTH KOREA"],[128,77,61,44,40,34,24,17,16,16,14,14,11,11,10,7,6,5,5,5,4,3,3,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1],[142,24,36,50,32,18,13,88,11,15,5,3,9,7,8,6,3,5,3,7,null,5,null,4,null,4,1,5,9,1,null,null,1,null,null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>country<\/th>\n      <th>IUSSI_2014<\/th>\n      <th>IUSSI_2018<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<hr />
+</div>
+<div id="estimated-gender-ratios-for-iussi-2014-and-2018" class="section level2">
+<h2>Estimated gender ratios for IUSSI 2014 and 2018</h2>
+<p>I will use the genderizer.io api for predicting gender from the first names of the participants. The same API is used by BiasWatchNeuro, and is a commonly used tool to estimate gender ratios in a field in the absence of demographic data. The website for the API can be found <a href="https://genderize.io/check-gender-csv">here</a>.</p>
+<p>Note: Participant names with a count greater than 10 in the database, and a probability of gender given the first name higher than 0.9 were used to estimate gender ratio at the two conferences (2014 and 2018). Post-filtering, a total of 461 (out of 576) participants in 2014 and 417 (out of 521) participants in 2018 remained. The estimated number of participants of each gender (male/female) selected for IUSSI 2014 and 2018 are shown below.</p>
+<div id="htmlwidget-24a2a90df4a9aba2dbb0" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-24a2a90df4a9aba2dbb0">{"x":{"filter":"none","data":[["1","2"],["female","male"],[166,295],[160,257]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gender<\/th>\n      <th>IUSSI_2014<\/th>\n      <th>IUSSI_2018<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<blockquote>
+<p>Therefore, <strong>the estimated <em>female:male ratio</em> </strong>among selected participants at <strong>IUSSI 2014 was 0.56 and at IUSSI 2018 was 0.62.</strong></p>
+</blockquote>
+<hr />
 <p>All code used for this document is available on my <a href="https://github.com/biplabendu/IUSSI_Demography">Github</a>.</p>
 </div>
 
