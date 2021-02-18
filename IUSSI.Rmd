@@ -220,4 +220,80 @@ gender.ratio %>%
 
 ***
 
-All code used for this document is available on my [Github](https://github.com/biplabendu/IUSSI_Demography).
+## Participants by career-stage
+
+```{r, include=F}
+
+## Exploring career stage of participants
+
+titles.2014 <- dat.2014 %>% pull(title) %>% as.character()
+titles.2018 <- dat.2018 %>% pull(degree) %>% as.character()
+
+titles.2014 %>% unique()
+titles.2018 %>% unique()
+
+## Let's summarize participants by title (career-stage) 
+  dat.2014 %>% 
+  group_by(title) %>% 
+  summarize(freq=n())
+  
+## Looks like it needs some clean-up
+  # PIs - c("A/Prof","A/Professor","Ass/Prof","Associate Profes","Prof","Professor")
+  # Graduate/Undergrads - c("Miss","Mr","Mrs","Ms")
+  # Dr - most likely postdocs
+
+career.2014 <- 
+  dat.2014 %>% 
+  mutate(degree = ifelse(title %in% c("A/Prof","A/Professor","Ass/Prof","Associate Profes","Prof","Professor"),
+                         "Prof.",title)) %>% 
+  mutate(degree = ifelse(title %in% c("Miss","Mr","Mrs","Ms"),
+                         "Mr/Ms.",degree)) %>% 
+  mutate(degree = ifelse(title %in% c("Dr"),
+                         "Dr.",degree)) %>% 
+  select(-title) %>% 
+  select(degree, everything())
+
+career.2014 <-
+  career.2014 %>% 
+  group_by(degree) %>% 
+  summarise(freq = n()) %>% 
+  filter(!degree %in% c("")) %>% # removed two with no assignment
+  mutate(percent = round(freq/sum(freq)*100,1)) %>% 
+  arrange(match(degree, c("Prof.","Dr.","Mr/Ms.")))
+
+
+career.2018 <- 
+  dat.2018 %>% 
+  group_by(degree) %>% 
+  summarize(freq=n()) %>% 
+  filter(!degree %in% c("")) %>% # removed one with no assignment
+  mutate(percent = round(freq/sum(freq)*100,1)) %>% 
+  arrange(match(degree, c("Prof.","Dr.","Post-Doc","Graduate","Undergraduate","Other")))
+
+```
+
+* The data doesn't permit a comprehensive count of participants by their career stages since we have terms such as "Dr" that could indicate either a post-doc or a PI. 
+
+* Additionally, the data for IUSSI 2014 has titles ("A/Prof","A/Professor","Ass/Prof","Associate Profes","Prof","Professor") that have been clubbed together as "Prof." and (Miss","Mr","Mrs","Ms") that are represented as "Mr/Ms.". 
+
+In future, including the upcoming IUSSI 2022, it would be useful to come up with a standardized way to collect demography data during the registration process.
+
+***
+
+
+```{r, echo=F}
+career.2014 %>% 
+  kable(caption = "IUSSI 2014") %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+```{r, echo=F}
+career.2018 %>% 
+  kable(caption = "IUSSI 2018") %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+
+> Nevertheless, the data does show a **fairly good representation of graduate students** at both IUSSIs. 
+
+All code used for this document is available on my [Github](https://github.com/biplabendu/homepage/blob/master/IUSSI.Rmd).
