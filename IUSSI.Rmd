@@ -294,6 +294,6 @@ career.2018 %>%
 ```
 
 
-> Nevertheless, the data does show a **fairly good representation of graduate students** at both IUSSIs. 
+> The data does show a **fairly good representation of graduate students** at both IUSSIs. 
 
 All code used for this document is available on my [Github](https://github.com/biplabendu/homepage/blob/master/IUSSI.Rmd).
