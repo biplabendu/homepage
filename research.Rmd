@@ -10,7 +10,7 @@ output:
 body {text-align: justify}
 </style>
 
-```{r, echo=F}
+```{r, echo=F, warning=F, message=F}
 # random comment
 
 library(htmltools)
@@ -21,56 +21,49 @@ library(vembedr)
 <a id="headlines"></a>
 ----------------------------------
 
-### Lab News
+#### Publications
 
-##### Aug 28, 2018 - [First review paper out in Myrmecological News](#news3)
-  
-##### Jun 19, 2018 - [Dr. Charissa de Bekker gets interviewed by Fox 35](#news2)
-  
-##### Jun 18, 2018 - [UCF releases infographic about "zombie ants"](#news1)
+##### 2021 - [Paper on the chronobiological basis of ant castes is now on bioRxiv](#news3)
+##### 2019 - [Comparative transcriptomics paper out in G3](#news2)
+##### 2018 - [Review paper out in Myrmecological News](#news1)
 
+----------------------------------
 
-     
 <a id="news3"></a>
 ----------------------------------
+
+3. _**Das, B.** and de Bekker, C. (2021)_ Time-course RNASeq of Camponotus floridanus forager and nurse
+ant brains suggests links between plasticity in the biological clock and behavioral division of labor. [*PDF*](https://www.biorxiv.org/content/10.1101/2021.03.27.433505v1.abstract)  
+    
+**Abstract:** *__Background__* Circadian clocks allow organisms to anticipate daily fluctuations in their environment by driving rhythms in physiology and behavior. Inter-organismal differences in daily rhythms, called chronotypes, exist and can shift with age. In ants, age, caste-related behavior and chronotype appear to be linked. “Around-the-clock” active nurse ants are usually younger and, with age, transition into rhythmically active foragers. Moreover, ants can shift between these behavioral castes depending on social context. We investigated how changes in daily gene expression could be contributing to such behavioral plasticity in Camponotus floridanus carpenter ants by combining time-course behavioral assays and RNA-Sequencing of forager and nurse brains.
+*__Results__* We found that nurse brains have three times fewer 24h oscillating genes than foragers. However, several hundred genes that oscillated every 24h in forager brains showed robust 8h oscillations in nurses, including the core clock genes Period and Shaggy. These differentially rhythmic genes consisted of several components of the circadian entrainment pathway, and showed enrichments for functions related to metabolism, cellular communication and protein modification. We additionally found that Vitellogenin, known to regulate division of labor in social insects, showed robust 24h oscillations in nurse brains but not in foragers. Furthermore, the protein products of several genes that were differentially expressed between the two ant castes were previously found in the trophallactic fluid of C. floridanus. This suggests a putative role for trophallaxis in regulating behavioral division of labor through caste-specific gene expression.
+*__Conclusion__* We provide a first look at the chronobiological differences in gene expression between forager and nurse ant brains. This endeavor allowed us to identify putative molecular mechanisms underlying plastic timekeeping. Several components of the ant circadian clock and its output can seemingly oscillate at different harmonics of the circadian rhythm. We propose that such chronobiological plasticity has evolved to allow for distinct regulatory networks that underlie behavioral castes, while supporting swift caste transitions in response to colony demands. Behavioral division of labor is common among social insects. The links between chronobiological and behavioral plasticity that we found in C. floridanus, thus, likely represent a more general phenomenon that warrants further investigation. 
+    
+[Go to top](#headlines)   
+
+----------------------------------
+
+<a id="news2"></a>
+----------------------------------
+
+2. *Will, I., **Das, B.**, Trinh, T., Brachmann, A., Ohm, R. A., de Bekker, C. (2019)* Genetic underpinnings of host manipulation by Ophiocordyceps as revealed by comparative transcriptomics. G3: Genes, Genomes, Genetics [*PDF*](https://academic.oup.com/g3journal/article/10/7/2275/6026297)  
+    
+**Abstract:** Ant-infecting Ophiocordyceps fungi are globally distributed, host manipulating, specialist parasites that drive aberrant behaviors in infected ants, at a lethal cost to the host. An apparent increase in activity and wandering behaviors precedes a final summiting and biting behavior onto vegetation, which positions the manipulated ant in a site beneficial for fungal growth and transmission. We investigated the genetic underpinnings of host manipulation by: (i) producing a high-quality hybrid assembly and annotation of the *Ophiocordyceps camponoti-floridani* genome, (ii) conducting laboratory infections coupled with RNAseq of *O. camponoti-floridani* and its host, *Camponotus floridanus*, and (iii) comparing these data to RNAseq data of *Ophiocordyceps kimflemingiae* and *Camponotus castaneus* as a powerful method to identify gene expression patterns that suggest shared behavioral manipulation mechanisms across *Ophiocordyceps*-ant species interactions. We propose differentially expressed genes tied to ant neurobiology, odor response, circadian rhythms, and foraging behavior may result by activity of putative fungal effectors such as enterotoxins, aflatrem, and mechanisms disrupting feeding behaviors in the ant.   
+    
+[Go to top](#headlines)   
+
+----------------------------------
+     
+<a id="news1"></a>
+----------------------------------
   
-#### August 28, 2018 | Tuesday
-   
-*de Bekker, C., Will, I., **Das, B**., Adams, R.M.M. (2018)*, The ants (Hymenoptera: Formicidae) and their parasites: effects of parasitic manipulations and host responses on ant behavioral ecology. Myrmecological News 28:1-24 [*PDF*](https://myrmecologicalnews.org/cms/index.php?option=com_content&view=category&id=1528&Itemid=425)  
+1. *de Bekker, C., Will, I., **Das, B**., Adams, R.M.M. (2018)*, The ants (Hymenoptera: Formicidae) and their parasites: effects of parasitic manipulations and host responses on ant behavioral ecology. Myrmecological News 28:1-24 [*PDF*](https://myrmecologicalnews.org/cms/index.php?option=com_content&view=category&id=1528&Itemid=425)  
     
 **Abstract:** Ants can display modified behaviors that represent the extended phenotypes of genes expressed by parasites that infect them. In such cases, the modifications benefit the parasite. Alternatively, displayed behaviors can represent host responses to infection that benefit colony fitness. Though some enigmatic examples of behavioral manipulation have been reported, parasitism of ants and its effects on ant behavior and ecology are generally poorly understood. Here, we summarize some of the present-day literature on parasite-ant interactions. Our main focus is on interactions that change host behavior so drastically that infected ants play a seemingly different societal and, perhaps, ecological role. We highlight the parallels that can be found across parasite-ant symbioses that result in manipulated behaviors, such as summiting, phototaxis, substrate biting, and wandering. We also point out the many present knowledge gaps that could be filled by efforts ranging from novel parasite discovery, to more detailed behavioral observations and next-generation sequencing to start uncovering mechanisms.    
     
 [Go to top](#headlines)   
-     
-<a id="news2"></a>
-----------------------------------
-  
-#### June 19, 2018 | Tuesday 
-    
-Dr. de Bekker was interviewed today by the local news channel **Fox 35**. You can read the full article on their [website](http://www.fox35orlando.com/news/local-news/university-of-central-florida-researchers-creating-zombie-ants-).   
-     
-<iframe scrolling="no" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen allow="autoplay; fullscreen" src="https://w3.cdn.anvato.net/player/prod/v3/anvload.html?key=eyJtIjoiZXBmb3giLCJwIjoiZGVmYXVsdCIsInYiOiI0NzExNzEiLCJhbnZhY2siOiJhbnZhdG9fZXBmb3hfYXBwX3dlYl9wcm9kX2IzMzczMTY4ZTEyZjQyM2Y0MTUwNGYyMDcwMDAxODhkYWY4ODI1MWIiLCJwbHVnaW5zIjp7ImRmcCI6eyJjbGllbnRTaWRlIjp7ImFkVGFnVXJsIjoiaHR0cHM6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Fkcz9zej02NDB4NDgwJml1PS82Mzc5MDU2NC93b2ZsL2xvY2FsX25ld3MmY2l1X3N6cz0zMDB4MjUwJmltcGw9cyZnZGZwX3JlcT0xJmVudj12cCZvdXRwdXQ9dmFzdCZ2cG9zPXByZXJvbGwmdW52aWV3ZWRfcG9zaXRpb25fc3RhcnQ9MSZ1cmw9W3JlZmVycmVyX3VybF0mY29ycmVsYXRvcj1bdGltZXN0YW1wXSZkZXNjcmlwdGlvbl91cmw9aHR0cCUzQSUyRiUyRnd3dy5mb3gzNW9ybGFuZG8uY29tJTJGbmV3cyUyRmxvY2FsLW5ld3MlMkZ1bml2ZXJzaXR5LW9mLWNlbnRyYWwtZmxvcmlkYS1yZXNlYXJjaGVycy1jcmVhdGluZy16b21iaWUtYW50cy0ifX0sInJlYWxUaW1lQW5hbHl0aWNzIjp0cnVlfSwiaHRtbDUiOnRydWV9"  width ="640" height="360"></iframe>
-    
-[Go to top](#headlines)
-    
-<a id="news1"></a>
-----------------------------------
-
-#### June 18, 2018 | Monday   
-    
-[UCF Today](https://today.ucf.edu/) released a descriptive yet super-cool infographic about the **The Science Behind Zombie Ants**. *For best viewing experience, read it on your phone in portrait mode.*  
-  
-```{r, echo=FALSE, fig.cap="Infographic about the science behind *'zombie ants'*. Courtesy: UCF Today", out.width = '100%', fig.align='center'}
-knitr::include_graphics("Infographic.jpg")
-```  
-   
-Click [here](https://today.ucf.edu/the-science-behind-zombie-ants/) to go to the actual article.    
-    
-[Go to top](#headlines)      
    
 ----------------------------------
-   
-Check out the [lab webpage](http://sciences.ucf.edu/biology/debekkerlab/) for more details.   
    
 More about **current** and **past** research here!   
   

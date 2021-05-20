@@ -10,7 +10,7 @@ output:
 body {text-align: justify}
 </style>
 
-```{r, echo=F}
+```{r, echo=F, warning=F, message=F}
 library(rmarkdown)
 library(knitr)
 library(jpeg)
@@ -25,21 +25,24 @@ knitr::include_graphics("dp.jpg")
        
 ### Bio ([CV](cv.html))   
     
-I am a doctoral student in the parasitic behavioral manipulation lab based at the [Department of Biology](http://sciences.ucf.edu/biology/) at the University of Central Florida. More specifically, our lab focusses on the enigmatic "zombie ant" fungus (*Ophiocordyceps unilateralis*) that infects and manipulates the behavior of the Florida carpenter ants, *Camponotus floridanus*. 
-My Ph.D. supervisor, [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), has been pioneering protocols for successfully culturing the fungus in the lab and performing infections that yield manipulations in laboratory conditions. Having gone through a few months of struggle, we have finally been able to obtain successful lab manipulations in *C. floridanus* ants. So, yay! 
-    
-   
+I am a doctoral candidate working at the intersection of chronobiology, animal behavior, and infectious diseases alongside [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/). We are currently based out of the [Department of Biology](http://sciences.ucf.edu/biology/) and are part of the [Genomics and Bioinformatics Cluster](https://www.ucf.edu/research/genomics-bioinformatics/) at the University of Central Florida.
+
+Synopsis of my dissertation research:
+Animals often exhibit daily rhythms in behavior as a way to anticipate predictable fluctuations in their environment with regards to the presence and absence of abiotic (e.g., light, temperature) and biotic (e.g., food, predators) factors. Such daily rhythmicity is the phenotypic result of genes and proteins that are under control of endogenous biological clocks. Behavioral rhythms are “flexible” since their phase, amplitude, and period can change throughout an animal’s life hallmarked by changes in so-called chronotype. This demonstrates that there is a certain plasticity present in clock-controlled behaviors. As such, characterizing the properties of rhythmic behavior and their underlying molecular mechanisms can further our understanding of the inherent plasticity in animal behavior and the major pathways involved. 
+
+While clock-controlled behavioral plasticity is crucial to a species’ survival and fitness, it has also been hypothesized to be a conserved target for several manipulative parasites that induce timely changes to host behavior in order to maximize growth and transmission. Using the Florida carpenter ant *Camponotus floridanus* as a model, Dr. de Bekker and I intend to bridge some of the existing knowledge gaps between sociobiology, chronobiology and parasitology by combining controlled behavioral experiments with time-course transcriptomics. First, we propose to identify the candidate molecular mechanisms that could be enabling these highly social animals to possess plasticity in their internal timekeeping. Subsequently, we aim to test the hypothesis that such chronobiological plasticity, at the level of gene expression and behavior, can be manipulated by fungal parasites that require timely changes in host behavior in order to complete their life cycle.
+
+
 ```{r echo=FALSE, out.width='90%', fig.align='center', fig.cap="A cadaver of the Florida carpenter ant (*Camponotus floridanus*) infected by the fungal parasite *Ophiocordyceps camponoti-floridani*. Photo courtesy: [Danny Goodding](https://www.dannygoodding.com/)"}
 library(knitr)
 knitr::include_graphics("zombie_ant.png")
 ```
    
-     
-If you aren't familiar with the "zombie ant" phenomenon, here is what happens. Fungal spores land on the ants' cuticle (exoskeleton) while they forage for food or other resources. Once the spore burrows through and infects the ant, the fungus gradually changes the behavior of its host. Personal observations indicate a phase of hyperactivity which is followed by a period of inactivity in the infected ants. However, the striking behavioral change occurs when the ant leaves the nest, climbs up the vegetation and latches on to a substrate with her mandibles. Being atrophied, the ant can't get out of its 'death grip' and dies in that position. This manipulated biting is not part of the regular behavior of a healthy ant. It is a novel behavior induced by the fungus - an *extended phenotype* of the parasite. The parasite then uses the ant’s tissues as a carbon source to grow a stalk from between the ant’s thorax and head, followed by a fruiting body containing infective ascospores for next round of infections.
-
-I am currently doing field and lab studies on the Florida Carpenter ants to quantify their activity budget for foraging before and after fungal infections. I also want to understand how the fungus overrides the biological clocks of these nocturnal ants to make them undergo the characteristic biting behavior in the day-time.
 
 ----------------------------------
+
+You can find more information about our lab [here](http://sciences.ucf.edu/biology/debekkerlab/).
+
 
 ```{r, echo=F}
 #Things that I intend to add here:
@@ -52,6 +55,6 @@ I am currently doing field and lab studies on the Florida Carpenter ants to quan
 ```
 
 ```{r}
-# More coming up soon.
+# Kindly refer to my CV for my past and current research projects.
 ```
 

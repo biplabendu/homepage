@@ -6,9 +6,10 @@ output:
       in_header: analytics.html
 ---
 
-<h6 style="text-align: right;" markdown="1">Last updated: June 1, 2018</h6>   
+<h6 style="text-align: right;" markdown="1">Last updated: May 20, 2021</h6>   
     
     
 ```{r, echo=F, out.width="100%"}
-knitr::include_graphics("images/cv.png")
+knitr::include_graphics("images/cv_2021_1.png")
+knitr::include_graphics("images/cv_2021_2.png")
 ```

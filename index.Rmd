@@ -10,7 +10,7 @@ output:
 body {text-align: justify}
 </style>
 
-```{r, echo=F}
+```{r, echo=F, warning=F, message=F}
 library(rmarkdown)
 library(knitr)
 library(jpeg)
