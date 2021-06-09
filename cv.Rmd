@@ -14,4 +14,4 @@ knitr::include_graphics("images/cv_2021_1.png")
 knitr::include_graphics("images/cv_2021_2.png")
 ```
 
-To download a PDF, please click <a href="biplabendu.github.io/images/document.pdf" target="_blank">here.</a>
+To download a PDF, please click <a href="biplabendu.github.io/homepage/images/document.pdf" target="_blank">here.</a>
