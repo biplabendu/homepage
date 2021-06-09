@@ -6,7 +6,7 @@ output:
       in_header: analytics.html
 ---
 
-<h6 style="text-align: right;" markdown="1">Last updated: May 20, 2021</h6>   
+<h6 style="text-align: right;" markdown="1">Last updated: June 9, 2021</h6>   
     
     
 ```{r, echo=F, out.width="100%"}
