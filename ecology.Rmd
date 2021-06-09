@@ -12,7 +12,7 @@ A site maintained by Biplabendu Das (Lab Instructor, PCB3044L-Spring2019, UCF-Bi
 body {text-align: justify}
 </style>
 
-```{r, echo=F}
+```{r, echo=F, warning=F}
 library(htmltools)
 library(vembedr)
 ```
@@ -24,7 +24,7 @@ library(vembedr)
 
 ##### 1. [F-test and T-test Cheat Sheet](#1)
 ##### 2. [Plotting means and standard deviations in Excel](#2)
-##### 3. [Example of a well-written Introduction-Results-Discussion](#3)
+##### 3. [Plotting publication-quality figures using R](#3)
 
   
 
@@ -70,31 +70,16 @@ knitr::include_graphics("images/cheatsheet-images/cheatsheet6.jpg")
 <a id="3"></a>
 ----------------------------------
 
-#### Example of a well-written Introduction-Results-Discussion
+#### Tutorial - Plotting publication-quality figures using R
 
-Please note, this document is meant for reference purposes only.   
-DO NOT COPY.   
-This document has already been submitted to the Turnitin repository, so any attempt to plagiarize will be detected upon submission and will not be tolerated under any circumstance. 
-Submissions with above 20% plagiarism score will get an automatic zero.   
+This tutorial is intended to get you started with programming in R, using RStudio Cloud and a shared project (link provided below). The code in the R script will generate high-quality plots using an example dataset, and save them to your local hard disk for use.
 
+Shared project link: https://rstudio.cloud/project/1049250
 
+Note: This tutorial was created for students taking my Principles of Ecology lab.
 
-  
-```{r, echo=F, out.width = '100%', fig.align='center', out.extra='style="background-color: #9ecff7; padding:10px; display: inline-block;"'}
-knitr::include_graphics("images/Intro-Results-Discussion/image001.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image002.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image003.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image004.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image005.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image006.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image007.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image008.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image009.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image010.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image011.png")
-knitr::include_graphics("images/Intro-Results-Discussion/image012.png")
-```  
-   
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KYS8pbr_bvg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
     
 [Go to top](#headlines)      
    

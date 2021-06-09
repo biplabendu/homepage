@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -80,9 +81,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -96,7 +95,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -201,8 +199,6 @@ $(document).ready(function () {
 });
 </script>
 
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
 
 <style type="text/css">
@@ -259,20 +255,17 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -315,6 +308,13 @@ $(document).ready(function () {
     <span class="fa fa-leaf"></span>
      
     EcologyLab
+  </a>
+</li>
+<li>
+  <a href="IUSSI.html">
+    <span class="fa fa-bug"></span>
+     
+    IUSSI_Demography
   </a>
 </li>
       </ul>
@@ -365,8 +365,8 @@ body {text-align: justify}
 <div id="plotting-means-and-standard-deviations-in-excel" class="section level5">
 <h5>2. <a href="#2">Plotting means and standard deviations in Excel</a></h5>
 </div>
-<div id="example-of-a-well-written-introduction-results-discussion" class="section level5">
-<h5>3. <a href="#3">Example of a well-written Introduction-Results-Discussion</a></h5>
+<div id="plotting-publication-quality-figures-using-r" class="section level5">
+<h5>3. <a href="#3">Plotting publication-quality figures using R</a></h5>
 </div>
 </div>
 </div>
@@ -392,12 +392,13 @@ body {text-align: justify}
 </div>
 <div id="section-3" class="section level2">
 <h2><a id="3"></a></h2>
-<div id="example-of-a-well-written-introduction-results-discussion-1" class="section level4">
-<h4>Example of a well-written Introduction-Results-Discussion</h4>
-<p>Please note, this document is meant for reference purposes only.<br />
-DO NOT COPY.<br />
-This document has already been submitted to the Turnitin repository, so any attempt to plagiarize will be detected upon submission and will not be tolerated under any circumstance. Submissions with above 20% plagiarism score will get an automatic zero.</p>
-<p><img src="images/Intro-Results-Discussion/image001.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image002.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image003.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image004.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image005.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image006.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image007.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image008.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image009.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image010.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image011.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/Intro-Results-Discussion/image012.png" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /></p>
+<div id="tutorial---plotting-publication-quality-figures-using-r" class="section level4">
+<h4>Tutorial - Plotting publication-quality figures using R</h4>
+<p>This tutorial is intended to get you started with programming in R, using RStudio Cloud and a shared project (link provided below). The code in the R script will generate high-quality plots using an example dataset, and save them to your local hard disk for use.</p>
+<p>Shared project link: <a href="https://rstudio.cloud/project/1049250" class="uri">https://rstudio.cloud/project/1049250</a></p>
+<p>Note: This tutorial was created for students taking my Principles of Ecology lab.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KYS8pbr_bvg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
 <p><a href="#headlines">Go to top</a></p>
 <hr />
 <pre class="r"><code># Check this space for more materials!</code></pre>
@@ -421,6 +422,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
