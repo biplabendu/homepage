@@ -22,12 +22,44 @@ library(vembedr)
 
 ### Lab Materials
 
-##### 1. [F-test and T-test Cheat Sheet](#1)
-##### 2. [Plotting means and standard deviations in Excel](#2)
 ##### 3. [Plotting publication-quality figures using R](#3)
+##### 2. [Plotting means and standard deviations in Excel](#2)
+##### 1. [F-test and T-test Cheat Sheet](#1)
 
   
 
+----------------------------------
+
+<a id="3"></a>
+----------------------------------
+
+#### Plotting publication-quality figures using R 
+
+This tutorial is intended to get you started with programming in R, using RStudio (Cloud) for working on a shared project (link provided [below](https://rstudio.cloud/project/1049250)). The code in the R script will generate high-quality plots using an example dataset, and save them to your local hard disk for use.
+
+Shared project link: https://rstudio.cloud/project/1049250
+
+Note: This tutorial was created for students taking PCB3044L-Principles of Ecology lab at UCF.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KYS8pbr_bvg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    
+[Go to top](#headlines)      
+   
+----------------------------------
+
+<a id="2"></a>
+----------------------------------
+
+#### Tutorial - Plotting means and standard deviations in Excel   
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3wo29oDkyG0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+   
+[Go to top](#headlines)      
+   
+
+----------------------------------
 <a id="1"></a>
 ----------------------------------
 
@@ -51,39 +83,6 @@ knitr::include_graphics("images/cheatsheet-images/cheatsheet6.jpg")
     
 [Go to top](#headlines)      
    
-----------------------------------
-
-
-<a id="2"></a>
-----------------------------------
-
-#### Tutorial - Plotting means and standard deviations in Excel   
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3wo29oDkyG0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-   
-[Go to top](#headlines)      
-   
-----------------------------------
-
-
-<a id="3"></a>
-----------------------------------
-
-#### Tutorial - Plotting publication-quality figures using R
-
-This tutorial is intended to get you started with programming in R, using RStudio Cloud and a shared project (link provided below). The code in the R script will generate high-quality plots using an example dataset, and save them to your local hard disk for use.
-
-Shared project link: https://rstudio.cloud/project/1049250
-
-Note: This tutorial was created for students taking my Principles of Ecology lab.
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/KYS8pbr_bvg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-    
-[Go to top](#headlines)      
-   
-----------------------------------
   
 ```{r}
 # Check this space for more materials!

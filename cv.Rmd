@@ -6,10 +6,20 @@ output:
       in_header: analytics.html
 ---
 
-<h6 style="text-align: right;" markdown="1">Last updated: June 9, 2021</h6>   
+<h6 style="text-align: right;" markdown="1">Last updated: Feb 21, 2022</h6>   
     
     
-```{r, echo=F, out.width="100%", dpi=200}
-knitr::include_graphics("images/cv_2021_1.png")
-knitr::include_graphics("images/cv_2021_2.png")
+```{r, echo=F, fig.align='center', out.width="85%", dpi=300}
+
+path_to_repo <- "/Users/biplabendudas/Documents/GitHub/homepage"
+path_to_cv <- "/images/CVs/Feb2022/"
+files <- list.files(paste0(path_to_repo,path_to_cv))
+
+knitr::include_graphics(paste0(path_to_repo,path_to_cv,files[[1]]))
+knitr::include_graphics(paste0(path_to_repo,path_to_cv,files[[2]]))
+knitr::include_graphics(paste0(path_to_repo,path_to_cv,files[[3]]))
+
+
+
+
 ```

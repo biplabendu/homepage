@@ -57,5 +57,5 @@ You can find more information about our lab [here](http://sciences.ucf.edu/biolo
 ```
 
 ```{r}
-# Kindly refer to my CV for my past and current research projects.
+# For my past and current research projects, refer to my CV.
 ```
