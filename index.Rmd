@@ -23,7 +23,7 @@ knitr::include_graphics("dp.jpg")
    
 <h6 style="text-align: center;" markdown="1">Email: biplabendu.das@gmail.com</h6>     
        
-### Bio ([CV](cv.html))   
+### Bio ([CV](https://www.academia.edu/attachments/81365810/download_file))   
     
 I am a doctoral candidate working at the intersection of chronobiology, animal behavior, and infectious diseases alongside [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/). We are currently based out of the [Department of Biology](http://sciences.ucf.edu/biology/) and are part of the [Genomics and Bioinformatics Cluster](https://www.ucf.edu/research/genomics-bioinformatics/) at the University of Central Florida.
 
@@ -59,3 +59,4 @@ You can find more information about our lab [here](http://sciences.ucf.edu/biolo
 ```{r}
 # For my past and current research projects, refer to my CV.
 ```
+

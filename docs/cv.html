@@ -291,14 +291,21 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="research.html">
-    <span class="fa fa-bug"></span>
+    <span class="fa fa-flask"></span>
      
     Research
   </a>
 </li>
 <li>
   <a href="cv.html">
-    <span class="fa fa-list"></span>
+    <span class="fa fa-bug"></span>
+     
+    Camponotus_floridanus
+  </a>
+</li>
+<li>
+  <a href="https://www.academia.edu/attachments/81365810/download_file">
+    <span class="fa fa-address-card"></span>
      
     CV
   </a>
@@ -312,7 +319,7 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="IUSSI.html">
-    <span class="fa fa-bug"></span>
+    <span class="fa fa-pie-chart"></span>
      
     IUSSI_Demography
   </a>
@@ -350,10 +357,77 @@ $(document).ready(function () {
 </div>
 
 
+<iframe src="https://biplabendu.shinyapps.io/CFlo_Daily_Gene_Expression/?showcase=0" width="100%" height="600px">
+</iframe>
+<hr />
+<p>Usage: select a Cflo (<em>Camponotus floridanus</em>) gene ID to obtain all relevant data.<br />
+Data source: <em>Das and de Bekker 2022</em> and <em>Will et al. 2019</em></p>
+<hr />
+<p><strong>Q. What if I know my Cflo gene name but not it’s ID?</strong><br />
+If you want to find the Cflo gene ID for a specific gene, use the Cflo_annots tab to search. For example, search for “period” in Cflo_annots (you should see two rhythmic genes, periodic tryptophan (ID: LOC105256010) and period circadian protein (ID: LOC105256454))</p>
+<hr />
+<p><strong>Q. What am I staring at?</strong></p>
+<ul>
+<li><strong>Z-plots</strong>:
+<ul>
+<li>Daily expression of selected Cflo gene in ant brains
+<ul>
+<li><em>y-axis</em> = normalized (z-score) gene expression,<br />
+</li>
+<li><em>x-axis</em> = zeitgeber time (light=ZT00-12, dark=ZT12-24/00)<br />
+</li>
+</ul></li>
+<li>Results from rhythmicity analyses by eJTK-Cycle
+<ul>
+<li><em>GammaP_XX</em> &lt; 0.05 indicates that selected gene shows a sig. daily rhythm of periodicity = XX</li>
+</ul></li>
+<li>gene description (<em>Blast annotation</em>)</li>
+<li>differentially expressed during manipulated biting? (<em>DEG_biting</em>)</li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Gene Info</strong>:<br />
+All available functional annotations for the selected Cflo gene (GO, PFAM, signalP, TMHMM)</li>
+</ul>
+<hr />
+<ul>
+<li><strong>Manipulation?</strong><br />
+Results of differential gene expression from Will et al. 2019.
+<ul>
+<li><em>treatment_</em>:
+<ul>
+<li>Biting = alive, ophio-infected ant heads collected during manipulated biting</li>
+<li>Dead = manipulated ophio-infected ant heads collected right after death</li>
+<li>Control = time-matched un-infected control ant heads<br />
+</li>
+</ul></li>
+<li><em>logFC</em>: log2 fold-change between <em>treatment_1</em> and <em>treatment_2</em></li>
+<li><em>q_value</em>: BH-corrected p-values for the observed <em>logFC</em></li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Orthologs</strong><br />
+One-to-one orthologs between Cflo and other species (see Methods section of <em>Das and de Bekker 2022</em>)
+<ul>
+<li>sinv: Solenopsis invicta (fire ants)</li>
+<li>amel: Apis mellifera (honey bees)</li>
+<li>dmel: Drosophila melanogaster (fruit flies)</li>
+<li>mmus: Mus musculus (mice)</li>
+<li>human: Hmmmmm…</li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Cflo_annots</strong><br />
+Searchable list of all Cflo genes that show sig. 24h-rhythms in forager or nurse ant brains, and their functions.</li>
+</ul>
+<hr />
+<hr />
 <h6 style="text-align: right;">
-Last updated: Feb 21, 2022
+For further questions, contact Biplabendu
 </h6>
-<p><img src="images/CVs/Feb2022/BiplabenduDas_CV_2022_11Feb22_p1.png" width="85%" style="display: block; margin: auto;" /><img src="images/CVs/Feb2022/BiplabenduDas_CV_2022_11Feb22_p2.png" width="85%" style="display: block; margin: auto;" /><img src="images/CVs/Feb2022/BiplabenduDas_CV_2022_11Feb22_p3.png" width="85%" style="display: block; margin: auto;" /></p>
 
 
 

@@ -14,16 +14,19 @@ navbar:
     icon: fa-home
   - text: Research
     href: research.html
+    icon: fa-flask
+  - text: Camponotus_floridanus
+    href: cv.html
     icon: fa-bug
   - text: CV
-    href: cv.html
-    icon: fa-list
+    href: https://www.academia.edu/attachments/81365810/download_file
+    icon: fa-address-card
   - text: EcologyLab
     href: ecology.html
     icon: fa-leaf  
   - text: IUSSI_Demography
     href: IUSSI.html
-    icon: fa-bug
+    icon: fa-pie-chart
   right:
   - icon: fa-twitter
     href: https://twitter.com/another_ant_guy
