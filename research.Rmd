@@ -40,6 +40,7 @@ library(vembedr)
 <div class='altmetric-embed' data-badge-popover="right" data-badge-type='medium-bar' data-doi="10.1111/pim.12909"></div>
 
 - [*Code*: R tutorial for building and annotating temporal gene expression networks](https://github.com/biplabendu/deBekker_and_Das_2021/blob/master/scripts/methods_tutorial_wgcna_cflo_ophio_22Oct21.Rmd)
+- [*Tutorial*: See the step-by-step tutorial](https://github.com/biplabendu/deBekker_and_Das_2021/blob/master/manuscript/pim12909-sup-0001-supinfo.pdf)
 
 ----------------------------------
 
