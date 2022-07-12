@@ -12,7 +12,7 @@
 
 
 
-<title>Homepage</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -353,38 +353,81 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Homepage</h1>
 
 </div>
 
 
-<style>
-body {text-align: justify}
-</style>
-<div class="figure" style="text-align: center">
-<img src="dp.jpg" alt="| A young, naive me |" width="20%" />
-<p class="caption">
-| A young, naive me |
-</p>
-</div>
-<h6 style="text-align: center;">
-Email: <a href="mailto:biplabendu.das@gmail.com">biplabendu.das@gmail.com</a>
-</h6>
-<div id="bio-cv" class="section level3">
-<h3>Bio (<a href="https://www.academia.edu/attachments/81365810/download_file">CV</a>)</h3>
-<p>I am an integrative biologist working at the intersection of chronobiology, animal behavior, and infectious diseases. I am currently working with <a href="http://web.stanford.edu/~dmgordon/index.html">Prof. Deborah Gordon</a> as a postdoctoral researcher. As part of my dissertation, I have been working with <a href="http://sciences.ucf.edu/biology/debekkerlab/">Dr. Charissa de Bekker</a> to understand the role of biological clocks in behavioral plasticity and parasitic manipulation of host behavior using the “zombie ant” system.</p>
-<p><strong><em>Synopsis of my dissertation:</em></strong></p>
-<p>Animals often exhibit daily rhythms in behavior as a way to anticipate predictable fluctuations in their environment with regards to the presence and absence of abiotic (e.g., light, temperature) and biotic (e.g., food, predators) factors. Such daily rhythmicity is the phenotypic result of genes and proteins that are under control of endogenous biological clocks. Behavioral rhythms are “flexible” since their phase, amplitude, and period can change throughout an animal’s life hallmarked by changes in so-called chronotype. This demonstrates that there is a certain plasticity present in clock-controlled behaviors. As such, characterizing the properties of rhythmic behavior and their underlying molecular mechanisms can further our understanding of the inherent plasticity in animal behavior and the major pathways involved.</p>
-<p>While clock-controlled behavioral plasticity is crucial to a species’ survival and fitness, it has also been hypothesized to be a conserved target for several manipulative parasites that induce timely changes to host behavior in order to maximize growth and transmission. Using the Florida carpenter ant <em>Camponotus floridanus</em> as a model, Dr. de Bekker and I intend to bridge some of the existing knowledge gaps between sociobiology, chronobiology and parasitology by combining controlled behavioral experiments with time-course transcriptomics. First, we propose to identify the candidate molecular mechanisms that could be enabling these highly social animals to possess plasticity in their internal timekeeping. Subsequently, we aim to test the hypothesis that such chronobiological plasticity, at the level of gene expression and behavior, can be manipulated by fungal parasites that require timely changes in host behavior in order to complete their life cycle.</p>
-<div class="figure" style="text-align: center">
-<img src="zombie_ant.png" alt="A cadaver of the Florida carpenter ant (*Camponotus floridanus*) infected by the fungal parasite *Ophiocordyceps camponoti-floridani*. Photo courtesy: [Danny Goodding](https://www.dannygoodding.com/)" width="90%" />
-<p class="caption">
-A cadaver of the Florida carpenter ant (<em>Camponotus floridanus</em>) infected by the fungal parasite <em>Ophiocordyceps camponoti-floridani</em>. Photo courtesy: <a href="https://www.dannygoodding.com/">Danny Goodding</a>
-</p>
-</div>
+<iframe src="https://biplabendu.shinyapps.io/CFlo_Daily_Gene_Expression/?showcase=0" width="100%" height="600px">
+</iframe>
 <hr />
-<pre class="r"><code># For my past and current research projects, refer to my CV.</code></pre>
-</div>
+<p>Usage: select a Cflo (<em>Camponotus floridanus</em>) gene ID to obtain all relevant data.<br />
+Data source: <em>Das and de Bekker 2022</em> and <em>Will et al. 2019</em></p>
+<hr />
+<p><strong>Q. What if I know my Cflo gene name but not it’s ID?</strong><br />
+If you want to find the Cflo gene ID for a specific gene, use the Cflo_annots tab to search. For example, search for “period” in Cflo_annots (you should see two rhythmic genes, periodic tryptophan (ID: LOC105256010) and period circadian protein (ID: LOC105256454))</p>
+<hr />
+<p><strong>Q. What am I staring at?</strong></p>
+<ul>
+<li><strong>Z-plots</strong>:
+<ul>
+<li>Daily expression of selected Cflo gene in ant brains
+<ul>
+<li><em>y-axis</em> = normalized (z-score) gene expression,<br />
+</li>
+<li><em>x-axis</em> = zeitgeber time (light=ZT00-12, dark=ZT12-24/00)<br />
+</li>
+</ul></li>
+<li>Results from rhythmicity analyses by eJTK-Cycle
+<ul>
+<li><em>GammaP_XX</em> &lt; 0.05 indicates that selected gene shows a sig. daily rhythm of periodicity = XX</li>
+</ul></li>
+<li>gene description (<em>Blast annotation</em>)</li>
+<li>differentially expressed during manipulated biting? (<em>DEG_biting</em>)</li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Gene Info</strong>:<br />
+All available functional annotations for the selected Cflo gene (GO, PFAM, signalP, TMHMM)</li>
+</ul>
+<hr />
+<ul>
+<li><strong>Manipulation?</strong><br />
+Results of differential gene expression from Will et al. 2019.
+<ul>
+<li><em>treatment_</em>:
+<ul>
+<li>Biting = alive, ophio-infected ant heads collected during manipulated biting</li>
+<li>Dead = manipulated ophio-infected ant heads collected right after death</li>
+<li>Control = time-matched un-infected control ant heads<br />
+</li>
+</ul></li>
+<li><em>logFC</em>: log2 fold-change between <em>treatment_1</em> and <em>treatment_2</em></li>
+<li><em>q_value</em>: BH-corrected p-values for the observed <em>logFC</em></li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Orthologs</strong><br />
+One-to-one orthologs between Cflo and other species (see Methods section of <em>Das and de Bekker 2022</em>)
+<ul>
+<li>sinv: Solenopsis invicta (fire ants)</li>
+<li>amel: Apis mellifera (honey bees)</li>
+<li>dmel: Drosophila melanogaster (fruit flies)</li>
+<li>mmus: Mus musculus (mice)</li>
+<li>human: Hmmmmm…</li>
+</ul></li>
+</ul>
+<hr />
+<ul>
+<li><strong>Cflo_annots</strong><br />
+Searchable list of all Cflo genes that show sig. 24h-rhythms in forager or nurse ant brains, and their functions.</li>
+</ul>
+<hr />
+<hr />
+<h6 style="text-align: right;">
+For further questions, contact Biplabendu
+</h6>
 
 
 

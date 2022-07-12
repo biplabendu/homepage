@@ -25,7 +25,7 @@ knitr::include_graphics("dp.jpg")
        
 ### Bio ([CV](https://www.academia.edu/attachments/81365810/download_file))   
     
-I am a doctoral candidate working at the intersection of chronobiology, animal behavior, and infectious diseases alongside [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/). We are currently based out of the [Department of Biology](http://sciences.ucf.edu/biology/) and are part of the [Genomics and Bioinformatics Cluster](https://www.ucf.edu/research/genomics-bioinformatics/) at the University of Central Florida.
+I am an integrative biologist working at the intersection of chronobiology, animal behavior, and infectious diseases. I am currently working with [Prof. Deborah Gordon](http://web.stanford.edu/~dmgordon/index.html) as a postdoctoral researcher. As part of my dissertation, I have been working with [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/) to understand the role of biological clocks in behavioral plasticity and parasitic manipulation of host behavior using the "zombie ant" system.
 
 
 __*Synopsis of my dissertation:*__
@@ -42,8 +42,6 @@ knitr::include_graphics("zombie_ant.png")
    
 
 ----------------------------------
-
-You can find more information about our lab [here](http://sciences.ucf.edu/biology/debekkerlab/).
 
 
 ```{r, echo=F}

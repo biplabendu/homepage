@@ -16,7 +16,7 @@ navbar:
     href: research.html
     icon: fa-flask
   - text: Camponotus_floridanus
-    href: cv.html
+    href: camponotus_floridanus.html
     icon: fa-bug
   - text: CV
     href: https://www.academia.edu/attachments/81365810/download_file

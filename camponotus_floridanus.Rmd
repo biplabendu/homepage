@@ -1,0 +1,71 @@
+---
+title: ""
+output: 
+  html_document:
+    includes:
+      in_header: analytics.html
+---
+
+
+    
+```{r echo=F, out.width="100%"}
+
+knitr::include_app("https://biplabendu.shinyapps.io/CFlo_Daily_Gene_Expression/",
+  height = "600px")
+```
+
+___
+
+Usage: select a Cflo (*Camponotus floridanus*) gene ID to obtain all relevant data.   
+Data source: *Das and de Bekker 2022* and *Will et al. 2019*
+
+___  
+**Q. What if I know my Cflo gene name but not it's ID?**   
+If you want to find the Cflo gene ID for a specific gene, use the Cflo_annots tab to search. For example, search for "period" in Cflo_annots (you should see two rhythmic genes, periodic tryptophan (ID: LOC105256010) and period circadian protein (ID: LOC105256454))
+
+___
+**Q. What am I staring at?**   
+
+- **Z-plots**:   
+    - Daily expression of selected Cflo gene in ant brains   
+        - *y-axis* = normalized (z-score) gene expression,   
+        - *x-axis* = zeitgeber time (light=ZT00-12, dark=ZT12-24/00)   
+    - Results from rhythmicity analyses by eJTK-Cycle  
+        - *GammaP_XX* < 0.05 indicates that selected gene shows a sig. daily rhythm of periodicity = XX
+    - gene description (*Blast annotation*)
+    - differentially expressed during manipulated biting? (*DEG_biting*)
+      
+___
+- **Gene Info**:   
+All available functional annotations for the selected Cflo gene (GO, PFAM, signalP, TMHMM)  
+
+___
+- **Manipulation?**   
+Results of differential gene expression from Will et al. 2019.  
+    - *treatment_*:    
+          - Biting = alive, ophio-infected ant heads collected during manipulated biting
+          - Dead = manipulated ophio-infected ant heads collected right after death
+          - Control = time-matched un-infected control ant heads   
+    - *logFC*: log2 fold-change between *treatment_1* and *treatment_2*
+    - *q_value*: BH-corrected p-values for the observed *logFC*
+    
+___
+- **Orthologs**   
+One-to-one orthologs between Cflo and other species (see Methods section of *Das and de Bekker 2022*)    
+    - sinv: Solenopsis invicta (fire ants)
+    - amel: Apis mellifera (honey bees)
+    - dmel: Drosophila melanogaster (fruit flies)
+    - mmus: Mus musculus (mice)
+    - human: Hmmmmm...   
+    
+___
+- **Cflo_annots**   
+Searchable list of all Cflo genes that show sig. 24h-rhythms in forager or nurse ant brains, and their functions.
+
+
+
+___
+
+___
+<h6 style="text-align: right;" markdown="1">For further questions, contact Biplabendu</h6>   
+
