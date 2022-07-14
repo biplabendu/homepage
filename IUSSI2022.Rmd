@@ -509,6 +509,6 @@ All code used for this document is available on my [Github](https://github.com/b
 
 ___
 
-## 99 IUSSI 2014 & 2018
+## 99. IUSSI 2014 & 2018
 
 The demography data for the participants that attended IUSSI 2014 and 2018 can be found [here](https://biplabendu.github.io/homepage/IUSSI.html).
