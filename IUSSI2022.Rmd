@@ -33,12 +33,9 @@ knitr::opts_chunk$set(message = F)
 
 The goal:
 
-- Perform a rapid exploratory analyses of the demography data obtained from the survey performed on the audience interested in or/and attending the upcoming IUSSI international conference in 2022, San Diego.
+Perform a rapid exploratory analyses of the demography data obtained from the survey performed on the audience interested in or/and attending the upcoming IUSSI international conference in 2022, San Diego.
 
-- sub-goals:
-  - SUMMARIZE: who are these people?
-  - ANALYZE 01: who are the folks that are underrepresented in attendence/presenting/speaking at IUSSI 2022?
-  
+
 
 ```{r, include=F, echo=F}
 # Let's load the data and get a glimpse.
@@ -117,6 +114,7 @@ raw.dat[10:13,8:13] %>%
 
 - time_of_entry: 
 - age: 
+- and so on..
 
 ***
 
@@ -152,14 +150,14 @@ dat <-
   mutate(age = str_split_fixed(age, " ", n=2)[,1]) %>%
   mutate(age = ifelse(age %in% c("","Prefer"), "Other", age)) %>%
   mutate(age = as.factor(age)) %>%
-  # ## Plot: AGE
-  # group_by(age) %>%
-  # summarise(num = n()) %>% 
-  # ##
-  # ggplot(aes(x=age, y=num)) +
-  #   geom_point() +
-  #   coord_flip() +
-  #   theme_Publication()
+      # ## Plot: AGE
+      # group_by(age) %>%
+      # summarise(num = n()) %>% 
+      # ##
+      # ggplot(aes(x=age, y=num)) +
+      #   geom_point() +
+      #   coord_flip() +
+      #   theme_Publication()
 
   
   ## GENDER
@@ -193,36 +191,12 @@ dat <-
                                      "Europe;Southeast Asia",
                                      "Other"), "Other", residence_location)) %>%
   mutate(residence_location = as.factor(residence_location)) %>% 
-      # ## Plot: residence_location + gender
-      # group_by(residence_location, gender) %>% 
-      # summarize(num = n()) %>% 
-      # ggplot(aes(x=residence_location, y=log2(num+1), fill=gender, group=gender)) +
-      # # geom_point(size=4, alpha=0.85) +
-      # geom_hline(yintercept = log2(2), col="grey60", alpha=0.5, size=2) +
-      # geom_bar(position="stack", stat="identity") +
-      # coord_flip() +
-      # theme_Publication() +
-      # scale_colour_Publication() +
-      # scale_fill_Publication() +
-      # guides(fill = guide_legend(nrow = 3))
 
 
   ## research location
   # filter(research_location %in% c("Central America;Continental US", "Europe;South America")) %>%
   separate_rows(research_location, sep = ";") %>% 
   mutate(research_location = as.factor(research_location)) %>% 
-      # ## Plot: research_location + gender
-      # group_by(research_location, gender) %>% 
-      # summarize(num = n()) %>% 
-      # ggplot(aes(x=research_location, y=log2(num+1), fill=gender, group=gender)) +
-      # geom_bar(position="stack", stat="identity", size=2) +
-      # # geom_point(size=4, alpha=0.85) +
-      # geom_hline(yintercept = log2(2), col="grey60", alpha=0.5, size=2) +
-      # coord_flip() +
-      # theme_Publication() +
-      # scale_colour_Publication() +
-      # scale_fill_Publication() +
-      # guides(fill = guide_legend(nrow = 3))
   
   
   ## ethnic_identity
@@ -274,19 +248,7 @@ dat <-
   ## current position
   separate_rows(current_position, sep = ";") %>% 
   mutate(current_position = as.factor(current_position)) %>% 
-    # ## Plot: research_location + gender
-    # group_by(current_position, gender) %>%
-    # summarize(num = n()) %>%
-    #   ggplot(aes(x=current_position, y=log2(num+1), fill=gender, group=gender)) +
-    #   geom_bar(position="stack", stat="identity", size=2) +
-    #   # geom_point(size=4, alpha=0.85) +
-    #   geom_hline(yintercept = log2(2), col="grey60", alpha=0.5, size=2) +
-    #   coord_flip() +
-    #   theme_Publication() +
-    #   scale_colour_Publication() +
-    #   scale_fill_Publication() +
-    #   guides(fill = guide_legend(nrow = 3))
-    
+  
   
   ## which_attended_before
   separate_rows(which_attended_before, sep = ";") %>% 
@@ -296,18 +258,6 @@ dat <-
   ## role_attended_before
   separate_rows(role_attended_before, sep = ";") %>% 
   mutate(role_attended_before = as.factor(role_attended_before)) %>% 
-    # ## Plot: research_location + gender
-    # group_by(role_attended_before, gender) %>%
-    # summarize(num = n()) %>%
-    #   ggplot(aes(x=role_attended_before, y=log2(num+1), fill=gender, group=gender)) +
-    #   geom_bar(position="stack", stat="identity", size=2) +
-    #   # geom_point(size=4, alpha=0.85) +
-    #   geom_hline(yintercept = log2(2), col="grey60", alpha=0.5, size=2) +
-    #   coord_flip() +
-    #   theme_Publication() +
-    #   scale_colour_Publication() +
-    #   scale_fill_Publication() +
-    #   guides(fill = guide_legend(nrow = 3))
 
   
   ## current_institute_desc
@@ -340,7 +290,8 @@ dat <-
 
 ## 03 Visualize
 
-### AGE & GENDER
+
+### Age & gender
 
 ```{r age_gender}
 
@@ -349,26 +300,207 @@ dat %>%
   
   # remove the rows with no age/gender info
   filter(age != "Other") %>% 
-  filter(gender != "Other") %>% 
+  filter(!is.na(gender)) %>%
+  # filter(gender != "Other") %>% 
   
   # tally the number of people in a given age group for a given gender
   distinct(ID, age, gender) %>%
   group_by(age, gender) %>% 
   summarize(num=n()) %>% 
-  na.omit() %>%
     
   ## Plot: AGE + GENDER
-  ggplot(aes(x=age, y=num, col=gender, group=gender)) +
+  ggplot(aes(x=age, y=num, fill=gender, group=gender)) +
     labs(y="number of people") +
-    geom_point() +
-    geom_line() +
+    # geom_hline(yintercept = 5, col="grey60", alpha=0.7, size=1) +
+    geom_bar(position="stack", stat="identity") +
     coord_flip() +
-    theme_Publication(base_size = 16) +
+    theme_Publication() +
     scale_colour_Publication() +
-    guides(color = guide_legend(nrow = 3))
+    scale_fill_Publication() +
+    guides(fill = guide_legend(nrow = 3))
 
 ```
 
+***
+
+### Residence location & gender
+
+```{r residence_location_gender}
+# Residence location & gender
+dat %>%
+
+  # filter(!residence_location %in% c("Other")) %>% 
+  filter(!is.na(residence_location)) %>%
+  filter(!is.na(gender)) %>%
+  # filter(gender != "Other") %>% 
+  
+  distinct(ID, residence_location, gender) %>% 
+  group_by(residence_location, gender) %>%
+  summarize(num = n()) %>% 
+  
+  ggplot(aes(x=residence_location, y=num, fill=gender, group=gender)) +
+    labs(y="number of people") +
+    # geom_hline(yintercept = 5, col="grey60", alpha=0.7, size=1) +
+    geom_bar(position="stack", stat="identity") +
+    coord_flip() +
+    theme_Publication() +
+    scale_colour_Publication() +
+    scale_fill_Publication() +
+    guides(fill = guide_legend(nrow = 3))
+
+```
+
+***
+
+### Research location & gender
+
+```{r research_location_gender}
+
+## Plot: research_location + gender
+dat %>% 
+  
+  filter(!is.na(research_location)) %>%
+  filter(!is.na(gender)) %>%
+  # filter(gender != "Other") %>%
+  
+  distinct(ID, research_location, gender) %>% 
+  group_by(research_location, gender) %>%
+  summarize(num = n()) %>% 
+  
+  ggplot(aes(x=research_location, y=num, fill=gender, group=gender)) +
+    geom_bar(position="stack", stat="identity", size=2) +
+    labs(y="number of people") +
+    # geom_hline(yintercept = 5, col="grey60", alpha=0.7, size=1) +
+    coord_flip() +
+    theme_Publication() +
+    scale_colour_Publication() +
+    scale_fill_Publication() +
+    guides(fill = guide_legend(nrow = 3))
+```
+
+> A bunch of folks perform research in Central America, but no representation from folks living in Central America.
+
+***
+
+### Role of attendee & gender
+
+```{r role_attended_before_gender}
+
+dat %>% 
+  
+  # remove the rows with no info
+  filter(!is.na(role_attended_before)) %>%
+  filter(!is.na(gender)) %>%
+  # filter(gender != "Other") %>% 
+  
+  distinct(ID, role_attended_before, gender) %>% 
+  group_by(role_attended_before, gender) %>%
+  summarize(num = n()) %>% 
+    
+  ## Plot: research_location + gender
+  ggplot(aes(x=role_attended_before, y=num, fill=gender, group=gender)) +
+    geom_bar(position="stack", stat="identity", size=2) +
+    labs(y="number of people") +
+    # geom_hline(yintercept = 5, col="grey60", alpha=0.7, size=1) +
+    coord_flip() +
+    theme_Publication() +
+    scale_colour_Publication() +
+    scale_fill_Publication() +
+    guides(fill = guide_legend(nrow = 3))
+
+```
+
+***
+
+### Current position & gender
+
+```{r current_position_gender}
+
+dat %>% 
+  
+  filter(!is.na(current_position)) %>%
+  filter(!is.na(gender)) %>%
+  # filter(gender != "Other") %>% 
+
+  distinct(ID, current_position, gender) %>% 
+  group_by(current_position, gender) %>%
+  summarize(num = n()) %>% 
+  
+  ggplot(aes(x=current_position, y=log2(num+1), fill=gender, group=gender)) +
+    geom_bar(position="stack", stat="identity", size=2) +
+    labs(y="number of people") +
+    # geom_hline(yintercept = 5, col="grey60", alpha=0.7, size=1) +
+    coord_flip() +
+    theme_Publication() +
+    scale_colour_Publication() +
+    scale_fill_Publication() +
+    guides(fill = guide_legend(nrow = 3))
+
+```
+
+***
+***
+
+### Role of attendee & residence location
+
+```{r role_attended_before_residence_location}
+
+dat %>% 
+  
+  # remove the rows with no age/gender info
+  filter(!is.na(role_attended_before)) %>%
+  filter(!is.na(residence_location)) %>%
+  # filter(gender != "Other") %>% 
+  
+  distinct(ID, role_attended_before, residence_location) %>% 
+  group_by(role_attended_before, residence_location) %>%
+  summarize(num = n()) %>%
+    
+  ggplot(aes(x=residence_location, y=num, fill=role_attended_before, group=role_attended_before)) +
+    geom_bar(position="stack", stat="identity", size=2) +
+    labs(y="number of people") +
+    # geom_hline(yintercept = 5, col="grey60", alpha=0.7, size=1) +
+    coord_flip() +
+    theme_Publication() +
+    scale_colour_Publication() +
+    scale_fill_Publication() +
+    guides(fill = guide_legend(nrow = 3))
+
+```
+
+***
+
+### Role of attendee & current position
+
+```{r role_attended_before_current_position}
+
+dat %>% 
+  
+  # remove the rows with no age/gender info
+  filter(!is.na(role_attended_before)) %>%
+  filter(!is.na(current_position)) %>%
+  # filter(gender != "Other") %>% 
+  
+  distinct(ID, role_attended_before, current_position) %>% 
+  group_by(role_attended_before, current_position) %>%
+  summarize(num = n()) %>% 
+    
+  ## Plot: research_location + gender
+  ggplot(aes(x=current_position, y=num, fill=role_attended_before, group=role_attended_before)) +
+    geom_bar(position="stack", stat="identity", size=2) +
+    labs(y="number of people") +
+    # geom_hline(yintercept = 5, col="grey60", alpha=0.7, size=1) +
+    coord_flip() +
+    theme_Publication() +
+    scale_colour_Publication() +
+    scale_fill_Publication() +
+    guides(fill = guide_legend(nrow = 3))
+
+# to do:
+# normalize the number of roles undertaken by a person in past IUSSI
+# number of past roles / number of past IUSSI attended
+
+```
 
 
 ___
