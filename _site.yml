@@ -27,6 +27,9 @@ navbar:
   - text: IUSSI_Demography
     href: IUSSI.html
     icon: fa-pie-chart
+  - text: IUSSI2022_Demography
+    href: IUSSI2022.html
+    icon: fa-pie-chart
   right:
   - icon: fa-twitter
     href: https://twitter.com/another_ant_guy

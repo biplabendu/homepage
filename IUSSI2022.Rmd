@@ -1,12 +1,16 @@
 
 ---
-title: "Who is attending IUSSI 2022?"
+title: "Demography data for IUSSI"
 author: Biplabendu Das
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
   html_document:
     toc: true
+    toc_depth: 3
+    toc_float: true
     theme: yeti
+    keep_md: no
+    code_folding: hide
     includes:
       in_header: analytics.html
 editor_options: 
@@ -41,20 +45,20 @@ The goal:
 
 rm(list = ls())
 library(tidyverse)
-library(countrycode)
+library(kableExtra)
 
 # Load custom functions
 source("./functions/theme_publication.R")
 
-dat <- read.csv("./data/2022_demography_data/iussi_2022_data_28Jun22.csv", 
+raw.dat <- read.csv("./data/2022_demography_data/iussi_2022_data_28Jun22.csv", 
                 header = T, stringsAsFactors = F,
                 na.strings = c("NA",""," "))
 
 # Get a glimpse
-dat %>% as.tibble() %>% head()
+raw.dat %>% as.tibble() %>% head()
 
 # Let's rename the columns to simple, easy-to-read/access data names
-colnames(dat)
+colnames(raw.dat)
 
 new.colnames <- c("time_of_entry",
                   "age",
@@ -85,21 +89,69 @@ new.colnames <- c("time_of_entry",
                   "add_barriers_which")
 
 ## Rename column names
-colnames(dat) <- new.colnames
+colnames(raw.dat) <- new.colnames
 
+```
+
+***
+
+## 01 Raw data
+
+Let's take a look at few rows and columns of the raw data.
+
+```{r raw_data, echo=F}
 # get a glimpse of the column format features of the data
-dat %>% glimpse()
+raw.dat[10:13,1:7] %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped"), full_width = F, position = "center", latex_options = "scaled_down")
 
-## Assign proper data formats
-dat %>% 
+raw.dat[10:13,8:13] %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped"), full_width = F, position = "center", latex_options = "scaled_down")
+
+```
+
+### What does each column contain?
+
+**Column name and Description**
+
+- time_of_entry: 
+- age: 
+
+***
+
+## 02 Format data
+
+> Get the data into a tidy format
+
+- remove columns that are not useful for a first assessment
+    - time_of_entry
+    - add_xxx (all columns that contain additional response not listed)
+- format each column by
+    - separating multiple choices into separate rows
+    - factorizing the variables
+    - checking for erronneous choices/inputs
+
+
+```{r format_data}
+
+## Tidy and save data
+dat <- 
   
-  # remove columns that you do not want
+  raw.dat %>% as_tibble() %>% 
+  
+  
+  ## remove columns that you do not want
   select(-time_of_entry) %>% 
+  select(-starts_with("add")) %>% 
+  
+  ## add a unique ID for each person
+  rownames_to_column("ID") %>% 
   
   ## AGE
   mutate(age = str_split_fixed(age, " ", n=2)[,1]) %>%
+  mutate(age = ifelse(age %in% c("","Prefer"), "Other", age)) %>%
   mutate(age = as.factor(age)) %>%
-  filter(!age %in% c("","Prefer")) %>%
   # ## Plot: AGE
   # group_by(age) %>%
   # summarise(num = n()) %>% 
@@ -109,10 +161,15 @@ dat %>%
   #   coord_flip() +
   #   theme_Publication()
 
+  
   ## GENDER
-  mutate(gender = as.factor(gender)) %>% 
-  filter(gender %in% c("Cisgender man", "Cisgender woman", "Non-binary",
-                       "Transgender man", "Transgender woman")) %>%
+    # there are two entries that contains the following two responses for gender identity
+    # c("Cisgender woman;Prefer not to respond", "Transgender man;Cisgender woman")),
+    # five entries that stated "Prefer not to respond", and one which is NA.
+    # Rename all to "Other"
+  mutate(gender = ifelse(!gender %in% c("Cisgender man", "Cisgender woman", "Non-binary",
+                       "Transgender man", "Transgender woman"), "Other", gender)) %>%
+  mutate(gender = as.factor(gender)) %>%
       # ## Plot: GENDER
       # group_by(gender) %>%
       # summarise(num = n()) %>%
@@ -122,21 +179,19 @@ dat %>%
       #   geom_point() +
       #   coord_flip() +
       #   theme_Publication()
+
   
-  # ## AGE + GENDER
-  # group_by(age, gender) %>% 
-  # summarize(num=n()) %>% 
-  # na.omit() %>% 
-      # ## Plot: AGE + GENDER
-      # ggplot(aes(x=age, y=num, col=gender, group=gender)) +
-      #   geom_point() +
-      #   geom_line() +
-      #   coord_flip() +
-      #   theme_Publication() +
-      #   scale_colour_Publication() +
-      #   guides(color = guide_legend(nrow = 3))
+  ## sex_orientation
+  mutate(sex_orientation = ifelse(sex_orientation %in% c("Additional identity not listed? (Please click next and share)","Prefer not to respond"), "Other", sex_orientation)) %>% 
+  mutate(sex_orientation = as.factor(sex_orientation)) %>% 
+  
   
   ## residence_location
+  mutate(residence_location = ifelse(residence_location %in% c("Central America;Other",
+                                     "Continental US;South Asia",
+                                     "Europe;Middle East",
+                                     "Europe;Southeast Asia",
+                                     "Other"), "Other", residence_location)) %>%
   mutate(residence_location = as.factor(residence_location)) %>% 
       # ## Plot: residence_location + gender
       # group_by(residence_location, gender) %>% 
@@ -151,7 +206,10 @@ dat %>%
       # scale_fill_Publication() +
       # guides(fill = guide_legend(nrow = 3))
 
+
   ## research location
+  # filter(research_location %in% c("Central America;Continental US", "Europe;South America")) %>%
+  separate_rows(research_location, sep = ";") %>% 
   mutate(research_location = as.factor(research_location)) %>% 
       # ## Plot: research_location + gender
       # group_by(research_location, gender) %>% 
@@ -165,8 +223,56 @@ dat %>%
       # scale_colour_Publication() +
       # scale_fill_Publication() +
       # guides(fill = guide_legend(nrow = 3))
+  
+  
+  ## ethnic_identity
+  separate_rows(ethnic_identity, sep = ";") %>% 
+  mutate(ethnic_identity = ifelse(ethnic_identity %in% c("A race or ethnicity not listed",
+                                                         "Prefer not to respond"), 
+                                  "Other", ethnic_identity)) %>% 
+  mutate(ethnic_identity = as.factor(ethnic_identity)) %>% 
+  
+  
+  ## religious_identity
+  mutate(religious_identity = ifelse(religious_identity %in% c("An additional affiliation not listed",
+                                                               "Prefer not to respond"), 
+                                     "Other", religious_identity)) %>% 
+  mutate(religious_identity = as.factor(religious_identity)) %>% 
+  
+  
+  ## disability_identity
+  separate_rows(disability_identity, sep = ";") %>% 
+  mutate(disability_identity = as.factor(disability_identity)) %>% 
+  
 
+  ## written_english
+  mutate(written_english = as.factor(written_english)) %>% 
+  
+  
+  ## spoken_english
+  mutate(spoken_english = as.factor(spoken_english)) %>% 
+  
+  
+  ## children_responsibility
+  mutate(children_responsibility = as.factor(children_responsibility)) %>% 
+  
+  
+  ## adult_responsibility
+  mutate(adult_responsibility = ifelse(adult_responsibility %in% c("Prefer not to respond", "Other"),
+                                       "Other", adult_responsibility)) %>% 
+  mutate(adult_responsibility = as.factor(adult_responsibility)) %>% 
+  
+  
+  ## funds_for_care_inhibit
+  mutate(funds_for_care_inhibit = as.factor(funds_for_care_inhibit)) %>% 
+  
+  
+  ## firstgen
+  mutate(firstgen = as.factor(firstgen)) %>%  
+  
+  
   ## current position
+  separate_rows(current_position, sep = ";") %>% 
   mutate(current_position = as.factor(current_position)) %>% 
     # ## Plot: research_location + gender
     # group_by(current_position, gender) %>%
@@ -180,283 +286,90 @@ dat %>%
     #   scale_colour_Publication() +
     #   scale_fill_Publication() +
     #   guides(fill = guide_legend(nrow = 3))
+    
+  
+  ## which_attended_before
+  separate_rows(which_attended_before, sep = ";") %>% 
+  mutate(which_attended_before = as.factor(which_attended_before)) %>% 
 
+  
   ## role_attended_before
+  separate_rows(role_attended_before, sep = ";") %>% 
   mutate(role_attended_before = as.factor(role_attended_before)) %>% 
-    ## Plot: research_location + gender
-    group_by(role_attended_before, gender) %>%
-    summarize(num = n()) %>%
-      ggplot(aes(x=role_attended_before, y=log2(num+1), fill=gender, group=gender)) +
-      geom_bar(position="stack", stat="identity", size=2) +
-      # geom_point(size=4, alpha=0.85) +
-      geom_hline(yintercept = log2(2), col="grey60", alpha=0.5, size=2) +
-      coord_flip() +
-      theme_Publication() +
-      scale_colour_Publication() +
-      scale_fill_Publication() +
-      guides(fill = guide_legend(nrow = 3))
+    # ## Plot: research_location + gender
+    # group_by(role_attended_before, gender) %>%
+    # summarize(num = n()) %>%
+    #   ggplot(aes(x=role_attended_before, y=log2(num+1), fill=gender, group=gender)) +
+    #   geom_bar(position="stack", stat="identity", size=2) +
+    #   # geom_point(size=4, alpha=0.85) +
+    #   geom_hline(yintercept = log2(2), col="grey60", alpha=0.5, size=2) +
+    #   coord_flip() +
+    #   theme_Publication() +
+    #   scale_colour_Publication() +
+    #   scale_fill_Publication() +
+    #   guides(fill = guide_legend(nrow = 3))
 
-  as_tibble() %>% 
-  # select(age, age_low, age_up) %>%
-  select(age, gender, residence_location, current_position) %>%
-  head()
-
-
-# # Let's summarize the paricipants by country
-# dat.per.country.2014 <- 
-#   dat.2014 %>% group_by(country) %>% 
-#   summarise(participants_2014 = n()) %>% arrange(desc(participants_2014)) %>% 
-#   # country names are in different formats;change them to a common one (iso3c format)
-#   mutate(country.iso3c = countrycode(country,origin='country.name', destination='iso3c'))
-# 
-# # How many countries were present?
-# dat.per.country.2014 %>% nrow()
-# 
-# # Any unknown countries?
-# # dat.per.country.2014 %>% filter(is.na(country.iso3c)) # nope
-# 
-# # What's the median number of participants per country?
-# dat.per.country.2014 %>% pull(participants_2014) %>% median()
-# 
-# # Let's take a look at the top 15 and bottom 15 countries by participation
-# dat.per.country.2014 %>% head(15)
-# dat.per.country.2014 %>% tail(15)
-
-
-```
-
-
-
-```{r, inlcude=F, echo=F}
-## Let's compare 2014 and 2018
-dat.2018 <- read.csv("./data/2018_participants_list.csv", header = T, stringsAsFactors = F)
-
-# # Get a glimpse
-# dat.2018 %>% glimpse()
-
-# Let's summarize the paricipants by country
-dat.per.country.2018 <- 
-  dat.2018 %>% group_by(country) %>% 
-  summarise(participants_2018 = n()) %>% arrange(desc(participants_2018)) %>% 
-  # country names are in different formats;change them to a common one (iso3c format)
-  mutate(country.iso3c = countrycode(country,origin='country.name', destination='iso3c'))
-
-# Check for unknown country inputs
-# dat.per.country.2018 %>% filter(is.na(country.iso3c)) # none found
-
-# there is one participant from an unknown country; excluding them from the data
-dat.per.country.2018 <- na.omit(dat.per.country.2018)
-
-# Calculate the perecentages for country-wise participation
-dat.per.country <- dat.per.country.2014 %>%
-  left_join(dat.per.country.2018, by="country.iso3c") %>% 
-  select(country.iso3c, participants_2014, participants_2018, everything()) %>% 
-  mutate(Aus_2014 = round(participants_2014/sum(participants_2014)*100,1)) %>% 
-  mutate(Bra_2018 = ifelse(is.na(participants_2018),
-                               NA,
-                               round(participants_2018/sum(na.omit(participants_2018))*100,1)))
-
-# convert counrty iso codes to names for easy labeling in plots
-dat.country.year <- 
-  dat.per.country %>% 
-  select(country.iso3c, Aus_2014, Bra_2018) %>% 
-  pivot_longer(-country.iso3c, names_to = "year", values_to = "percentage") %>% 
-  mutate(country.name = countrycode(country.iso3c, origin = 'iso3c', destination = 'country.name'))
-
-# mean percent of participants from a country
-mean.percent <- dat.country.year %>% pull(percentage) %>% na.omit() %>% mean()
-
-```
-
-___
-
-### General Observations (data summary)
-
-1. In 2014, there were `r sum(dat.per.country.2014$participants_2014)` participants from `r length(na.omit(dat.per.country.2014$country.iso3c))` countries, with a median of `r median(dat.per.country.2014$participants_2014)` participants/country.
-2. In 2018, there were `r sum(dat.per.country.2018$participants_2018)` participants from `r length(na.omit(dat.per.country.2018$country.iso3c))` countries, with a median of `r median(dat.per.country.2018$participants_2018)` participants/country.
-
-> Participants from 5 countries (USA, Australia, Japan, Germany and UK) account for `r round(sum(dat.per.country.2014$participants_2014[1:5])/sum(dat.per.country.2014$participants_2014)*100, 2)`% of all participants in IUSSI 2014 and `r round(sum(dat.per.country.2018$participants_2018[c(1,3:6)])/sum(dat.per.country.2018$participants_2018)*100, 2)`% in IUSSI 2018. 
-
-___
-
-### Participation by country
-
-The following plot presents the percentage of IUSSI participants from different countries from the previous two IUSSIs (Aus_2014 = IUSSI 2014 in Australia, Bra_2018 = IUSSI 2018 in Brazil)
-
-```{r, echo=F, fig.width=5,fig.height=10}
-source(file = "./functions/theme_publication.R")
-ggplot(dat.country.year,
-       aes(x=reorder(country.name, percentage), 
-           y=percentage, color=year)) +
-  geom_hline(yintercept = mean.percent, color="grey60", alpha=0.6, lty=2) +
-  geom_point(size=1.5, alpha=0.8) +
   
-  labs(x = "",
-       y = "Participants at IUSSI (%)") +
-  coord_flip() +
-  theme_Publication() +
-  annotate("text", x = 4, y = 12, 
-           label = paste0("mean participation \n per country (",round(mean.percent,1),"%)"))
+  ## current_institute_desc
+  separate_rows(current_institute_desc, sep = ";") %>% 
+  mutate(current_institute_desc = as.factor(current_institute_desc)) %>% 
+  
+  
+  ## barriers_what_degree
+  mutate(barriers_what_degree = as.factor(barriers_what_degree)) %>% 
+  
+  
+  ## barriers_which
+  separate_rows(barriers_which, sep = ";") %>% 
+  mutate(barriers_which = as.factor(barriers_which))
+
+
+# ## get a glimpse of the tidy data
+# dat[10:13,1:7] %>% 
+#   kable() %>% 
+#   kable_styling(bootstrap_options = c("striped"), full_width = F, position = "center", latex_options = "scaled_down")
+# 
+# dat[10:13,8:13] %>% 
+#   kable() %>% 
+#   kable_styling(bootstrap_options = c("striped"), full_width = F, position = "center", latex_options = "scaled_down")
 
 ```
 
-___
-
-
-In case you like tables or absolute counts over proportions, here is a searchable table that provides the number of participants, per country, that attended the previous two IUSSIs. 
-
-```{r, echo=F}
-library(DT)
-participants.country.year <- 
-  dat.per.country %>% select(country = country.x, 
-                           IUSSI_2014 = participants_2014,
-                           IUSSI_2018 = participants_2018)
-DT::datatable(participants.country.year)
-```
 
 ***
 
-## Participation by Gender
+## 03 Visualize
 
-Method: 
+### AGE & GENDER
 
-* I used genderizer.io for predicting gender from first names of the participants. The same tool is recommended by BiasWatchNeuro to estimate gender ratios in the absence of demographic data. The website for performing gender predictions can be found [here](https://genderize.io/check-gender-csv).
+```{r age_gender}
 
-```{r, echo=F}
-# Load the data
-gen.dat.2014 <- read.csv("./data/genderized_data/genderized_2014_IUSSI.csv", header = T, stringsAsFactors = F)
-gen.dat.2018 <- read.csv("./data/genderized_data/genderized_2018_IUSSI.csv", header = T, stringsAsFactors = F)
-
-# define the cutoff for count per name in databse and probability of gender given name
-count_cutoff <- 10
-prob_cutoff <- 0.9
-
-f.gen.dat.2014 <- 
-  gen.dat.2014 %>% 
-  select(country,
-         gender, 
-         count=genderCount,
-         prob=genderProbability) %>% 
-  filter(count > count_cutoff) %>% # 512/576 participants left at count_cutoff = 10
-  arrange(count) %>% 
-  filter(prob>prob_cutoff) %>%  # 461/576 participants left at count_cutoff = 10 and prob_cutoff = 0.9
-  group_by(country, gender) %>% 
-  summarize(participants_2014 = n()) %>% 
-  mutate(country.iso3c = countrycode(country, origin='country.name', destination='iso3c'))
+## AGE + GENDER
+dat %>% 
   
-f.gen.dat.2018 <- 
-  gen.dat.2018 %>% 
-  select(country, gender,
-         count=genderCount,
-         prob=genderProbability) %>% 
-  filter(count > count_cutoff & prob > prob_cutoff) %>% # 417/521 participants left after filtering
-  arrange(count) %>% 
-  group_by(country, gender) %>% 
-  summarize(participants_2018 = n()) %>% 
-  mutate(country.iso3c = countrycode(country, origin='country.name', destination='iso3c'))
-
-```
-
-* The results from genderizer.io were filtered to keep only participant names with a count greater than `r count_cutoff` in the database, and with probability of gender assignment higher than `r prob_cutoff`
-
-* Post-filtering, a total of 461 (out of 576) participants in 2014 and 417 (out of 521) participants in 2018 remained. 
-   
-
-#### Estimates  
-
-```{r, echo=F}
-gender.ratio <-
-  f.gen.dat.2014 %>%
-  group_by(gender) %>%
-  summarize(IUSSI_2014=sum(participants_2014)) %>%
-  left_join((f.gen.dat.2018 %>%
-              group_by(gender) %>%
-              summarize(IUSSI_2018=sum(participants_2018))), by="gender")
-
-library(kableExtra)
-gender.ratio %>% 
-  kable() %>% 
-  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
-
-```
-
-> The, **estimated *female:male ratio* **among selected participants at **IUSSI 2014 was `r round(gender.ratio[1,2]/gender.ratio[2,2],2)`** and at **IUSSI 2018 was `r round(gender.ratio[1,3]/gender.ratio[2,3],2)`.**
-
-***
-
-## Participation by Career-stage
-
-```{r, include=F}
-
-## Exploring career stage of participants
-
-titles.2014 <- dat.2014 %>% pull(title) %>% as.character()
-titles.2018 <- dat.2018 %>% pull(degree) %>% as.character()
-
-titles.2014 %>% unique()
-titles.2018 %>% unique()
-
-## Let's summarize participants by title (career-stage) 
-  dat.2014 %>% 
-  group_by(title) %>% 
-  summarize(freq=n())
+  # remove the rows with no age/gender info
+  filter(age != "Other") %>% 
+  filter(gender != "Other") %>% 
   
-## Looks like it needs some clean-up
-  # PIs - c("A/Prof","A/Professor","Ass/Prof","Associate Profes","Prof","Professor")
-  # Graduate/Undergrads - c("Miss","Mr","Mrs","Ms")
-  # Dr - most likely postdocs
-
-career.2014 <- 
-  dat.2014 %>% 
-  mutate(degree = ifelse(title %in% c("A/Prof","A/Professor","Ass/Prof","Associate Profes","Prof","Professor"),
-                         "Prof.",title)) %>% 
-  mutate(degree = ifelse(title %in% c("Miss","Mr","Mrs","Ms"),
-                         "Mr/Ms.",degree)) %>% 
-  mutate(degree = ifelse(title %in% c("Dr"),
-                         "Dr.",degree)) %>% 
-  select(-title) %>% 
-  select(degree, everything())
-
-career.2014 <-
-  career.2014 %>% 
-  group_by(degree) %>% 
-  summarise(freq = n()) %>% 
-  filter(!degree %in% c("")) %>% # removed two with no assignment
-  mutate(percent = round(freq/sum(freq)*100,1)) %>% 
-  arrange(match(degree, c("Prof.","Dr.","Mr/Ms.")))
-
-
-career.2018 <- 
-  dat.2018 %>% 
-  group_by(degree) %>% 
-  summarize(freq=n()) %>% 
-  filter(!degree %in% c("")) %>% # removed one with no assignment
-  mutate(percent = round(freq/sum(freq)*100,1)) %>% 
-  arrange(match(degree, c("Prof.","Dr.","Post-Doc","Graduate","Undergraduate","Other")))
+  # tally the number of people in a given age group for a given gender
+  distinct(ID, age, gender) %>%
+  group_by(age, gender) %>% 
+  summarize(num=n()) %>% 
+  na.omit() %>%
+    
+  ## Plot: AGE + GENDER
+  ggplot(aes(x=age, y=num, col=gender, group=gender)) +
+    labs(y="number of people") +
+    geom_point() +
+    geom_line() +
+    coord_flip() +
+    theme_Publication(base_size = 16) +
+    scale_colour_Publication() +
+    guides(color = guide_legend(nrow = 3))
 
 ```
-   
-* The data doesn't permit a comprehensive count of participants by their career stages since we have terms such as "Dr" that could indicate either a post-doc or a PI. 
-
-* Additionally, the data for IUSSI 2014 has titles ("A/Prof","A/Professor","Ass/Prof","Associate Profes","Prof","Professor") that have been clubbed together as "Prof." and (Miss","Mr","Mrs","Ms") that are represented as "Mr/Ms."
 
 
-```{r, echo=F}
-career.2014 %>% 
-  kable(caption = "IUSSI 2014") %>% 
-  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
-```
-
-```{r, echo=F}
-career.2018 %>% 
-  kable(caption = "IUSSI 2018") %>% 
-  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
-```
-
-
-> The data does show a **fairly good representation of graduate students** at both IUSSIs. 
-
-However, in future, including the upcoming IUSSI 2022, it would be useful to come up with a standardized way to collect demography data during the registration process.
 
 ___
 
