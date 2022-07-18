@@ -10,7 +10,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Biplabendu Das" />
 
 
 <title>Demography data for IUSSI</title>
@@ -439,7 +438,8 @@ div.tocify {
 
 <h1 class="title toc-ignore">Demography data for IUSSI</h1>
 <h4 class="author">Biplabendu Das</h4>
-<h4 class="date">14 July, 2022</h4>
+<address class="author_afil">
+DEIJ Committee, IUSSI<br><h4 class="date">18 July, 2022</h4>
 
 </div>
 
@@ -711,7 +711,7 @@ I have no disability/impairment
 </table>
 <div id="what-does-each-column-contain" class="section level3">
 <h3>What does each column contain?</h3>
-<p><strong>Column name and Description</strong></p>
+<p><strong>Column name: Description</strong></p>
 <ul>
 <li>time_of_entry:</li>
 <li>age:</li>
@@ -891,6 +891,11 @@ dat &lt;-
 </div>
 <div id="visualize" class="section level2">
 <h2>03 Visualize</h2>
+<pre class="r"><code>## Use this code chunk to define paramaters, such as color palettes and such
+
+## COLOR
+# role attended before
+roles.color &lt;- c(&quot;#005C53&quot;, &quot;#F2E744&quot;, &quot;#D9814E&quot;, &quot;#BF6854&quot;, &quot;#261B1A&quot;, &quot;grey60&quot;)</code></pre>
 <div id="age-gender" class="section level3">
 <h3>Age &amp; gender</h3>
 <pre class="r"><code>## AGE + GENDER
@@ -969,7 +974,7 @@ dat %&gt;%
     guides(fill = guide_legend(nrow = 3))</code></pre>
 <p><img src="IUSSI2022_files/figure-html/research_location_gender-1.png" width="672" /></p>
 <blockquote>
-<p>A bunch of folks perform research in Central America, but no representation from folks living in Central America.</p>
+<p>A bunch of folks perform research in Central America, but there seems to be no representation from folks living in Central America. There is, of course, the possibility that folks residing in Central America did not take the survey.</p>
 </blockquote>
 <hr />
 </div>
@@ -1044,7 +1049,8 @@ dat %&gt;%
     coord_flip() +
     theme_Publication() +
     scale_colour_Publication() +
-    scale_fill_Publication() +
+    # scale_fill_Publication() +
+    scale_fill_manual(values = roles.color) +
     guides(fill = guide_legend(nrow = 3))</code></pre>
 <p><img src="IUSSI2022_files/figure-html/role_attended_before_residence_location-1.png" width="672" /></p>
 <hr />
@@ -1070,12 +1076,101 @@ dat %&gt;%
     coord_flip() +
     theme_Publication() +
     scale_colour_Publication() +
-    scale_fill_Publication() +
+    scale_fill_manual(values = roles.color) +
     guides(fill = guide_legend(nrow = 3))</code></pre>
 <p><img src="IUSSI2022_files/figure-html/role_attended_before_current_position-1.png" width="672" /></p>
 <pre class="r"><code># to do:
 # normalize the number of roles undertaken by a person in past IUSSI
 # number of past roles / number of past IUSSI attended</code></pre>
+<p>The above plot might be misleading since the higher number of roles assumed by (activity of) late, tenured Profs might be due to the higher number of previous conferences attened by them. So, it might make sense to have a standardized metric that gives us a better understanding of the activity of each group in IUSSI.</p>
+<blockquote>
+<p>Activity = number of roles assumed (other than attendee) / number of IUSSIs attended</p>
+</blockquote>
+<pre class="r"><code>id &lt;- character()
+num_attended &lt;- numeric()  
+for (i in 1:length(levels(as.factor(dat$ID)))) {
+    
+    id[i] &lt;- levels(as.factor(dat$ID))[i]
+    
+    num_attended[i] &lt;-
+      dat %&gt;% 
+      filter(ID == id[i]) %&gt;%
+      # select(which_attended_before)
+      mutate(which_attended_before=as.character(which_attended_before)) %&gt;% 
+      pull(which_attended_before) %&gt;% 
+      unique() %&gt;% 
+      as.factor() %&gt;% 
+      levels() %&gt;% length() %&gt;% 
+      as.numeric()
+}
+
+dummy.dat &lt;- data.frame(ID=id, num_attended=num_attended)
+
+## Add this information to the primary dataset
+
+dat %&gt;% 
+  
+  # add the num_attended column to dat
+  left_join(dummy.dat, by=&quot;ID&quot;) %&gt;% 
+    # check to see if it worked
+    # select(ID, which_attended_before, num_attended) %&gt;% head(20)
+  
+  # remove the rows with no info
+  filter(!is.na(role_attended_before)) %&gt;%
+  filter(!is.na(current_position)) %&gt;%
+  # filter(gender != &quot;Other&quot;) %&gt;% 
+  
+  select(ID, current_position, role_attended_before, num_attended) %&gt;% 
+    # head(20)
+  
+  distinct(ID, role_attended_before, current_position, num_attended) %&gt;% 
+  
+  group_by(ID, current_position, num_attended) %&gt;%
+  summarize(num_roles = n()) %&gt;% 
+  arrange(as.numeric(ID)) %&gt;% 
+  
+  # calculate activity
+  mutate(activity = num_roles/num_attended) %&gt;% 
+    
+  ## Plot: research_location + gender
+  ggplot(aes(x=current_position, y=activity,fill=current_position)) +
+    # geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;, size=2) +
+    geom_boxplot(alpha=0.7, outlier.colour = &quot;darkred&quot;) +
+    labs(y=&quot;roles/attendance&quot;) +
+    # geom_hline(yintercept = 5, col=&quot;grey60&quot;, alpha=0.7, size=1) +
+    coord_flip() +
+    theme_Publication() +
+    scale_colour_Publication() +
+    scale_fill_Publication() +
+    # scale_fill_manual(values = roles.color) +
+    guides(fill = guide_legend(nrow = 8))</code></pre>
+<p><img src="IUSSI2022_files/figure-html/role_attended_before_current_position_v2-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="role-of-attendee-ethnic-identity" class="section level3">
+<h3>Role of attendee &amp; ethnic identity</h3>
+<pre class="r"><code>dat %&gt;% 
+  
+  # remove the rows with no age/gender info
+  filter(!is.na(role_attended_before)) %&gt;%
+  filter(!is.na(ethnic_identity)) %&gt;%
+  # filter(gender != &quot;Other&quot;) %&gt;% 
+  
+  distinct(ID, role_attended_before, ethnic_identity) %&gt;% 
+  group_by(role_attended_before, ethnic_identity) %&gt;%
+  summarize(num = n()) %&gt;% 
+    
+  ## Plot: research_location + gender
+  ggplot(aes(x=ethnic_identity, y=num, fill=role_attended_before, group=role_attended_before)) +
+    geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;, size=2) +
+    labs(y=&quot;number of people&quot;) +
+    # geom_hline(yintercept = 5, col=&quot;grey60&quot;, alpha=0.7, size=1) +
+    coord_flip() +
+    theme_Publication() +
+    scale_colour_Publication() +
+    scale_fill_manual(values = roles.color) +
+    guides(fill = guide_legend(nrow = 3))</code></pre>
+<p><img src="IUSSI2022_files/figure-html/role_attended_before_ethnic_identity-1.png" width="672" /></p>
 <hr />
 <p>All code used for this document is available on my <a href="https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd">Github</a>.</p>
 <hr />
