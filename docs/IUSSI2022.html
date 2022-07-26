@@ -14,7 +14,7 @@
 
 <title>Demography data for IUSSI</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -28,6 +28,14 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.12/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -439,7 +447,7 @@ div.tocify {
 <h1 class="title toc-ignore">Demography data for IUSSI</h1>
 <h4 class="author">Biplabendu Das</h4>
 <address class="author_afil">
-DEIJ Committee, IUSSI<br><h4 class="date">18 July, 2022</h4>
+DEIJ Committee, IUSSI<br><h4 class="date">25 July, 2022</h4>
 
 </div>
 
@@ -753,7 +761,7 @@ dat &lt;-
   
   ## AGE
   mutate(age = str_split_fixed(age, &quot; &quot;, n=2)[,1]) %&gt;%
-  mutate(age = ifelse(age %in% c(&quot;&quot;,&quot;Prefer&quot;), &quot;Other&quot;, age)) %&gt;%
+  mutate(age = ifelse(age %in% c(&quot;&quot;,&quot;Prefer&quot;), other.var, age)) %&gt;%
   mutate(age = as.factor(age)) %&gt;%
       # ## Plot: AGE
       # group_by(age) %&gt;%
@@ -771,7 +779,7 @@ dat &lt;-
     # five entries that stated &quot;Prefer not to respond&quot;, and one which is NA.
     # Rename all to &quot;Other&quot;
   mutate(gender = ifelse(!gender %in% c(&quot;Cisgender man&quot;, &quot;Cisgender woman&quot;, &quot;Non-binary&quot;,
-                       &quot;Transgender man&quot;, &quot;Transgender woman&quot;), &quot;Other&quot;, gender)) %&gt;%
+                       &quot;Transgender man&quot;, &quot;Transgender woman&quot;), other.var, gender)) %&gt;%
   mutate(gender = as.factor(gender)) %&gt;%
       # ## Plot: GENDER
       # group_by(gender) %&gt;%
@@ -785,7 +793,7 @@ dat &lt;-
 
   
   ## sex_orientation
-  mutate(sex_orientation = ifelse(sex_orientation %in% c(&quot;Additional identity not listed? (Please click next and share)&quot;,&quot;Prefer not to respond&quot;), &quot;Other&quot;, sex_orientation)) %&gt;% 
+  mutate(sex_orientation = ifelse(sex_orientation %in% c(&quot;Additional identity not listed? (Please click next and share)&quot;,&quot;Prefer not to respond&quot;), other.var, sex_orientation)) %&gt;% 
   mutate(sex_orientation = as.factor(sex_orientation)) %&gt;% 
   
   
@@ -794,7 +802,7 @@ dat &lt;-
                                      &quot;Continental US;South Asia&quot;,
                                      &quot;Europe;Middle East&quot;,
                                      &quot;Europe;Southeast Asia&quot;,
-                                     &quot;Other&quot;), &quot;Other&quot;, residence_location)) %&gt;%
+                                     &quot;Other&quot;), other.var, residence_location)) %&gt;%
   mutate(residence_location = as.factor(residence_location)) %&gt;% 
 
 
@@ -808,14 +816,14 @@ dat &lt;-
   separate_rows(ethnic_identity, sep = &quot;;&quot;) %&gt;% 
   mutate(ethnic_identity = ifelse(ethnic_identity %in% c(&quot;A race or ethnicity not listed&quot;,
                                                          &quot;Prefer not to respond&quot;), 
-                                  &quot;Other&quot;, ethnic_identity)) %&gt;% 
+                                  other.var, ethnic_identity)) %&gt;% 
   mutate(ethnic_identity = as.factor(ethnic_identity)) %&gt;% 
   
   
   ## religious_identity
   mutate(religious_identity = ifelse(religious_identity %in% c(&quot;An additional affiliation not listed&quot;,
                                                                &quot;Prefer not to respond&quot;), 
-                                     &quot;Other&quot;, religious_identity)) %&gt;% 
+                                     other.var, religious_identity)) %&gt;% 
   mutate(religious_identity = as.factor(religious_identity)) %&gt;% 
   
   
@@ -838,7 +846,7 @@ dat &lt;-
   
   ## adult_responsibility
   mutate(adult_responsibility = ifelse(adult_responsibility %in% c(&quot;Prefer not to respond&quot;, &quot;Other&quot;),
-                                       &quot;Other&quot;, adult_responsibility)) %&gt;% 
+                                       other.var, adult_responsibility)) %&gt;% 
   mutate(adult_responsibility = as.factor(adult_responsibility)) %&gt;% 
   
   
@@ -902,7 +910,7 @@ roles.color &lt;- c(&quot;#005C53&quot;, &quot;#F2E744&quot;, &quot;#D9814E&quot
 dat %&gt;% 
   
   # remove the rows with no age/gender info
-  filter(age != &quot;Other&quot;) %&gt;% 
+  filter(age != other.var) %&gt;% 
   filter(!is.na(gender)) %&gt;%
   # filter(gender != &quot;Other&quot;) %&gt;% 
   
@@ -1084,7 +1092,7 @@ dat %&gt;%
 # number of past roles / number of past IUSSI attended</code></pre>
 <p>The above plot might be misleading since the higher number of roles assumed by (activity of) late, tenured Profs might be due to the higher number of previous conferences attened by them. So, it might make sense to have a standardized metric that gives us a better understanding of the activity of each group in IUSSI.</p>
 <blockquote>
-<p>Activity = number of roles assumed (other than attendee) / number of IUSSIs attended</p>
+<p>Activity = number of roles assumed (including attendee) / number of IUSSIs attended</p>
 </blockquote>
 <pre class="r"><code>id &lt;- character()
 num_attended &lt;- numeric()  
@@ -1136,14 +1144,15 @@ dat %&gt;%
   ggplot(aes(x=current_position, y=activity,fill=current_position)) +
     # geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;, size=2) +
     geom_boxplot(alpha=0.7, outlier.colour = &quot;darkred&quot;) +
-    labs(y=&quot;roles/attendance&quot;) +
+    labs(y=&quot;# roles/attendance&quot;) +
     # geom_hline(yintercept = 5, col=&quot;grey60&quot;, alpha=0.7, size=1) +
     coord_flip() +
     theme_Publication() +
     scale_colour_Publication() +
     scale_fill_Publication() +
     # scale_fill_manual(values = roles.color) +
-    guides(fill = guide_legend(nrow = 8))</code></pre>
+    guides(fill = guide_legend(nrow = 8)) +
+    theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="IUSSI2022_files/figure-html/role_attended_before_current_position_v2-1.png" width="672" /></p>
 <hr />
 </div>
@@ -1172,7 +1181,224 @@ dat %&gt;%
     guides(fill = guide_legend(nrow = 3))</code></pre>
 <p><img src="IUSSI2022_files/figure-html/role_attended_before_ethnic_identity-1.png" width="672" /></p>
 <hr />
-<p>All code used for this document is available on my <a href="https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd">Github</a>.</p>
+<hr />
+</div>
+</div>
+<div id="overunder-represented-folks" class="section level2">
+<h2>05 Over/Under-represented folks</h2>
+<blockquote>
+<p>Check which groups are <em>over/under-represented</em> at IUSSI, and for which activities.</p>
+</blockquote>
+<pre class="r"><code>#  load the GeneOverlap package to perform pairwise Fisher&#39;s exact test
+library(GeneOverlap)
+
+# which variable do you need to use for the x-axis
+names.x &lt;- c(&quot;gender&quot;, 
+             # &quot;age&quot;, 
+             &quot;residence_location&quot;, &quot;research_location&quot;,
+             &quot;current_position&quot;, &quot;ethnic_identity&quot;)
+
+# initialize a list to hold all the possible groups that we want to plot
+# on the x-axis
+list.x &lt;- list()
+for (j in 1:length(names.x)) {
+  
+  # what are the different groups in the filtering column
+  groups.x &lt;- dat %&gt;% 
+  pull(names.x[j]) %&gt;% 
+  as.factor() %&gt;% 
+  levels()
+  # what is the name of the filtering column
+  var &lt;- names.x[[j]]
+  
+  
+  list.sub &lt;- list()
+  for (i in 1:length(groups.x)) {
+    list.sub[[i]] &lt;-
+      dat %&gt;% filter(.data[[var]] %in% groups.x[[i]] ) %&gt;% pull(ID) %&gt;% unique()
+    names(list.sub)[i] &lt;- groups.x[[i]] %&gt;% as.character()
+  }
+  
+  # Save the results for the filtering column and name the different lists
+  list.x[[j]] &lt;- list.sub
+  
+}
+
+## DO THE SAME FOR THE Y-AXIS
+
+names.y &lt;- c(&quot;role_attended_before&quot;)
+list.y &lt;- list()
+
+groups.y &lt;- dat %&gt;% 
+  pull(names.y) %&gt;% 
+  as.factor() %&gt;% 
+  levels()
+var &lt;- names.y
+
+list.sub &lt;- list()
+  for (i in 1:length(groups.y)) {
+    list.sub[[i]] &lt;-
+      dat %&gt;% filter(.data[[var]] %in% groups.y[[i]] ) %&gt;% pull(ID) %&gt;% unique()
+    names(list.sub)[i] &lt;- groups.y[[i]] %&gt;% as.character()
+  }
+  
+# Save the results for the filtering column and name the different lists
+list.y &lt;- list.sub
+
+
+## Run the pairwise Fisher&#39;s tests ##
+
+## What is the total sample size
+nFolks &lt;- dat %&gt;% pull(ID) %&gt;% unique() %&gt;% length()
+
+## Remove the groups that contain less than 5 individuals
+list.y &lt;- list.y[sapply(list.y, length)&gt;=5]
+
+for (i in 1:length(list.x)) {
+
+  # remove for x
+  list.x[[i]] &lt;- list.x[[i]][sapply(list.x[[i]], length)&gt;=5]
+    
+  if (i==4) {
+    names(list.x[[i]]) &lt;- names(list.x[[i]]) %&gt;% str_sub(end=9)
+    gom &lt;- newGOM(list.y, list.x[[i]],
+              nFolks)
+
+  } 
+  ## Let&#39;s perform the pairwise Fisher&#39;s exact test
+gom &lt;- newGOM(list.x[[i]], list.y,
+              nFolks)
+png(paste0(path_to_repo,
+           &quot;images/&quot;, folder.name,
+           names.x[i],&quot;_v_&quot;,names.y,&quot;_gom.png&quot;), 
+    width = 30, height = 20, units = &quot;cm&quot;, res = 300)
+drawHeatmap(gom,
+            # adj.p=T,
+            cutoff=0.05,
+            what=&quot;odds.ratio&quot;,
+            # what=&quot;Jaccard&quot;,
+            log.scale = T,
+            grid.col=&quot;Oranges&quot;,
+            note.col=&quot;black&quot;)
+trash &lt;- dev.off()
+
+}</code></pre>
+<hr />
+<div id="results-in-a-table" class="section level3">
+<h3>Results in a table</h3>
+<p>The goal is to perform enrichment analyses (using hypergeometric analyses) to identify under (or over) represented groups (based on gender, ethnicity, etc) in different activities (roles) at IUSSI.</p>
+<blockquote>
+<p>We found several overrepresented groups for specific roles. The results are provided in the table below.</p>
+</blockquote>
+<pre class="r"><code>source(paste0(path_to_repo,&quot;functions/underrepresentation_analyses.R&quot;))
+
+## Format the data
+bg.dat &lt;- 
+  dat %&gt;%
+  select(ID, role_attended_before) %&gt;%
+  group_by(ID) %&gt;%
+  summarize(role_attended_before = str_c(role_attended_before, collapse = &quot;; &quot;)) %&gt;%
+  ungroup()
+  
+results.list &lt;- list()
+k &lt;- 1
+# get a list of all gender IDs
+for (i in 1:length(list.x)) {
+  
+  names.vars &lt;- names(list.x[[i]])
+  
+  for (j in 1:length(names.vars)) {
+  results.list[[k]] &lt;- 
+      list.x[[i]][[j]] %&gt;% 
+        check_under(.,
+                    bg.file = bg.dat,
+                    what = paste0(names.x[[i]],&quot;: &quot;,names.vars[[j]]),
+                    atleast = 3)
+  k &lt;- k+1
+  }
+}
+
+bind_rows(results.list, .id = &quot;column_label&quot;) %&gt;%
+    dplyr::select(-column_label) %&gt;% 
+    as_tibble() %&gt;% 
+    filter(adj_pVal &lt; 0.05) %&gt;% 
+    mutate(adj_pVal = round(adj_pVal,3)) %&gt;% 
+    filter(over_under==&quot;over&quot;) %&gt;% 
+  
+    filter(what_desc != other.var) %&gt;% 
+    filter(annot_term != &quot;no_annot&quot;) %&gt;% 
+    
+    select(annot_term:adj_pVal) %&gt;% 
+    arrange(annot_term, adj_pVal) %&gt;% 
+    
+    DT::datatable()</code></pre>
+<div id="htmlwidget-858fdc84ea98b07053af" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-858fdc84ea98b07053af">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45"],["Administrative duties","Administrative duties","Administrative duties","Administrative duties","Administrative duties","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Other","Other","Plenary speaker","Plenary speaker","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter"],["residence_location: Australasia","research_location: Australasia","current_position: Tenure tr","ethnic_identity: White","gender: Cisgender woman","gender: Cisgender woman","current_position: Tenure tr","ethnic_identity: additional_category","ethnic_identity: White","gender: additional_category","research_location: Middle East","residence_location: Australasia","residence_location: Middle East","research_location: Continental US","residence_location: Canada","research_location: Australasia","residence_location: Continental US","current_position: Post Doc","current_position: Non-tenur","current_position: Tenure tr","ethnic_identity: White","current_position: Tenure tr","research_location: Central America","residence_location: Canada","ethnic_identity: additional_category","residence_location: Continental US","research_location: Canada","gender: additional_category","research_location: Continental US","residence_location: Australasia","research_location: Sub-Saharan Africa","research_location: Australasia","ethnic_identity: South Asian","current_position: Post Doc","current_position: Tenure tr","ethnic_identity: White","gender: Cisgender man","current_position: Non-tenur","current_position: Tenure tr","ethnic_identity: White","current_position: Tenure tr","research_location: South America","research_location: Canada","residence_location: Canada","research_location: Sub-Saharan Africa"],["over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over"],[0,0,0,0.024,0.034,0,0,0,0,0.001,0.001,0.008,0.016,0.024,0.045,0.045,0.047,0.049,0,0,0,0.004,0.006,0.011,0.012,0.018,0.018,0.02,0.026,0.034,0.038,0.045,0,0.013,0,0.038,0,0,0,0.001,0.004,0.012,0.014,0.019,0.029]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>annot_term<\/th>\n      <th>what_desc<\/th>\n      <th>over_under<\/th>\n      <th>adj_pVal<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":4},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<hr />
+</div>
+<div id="results-as-a-figure" class="section level3">
+<h3>Results as a figure</h3>
+<pre class="r"><code>results.dat &lt;- 
+  bind_rows(results.list, .id = &quot;column_label&quot;) %&gt;%
+    dplyr::select(-column_label) %&gt;% 
+    as_tibble() %&gt;% 
+    filter(adj_pVal &lt; 0.05) %&gt;% 
+    mutate(adj_pVal = round(adj_pVal,3)) %&gt;% 
+    filter(over_under==&quot;over&quot;) %&gt;% 
+  
+    filter(what_desc != other.var) %&gt;% 
+    filter(annot_term != &quot;no_annot&quot;) %&gt;% 
+    
+    select(annot_term:adj_pVal) %&gt;% 
+    arrange(annot_term, adj_pVal)
+  
+
+mat &lt;- 
+  results.dat %&gt;% 
+  select(-over_under) %&gt;% 
+  pivot_wider(names_from = &quot;what_desc&quot;,
+              values_from = &quot;adj_pVal&quot;,
+              values_fn = list(adj_pVal = min)) %&gt;% 
+  as.data.frame() %&gt;% 
+  column_to_rownames(&quot;annot_term&quot;) %&gt;% 
+  as.matrix()
+
+
+# Plot the matrix
+### note: 
+### make sure the library &quot;plot.matrix&quot; is loaded
+### see here for more params: https://cran.r-project.org/web/packages/plot.matrix/vignettes/plot.matrix.html
+png(paste0(path_to_repo,
+           &quot;images/&quot;, folder.name,
+           &quot;enrichement_results.png&quot;), 
+    width = 30, height = 20, units = &quot;cm&quot;, res = 300)
+par(mar=c(10.1, 16.1, 4.1, 6.1))
+  mat %&gt;% 
+    t() %&gt;% 
+    plot(., 
+         # border=NA,
+         col=viridis::viridis(3),
+         spacing.key=1.5,
+         fmt.key=&quot;%.3f&quot;,
+         xlab = &quot;&quot;,
+         ylab = &quot;&quot;,
+         axis.col=list(side=1, las=2), axis.row = list(side=2, las=1))
+trash &lt;- dev.off()</code></pre>
+<blockquote>
+<p>And, here are the results as a heatmap.</p>
+</blockquote>
+<div class="figure" style="text-align: center">
+<img src="images/2022_demography_data/enrichement_results.png" alt="Results of the enrichment test; colors indicate p-values returned by the hypergeometric test. Lower p-values suggest possible over-representation." width="95%" />
+<p class="caption">
+Results of the enrichment test; colors indicate p-values returned by the hypergeometric test. Lower p-values suggest possible over-representation.
+</p>
+</div>
+<hr />
+<p>Reproducibility:</p>
+<ol style="list-style-type: decimal">
+<li><p>All code used for this document is available on my <a href="https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd">Github</a>.</p></li>
+<li><p>The function to perform enrichment analyses can be found <a href="https://github.com/biplabendu/homepage/blob/master/functions/underrepresentation_analyses.R">here</a></p></li>
+</ol>
 <hr />
 </div>
 </div>

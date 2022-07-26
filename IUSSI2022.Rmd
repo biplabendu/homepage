@@ -45,11 +45,18 @@ Perform a rapid exploratory analyses of the demography data obtained from the su
 rm(list = ls())
 library(tidyverse)
 library(kableExtra)
+library(plot.matrix)
 
 # Load custom functions
 source("./functions/theme_publication.R")
 
-raw.dat <- read.csv("./data/2022_demography_data/iussi_2022_data_28Jun22.csv", 
+# Load data
+path_to_repo <- "/Users/biplabendudas/Documents/GitHub/homepage/"
+folder.name <- "2022_demography_data/"
+
+raw.dat <- read.csv(paste0(path_to_repo,
+                           "data/",
+                           folder.name,"iussi_2022_data_28Jun22.csv"), 
                 header = T, stringsAsFactors = F,
                 na.strings = c("NA",""," "))
 
@@ -89,6 +96,10 @@ new.colnames <- c("time_of_entry",
 
 ## Rename column names
 colnames(raw.dat) <- new.colnames
+
+## Specify what to call the group in which we club everything else
+## Some options: other, additional_category
+other.var <- "additional_category"
 
 ```
 
@@ -150,7 +161,7 @@ dat <-
   
   ## AGE
   mutate(age = str_split_fixed(age, " ", n=2)[,1]) %>%
-  mutate(age = ifelse(age %in% c("","Prefer"), "Other", age)) %>%
+  mutate(age = ifelse(age %in% c("","Prefer"), other.var, age)) %>%
   mutate(age = as.factor(age)) %>%
       # ## Plot: AGE
       # group_by(age) %>%
@@ -168,7 +179,7 @@ dat <-
     # five entries that stated "Prefer not to respond", and one which is NA.
     # Rename all to "Other"
   mutate(gender = ifelse(!gender %in% c("Cisgender man", "Cisgender woman", "Non-binary",
-                       "Transgender man", "Transgender woman"), "Other", gender)) %>%
+                       "Transgender man", "Transgender woman"), other.var, gender)) %>%
   mutate(gender = as.factor(gender)) %>%
       # ## Plot: GENDER
       # group_by(gender) %>%
@@ -182,7 +193,7 @@ dat <-
 
   
   ## sex_orientation
-  mutate(sex_orientation = ifelse(sex_orientation %in% c("Additional identity not listed? (Please click next and share)","Prefer not to respond"), "Other", sex_orientation)) %>% 
+  mutate(sex_orientation = ifelse(sex_orientation %in% c("Additional identity not listed? (Please click next and share)","Prefer not to respond"), other.var, sex_orientation)) %>% 
   mutate(sex_orientation = as.factor(sex_orientation)) %>% 
   
   
@@ -191,7 +202,7 @@ dat <-
                                      "Continental US;South Asia",
                                      "Europe;Middle East",
                                      "Europe;Southeast Asia",
-                                     "Other"), "Other", residence_location)) %>%
+                                     "Other"), other.var, residence_location)) %>%
   mutate(residence_location = as.factor(residence_location)) %>% 
 
 
@@ -205,14 +216,14 @@ dat <-
   separate_rows(ethnic_identity, sep = ";") %>% 
   mutate(ethnic_identity = ifelse(ethnic_identity %in% c("A race or ethnicity not listed",
                                                          "Prefer not to respond"), 
-                                  "Other", ethnic_identity)) %>% 
+                                  other.var, ethnic_identity)) %>% 
   mutate(ethnic_identity = as.factor(ethnic_identity)) %>% 
   
   
   ## religious_identity
   mutate(religious_identity = ifelse(religious_identity %in% c("An additional affiliation not listed",
                                                                "Prefer not to respond"), 
-                                     "Other", religious_identity)) %>% 
+                                     other.var, religious_identity)) %>% 
   mutate(religious_identity = as.factor(religious_identity)) %>% 
   
   
@@ -235,7 +246,7 @@ dat <-
   
   ## adult_responsibility
   mutate(adult_responsibility = ifelse(adult_responsibility %in% c("Prefer not to respond", "Other"),
-                                       "Other", adult_responsibility)) %>% 
+                                       other.var, adult_responsibility)) %>% 
   mutate(adult_responsibility = as.factor(adult_responsibility)) %>% 
   
   
@@ -312,7 +323,7 @@ roles.color <- c("#005C53", "#F2E744", "#D9814E", "#BF6854", "#261B1A", "grey60"
 dat %>% 
   
   # remove the rows with no age/gender info
-  filter(age != "Other") %>% 
+  filter(age != other.var) %>% 
   filter(!is.na(gender)) %>%
   # filter(gender != "Other") %>% 
   
@@ -517,7 +528,7 @@ dat %>%
 
 The above plot might be misleading since the higher number of roles assumed by (activity of) late, tenured Profs might be due to the higher number of previous conferences attened by them. So, it might make sense to have a standardized metric that gives us a better understanding of the activity of each group in IUSSI.
 
-> Activity = number of roles assumed (other than attendee) / number of IUSSIs attended
+> Activity = number of roles assumed (including attendee) / number of IUSSIs attended
 
 
 ```{r role_attended_before_current_position_v2}
@@ -572,14 +583,15 @@ dat %>%
   ggplot(aes(x=current_position, y=activity,fill=current_position)) +
     # geom_bar(position="stack", stat="identity", size=2) +
     geom_boxplot(alpha=0.7, outlier.colour = "darkred") +
-    labs(y="roles/attendance") +
+    labs(y="# roles/attendance") +
     # geom_hline(yintercept = 5, col="grey60", alpha=0.7, size=1) +
     coord_flip() +
     theme_Publication() +
     scale_colour_Publication() +
     scale_fill_Publication() +
     # scale_fill_manual(values = roles.color) +
-    guides(fill = guide_legend(nrow = 8))
+    guides(fill = guide_legend(nrow = 8)) +
+    theme(legend.position = "none")
 ```
 
 ***
@@ -613,8 +625,293 @@ dat %>%
 ```
 
 ___
+___
 
-All code used for this document is available on my [Github](https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd).
+## 05 Over/Under-represented folks
+
+> Check which groups are *over/under-represented* at IUSSI, and for which activities.
+
+
+```{r over_v1}
+#  load the GeneOverlap package to perform pairwise Fisher's exact test
+library(GeneOverlap)
+
+# which variable do you need to use for the x-axis
+names.x <- c("gender", 
+             # "age", 
+             "residence_location", "research_location",
+             "current_position", "ethnic_identity")
+
+# initialize a list to hold all the possible groups that we want to plot
+# on the x-axis
+list.x <- list()
+for (j in 1:length(names.x)) {
+  
+  # what are the different groups in the filtering column
+  groups.x <- dat %>% 
+  pull(names.x[j]) %>% 
+  as.factor() %>% 
+  levels()
+  # what is the name of the filtering column
+  var <- names.x[[j]]
+  
+  
+  list.sub <- list()
+  for (i in 1:length(groups.x)) {
+    list.sub[[i]] <-
+      dat %>% filter(.data[[var]] %in% groups.x[[i]] ) %>% pull(ID) %>% unique()
+    names(list.sub)[i] <- groups.x[[i]] %>% as.character()
+  }
+  
+  # Save the results for the filtering column and name the different lists
+  list.x[[j]] <- list.sub
+  
+}
+
+## DO THE SAME FOR THE Y-AXIS
+
+names.y <- c("role_attended_before")
+list.y <- list()
+
+groups.y <- dat %>% 
+  pull(names.y) %>% 
+  as.factor() %>% 
+  levels()
+var <- names.y
+
+list.sub <- list()
+  for (i in 1:length(groups.y)) {
+    list.sub[[i]] <-
+      dat %>% filter(.data[[var]] %in% groups.y[[i]] ) %>% pull(ID) %>% unique()
+    names(list.sub)[i] <- groups.y[[i]] %>% as.character()
+  }
+  
+# Save the results for the filtering column and name the different lists
+list.y <- list.sub
+
+
+## Run the pairwise Fisher's tests ##
+
+## What is the total sample size
+nFolks <- dat %>% pull(ID) %>% unique() %>% length()
+
+## Remove the groups that contain less than 5 individuals
+list.y <- list.y[sapply(list.y, length)>=5]
+
+for (i in 1:length(list.x)) {
+
+  # remove for x
+  list.x[[i]] <- list.x[[i]][sapply(list.x[[i]], length)>=5]
+    
+  if (i==4) {
+    names(list.x[[i]]) <- names(list.x[[i]]) %>% str_sub(end=9)
+    gom <- newGOM(list.y, list.x[[i]],
+              nFolks)
+
+  } 
+  ## Let's perform the pairwise Fisher's exact test
+gom <- newGOM(list.x[[i]], list.y,
+              nFolks)
+png(paste0(path_to_repo,
+           "images/", folder.name,
+           names.x[i],"_v_",names.y,"_gom.png"), 
+    width = 30, height = 20, units = "cm", res = 300)
+drawHeatmap(gom,
+            # adj.p=T,
+            cutoff=0.05,
+            what="odds.ratio",
+            # what="Jaccard",
+            log.scale = T,
+            grid.col="Oranges",
+            note.col="black")
+trash <- dev.off()
+
+}
+
+```
+
+
+
+```{r plot_gom_1, echo = FALSE, fig.align='center', fig.cap='gender', out.width="95%"}
+# > Plots: Gender
+# sapply(list.x[[1]], length) %>% as.data.frame() %>% select(how_many=".")
+# knitr::include_graphics(paste0(path_to_repo,
+#            "images/", folder.name,
+#            names.x[1],"_v_",names.y,"_gom.png"))
+
+```
+
+
+
+
+```{r plot_gom_2, echo = FALSE, fig.align='center', fig.cap='residence_location', out.width="95%"}
+# > Plots: Residence location
+# sapply(list.x[[2]], length) %>% as.data.frame() %>% select(how_many=".")
+#   knitr::include_graphics(paste0(path_to_repo,
+#            "images/", folder.name,
+#            names.x[2],"_v_",names.y,"_gom.png"))
+
+```
+
+
+
+```{r plot_gom_3, echo = FALSE, fig.align='center', fig.cap='research_location', out.width="95%"}
+# > Plots: Research location
+# sapply(list.x[[3]], length) %>% as.data.frame() %>% select(how_many=".")
+#   knitr::include_graphics(paste0(path_to_repo,
+#            "images/", folder.name,
+#            names.x[3],"_v_",names.y,"_gom.png"))
+
+```
+
+
+
+```{r plot_gom_4, echo = FALSE, fig.align='center', fig.cap='current_position', out.width="95%"}
+# > Plots: Current position
+# sapply(list.x[[4]], length) %>% as.data.frame() %>% select(how_many=".")
+#   knitr::include_graphics(paste0(path_to_repo,
+#            "images/", folder.name,
+#            names.x[4],"_v_",names.y,"_gom.png"))
+
+```
+
+
+
+```{r plot_gom_5, echo = FALSE, fig.align='center', fig.cap='ethnic_identity', out.width="95%"}
+# > Plots: Ethnic identity
+# sapply(list.x[[5]], length) %>% as.data.frame() %>% select(how_many=".")
+#   knitr::include_graphics(paste0(path_to_repo,
+#            "images/", folder.name,
+#            names.x[5],"_v_",names.y,"_gom.png"))
+
+```
+
+___
+
+### Results in a table
+
+The goal is to perform enrichment analyses (using hypergeometric analyses) to identify under (or over) represented groups (based on gender, ethnicity, etc) in different activities (roles) at IUSSI.
+
+> We found several overrepresented groups for specific roles. The results are provided in the table below.
+
+```{r under_v1}
+
+source(paste0(path_to_repo,"functions/underrepresentation_analyses.R"))
+
+## Format the data
+bg.dat <- 
+  dat %>%
+  select(ID, role_attended_before) %>%
+  group_by(ID) %>%
+  summarize(role_attended_before = str_c(role_attended_before, collapse = "; ")) %>%
+  ungroup()
+  
+results.list <- list()
+k <- 1
+# get a list of all gender IDs
+for (i in 1:length(list.x)) {
+  
+  names.vars <- names(list.x[[i]])
+  
+  for (j in 1:length(names.vars)) {
+  results.list[[k]] <- 
+      list.x[[i]][[j]] %>% 
+        check_under(.,
+                    bg.file = bg.dat,
+                    what = paste0(names.x[[i]],": ",names.vars[[j]]),
+                    atleast = 3)
+  k <- k+1
+  }
+}
+
+bind_rows(results.list, .id = "column_label") %>%
+    dplyr::select(-column_label) %>% 
+    as_tibble() %>% 
+    filter(adj_pVal < 0.05) %>% 
+    mutate(adj_pVal = round(adj_pVal,3)) %>% 
+    filter(over_under=="over") %>% 
+  
+    filter(what_desc != other.var) %>% 
+    filter(annot_term != "no_annot") %>% 
+    
+    select(annot_term:adj_pVal) %>% 
+    arrange(annot_term, adj_pVal) %>% 
+    
+    DT::datatable()
+
+```
+
+---
+
+### Results as a figure
+
+```{r under_v2}
+
+results.dat <- 
+  bind_rows(results.list, .id = "column_label") %>%
+    dplyr::select(-column_label) %>% 
+    as_tibble() %>% 
+    filter(adj_pVal < 0.05) %>% 
+    mutate(adj_pVal = round(adj_pVal,3)) %>% 
+    filter(over_under=="over") %>% 
+  
+    filter(what_desc != other.var) %>% 
+    filter(annot_term != "no_annot") %>% 
+    
+    select(annot_term:adj_pVal) %>% 
+    arrange(annot_term, adj_pVal)
+  
+
+mat <- 
+  results.dat %>% 
+  select(-over_under) %>% 
+  pivot_wider(names_from = "what_desc",
+              values_from = "adj_pVal",
+              values_fn = list(adj_pVal = min)) %>% 
+  as.data.frame() %>% 
+  column_to_rownames("annot_term") %>% 
+  as.matrix()
+
+
+# Plot the matrix
+### note: 
+### make sure the library "plot.matrix" is loaded
+### see here for more params: https://cran.r-project.org/web/packages/plot.matrix/vignettes/plot.matrix.html
+png(paste0(path_to_repo,
+           "images/", folder.name,
+           "enrichement_results.png"), 
+    width = 30, height = 20, units = "cm", res = 300)
+par(mar=c(10.1, 16.1, 4.1, 6.1))
+  mat %>% 
+    t() %>% 
+    plot(., 
+         # border=NA,
+         col=viridis::viridis(3),
+         spacing.key=1.5,
+         fmt.key="%.3f",
+         xlab = "",
+         ylab = "",
+         axis.col=list(side=1, las=2), axis.row = list(side=2, las=1))
+trash <- dev.off()
+```
+
+> And, here are the results as a heatmap.
+
+
+```{r plot_enrichment, echo = FALSE, fig.align='center', fig.cap='Results of the enrichment test; colors indicate p-values returned by the hypergeometric test. Lower p-values suggest possible over-representation.', out.width="95%"}
+  knitr::include_graphics(paste0(path_to_repo,
+                                 "images/", folder.name,
+                                 "enrichement_results.png"))
+
+```
+
+___
+
+Reproducibility:
+
+1. All code used for this document is available on my [Github](https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd).
+
+2. The function to perform enrichment analyses can be found [here](https://github.com/biplabendu/homepage/blob/master/functions/underrepresentation_analyses.R)
 
 ___
 
