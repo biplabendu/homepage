@@ -639,8 +639,13 @@ library(GeneOverlap)
 # which variable do you need to use for the x-axis
 names.x <- c("gender", 
              # "age", 
-             "residence_location", "research_location",
-             "current_position", "ethnic_identity")
+             "residence_location", 
+             # "research_location",
+             # "current_position", 
+             "ethnic_identity")
+
+writeLines("Variables of interest:")
+writeLines(names.x)
 
 # initialize a list to hold all the possible groups that we want to plot
 # on the x-axis
@@ -731,7 +736,6 @@ trash <- dev.off()
 ```
 
 
-
 ```{r plot_gom_1, echo = FALSE, fig.align='center', fig.cap='gender', out.width="95%"}
 # > Plots: Gender
 # sapply(list.x[[1]], length) %>% as.data.frame() %>% select(how_many=".")
@@ -791,7 +795,7 @@ ___
 
 The goal is to perform enrichment analyses (using hypergeometric analyses) to identify under (or over) represented groups (based on gender, ethnicity, etc) in different activities (roles) at IUSSI.
 
-> We found several overrepresented groups for specific roles. The results are provided in the table/figure below.
+> We found several overrepresented groups for specific roles; we did not find any significantly underrepresented terms. The overrepresented groups in different IUSSI roles are shown in the table/figure below.
 
 ### Results in a table
 
@@ -906,17 +910,34 @@ trash <- dev.off()
 
 ```
 
+> So, what does the data tell us?
+
+Write down the possible interpretations here. For example, the above figure tells us that
+
+- Folks of *ethnic_identity: white* are overrepresented in most roles at IUSSI,
+
+- Folks that relate to *gender: Cisgender woman* participate in IUSSI as attendees or as administrators more than expected at random,
+
+- and so on.
+
+___
+
+## What next?
+
+*My thoughts*: Once we, the committee, have all the summary statistics (and figures), and interpretations from the enrichment analyses, we should be ready to put together a brief document (pdf) for circulation. We might be able to highlight a few areas that we can improve on in the near future, and a few areas that we need to work on in the long-term. 
+
+
 ___
 
 ## Supplementary
 
-### 1. Reproducibility
+#### 1. Reproducibility
 
 - All code used for this document is available on my [Github](https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd).
 
 - The function to perform enrichment analyses can be found [here](https://github.com/biplabendu/homepage/blob/master/functions/underrepresentation_analyses.R)
 
 
-### 2. IUSSI 2014 & 2018
+#### 2. IUSSI 2014 & 2018
 
 A summary of the demography data for folks that attended IUSSI 2014 and 2018 can be found [here](https://biplabendu.github.io/homepage/IUSSI.html).
