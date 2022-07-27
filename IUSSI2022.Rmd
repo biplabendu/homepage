@@ -2,9 +2,9 @@
 ---
 title: "Demography data for IUSSI"
 author:
-- name: Biplabendu Das
-  affiliation: DEIJ Committee, IUSSI
-date: '`r format(Sys.time(), "%d %B, %Y")`'
+- name: DEIJ Committee, IUSSI
+  affiliation: In case of questions, please contact [Biplabendu Das](https://biplabendu.github.io/homepage/)
+date: Last updated on `r format(Sys.time(), "%d %B, %Y")`
 output:
   html_document:
     toc: true
@@ -580,9 +580,9 @@ dat %>%
   mutate(activity = num_roles/num_attended) %>% 
     
   ## Plot: research_location + gender
-  ggplot(aes(x=current_position, y=activity,fill=current_position)) +
+  ggplot(aes(x=current_position, y=activity)) +
     # geom_bar(position="stack", stat="identity", size=2) +
-    geom_boxplot(alpha=0.7, outlier.colour = "darkred") +
+    geom_boxplot(alpha=0.7, outlier.colour = "darkred", fill=viridis::inferno(10)[4]) +
     labs(y="# roles/attendance") +
     # geom_hline(yintercept = 5, col="grey60", alpha=0.7, size=1) +
     coord_flip() +
@@ -788,11 +788,12 @@ trash <- dev.off()
 
 ___
 
-### Results in a table
 
 The goal is to perform enrichment analyses (using hypergeometric analyses) to identify under (or over) represented groups (based on gender, ethnicity, etc) in different activities (roles) at IUSSI.
 
-> We found several overrepresented groups for specific roles. The results are provided in the table below.
+> We found several overrepresented groups for specific roles. The results are provided in the table/figure below.
+
+### Results in a table
 
 ```{r under_v1}
 
@@ -842,6 +843,8 @@ bind_rows(results.list, .id = "column_label") %>%
 ```
 
 ---
+
+> And, here are the results as a heatmap.
 
 ### Results as a figure
 
@@ -895,8 +898,6 @@ par(mar=c(10.1, 16.1, 4.1, 6.1))
 trash <- dev.off()
 ```
 
-> And, here are the results as a heatmap.
-
 
 ```{r plot_enrichment, echo = FALSE, fig.align='center', fig.cap='Results of the enrichment test; colors indicate p-values returned by the hypergeometric test. Lower p-values suggest possible over-representation.', out.width="95%"}
   knitr::include_graphics(paste0(path_to_repo,
@@ -907,14 +908,15 @@ trash <- dev.off()
 
 ___
 
-Reproducibility:
+## Supplementary
 
-1. All code used for this document is available on my [Github](https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd).
+### 1. Reproducibility
 
-2. The function to perform enrichment analyses can be found [here](https://github.com/biplabendu/homepage/blob/master/functions/underrepresentation_analyses.R)
+- All code used for this document is available on my [Github](https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd).
 
-___
+- The function to perform enrichment analyses can be found [here](https://github.com/biplabendu/homepage/blob/master/functions/underrepresentation_analyses.R)
 
-## 99. IUSSI 2014 & 2018
 
-The demography data for the participants that attended IUSSI 2014 and 2018 can be found [here](https://biplabendu.github.io/homepage/IUSSI.html).
+### 2. IUSSI 2014 & 2018
+
+A summary of the demography data for folks that attended IUSSI 2014 and 2018 can be found [here](https://biplabendu.github.io/homepage/IUSSI.html).

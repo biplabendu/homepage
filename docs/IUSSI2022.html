@@ -445,9 +445,9 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Demography data for IUSSI</h1>
-<h4 class="author">Biplabendu Das</h4>
+<h4 class="author">DEIJ Committee, IUSSI</h4>
 <address class="author_afil">
-DEIJ Committee, IUSSI<br><h4 class="date">25 July, 2022</h4>
+In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 26 July, 2022</h4>
 
 </div>
 
@@ -1141,9 +1141,9 @@ dat %&gt;%
   mutate(activity = num_roles/num_attended) %&gt;% 
     
   ## Plot: research_location + gender
-  ggplot(aes(x=current_position, y=activity,fill=current_position)) +
+  ggplot(aes(x=current_position, y=activity)) +
     # geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;, size=2) +
-    geom_boxplot(alpha=0.7, outlier.colour = &quot;darkred&quot;) +
+    geom_boxplot(alpha=0.7, outlier.colour = &quot;darkred&quot;, fill=viridis::inferno(10)[4]) +
     labs(y=&quot;# roles/attendance&quot;) +
     # geom_hline(yintercept = 5, col=&quot;grey60&quot;, alpha=0.7, size=1) +
     coord_flip() +
@@ -1284,12 +1284,12 @@ trash &lt;- dev.off()
 
 }</code></pre>
 <hr />
-<div id="results-in-a-table" class="section level3">
-<h3>Results in a table</h3>
 <p>The goal is to perform enrichment analyses (using hypergeometric analyses) to identify under (or over) represented groups (based on gender, ethnicity, etc) in different activities (roles) at IUSSI.</p>
 <blockquote>
-<p>We found several overrepresented groups for specific roles. The results are provided in the table below.</p>
+<p>We found several overrepresented groups for specific roles. The results are provided in the table/figure below.</p>
 </blockquote>
+<div id="results-in-a-table" class="section level3">
+<h3>Results in a table</h3>
 <pre class="r"><code>source(paste0(path_to_repo,&quot;functions/underrepresentation_analyses.R&quot;))
 
 ## Format the data
@@ -1332,9 +1332,12 @@ bind_rows(results.list, .id = &quot;column_label&quot;) %&gt;%
     arrange(annot_term, adj_pVal) %&gt;% 
     
     DT::datatable()</code></pre>
-<div id="htmlwidget-858fdc84ea98b07053af" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-858fdc84ea98b07053af">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45"],["Administrative duties","Administrative duties","Administrative duties","Administrative duties","Administrative duties","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Other","Other","Plenary speaker","Plenary speaker","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter"],["residence_location: Australasia","research_location: Australasia","current_position: Tenure tr","ethnic_identity: White","gender: Cisgender woman","gender: Cisgender woman","current_position: Tenure tr","ethnic_identity: additional_category","ethnic_identity: White","gender: additional_category","research_location: Middle East","residence_location: Australasia","residence_location: Middle East","research_location: Continental US","residence_location: Canada","research_location: Australasia","residence_location: Continental US","current_position: Post Doc","current_position: Non-tenur","current_position: Tenure tr","ethnic_identity: White","current_position: Tenure tr","research_location: Central America","residence_location: Canada","ethnic_identity: additional_category","residence_location: Continental US","research_location: Canada","gender: additional_category","research_location: Continental US","residence_location: Australasia","research_location: Sub-Saharan Africa","research_location: Australasia","ethnic_identity: South Asian","current_position: Post Doc","current_position: Tenure tr","ethnic_identity: White","gender: Cisgender man","current_position: Non-tenur","current_position: Tenure tr","ethnic_identity: White","current_position: Tenure tr","research_location: South America","research_location: Canada","residence_location: Canada","research_location: Sub-Saharan Africa"],["over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over"],[0,0,0,0.024,0.034,0,0,0,0,0.001,0.001,0.008,0.016,0.024,0.045,0.045,0.047,0.049,0,0,0,0.004,0.006,0.011,0.012,0.018,0.018,0.02,0.026,0.034,0.038,0.045,0,0.013,0,0.038,0,0,0,0.001,0.004,0.012,0.014,0.019,0.029]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>annot_term<\/th>\n      <th>what_desc<\/th>\n      <th>over_under<\/th>\n      <th>adj_pVal<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":4},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-39d758d0c4c42c960af9" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-39d758d0c4c42c960af9">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45"],["Administrative duties","Administrative duties","Administrative duties","Administrative duties","Administrative duties","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Other","Other","Plenary speaker","Plenary speaker","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter"],["residence_location: Australasia","research_location: Australasia","current_position: Tenure tr","ethnic_identity: White","gender: Cisgender woman","gender: Cisgender woman","current_position: Tenure tr","ethnic_identity: additional_category","ethnic_identity: White","gender: additional_category","research_location: Middle East","residence_location: Australasia","residence_location: Middle East","research_location: Continental US","residence_location: Canada","research_location: Australasia","residence_location: Continental US","current_position: Post Doc","current_position: Non-tenur","current_position: Tenure tr","ethnic_identity: White","current_position: Tenure tr","research_location: Central America","residence_location: Canada","ethnic_identity: additional_category","residence_location: Continental US","research_location: Canada","gender: additional_category","research_location: Continental US","residence_location: Australasia","research_location: Sub-Saharan Africa","research_location: Australasia","ethnic_identity: South Asian","current_position: Post Doc","current_position: Tenure tr","ethnic_identity: White","gender: Cisgender man","current_position: Non-tenur","current_position: Tenure tr","ethnic_identity: White","current_position: Tenure tr","research_location: South America","research_location: Canada","residence_location: Canada","research_location: Sub-Saharan Africa"],["over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over"],[0,0,0,0.024,0.034,0,0,0,0,0.001,0.001,0.008,0.016,0.024,0.045,0.045,0.047,0.049,0,0,0,0.004,0.006,0.011,0.012,0.018,0.018,0.02,0.026,0.034,0.038,0.045,0,0.013,0,0.038,0,0,0,0.001,0.004,0.012,0.014,0.019,0.029]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>annot_term<\/th>\n      <th>what_desc<\/th>\n      <th>over_under<\/th>\n      <th>adj_pVal<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":4},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <hr />
+<blockquote>
+<p>And, here are the results as a heatmap.</p>
+</blockquote>
 </div>
 <div id="results-as-a-figure" class="section level3">
 <h3>Results as a figure</h3>
@@ -1384,9 +1387,6 @@ par(mar=c(10.1, 16.1, 4.1, 6.1))
          ylab = &quot;&quot;,
          axis.col=list(side=1, las=2), axis.row = list(side=2, las=1))
 trash &lt;- dev.off()</code></pre>
-<blockquote>
-<p>And, here are the results as a heatmap.</p>
-</blockquote>
 <div class="figure" style="text-align: center">
 <img src="images/2022_demography_data/enrichement_results.png" alt="Results of the enrichment test; colors indicate p-values returned by the hypergeometric test. Lower p-values suggest possible over-representation." width="95%" />
 <p class="caption">
@@ -1394,17 +1394,21 @@ Results of the enrichment test; colors indicate p-values returned by the hyperge
 </p>
 </div>
 <hr />
-<p>Reproducibility:</p>
-<ol style="list-style-type: decimal">
+</div>
+</div>
+<div id="supplementary" class="section level2">
+<h2>Supplementary</h2>
+<div id="reproducibility" class="section level3">
+<h3>1. Reproducibility</h3>
+<ul>
 <li><p>All code used for this document is available on my <a href="https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd">Github</a>.</p></li>
 <li><p>The function to perform enrichment analyses can be found <a href="https://github.com/biplabendu/homepage/blob/master/functions/underrepresentation_analyses.R">here</a></p></li>
-</ol>
-<hr />
+</ul>
 </div>
+<div id="iussi-2014-2018" class="section level3">
+<h3>2. IUSSI 2014 &amp; 2018</h3>
+<p>A summary of the demography data for folks that attended IUSSI 2014 and 2018 can be found <a href="https://biplabendu.github.io/homepage/IUSSI.html">here</a>.</p>
 </div>
-<div id="iussi-2014-2018" class="section level2">
-<h2>99. IUSSI 2014 &amp; 2018</h2>
-<p>The demography data for the participants that attended IUSSI 2014 and 2018 can be found <a href="https://biplabendu.github.io/homepage/IUSSI.html">here</a>.</p>
 </div>
 
 
