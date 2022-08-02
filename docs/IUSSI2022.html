@@ -447,7 +447,7 @@ div.tocify {
 <h1 class="title toc-ignore">Demography data for IUSSI</h1>
 <h4 class="author">DEIJ Committee, IUSSI</h4>
 <address class="author_afil">
-In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 26 July, 2022</h4>
+In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 02 August, 2022</h4>
 
 </div>
 
@@ -461,6 +461,9 @@ In case of questions, please contact <a href="https://biplabendu.github.io/homep
 <hr />
 <div id="raw-data" class="section level2">
 <h2>01 Raw data</h2>
+<blockquote>
+<p>Number of folks that took the survey: 226</p>
+</blockquote>
 <p>Let’s take a look at few rows and columns of the raw data.</p>
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -1329,8 +1332,8 @@ for (i in 1:length(list.x)) {
 bind_rows(results.list, .id = &quot;column_label&quot;) %&gt;%
     dplyr::select(-column_label) %&gt;% 
     as_tibble() %&gt;% 
-    filter(adj_pVal &lt; 0.05) %&gt;% 
-    mutate(adj_pVal = round(adj_pVal,3)) %&gt;% 
+    filter(adj_pVal &lt; 0.05) %&gt;%
+    mutate(adj_pVal = round(adj_pVal,3)) %&gt;%
     filter(over_under==&quot;over&quot;) %&gt;% 
   
     filter(what_desc != other.var) %&gt;% 
@@ -1340,8 +1343,8 @@ bind_rows(results.list, .id = &quot;column_label&quot;) %&gt;%
     arrange(annot_term, adj_pVal) %&gt;% 
     
     DT::datatable()</code></pre>
-<div id="htmlwidget-2e1b3378e5886f57b204" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2e1b3378e5886f57b204">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22"],["Administrative duties","Administrative duties","Administrative duties","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Other","Plenary speaker","Poster presenter","Poster presenter","Poster presenter"],["residence_location: Australasia","ethnic_identity: White","gender: Cisgender woman","gender: Cisgender woman","ethnic_identity: additional_category","ethnic_identity: White","gender: additional_category","residence_location: Australasia","residence_location: Middle East","residence_location: Canada","residence_location: Continental US","ethnic_identity: White","residence_location: Canada","ethnic_identity: additional_category","residence_location: Continental US","gender: additional_category","residence_location: Australasia","ethnic_identity: South Asian","ethnic_identity: White","gender: Cisgender man","ethnic_identity: White","residence_location: Canada"],["over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over"],[0,0.024,0.034,0,0,0,0.001,0.008,0.016,0.045,0.047,0,0.011,0.012,0.018,0.02,0.034,0,0.038,0,0.001,0.019]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>annot_term<\/th>\n      <th>what_desc<\/th>\n      <th>over_under<\/th>\n      <th>adj_pVal<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":4},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b5a61bef087632f6c0da" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b5a61bef087632f6c0da">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"],["Administrative duties","Administrative duties","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Attendee","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Invited speaker","Other","Plenary speaker","Plenary speaker","Poster presenter","Poster presenter","Poster presenter","Poster presenter","Poster presenter"],["residence_location: Australasia","ethnic_identity: additional_category","gender: Cisgender woman","ethnic_identity: additional_category","ethnic_identity: White","gender: additional_category","residence_location: Australasia","residence_location: Canada","residence_location: Middle East","residence_location: Continental US","ethnic_identity: White","residence_location: Canada","residence_location: Australasia","residence_location: Continental US","ethnic_identity: additional_category","gender: additional_category","ethnic_identity: South Asian","residence_location: South America","ethnic_identity: White","gender: Cisgender man","ethnic_identity: White","residence_location: Canada","residence_location: South America","residence_location: Continental US"],["over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over","over"],[0,0.002,0,0,0,0.001,0.011,0.011,0.014,0.029,0,0.003,0.011,0.013,0.013,0.023,0,0.001,0.025,0,0,0.005,0.021,0.049]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>annot_term<\/th>\n      <th>what_desc<\/th>\n      <th>over_under<\/th>\n      <th>adj_pVal<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":4},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <hr />
 <blockquote>
 <p>And, here are the results as a heatmap.</p>
@@ -1407,7 +1410,7 @@ Results of the enrichment test; colors indicate p-values returned by the hyperge
 <p>Write down the possible interpretations here. For example, the above figure tells us that</p>
 <ul>
 <li><p>Folks of <em>ethnic_identity: white</em> are overrepresented in most roles at IUSSI,</p></li>
-<li><p>Folks that relate to <em>gender: Cisgender woman</em> participate in IUSSI as attendees or as administrators more than expected at random,</p></li>
+<li><p>Folks that relate to <em>gender: Cisgender woman</em> and <em>residence_location: Middle East</em> participate in IUSSI as attendees more than expected at random,</p></li>
 <li><p>and so on.</p></li>
 </ul>
 <hr />

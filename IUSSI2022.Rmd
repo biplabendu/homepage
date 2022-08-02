@@ -56,7 +56,7 @@ folder.name <- "2022_demography_data/"
 
 raw.dat <- read.csv(paste0(path_to_repo,
                            "data/",
-                           folder.name,"iussi_2022_data_28Jun22.csv"), 
+                           folder.name,"iussi_2022_data_30Jul22.csv"), 
                 header = T, stringsAsFactors = F,
                 na.strings = c("NA",""," "))
 
@@ -106,6 +106,8 @@ other.var <- "additional_category"
 ***
 
 ## 01 Raw data
+
+> Number of folks that took the survey: `r nrow(raw.dat)`
 
 Let's take a look at few rows and columns of the raw data.
 
@@ -832,8 +834,8 @@ for (i in 1:length(list.x)) {
 bind_rows(results.list, .id = "column_label") %>%
     dplyr::select(-column_label) %>% 
     as_tibble() %>% 
-    filter(adj_pVal < 0.05) %>% 
-    mutate(adj_pVal = round(adj_pVal,3)) %>% 
+    filter(adj_pVal < 0.05) %>%
+    mutate(adj_pVal = round(adj_pVal,3)) %>%
     filter(over_under=="over") %>% 
   
     filter(what_desc != other.var) %>% 
@@ -916,7 +918,7 @@ Write down the possible interpretations here. For example, the above figure tell
 
 - Folks of *ethnic_identity: white* are overrepresented in most roles at IUSSI,
 
-- Folks that relate to *gender: Cisgender woman* participate in IUSSI as attendees or as administrators more than expected at random,
+- Folks that relate to *gender: Cisgender woman* and *residence_location: Middle East* participate in IUSSI as attendees more than expected at random,
 
 - and so on.
 
