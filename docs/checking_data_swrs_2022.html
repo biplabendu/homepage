@@ -510,7 +510,7 @@ tidy.dat &lt;-
 </div>
 <div id="visualize-as-boxplots" class="section level2">
 <h2>2. Visualize as boxplots</h2>
-<pre class="r"><code>observers &lt;- tidy.dat %&gt;% pull(observer) %&gt;% unique() %&gt;% as.character()
+<pre class="r"><code>observers &lt;- tidy.dat %&gt;% pull(observer) %&gt;% unique() %&gt;% na.omit() %&gt;% as.character()
 
 for(i in 1:length(observers)) {
   
@@ -541,7 +541,7 @@ for(i in 1:length(observers)) {
   trash &lt;- dev.off()
   
 }</code></pre>
-<p><img src="images/2022_deborah/BD_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/DRP_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/FG_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/HC_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/MC_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/MM_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/MNW_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/NA_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/VR_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/ZO_boxplots.png" width="55%" style="display: block; margin: auto;" /></p>
+<p><img src="images/2022_deborah/BD_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/DRP_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/FG_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/HC_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/MC_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/MM_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/MNW_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/VR_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/ZO_boxplots.png" width="55%" style="display: block; margin: auto;" /></p>
 <hr />
 </div>
 <div id="supplementary" class="section level2">
@@ -549,7 +549,7 @@ for(i in 1:length(observers)) {
 <div id="reproducibility" class="section level4">
 <h4>1. Reproducibility</h4>
 <ul>
-<li>All code used for this document is available on my <a href="https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd">Github</a>.</li>
+<li>All code used for this document is available on my <a href="https://github.com/biplabendu/homepage/blob/master/checking_data_swrs_2022.Rmd">Github</a>.</li>
 </ul>
 </div>
 </div>

@@ -139,7 +139,7 @@ tidy.dat <-
 ## 2. Visualize as boxplots
 
 ```{r plot_boxplots, inlcude=F}
-observers <- tidy.dat %>% pull(observer) %>% unique() %>% as.character()
+observers <- tidy.dat %>% pull(observer) %>% unique() %>% na.omit() %>% as.character()
 
 for(i in 1:length(observers)) {
   
@@ -188,4 +188,4 @@ ___
 
 #### 1. Reproducibility
 
-- All code used for this document is available on my [Github](https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd).
+- All code used for this document is available on my [Github](https://github.com/biplabendu/homepage/blob/master/checking_data_swrs_2022.Rmd).
