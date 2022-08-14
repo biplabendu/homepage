@@ -12,7 +12,7 @@
 
 
 
-<title>Daily data check at SWRS 2022</title>
+<title>Daily data check</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -435,7 +435,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Daily data check at SWRS 2022</h1>
+<h1 class="title toc-ignore">Daily data check</h1>
 <h4 class="author">foraging count data for 2022 field work</h4>
 <address class="author_afil">
 In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 13 August, 2022</h4>
@@ -443,31 +443,10 @@ In case of questions, please contact <a href="https://biplabendu.github.io/homep
 </div>
 
 
+<hr />
 <div id="housekeeping" class="section level2">
-<h2>0. Housekeeping</h2>
-<pre class="r"><code>## This is where you want to specify your parameters of choice.
-
-## Specify the name of the master file as saved on your computer
-filename &lt;- &quot;arizona_2022_master_list_Aug13_1601h.csv&quot;
-
-column.names &lt;- c(&quot;date&quot;,
-                  &quot;observer&quot;,
-                  &quot;colony_ID&quot;,
-                  &quot;time&quot;,
-                  &quot;in_1&quot;,
-                  &quot;out_1&quot;,
-                  &quot;in_2&quot;,
-                  &quot;out_2&quot;,
-                  &quot;in_3&quot;,
-                  &quot;out_3&quot;,
-                  &quot;in_4&quot;,
-                  &quot;out_4&quot;,
-                  &quot;first_obs&quot;,
-                  &quot;second_obs&quot;
-                  )</code></pre>
-<blockquote>
-<p>Datasheet we</p>
-</blockquote>
+<h2>Housekeeping</h2>
+<hr />
 </div>
 <div id="read-data-and-tidy" class="section level2">
 <h2>1. Read data and tidy</h2>
@@ -483,20 +462,25 @@ column.names &lt;- c(&quot;date&quot;,
 
 colnames(dat) &lt;- column.names
 
-tidy.dat &lt;- 
+tidy.dat &lt;-
   dat %&gt;% 
+  # remove columns containing first and second obs
+  select(-first_obs, -second_obs) %&gt;% 
+  
+  
   group_by(date,observer,colony_ID) %&gt;% 
-  mutate(tot_in = sum(in_1,in_2,in_3,in_4, na.rm = T),
-         tot_out = sum(out_1,out_2,out_3,out_4, na.rm=T)) %&gt;% 
+  mutate(tot_in = sum(in_1,in_2,in_3,in_4,in_5,in_6,in_7,in_8, na.rm = T),
+         tot_out = sum(out_1,out_2,out_3,out_4,out_5,out_6,out_7,out_8, na.rm=T)) %&gt;% 
   ungroup() %&gt;% 
   
   mutate(colony_ID = as.factor(colony_ID),
-         observer = as.factor(observer)) %&gt;% 
+         observer = as.factor(observer),
+         date = as.POSIXct(date, format=&quot;%m/%d/%Y&quot;, tz=&quot;MST&quot;)) %&gt;% 
   
   # na.omit() %&gt;% 
   
   pivot_longer(.,
-               cols = in_1:out_4,
+               cols = in_1:out_8,
                names_to = &quot;inout&quot;,
                values_to = &quot;n_ants&quot;) %&gt;% 
   
@@ -506,42 +490,21 @@ tidy.dat &lt;-
   
   select(date:time, inout, 
          inout2,
-         n_ants, tot_in, tot_out, everything())</code></pre>
+         n_ants, tot_in, tot_out, everything())
+
+all.dates &lt;- tidy.dat %&gt;% pull(date) %&gt;% na.omit() %&gt;% unique()
+date.max &lt;- tidy.dat %&gt;% pull(date) %&gt;% na.omit() %&gt;% max()</code></pre>
+<blockquote>
+<p>Analyzing data from 8/13/2022 (Aug 13, 2022) until 2022-08-13.</p>
+</blockquote>
+<hr />
 </div>
 <div id="visualize-as-boxplots" class="section level2">
 <h2>2. Visualize as boxplots</h2>
-<pre class="r"><code>observers &lt;- tidy.dat %&gt;% pull(observer) %&gt;% unique() %&gt;% na.omit() %&gt;% as.character()
-
-for(i in 1:length(observers)) {
-  
-  f.name &lt;- paste0(observers[[i]],&quot;_boxplots.png&quot;)
-  
-  plot.x &lt;- 
-    tidy.dat %&gt;% 
-    filter(observer == observers[[i]]) %&gt;% 
-    
-    ggplot(aes(x=colony_ID, y=n_ants)) +
-    # ggplot(aes(x=colony_ID, y=n_ants, group=inout2)) +
-      geom_boxplot(aes(fill=inout2), 
-                   alpha=0.75, 
-                   outlier.size = 3,
-                   outlier.shape = 21,
-                   outlier.color = &quot;red&quot;,
-                   position = position_dodge(width = 0.95)) +
-      # facet_grid(~observer) +
-      theme_Publication(base_size = 40) +
-      scale_fill_Publication() +
-      coord_flip() +
-    labs(x=paste0(observers[[i]], &quot;&#39;s colony ID&quot;))
-  
-  png(paste0(path_to_results,
-           f.name), 
-      width = 30, height = 45, units = &quot;cm&quot;, res = 300)
-  print(plot.x)
-  trash &lt;- dev.off()
-  
-}</code></pre>
-<p><img src="images/2022_deborah/BD_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/DRP_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/FG_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/HC_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/MC_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/MM_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/MNW_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/VR_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="images/2022_deborah/ZO_boxplots.png" width="55%" style="display: block; margin: auto;" /></p>
+<blockquote>
+<p>Currently showing all data for: 2022-08-13</p>
+</blockquote>
+<p><img src="images/2022_deborah/00_combined_images/all_boxplots.png" width="75%" style="display: block; margin: auto;" /></p>
 <hr />
 </div>
 <div id="supplementary" class="section level2">

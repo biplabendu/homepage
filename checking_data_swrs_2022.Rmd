@@ -1,6 +1,6 @@
 
 ---
-title: "Daily data check at SWRS 2022"
+title: "Daily data check"
 author:
 - name: foraging count data for 2022 field work
   affiliation: In case of questions, please contact [Biplabendu Das](https://biplabendu.github.io/homepage/)
@@ -33,8 +33,9 @@ rm(list = ls())
 
 ```
 
+___
 
-## 0. Housekeeping
+## Housekeeping
 
 ```{r housekeeping, include=FALSE}
 
@@ -67,16 +68,18 @@ source(paste0(path_to_repo,"/03_functions/plot_zscores.R"))
 ```
 
 
-```{r user_input}
+```{r user_input, include=F}
 
 ## This is where you want to specify your parameters of choice.
 
 ## Specify the name of the master file as saved on your computer
-filename <- "arizona_2022_master_list_Aug13_1601h.csv"
+filename <- "arizona_2022_master_list_Aug13_2043h.csv"
 
 column.names <- c("date",
                   "observer",
                   "colony_ID",
+                  "first_obs",
+                  "second_obs",
                   "time",
                   "in_1",
                   "out_1",
@@ -86,13 +89,19 @@ column.names <- c("date",
                   "out_3",
                   "in_4",
                   "out_4",
-                  "first_obs",
-                  "second_obs"
+                  "in_5",
+                  "out_5",
+                  "in_6",
+                  "out_6",
+                  "in_7",
+                  "out_7",
+                  "in_8",
+                  "out_8"
                   )
 
 ```
 
-> Datasheet we
+___
 
 ## 1. Read data and tidy
 
@@ -110,20 +119,25 @@ dat <-
 
 colnames(dat) <- column.names
 
-tidy.dat <- 
+tidy.dat <-
   dat %>% 
+  # remove columns containing first and second obs
+  select(-first_obs, -second_obs) %>% 
+  
+  
   group_by(date,observer,colony_ID) %>% 
-  mutate(tot_in = sum(in_1,in_2,in_3,in_4, na.rm = T),
-         tot_out = sum(out_1,out_2,out_3,out_4, na.rm=T)) %>% 
+  mutate(tot_in = sum(in_1,in_2,in_3,in_4,in_5,in_6,in_7,in_8, na.rm = T),
+         tot_out = sum(out_1,out_2,out_3,out_4,out_5,out_6,out_7,out_8, na.rm=T)) %>% 
   ungroup() %>% 
   
   mutate(colony_ID = as.factor(colony_ID),
-         observer = as.factor(observer)) %>% 
+         observer = as.factor(observer),
+         date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
   
   # na.omit() %>% 
   
   pivot_longer(.,
-               cols = in_1:out_4,
+               cols = in_1:out_8,
                names_to = "inout",
                values_to = "n_ants") %>% 
   
@@ -134,19 +148,32 @@ tidy.dat <-
   select(date:time, inout, 
          inout2,
          n_ants, tot_in, tot_out, everything())
+
+all.dates <- tidy.dat %>% pull(date) %>% na.omit() %>% unique()
+date.max <- tidy.dat %>% pull(date) %>% na.omit() %>% max()
 ```
+
+> Analyzing data from 8/13/2022 (Aug 13, 2022) until `r date.max`.
+
+___
 
 ## 2. Visualize as boxplots
 
-```{r plot_boxplots, inlcude=F}
+> Currently showing all data for: `r date.max`
+
+```{r plot_boxplots, include=F}
 observers <- tidy.dat %>% pull(observer) %>% unique() %>% na.omit() %>% as.character()
+
+plot.x <- list()
 
 for(i in 1:length(observers)) {
   
   f.name <- paste0(observers[[i]],"_boxplots.png")
   
-  plot.x <- 
+  plot.x[[i]] <- 
     tidy.dat %>% 
+    filter(date == date.max) %>% 
+    
     filter(observer == observers[[i]]) %>% 
     
     ggplot(aes(x=colony_ID, y=n_ants)) +
@@ -163,22 +190,38 @@ for(i in 1:length(observers)) {
       coord_flip() +
     labs(x=paste0(observers[[i]], "'s colony ID"))
   
-  png(paste0(path_to_results,
-           f.name), 
-      width = 30, height = 45, units = "cm", res = 300)
-  print(plot.x)
-  trash <- dev.off()
+  # png(paste0(path_to_results,
+  #          f.name), 
+  #     width = 30, height = 45, units = "cm", res = 300)
+  # print(plot.x[[i]])
+  # trash <- dev.off()
   
 }
 
+png(paste0(path_to_results,
+           "00_combined_images/",
+           "all_boxplots.png"), 
+      width = 40, height = 160, units = "cm", res = 300)
+multi.plot(plot.x, rows = 5, cols=2)
+trash <- dev.off()
 
 ```
 
 
-```{r embed_boxplots, echo=F, fig.align='center', fig.cap='', out.width="55%"}
 
-files <- list.files(path_to_results, full.names = T)
-knitr::include_graphics(files)
+```{r embed_boxplots_all, echo=F, out.width="75%", fig.cap='', fig.align='center'}
+
+knitr::include_graphics(paste0(path_to_results,
+           "00_combined_images/",
+           "all_boxplots.png"))
+  
+```
+
+
+```{r embed_boxplots, echo=F, out.width="49%", out.height="10%", fig.cap='', fig.show="hold", fig.align='center'}
+
+# files <- list.files(path_to_results, full.names = T)[-1]
+# knitr::include_graphics(files)
   
 ```
 
