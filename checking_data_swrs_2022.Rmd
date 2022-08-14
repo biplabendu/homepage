@@ -73,7 +73,7 @@ source(paste0(path_to_repo,"/03_functions/plot_zscores.R"))
 ## This is where you want to specify your parameters of choice.
 
 ## Specify the name of the master file as saved on your computer
-filename <- "arizona_2022_master_list_Aug13_2043h.csv"
+filename <- "arizona_2022_master_list_Aug14_1434h.csv"
 
 column.names <- c("date",
                   "observer",
