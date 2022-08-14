@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Daily data check at SWRS 2022</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-121215066-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-121215066-1');
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Biplabendu Das</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="research.html">
+    <span class="fa fa-flask"></span>
+     
+    Research
+  </a>
+</li>
+<li>
+  <a href="camponotus_floridanus.html">
+    <span class="fa fa-bug"></span>
+     
+    Camponotus_floridanus
+  </a>
+</li>
+<li>
+  <a href="https://www.academia.edu/attachments/81365810/download_file">
+    <span class="fa fa-address-card"></span>
+     
+    CV
+  </a>
+</li>
+<li>
+  <a href="ecology.html">
+    <span class="fa fa-leaf"></span>
+     
+    EcologyLab
+  </a>
+</li>
+<li>
+  <a href="IUSSI2022.html">
+    <span class="fa fa-pie-chart"></span>
+     
+    IUSSI_Demography
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://twitter.com/another_ant_guy">
+    <span class="fa fa-twitter"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/biplabendu/">
+    <span class="fa fa-linkedin"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.facebook.com/biplabendu">
+    <span class="fa fa-facebook"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Daily data check at SWRS 2022</h1>
+<h4 class="author">foraging count data for 2022 field work</h4>
+<address class="author_afil">
+In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 13 August, 2022</h4>
+
+</div>
+
+
+<div id="housekeeping" class="section level2">
+<h2>0. Housekeeping</h2>
+<pre class="r"><code>## This is where you want to specify your parameters of choice.
+
+## Specify the name of the master file as saved on your computer
+filename &lt;- &quot;arizona_2022_master_list_Aug13_1601h.csv&quot;
+
+column.names &lt;- c(&quot;date&quot;,
+                  &quot;observer&quot;,
+                  &quot;colony_ID&quot;,
+                  &quot;time&quot;,
+                  &quot;in_1&quot;,
+                  &quot;out_1&quot;,
+                  &quot;in_2&quot;,
+                  &quot;out_2&quot;,
+                  &quot;in_3&quot;,
+                  &quot;out_3&quot;,
+                  &quot;in_4&quot;,
+                  &quot;out_4&quot;,
+                  &quot;first_obs&quot;,
+                  &quot;second_obs&quot;
+                  )</code></pre>
+<blockquote>
+<p>Datasheet we</p>
+</blockquote>
+</div>
+<div id="read-data-and-tidy" class="section level2">
+<h2>1. Read data and tidy</h2>
+<pre class="r"><code>dat &lt;- 
+  read.table(paste0(path_to_repo, path_to_data, filename),
+                  sep = &quot;,&quot;,
+                  header = T,
+                  na.strings = c(&quot;&quot;,&quot; &quot;),
+                  stringsAsFactors = F,
+                  skip = 1) %&gt;% 
+  as_tibble() %&gt;% 
+  select(1:length(column.names))
+
+colnames(dat) &lt;- column.names
+
+tidy.dat &lt;- 
+  dat %&gt;% 
+  group_by(date,observer,colony_ID) %&gt;% 
+  mutate(tot_in = sum(in_1,in_2,in_3,in_4, na.rm = T),
+         tot_out = sum(out_1,out_2,out_3,out_4, na.rm=T)) %&gt;% 
+  ungroup() %&gt;% 
+  
+  mutate(colony_ID = as.factor(colony_ID),
+         observer = as.factor(observer)) %&gt;% 
+  
+  # na.omit() %&gt;% 
+  
+  pivot_longer(.,
+               cols = in_1:out_4,
+               names_to = &quot;inout&quot;,
+               values_to = &quot;n_ants&quot;) %&gt;% 
+  
+  group_by(inout) %&gt;% 
+  mutate(inout2 = str_split_fixed(inout, &quot;_&quot;, 2)[1]) %&gt;%
+  ungroup() %&gt;% 
+  
+  select(date:time, inout, 
+         inout2,
+         n_ants, tot_in, tot_out, everything())</code></pre>
+</div>
+<div id="visualize-as-boxplots" class="section level2">
+<h2>2. Visualize as boxplots</h2>
+<pre class="r"><code>observers &lt;- tidy.dat %&gt;% pull(observer) %&gt;% unique() %&gt;% as.character()
+
+for(i in 1:length(observers)) {
+  
+  f.name &lt;- paste0(observers[[i]],&quot;_boxplots.png&quot;)
+  
+  plot.x &lt;- 
+    tidy.dat %&gt;% 
+    filter(observer == observers[[i]]) %&gt;% 
+    
+    ggplot(aes(x=colony_ID, y=n_ants)) +
+    # ggplot(aes(x=colony_ID, y=n_ants, group=inout2)) +
+      geom_boxplot(aes(fill=inout2), 
+                   alpha=0.75, 
+                   outlier.size = 3,
+                   outlier.shape = 21,
+                   outlier.color = &quot;red&quot;,
+                   position = position_dodge(width = 0.95)) +
+      # facet_grid(~observer) +
+      theme_Publication(base_size = 40) +
+      scale_fill_Publication() +
+      coord_flip() +
+    labs(x=paste0(observers[[i]], &quot;&#39;s colony ID&quot;))
+  
+  png(paste0(path_to_repo,
+           &quot;/04_results/&quot;,
+           f.name), 
+      width = 30, height = 45, units = &quot;cm&quot;, res = 300)
+  print(plot.x)
+  trash &lt;- dev.off()
+  
+}</code></pre>
+<p><img src="/Users/biplabendudas/OneDrive%20-%20University%20of%20Central%20Florida/UCF%20de%20bekker/PostDoc/Labs/Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data/04_results/BD_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="/Users/biplabendudas/OneDrive%20-%20University%20of%20Central%20Florida/UCF%20de%20bekker/PostDoc/Labs/Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data/04_results/DRP_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="/Users/biplabendudas/OneDrive%20-%20University%20of%20Central%20Florida/UCF%20de%20bekker/PostDoc/Labs/Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data/04_results/FG_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="/Users/biplabendudas/OneDrive%20-%20University%20of%20Central%20Florida/UCF%20de%20bekker/PostDoc/Labs/Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data/04_results/HC_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="/Users/biplabendudas/OneDrive%20-%20University%20of%20Central%20Florida/UCF%20de%20bekker/PostDoc/Labs/Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data/04_results/MC_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="/Users/biplabendudas/OneDrive%20-%20University%20of%20Central%20Florida/UCF%20de%20bekker/PostDoc/Labs/Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data/04_results/MM_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="/Users/biplabendudas/OneDrive%20-%20University%20of%20Central%20Florida/UCF%20de%20bekker/PostDoc/Labs/Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data/04_results/MNW_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="/Users/biplabendudas/OneDrive%20-%20University%20of%20Central%20Florida/UCF%20de%20bekker/PostDoc/Labs/Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data/04_results/NA_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="/Users/biplabendudas/OneDrive%20-%20University%20of%20Central%20Florida/UCF%20de%20bekker/PostDoc/Labs/Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data/04_results/VR_boxplots.png" width="55%" style="display: block; margin: auto;" /><img src="/Users/biplabendudas/OneDrive%20-%20University%20of%20Central%20Florida/UCF%20de%20bekker/PostDoc/Labs/Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data/04_results/ZO_boxplots.png" width="55%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="supplementary" class="section level2">
+<h2>Supplementary</h2>
+<div id="reproducibility" class="section level4">
+<h4>1. Reproducibility</h4>
+<ul>
+<li>All code used for this document is available on my <a href="https://github.com/biplabendu/homepage/blob/master/IUSSI2022.Rmd">Github</a>.</li>
+</ul>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
