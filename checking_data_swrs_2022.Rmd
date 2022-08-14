@@ -56,6 +56,9 @@ path_to_repo = "/Users/biplabendudas/OneDrive - University of Central Florida/UC
 path_to_data = "/01_data/"
 
 
+# set path to the results
+path_to_results = "/Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/"
+
 # load functions
 # customized theme for publication quality figures
 source(paste0(path_to_repo,"/03_functions/theme_publication.R"))
@@ -160,8 +163,7 @@ for(i in 1:length(observers)) {
       coord_flip() +
     labs(x=paste0(observers[[i]], "'s colony ID"))
   
-  png(paste0(path_to_repo,
-           "/04_results/",
+  png(paste0(path_to_results,
            f.name), 
       width = 30, height = 45, units = "cm", res = 300)
   print(plot.x)
@@ -175,7 +177,7 @@ for(i in 1:length(observers)) {
 
 ```{r embed_boxplots, echo=F, fig.align='center', fig.cap='', out.width="55%"}
 
-files <- list.files(paste0(path_to_repo, "/04_results/"), full.names = T)
+files <- list.files(path_to_results, full.names = T)
 knitr::include_graphics(files)
   
 ```
