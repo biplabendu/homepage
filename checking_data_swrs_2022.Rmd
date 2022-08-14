@@ -201,7 +201,7 @@ for(i in 1:length(observers)) {
 png(paste0(path_to_results,
            "00_combined_images/",
            "all_boxplots.png"), 
-      width = 40, height = 160, units = "cm", res = 300)
+      width = 40, height = 160, units = "cm", res = 150)
 multi.plot(plot.x, rows = 5, cols=2)
 trash <- dev.off()
 
