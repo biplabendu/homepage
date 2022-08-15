@@ -73,7 +73,7 @@ source(paste0(path_to_repo,"/03_functions/plot_zscores.R"))
 ## This is where you want to specify your parameters of choice.
 
 ## Specify the name of the master file as saved on your computer
-filename <- "arizona_2022_master_list_Aug14_1434h.csv"
+filename <- "arizona_2022_master_list_Aug15_1453h.csv"
 
 column.names <- c("date",
                   "observer",
@@ -199,7 +199,7 @@ tidy.dat %>%
   kable(caption = paste("Table 1: Summary table for all foraging data collected on:",
                         date.max)) %>% 
   kable_styling(bootstrap_options = c("striped"), 
-                full_width = F, position = "center", latex_options = "scaled_down")
+                full_width = F, position = "left", latex_options = "scaled_down")
 ```
 
 
@@ -247,7 +247,7 @@ for(i in 1:length(observers)) {
 png(paste0(path_to_results,
            "00_combined_images/",
            "all_boxplots.png"), 
-      width = 40, height = 160, units = "cm", res = 150)
+      width = 40, height = 180, units = "cm", res = 120)
 multi.plot(plot.x, rows = 5, cols=2)
 trash <- dev.off()
 
@@ -255,7 +255,7 @@ trash <- dev.off()
 
 
 
-```{r embed_boxplots_all, echo=F, out.width="75%", fig.cap='', fig.align='center'}
+```{r embed_boxplots_all, echo=F, out.width="75%", fig.cap='', fig.align='left'}
 
 knitr::include_graphics(paste0(path_to_results,
            "00_combined_images/",
@@ -342,6 +342,54 @@ dplyr::setdiff(bd.colonies,
 # Q. Do we have some data for colony 1366?
 dat %>% filter(colony_ID == "1366")
 # A: Yes, MNW observed 1366 two times on 14 aug 2022; ants were somewhat active (S) around 7:53 AM, but not foraging at all (Z) at 10:18 AM.
+```
+
+
+```{r for_deborah_2}
+active.colony.dat <- read.csv(paste0(path_to_repo, path_to_data, "active_colonies_8_15.csv"),
+                              stringsAsFactors = F, header=T) %>% as_tibble()
+active_8_15 <-
+  active.colony.dat %>% 
+  select(colony_ID, age, active_8_15) %>% 
+  mutate(age = as.numeric(age)) %>% 
+  filter(age > 5) %>% 
+  filter(active_8_15 == "A") %>% 
+    pull(colony_ID) %>% 
+    unique() %>% 
+    as.character()
+
+counted_8_14 <-
+  tidy.dat %>% 
+    filter(date == all.dates[2]) %>% 
+    pull(colony_ID) %>% 
+    unique() %>% 
+    as.character()
+
+counted_8_15 <-
+  tidy.dat %>% 
+    filter(date == all.dates[3]) %>% 
+    pull(colony_ID) %>% 
+    unique() %>% 
+    as.character()
+
+# Colonies active but not counted on 8_14
+dplyr::setdiff(active_8_15, counted_8_14)
+dplyr::setdiff(active_8_15, counted_8_15)
+   
+
+# # check some colonies
+# some.colonies <-  c("629","812","1107",
+#                     "1144",
+#                     "1195", "1281", "1329", "1403", "1568")
+
+some.colonies <- c("1107")
+tidy.dat %>%
+  filter(date == all.dates[3]) %>%
+  filter(colony_ID %in% some.colonies)
+
+active.colony.dat %>%
+  # filter(colony_ID %in% some.colonies)
+  filter(colony_ID %in% some.colonies)
 ```
 
 
