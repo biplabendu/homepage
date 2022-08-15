@@ -42,7 +42,7 @@ ___
 # Load the libraries
 pacman::p_load(tidyverse, conflicted, ggplot2, viridis, conflicted, WaveletComp)
 pacman::p_load(patchwork)
-pacman::p_load(lubridate)
+pacman::p_load(lubridate, kableExtra)
 
 # set conflict preference
 conflict_prefer("select", "dplyr")
@@ -99,6 +99,23 @@ column.names <- c("date",
                   "out_8"
                   )
 
+## Read the age data for the colonies
+colony.dat <- 
+  read.csv(paste0(path_to_repo,
+                              "/../../03_datasheets/from_Deborah/",
+                              "foraging_counts_08_13_22.csv"),
+                       header = T, stringsAsFactors = F) %>% 
+  as_tibble() %>% 
+  select(quad:age_2022) %>% 
+  mutate(colony_ID = as.factor(colony_ID)) %>% 
+  mutate(age_class = ifelse(age_2022 <= 2, "young",
+                           ifelse(age_2022 > 2 & age_2022 <= 4, "teen",
+                                  ifelse(age_2022 > 4 & age_2022 <= 9, "young_adult",
+                                         ifelse(age_2022 > 9 & age_2022 <= 17, "adult",
+                                                "old"))))) %>% 
+  mutate(age_class = factor(age_class, 
+                            levels = c("young","teen","young_adult","adult","old")))
+
 ```
 
 ___
@@ -153,13 +170,42 @@ all.dates <- tidy.dat %>% pull(date) %>% na.omit() %>% unique()
 date.max <- tidy.dat %>% pull(date) %>% na.omit() %>% max()
 ```
 
-> Analyzing data from 8/13/2022 (Aug 13, 2022) until `r date.max`.
+Analyzing data from 8/13/2022 (Aug 13, 2022) until `r date.max`.
+
+> Currently showing all data for: `r date.max`
+
+## 2. Summarize data
+
+```{r summary_table}
+## Who did what?
+tidy.dat %>% 
+  filter(date == date.max) %>% 
+  select(date:colony_ID) %>% 
+  distinct() %>% 
+  # add colony age data
+  left_join(colony.dat, by="colony_ID") %>% 
+  # summarize the number of colonies per age class
+  group_by(observer, age_class, date) %>% 
+  summarize(n_colonies = length(unique(colony_ID))) %>% 
+  ungroup() %>% 
+  # make data wide-formatted
+  pivot_wider(names_from = age_class, values_from = n_colonies) %>% 
+  replace_na(list(young=0, teen=0, young_adult=0, adult=0, old=0)) %>% 
+  # rearrange columns
+  select(observer,
+         old, adult, young_adult, teen, young) %>% 
+  
+  # Style for html output
+  kable(caption = paste("Table 1: Summary table for all foraging data collected on:",
+                        date.max)) %>% 
+  kable_styling(bootstrap_options = c("striped"), 
+                full_width = F, position = "center", latex_options = "scaled_down")
+```
+
 
 ___
 
 ## 2. Visualize as boxplots
-
-> Currently showing all data for: `r date.max`
 
 ```{r plot_boxplots, include=F}
 observers <- tidy.dat %>% pull(observer) %>% unique() %>% na.omit() %>% as.character()
@@ -224,6 +270,80 @@ knitr::include_graphics(paste0(path_to_results,
 # knitr::include_graphics(files)
   
 ```
+
+
+## 3. Foraging with time
+
+> coming soooooooooon. 
+
+```{r foraging_time}
+
+```
+
+
+## Extra stuff
+
+```{r for_deborah, eval=F, echo=F}
+
+## Summary table for Deborah
+tidy.dat %>% 
+  filter(date == date.max) %>% 
+  select(date, colony_ID, observer) %>% 
+  distinct() %>% 
+  left_join(colony.dat, by="colony_ID") %>% 
+  mutate(age_class = ifelse(age_2022 <= 2, "1-2_yr_old",
+                                  ifelse(age_2022 > 2 & age_2022 <= 4, "3-4_yr_old",
+                                         "older_than_5_yr"))) %>% 
+  filter(age_class == "3-4_yr_old") %>% 
+  pull(colony_ID)
+  # # save this to a csv file
+  # write.csv(.,
+  #           file = paste0(path_to_repo, 
+  #                         "/04_results/", 
+  #                         "colony_ID_age_counted_on_08_14_2022.csv"),
+  #           row.names = F)
+  
+  # group_by(age_class) %>%
+  # summarise(n_colonies = n())
+  
+```
+
+
+```{r bd_colonies, eval=F, echo=F}
+
+bd.colonies <- c("1461", "1539", "1270",
+                 "1340", "1417", "1543",
+                 "1272", "1377", "1048",
+                 "1157", "1556", "1324",
+                 "1551", "1294", "1420",
+                 "1262", "1245", "1366")
+
+bd.dat <- 
+  tidy.dat %>% 
+  filter(colony_ID %in% bd.colonies) %>% 
+  select(date:time) %>% 
+  distinct() %>% 
+  arrange(colony_ID) %>% 
+  na.omit() %>% 
+  left_join(colony.dat, by="colony_ID") %>% 
+  mutate(age_class = ifelse(age_2022 <= 2, "1-2_yr_old",
+                                  ifelse(age_2022 > 2 & age_2022 <= 4, "3-4_yr_old",
+                                         "older_than_5_yr"))) 
+  # bd.dat %>% 
+  #   group_by(age_class) %>%
+  #   summarise(n_colonies = length(unique(colony_ID)))
+
+
+# Q. Which high priority colonies have I not looked at yet?
+dplyr::setdiff(bd.colonies,
+               unique(bd.dat$colony_ID))
+# A: Colony 1366
+
+# Q. Do we have some data for colony 1366?
+dat %>% filter(colony_ID == "1366")
+# A: Yes, MNW observed 1366 two times on 14 aug 2022; ants were somewhat active (S) around 7:53 AM, but not foraging at all (Z) at 10:18 AM.
+```
+
 
 ___
 

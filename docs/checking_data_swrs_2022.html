@@ -27,6 +27,7 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -494,17 +495,259 @@ tidy.dat &lt;-
 
 all.dates &lt;- tidy.dat %&gt;% pull(date) %&gt;% na.omit() %&gt;% unique()
 date.max &lt;- tidy.dat %&gt;% pull(date) %&gt;% na.omit() %&gt;% max()</code></pre>
-<blockquote>
 <p>Analyzing data from 8/13/2022 (Aug 13, 2022) until 2022-08-14.</p>
+<blockquote>
+<p>Currently showing all data for: 2022-08-14</p>
 </blockquote>
+</div>
+<div id="summarize-data" class="section level2">
+<h2>2. Summarize data</h2>
+<pre class="r"><code>## Who did what?
+tidy.dat %&gt;% 
+  filter(date == date.max) %&gt;% 
+  select(date:colony_ID) %&gt;% 
+  distinct() %&gt;% 
+  # add colony age data
+  left_join(colony.dat, by=&quot;colony_ID&quot;) %&gt;% 
+  # summarize the number of colonies per age class
+  group_by(observer, age_class, date) %&gt;% 
+  summarize(n_colonies = length(unique(colony_ID))) %&gt;% 
+  ungroup() %&gt;% 
+  # make data wide-formatted
+  pivot_wider(names_from = age_class, values_from = n_colonies) %&gt;% 
+  replace_na(list(young=0, teen=0, young_adult=0, adult=0, old=0)) %&gt;% 
+  # rearrange columns
+  select(observer,
+         old, adult, young_adult, teen, young) %&gt;% 
+  
+  # Style for html output
+  kable(caption = paste(&quot;Table 1: Summary table for all foraging data collected on:&quot;,
+                        date.max)) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;), 
+                full_width = F, position = &quot;center&quot;, latex_options = &quot;scaled_down&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Table 1: Summary table for all foraging data collected on: 2022-08-14
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+observer
+</th>
+<th style="text-align:right;">
+old
+</th>
+<th style="text-align:right;">
+adult
+</th>
+<th style="text-align:right;">
+young_adult
+</th>
+<th style="text-align:right;">
+teen
+</th>
+<th style="text-align:right;">
+young
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+BD
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DRP
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+FG
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HC
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MC
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MM
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MNW
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VR
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ZO
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
 <hr />
 </div>
 <div id="visualize-as-boxplots" class="section level2">
 <h2>2. Visualize as boxplots</h2>
-<blockquote>
-<p>Currently showing all data for: 2022-08-14</p>
-</blockquote>
 <p><img src="images/2022_deborah/00_combined_images/all_boxplots.png" width="75%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="foraging-with-time" class="section level2">
+<h2>3. Foraging with time</h2>
+<blockquote>
+<p>coming soooooooooon.</p>
+</blockquote>
+</div>
+<div id="extra-stuff" class="section level2">
+<h2>Extra stuff</h2>
 <hr />
 </div>
 <div id="supplementary" class="section level2">
