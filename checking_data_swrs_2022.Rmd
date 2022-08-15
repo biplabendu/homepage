@@ -345,7 +345,7 @@ dat %>% filter(colony_ID == "1366")
 ```
 
 
-```{r for_deborah_2}
+```{r for_deborah_2, eval=F, echo=F}
 active.colony.dat <- read.csv(paste0(path_to_repo, path_to_data, "active_colonies_8_15.csv"),
                               stringsAsFactors = F, header=T) %>% as_tibble()
 active_8_15 <-
@@ -390,6 +390,30 @@ tidy.dat %>%
 active.colony.dat %>%
   # filter(colony_ID %in% some.colonies)
   filter(colony_ID %in% some.colonies)
+```
+
+
+```{r for_deborah_3, eval=F, echo=F}
+bd.colonies <- c("1461", "1539", "1270",
+                 "1543", "1417", "1340",
+                 "1272", "1377", "1048",
+                 "1324", "1556", "1157",
+                 "1551", "1294", "1420",
+                 "1366", "1245", "1262",
+                 ### new assigned
+                 "1540", "1545")
+
+
+tidy.dat %>% 
+  filter(colony_ID %in% bd.colonies) %>% 
+  select(colony_ID) %>% 
+  distinct() %>% 
+  left_join(colony.dat, by="colony_ID") %>% 
+  mutate(age_class = ifelse(age_2022 <= 2, "1-2_yr_old",
+                                  ifelse(age_2022 > 2 & age_2022 <= 4, "3-4_yr_old",
+                                         "older_than_5_yr"))) %>%
+  arrange(age_2022) %>% 
+  view()
 ```
 
 

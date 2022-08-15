@@ -748,59 +748,6 @@ ZO
 </div>
 <div id="extra-stuff" class="section level2">
 <h2>Extra stuff</h2>
-<pre class="r"><code>active.colony.dat &lt;- read.csv(paste0(path_to_repo, path_to_data, &quot;active_colonies_8_15.csv&quot;),
-                              stringsAsFactors = F, header=T) %&gt;% as_tibble()
-active_8_15 &lt;-
-  active.colony.dat %&gt;% 
-  select(colony_ID, age, active_8_15) %&gt;% 
-  mutate(age = as.numeric(age)) %&gt;% 
-  filter(age &gt; 5) %&gt;% 
-  filter(active_8_15 == &quot;A&quot;) %&gt;% 
-    pull(colony_ID) %&gt;% 
-    unique() %&gt;% 
-    as.character()
-
-counted_8_14 &lt;-
-  tidy.dat %&gt;% 
-    filter(date == all.dates[2]) %&gt;% 
-    pull(colony_ID) %&gt;% 
-    unique() %&gt;% 
-    as.character()
-
-counted_8_15 &lt;-
-  tidy.dat %&gt;% 
-    filter(date == all.dates[3]) %&gt;% 
-    pull(colony_ID) %&gt;% 
-    unique() %&gt;% 
-    as.character()
-
-# Colonies active but not counted on 8_14
-dplyr::setdiff(active_8_15, counted_8_14)</code></pre>
-<pre><code>##  [1] &quot;190&quot;  &quot;573&quot;  &quot;629&quot;  &quot;735&quot;  &quot;812&quot;  &quot;944&quot;  &quot;986&quot;  &quot;1015&quot; &quot;1074&quot; &quot;1132&quot;
-## [11] &quot;1144&quot; &quot;1151&quot; &quot;1195&quot; &quot;1270&quot; &quot;1281&quot; &quot;1329&quot; &quot;1352&quot; &quot;1403&quot; &quot;1473&quot; &quot;1475&quot;
-## [21] &quot;1497&quot; &quot;1539&quot;</code></pre>
-<pre class="r"><code>dplyr::setdiff(active_8_15, counted_8_15)</code></pre>
-<pre><code>## [1] &quot;629&quot;  &quot;812&quot;  &quot;1107&quot; &quot;1144&quot; &quot;1195&quot; &quot;1281&quot; &quot;1329&quot; &quot;1403&quot; &quot;1568&quot;</code></pre>
-<pre class="r"><code># # check some colonies
-# some.colonies &lt;-  c(&quot;629&quot;,&quot;812&quot;,&quot;1107&quot;,
-#                     &quot;1144&quot;,
-#                     &quot;1195&quot;, &quot;1281&quot;, &quot;1329&quot;, &quot;1403&quot;, &quot;1568&quot;)
-
-some.colonies &lt;- c(&quot;1107&quot;)
-tidy.dat %&gt;%
-  filter(date == all.dates[3]) %&gt;%
-  filter(colony_ID %in% some.colonies)</code></pre>
-<pre><code>## # A tibble: 0 x 9
-## # … with 9 variables: date &lt;dttm&gt;, observer &lt;fct&gt;, colony_ID &lt;fct&gt;, time &lt;chr&gt;,
-## #   inout &lt;chr&gt;, inout2 &lt;chr&gt;, n_ants &lt;int&gt;, tot_in &lt;int&gt;, tot_out &lt;int&gt;</code></pre>
-<pre class="r"><code>active.colony.dat %&gt;%
-  # filter(colony_ID %in% some.colonies)
-  filter(colony_ID %in% some.colonies)</code></pre>
-<pre><code>## # A tibble: 1 x 10
-##   colony_ID age       e     n X2019_status X2020_status X2021_status notes
-##       &lt;int&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;        &lt;lgl&gt;
-## 1      1107 17      613   251 A            A            A            NA   
-## # … with 2 more variables: active_8_14 &lt;chr&gt;, active_8_15 &lt;chr&gt;</code></pre>
 <hr />
 </div>
 <div id="supplementary" class="section level2">
