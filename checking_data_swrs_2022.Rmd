@@ -33,6 +33,7 @@ rm(list = ls())
 
 ```
 
+
 ___
 
 ## Housekeeping
@@ -73,7 +74,7 @@ source(paste0(path_to_repo,"/03_functions/plot_zscores.R"))
 ## This is where you want to specify your parameters of choice.
 
 ## Specify the name of the master file as saved on your computer
-filename <- "arizona_2022_master_list_Aug15_1453h.csv"
+filename <- "arizona_2022_master_list_Aug16_1803h.csv"
 
 column.names <- c("date",
                   "observer",
