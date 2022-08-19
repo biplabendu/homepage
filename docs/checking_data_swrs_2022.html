@@ -439,7 +439,7 @@ div.tocify {
 <h1 class="title toc-ignore">Daily data check</h1>
 <h4 class="author">foraging count data for 2022 field work</h4>
 <address class="author_afil">
-In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 16 August, 2022</h4>
+In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 18 August, 2022</h4>
 
 </div>
 
@@ -495,9 +495,9 @@ tidy.dat &lt;-
 
 all.dates &lt;- tidy.dat %&gt;% pull(date) %&gt;% na.omit() %&gt;% unique()
 date.max &lt;- tidy.dat %&gt;% pull(date) %&gt;% na.omit() %&gt;% max()</code></pre>
-<p>Analyzing data from 8/13/2022 (Aug 13, 2022) until 2022-08-16.</p>
+<p>Analyzing data from 8/13/2022 (Aug 13, 2022) until 2022-08-17.</p>
 <blockquote>
-<p>Currently showing all data for: 2022-08-16</p>
+<p>Currently showing all data for: 2022-08-17</p>
 </blockquote>
 </div>
 <div id="summarize-data" class="section level2">
@@ -527,7 +527,7 @@ tidy.dat %&gt;%
                 full_width = F, position = &quot;left&quot;, latex_options = &quot;scaled_down&quot;)</code></pre>
 <table class="table table-striped" style="width: auto !important; ">
 <caption>
-Table 1: Summary table for all foraging data collected on: 2022-08-16
+Table 1: Summary table for all foraging data collected on: 2022-08-17
 </caption>
 <thead>
 <tr>
@@ -560,7 +560,7 @@ BD
 1
 </td>
 <td style="text-align:right;">
-8
+7
 </td>
 <td style="text-align:right;">
 9
@@ -574,19 +574,39 @@ BD
 </tr>
 <tr>
 <td style="text-align:left;">
-DRP
+DMG
 </td>
 <td style="text-align:right;">
-5
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
 </td>
 <td style="text-align:right;">
 2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DRP
 </td>
 <td style="text-align:right;">
 7
 </td>
 <td style="text-align:right;">
 3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+4
 </td>
 <td style="text-align:right;">
 0
@@ -600,13 +620,13 @@ FG
 5
 </td>
 <td style="text-align:right;">
-3
+4
 </td>
 <td style="text-align:right;">
 11
 </td>
 <td style="text-align:right;">
-3
+0
 </td>
 <td style="text-align:right;">
 0
@@ -617,16 +637,16 @@ FG
 HC
 </td>
 <td style="text-align:right;">
-5
+4
+</td>
+<td style="text-align:right;">
+8
 </td>
 <td style="text-align:right;">
 7
 </td>
 <td style="text-align:right;">
-6
-</td>
-<td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 1
@@ -643,7 +663,7 @@ MC
 5
 </td>
 <td style="text-align:right;">
-9
+8
 </td>
 <td style="text-align:right;">
 2
@@ -657,16 +677,16 @@ MC
 MM
 </td>
 <td style="text-align:right;">
-5
+4
 </td>
 <td style="text-align:right;">
-8
+7
 </td>
 <td style="text-align:right;">
-10
+9
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 3
@@ -680,16 +700,16 @@ MNW
 0
 </td>
 <td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
-2
+0
+</td>
+<td style="text-align:right;">
+4
 </td>
 </tr>
 <tr>
@@ -703,10 +723,10 @@ VR
 5
 </td>
 <td style="text-align:right;">
-9
+10
 </td>
 <td style="text-align:right;">
-7
+8
 </td>
 <td style="text-align:right;">
 1
@@ -717,16 +737,16 @@ VR
 ZO
 </td>
 <td style="text-align:right;">
-7
+6
 </td>
 <td style="text-align:right;">
 5
 </td>
 <td style="text-align:right;">
-4
+3
 </td>
 <td style="text-align:right;">
-4
+3
 </td>
 <td style="text-align:right;">
 0
@@ -743,11 +763,66 @@ ZO
 <div id="foraging-with-time" class="section level2">
 <h2>3. Foraging with time</h2>
 <blockquote>
-<p>coming soooooooooon.</p>
+<p>In the following figure, the y-axis shows the ratio of out-going to in-going foragers, and the x-axis shows the colonies that were observed by each person. The colonies are arranged in the order in which they were observed.</p>
 </blockquote>
+<p><img src="images/2022_deborah/00_combined_images/io_ratio_with_time.png" width="85%" style="display: block; margin: auto auto auto 0;" /></p>
 </div>
 <div id="extra-stuff" class="section level2">
 <h2>Extra stuff</h2>
+<pre class="r"><code>colonies.counting.17Aug &lt;- 
+  dat %&gt;% 
+  mutate(date = as.POSIXct(date, format=&quot;%m/%d/%Y&quot;, tz=&quot;MST&quot;)) %&gt;% 
+  filter(date==all.dates[5]) %&gt;%
+  select(observer, colony_ID) %&gt;% 
+  na.omit() %&gt;%
+  pull(colony_ID) %&gt;% 
+  unique() %&gt;%
+  as.character()
+
+# read list of colonies and indicate which ones are counted
+readxl::read_excel(paste0(path_to_repo, path_to_data,
+                                 &quot;deborah_extra_sheets/which_are_currently_counted.xlsx&quot;)) %&gt;% 
+  as_tibble() %&gt;% 
+  select(colony_ID = ID) %&gt;% 
+  mutate(colony_ID = as.factor(colony_ID)) %&gt;% 
+  mutate(counting_17Aug22 = ifelse(colony_ID %in% colonies.counting.17Aug, &quot;yes&quot;, &quot;no&quot;)) %&gt;% 
+  
+  write.csv(.,
+            file = paste0(path_to_repo,&quot;/04_results/which_are_currently_counted.csv&quot;),
+            row.names = F)
+
+
+colonies.counting.16Aug &lt;-
+  dat %&gt;% 
+  mutate(date = as.POSIXct(date, format=&quot;%m/%d/%Y&quot;, tz=&quot;MST&quot;)) %&gt;% 
+  filter(date==all.dates[4]) %&gt;% 
+  select(observer, colony_ID) %&gt;% 
+  na.omit() %&gt;% 
+  pull(colony_ID) %&gt;% 
+  unique() %&gt;%
+  as.character()
+  
+
+colonies.counting.15Aug &lt;- 
+  dat %&gt;% 
+  mutate(date = as.POSIXct(date, format=&quot;%m/%d/%Y&quot;, tz=&quot;MST&quot;)) %&gt;% 
+  filter(date==all.dates[3]) %&gt;% 
+  select(observer, colony_ID) %&gt;% 
+  na.omit() %&gt;% 
+  pull(colony_ID) %&gt;% 
+  unique() %&gt;%
+  as.character()
+
+
+## 17 Aug v. 16 Aug
+writeLines(&quot;Observed on 17 Aug but NOT on 16 Aug&quot;)</code></pre>
+<pre><code>## Observed on 17 Aug but NOT on 16 Aug</code></pre>
+<pre class="r"><code>dplyr::setdiff(colonies.counting.17Aug, colonies.counting.16Aug)</code></pre>
+<pre><code>## [1] &quot;1552&quot; &quot;986&quot;  &quot;1586&quot;</code></pre>
+<pre class="r"><code>writeLines(&quot;Observed on 16 Aug but NOT on 17 Aug&quot;)</code></pre>
+<pre><code>## Observed on 16 Aug but NOT on 17 Aug</code></pre>
+<pre class="r"><code>dplyr::setdiff(colonies.counting.16Aug, colonies.counting.17Aug)</code></pre>
+<pre><code>## [1] &quot;1403&quot; &quot;1431&quot; &quot;1558&quot; &quot;1443&quot; &quot;629&quot;  &quot;573&quot;</code></pre>
 <hr />
 </div>
 <div id="supplementary" class="section level2">

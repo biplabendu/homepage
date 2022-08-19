@@ -74,7 +74,7 @@ source(paste0(path_to_repo,"/03_functions/plot_zscores.R"))
 ## This is where you want to specify your parameters of choice.
 
 ## Specify the name of the master file as saved on your computer
-filename <- "arizona_2022_master_list_Aug16_1803h.csv"
+filename <- "arizona_2022_master_list_Aug17_1423h.csv"
 
 column.names <- c("date",
                   "observer",
@@ -209,7 +209,12 @@ ___
 ## 2. Visualize as boxplots
 
 ```{r plot_boxplots, include=F}
-observers <- tidy.dat %>% pull(observer) %>% unique() %>% na.omit() %>% as.character()
+observers <-
+  tidy.dat %>% 
+  filter(date == date.max) %>% 
+  select(date:time, n_ants) %>% 
+  na.omit() %>% 
+  pull(observer) %>% unique() %>% na.omit() %>% as.character()
 
 plot.x <- list()
 
@@ -265,20 +270,77 @@ knitr::include_graphics(paste0(path_to_results,
 ```
 
 
-```{r embed_boxplots, echo=F, out.width="49%", out.height="10%", fig.cap='', fig.show="hold", fig.align='center'}
-
-# files <- list.files(path_to_results, full.names = T)[-1]
-# knitr::include_graphics(files)
-  
-```
-
 
 ## 3. Foraging with time
 
-> coming soooooooooon. 
+> In the following figure, the y-axis shows the ratio of out-going to in-going foragers, and the x-axis shows the colonies that were observed by each person. The colonies are arranged in the order in which they were observed.
 
-```{r foraging_time}
 
+```{r foraging_time, include=F}
+plot.x <- list()
+
+for(i in 1:length(observers)) {
+  
+  f.name <- paste0(observers[[i]],"_boxplots.png")
+  
+  colony.order <-
+    tidy.dat %>% 
+    filter(date == date.max) %>% 
+    
+    filter(observer == observers[[i]]) %>% 
+    
+    mutate(time = as.POSIXct(time, format="%H:%M")) %>% 
+    arrange(date, time) %>% 
+    na.omit() %>% 
+    pull(colony_ID) %>% 
+    unique() %>% 
+    as.character()
+    
+  plot.x[[i]] <-
+    tidy.dat %>% 
+      filter(date == date.max) %>% 
+      filter(observer == observers[[i]]) %>%
+      mutate(colony_ID = factor(colony_ID, levels = colony.order)) %>% 
+      select(date:time, tot_in, tot_out) %>% 
+      distinct() %>% 
+      na.omit() %>% 
+      mutate(out_in_ratio = round(tot_out/tot_in, 2)) %>% 
+    ## plot
+    ggplot(aes(x=colony_ID, y=out_in_ratio)) +
+      geom_hline(yintercept = 1, color="red", linetype=19, size=2, alpha=0.5) +
+      geom_line(aes(group=1), size=3) +
+      # scale_y_continuous(limits = c(0,2), labels = c("","","1","", "2")) +
+      theme_Publication(base_size = 60) +
+      scale_fill_Publication() +
+      # coord_flip() +
+    labs(x=paste0(observers[[i]], "'s colonies; time -->"),
+         y="out/in ratio") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  
+  # png(paste0(path_to_results,
+  #          f.name), 
+  #     width = 30, height = 45, units = "cm", res = 300)
+  # print(plot.x[[i]])
+  # trash <- dev.off()
+  
+}
+
+png(paste0(path_to_results,
+           "00_combined_images/",
+           "io_ratio_with_time.png"), 
+      width = 80, height = 180, units = "cm", res = 120)
+multi.plot(plot.x, rows = 9 , cols=1)
+trash <- dev.off()
+```
+
+
+
+```{r embed_foraging_time, echo=F, out.width="85%", fig.cap='', fig.align='left'}
+
+knitr::include_graphics(paste0(path_to_results,
+           "00_combined_images/",
+           "io_ratio_with_time.png"))
+  
 ```
 
 
@@ -415,6 +477,61 @@ tidy.dat %>%
                                          "older_than_5_yr"))) %>%
   arrange(age_2022) %>% 
   view()
+```
+
+
+```{r for_deborah_4}
+colonies.counting.17Aug <- 
+  dat %>% 
+  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
+  filter(date==all.dates[5]) %>%
+  select(observer, colony_ID) %>% 
+  na.omit() %>%
+  pull(colony_ID) %>% 
+  unique() %>%
+  as.character()
+
+# read list of colonies and indicate which ones are counted
+readxl::read_excel(paste0(path_to_repo, path_to_data,
+                                 "deborah_extra_sheets/which_are_currently_counted.xlsx")) %>% 
+  as_tibble() %>% 
+  select(colony_ID = ID) %>% 
+  mutate(colony_ID = as.factor(colony_ID)) %>% 
+  mutate(counting_17Aug22 = ifelse(colony_ID %in% colonies.counting.17Aug, "yes", "no")) %>% 
+  
+  write.csv(.,
+            file = paste0(path_to_repo,"/04_results/which_are_currently_counted.csv"),
+            row.names = F)
+
+
+colonies.counting.16Aug <-
+  dat %>% 
+  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
+  filter(date==all.dates[4]) %>% 
+  select(observer, colony_ID) %>% 
+  na.omit() %>% 
+  pull(colony_ID) %>% 
+  unique() %>%
+  as.character()
+  
+
+colonies.counting.15Aug <- 
+  dat %>% 
+  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
+  filter(date==all.dates[3]) %>% 
+  select(observer, colony_ID) %>% 
+  na.omit() %>% 
+  pull(colony_ID) %>% 
+  unique() %>%
+  as.character()
+
+
+## 17 Aug v. 16 Aug
+writeLines("Observed on 17 Aug but NOT on 16 Aug")
+dplyr::setdiff(colonies.counting.17Aug, colonies.counting.16Aug)
+writeLines("Observed on 16 Aug but NOT on 17 Aug")
+dplyr::setdiff(colonies.counting.16Aug, colonies.counting.17Aug)
+
 ```
 
 
