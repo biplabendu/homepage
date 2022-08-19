@@ -439,7 +439,7 @@ div.tocify {
 <h1 class="title toc-ignore">Daily data check</h1>
 <h4 class="author">foraging count data for 2022 field work</h4>
 <address class="author_afil">
-In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 18 August, 2022</h4>
+In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 19 August, 2022</h4>
 
 </div>
 
@@ -459,6 +459,7 @@ In case of questions, please contact <a href="https://biplabendu.github.io/homep
                   stringsAsFactors = F,
                   skip = 1) %&gt;% 
   as_tibble() %&gt;% 
+  mutate(date = as.POSIXct(date, format=&quot;%m/%d/%Y&quot;, tz=&quot;MST&quot;)) %&gt;% 
   select(1:length(column.names))
 
 colnames(dat) &lt;- column.names
@@ -466,7 +467,7 @@ colnames(dat) &lt;- column.names
 tidy.dat &lt;-
   dat %&gt;% 
   # remove columns containing first and second obs
-  select(-first_obs, -second_obs) %&gt;% 
+  select(-first_obs, -second_obs, -was_it_raining) %&gt;% 
   
   
   group_by(date,observer,colony_ID) %&gt;% 
@@ -475,8 +476,7 @@ tidy.dat &lt;-
   ungroup() %&gt;% 
   
   mutate(colony_ID = as.factor(colony_ID),
-         observer = as.factor(observer),
-         date = as.POSIXct(date, format=&quot;%m/%d/%Y&quot;, tz=&quot;MST&quot;)) %&gt;% 
+         observer = as.factor(observer)) %&gt;% 
   
   # na.omit() %&gt;% 
   
@@ -495,9 +495,9 @@ tidy.dat &lt;-
 
 all.dates &lt;- tidy.dat %&gt;% pull(date) %&gt;% na.omit() %&gt;% unique()
 date.max &lt;- tidy.dat %&gt;% pull(date) %&gt;% na.omit() %&gt;% max()</code></pre>
-<p>Analyzing data from 8/13/2022 (Aug 13, 2022) until 2022-08-17.</p>
+<p>Analyzing data from 8/13/2022 (Aug 13, 2022) until 2022-08-19.</p>
 <blockquote>
-<p>Currently showing all data for: 2022-08-17</p>
+<p>Currently showing all data for: 2022-08-19</p>
 </blockquote>
 </div>
 <div id="summarize-data" class="section level2">
@@ -527,7 +527,7 @@ tidy.dat %&gt;%
                 full_width = F, position = &quot;left&quot;, latex_options = &quot;scaled_down&quot;)</code></pre>
 <table class="table table-striped" style="width: auto !important; ">
 <caption>
-Table 1: Summary table for all foraging data collected on: 2022-08-17
+Table 1: Summary table for all foraging data collected on: 2022-08-19
 </caption>
 <thead>
 <tr>
@@ -560,36 +560,16 @@ BD
 1
 </td>
 <td style="text-align:right;">
-7
+6
 </td>
 <td style="text-align:right;">
-9
+7
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
 1
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DMG
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-2
 </td>
 </tr>
 <tr>
@@ -603,10 +583,10 @@ DRP
 3
 </td>
 <td style="text-align:right;">
-7
+4
 </td>
 <td style="text-align:right;">
-4
+2
 </td>
 <td style="text-align:right;">
 0
@@ -620,7 +600,7 @@ FG
 5
 </td>
 <td style="text-align:right;">
-4
+3
 </td>
 <td style="text-align:right;">
 11
@@ -683,7 +663,7 @@ MM
 7
 </td>
 <td style="text-align:right;">
-9
+8
 </td>
 <td style="text-align:right;">
 1
@@ -697,19 +677,19 @@ MM
 MNW
 </td>
 <td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
+4
 </td>
 <td style="text-align:right;">
 4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
 </td>
 </tr>
 <tr>
@@ -717,16 +697,16 @@ MNW
 VR
 </td>
 <td style="text-align:right;">
-3
+2
 </td>
 <td style="text-align:right;">
-5
+4
 </td>
 <td style="text-align:right;">
 10
 </td>
 <td style="text-align:right;">
-8
+4
 </td>
 <td style="text-align:right;">
 1
@@ -737,16 +717,16 @@ VR
 ZO
 </td>
 <td style="text-align:right;">
-6
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
 </td>
 <td style="text-align:right;">
 5
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 0
@@ -766,10 +746,21 @@ ZO
 <p>In the following figure, the y-axis shows the ratio of out-going to in-going foragers, and the x-axis shows the colonies that were observed by each person. The colonies are arranged in the order in which they were observed.</p>
 </blockquote>
 <p><img src="images/2022_deborah/00_combined_images/io_ratio_with_time.png" width="85%" style="display: block; margin: auto auto auto 0;" /></p>
+<hr />
 </div>
 <div id="extra-stuff" class="section level2">
 <h2>Extra stuff</h2>
-<pre class="r"><code>colonies.counting.17Aug &lt;- 
+<pre class="r"><code>colonies.counting.19Aug &lt;- 
+  dat %&gt;% 
+  filter(date==all.dates[6]) %&gt;%
+  select(observer, colony_ID) %&gt;% 
+  na.omit() %&gt;%
+  pull(colony_ID) %&gt;% 
+  unique() %&gt;%
+  as.character()
+
+
+colonies.counting.17Aug &lt;- 
   dat %&gt;% 
   mutate(date = as.POSIXct(date, format=&quot;%m/%d/%Y&quot;, tz=&quot;MST&quot;)) %&gt;% 
   filter(date==all.dates[5]) %&gt;%
@@ -779,17 +770,17 @@ ZO
   unique() %&gt;%
   as.character()
 
-# read list of colonies and indicate which ones are counted
-readxl::read_excel(paste0(path_to_repo, path_to_data,
-                                 &quot;deborah_extra_sheets/which_are_currently_counted.xlsx&quot;)) %&gt;% 
-  as_tibble() %&gt;% 
-  select(colony_ID = ID) %&gt;% 
-  mutate(colony_ID = as.factor(colony_ID)) %&gt;% 
-  mutate(counting_17Aug22 = ifelse(colony_ID %in% colonies.counting.17Aug, &quot;yes&quot;, &quot;no&quot;)) %&gt;% 
-  
-  write.csv(.,
-            file = paste0(path_to_repo,&quot;/04_results/which_are_currently_counted.csv&quot;),
-            row.names = F)
+# # read list of colonies and indicate which ones are counted
+# readxl::read_excel(paste0(path_to_repo, path_to_data,
+#                                  &quot;deborah_extra_sheets/which_are_currently_counted.xlsx&quot;)) %&gt;% 
+#   as_tibble() %&gt;% 
+#   select(colony_ID = ID) %&gt;% 
+#   mutate(colony_ID = as.factor(colony_ID)) %&gt;% 
+#   mutate(counting_17Aug22 = ifelse(colony_ID %in% colonies.counting.17Aug, &quot;yes&quot;, &quot;no&quot;)) %&gt;% 
+#   
+#   write.csv(.,
+#             file = paste0(path_to_repo,&quot;/04_results/which_are_currently_counted.csv&quot;),
+#             row.names = F)
 
 
 colonies.counting.16Aug &lt;-
@@ -814,15 +805,24 @@ colonies.counting.15Aug &lt;-
   as.character()
 
 
-## 17 Aug v. 16 Aug
-writeLines(&quot;Observed on 17 Aug but NOT on 16 Aug&quot;)</code></pre>
-<pre><code>## Observed on 17 Aug but NOT on 16 Aug</code></pre>
-<pre class="r"><code>dplyr::setdiff(colonies.counting.17Aug, colonies.counting.16Aug)</code></pre>
-<pre><code>## [1] &quot;1552&quot; &quot;986&quot;  &quot;1586&quot;</code></pre>
-<pre class="r"><code>writeLines(&quot;Observed on 16 Aug but NOT on 17 Aug&quot;)</code></pre>
-<pre><code>## Observed on 16 Aug but NOT on 17 Aug</code></pre>
-<pre class="r"><code>dplyr::setdiff(colonies.counting.16Aug, colonies.counting.17Aug)</code></pre>
-<pre><code>## [1] &quot;1403&quot; &quot;1431&quot; &quot;1558&quot; &quot;1443&quot; &quot;629&quot;  &quot;573&quot;</code></pre>
+## 19 Aug v. 17 Aug
+writeLines(&quot;Observed on 19 Aug but NOT on 17 Aug&quot;)</code></pre>
+<pre><code>## Observed on 19 Aug but NOT on 17 Aug</code></pre>
+<pre class="r"><code>dplyr::setdiff(colonies.counting.19Aug, colonies.counting.17Aug)</code></pre>
+<pre><code>## [1] &quot;1456&quot;</code></pre>
+<pre class="r"><code>writeLines(&quot;Observed on 17 Aug but NOT on 19 Aug&quot;)</code></pre>
+<pre><code>## Observed on 17 Aug but NOT on 19 Aug</code></pre>
+<pre class="r"><code>dplyr::setdiff(colonies.counting.17Aug, colonies.counting.19Aug)</code></pre>
+<pre><code>## [1] &quot;1560&quot; &quot;1552&quot; &quot;1581&quot; &quot;986&quot;  &quot;1561&quot; &quot;1536&quot; &quot;1571&quot;</code></pre>
+<pre class="r"><code>writeLines(&quot;Which of the colonies not observed on 19 Aug are used for the bead experiment?&quot;)</code></pre>
+<pre><code>## Which of the colonies not observed on 19 Aug are used for the bead experiment?</code></pre>
+<pre class="r"><code>dplyr::intersect(dplyr::setdiff(colonies.counting.17Aug, colonies.counting.19Aug), bead.colonies)</code></pre>
+<pre><code>## [1] 1560 1552 1581 1536 1571</code></pre>
+<pre class="r"><code># ## 17 Aug v. 16 Aug
+# writeLines(&quot;Observed on 17 Aug but NOT on 16 Aug&quot;)
+# dplyr::setdiff(colonies.counting.17Aug, colonies.counting.16Aug)
+# writeLines(&quot;Observed on 16 Aug but NOT on 17 Aug&quot;)
+# dplyr::setdiff(colonies.counting.16Aug, colonies.counting.17Aug)</code></pre>
 <hr />
 </div>
 <div id="supplementary" class="section level2">

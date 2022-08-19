@@ -74,9 +74,10 @@ source(paste0(path_to_repo,"/03_functions/plot_zscores.R"))
 ## This is where you want to specify your parameters of choice.
 
 ## Specify the name of the master file as saved on your computer
-filename <- "arizona_2022_master_list_Aug17_1423h.csv"
+filename <- "arizona_2022_master_list_Aug19_1628h.csv"
 
 column.names <- c("date",
+                  "was_it_raining",
                   "observer",
                   "colony_ID",
                   "first_obs",
@@ -117,6 +118,14 @@ colony.dat <-
   mutate(age_class = factor(age_class, 
                             levels = c("young","teen","young_adult","adult","old")))
 
+
+## read the bead data for 2022
+bead.dat <- 
+  read.csv("/Users/biplabendudas/OneDrive - University of Central Florida/UCF de bekker/PostDoc/Labs/Gordon/00_application_package/final_round/data/bead_data_2022/bead_data_18Aug22.csv",
+           header = T, stringsAsFactors = F) %>% 
+  as_tibble()
+bead.colonies <- bead.dat %>% pull(colonyID) %>% unique()
+
 ```
 
 ___
@@ -133,6 +142,7 @@ dat <-
                   stringsAsFactors = F,
                   skip = 1) %>% 
   as_tibble() %>% 
+  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
   select(1:length(column.names))
 
 colnames(dat) <- column.names
@@ -140,7 +150,7 @@ colnames(dat) <- column.names
 tidy.dat <-
   dat %>% 
   # remove columns containing first and second obs
-  select(-first_obs, -second_obs) %>% 
+  select(-first_obs, -second_obs, -was_it_raining) %>% 
   
   
   group_by(date,observer,colony_ID) %>% 
@@ -149,8 +159,7 @@ tidy.dat <-
   ungroup() %>% 
   
   mutate(colony_ID = as.factor(colony_ID),
-         observer = as.factor(observer),
-         date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
+         observer = as.factor(observer)) %>% 
   
   # na.omit() %>% 
   
@@ -220,33 +229,37 @@ plot.x <- list()
 
 for(i in 1:length(observers)) {
   
-  f.name <- paste0(observers[[i]],"_boxplots.png")
-  
-  plot.x[[i]] <- 
+  colony.order <-
     tidy.dat %>% 
     filter(date == date.max) %>% 
     
     filter(observer == observers[[i]]) %>% 
     
+    mutate(time = as.POSIXct(time, format="%H:%M")) %>% 
+    arrange(date, time) %>% 
+    na.omit() %>% 
+    pull(colony_ID) %>% 
+    unique() %>% 
+    as.character()
+  
+  plot.x[[i]] <- 
+    tidy.dat %>%
+    filter(date == date.max) %>% 
+      filter(observer == observers[[i]]) %>%
+      mutate(colony_ID = factor(colony_ID, levels = colony.order)) %>%
+      filter(!is.na(colony_ID)) %>% 
     ggplot(aes(x=colony_ID, y=n_ants)) +
-    # ggplot(aes(x=colony_ID, y=n_ants, group=inout2)) +
       geom_boxplot(aes(fill=inout2), 
                    alpha=0.75, 
                    outlier.size = 3,
                    outlier.shape = 21,
                    outlier.color = "red",
                    position = position_dodge(width = 0.95)) +
-      # facet_grid(~observer) +
       theme_Publication(base_size = 40) +
       scale_fill_Publication() +
       coord_flip() +
     labs(x=paste0(observers[[i]], "'s colony ID"))
-  
-  # png(paste0(path_to_results,
-  #          f.name), 
-  #     width = 30, height = 45, units = "cm", res = 300)
-  # print(plot.x[[i]])
-  # trash <- dev.off()
+
   
 }
 
@@ -309,7 +322,7 @@ for(i in 1:length(observers)) {
     ggplot(aes(x=colony_ID, y=out_in_ratio)) +
       geom_hline(yintercept = 1, color="red", linetype=19, size=2, alpha=0.5) +
       geom_line(aes(group=1), size=3) +
-      # scale_y_continuous(limits = c(0,2), labels = c("","","1","", "2")) +
+      scale_y_continuous(breaks = c(0,1,2)) +
       theme_Publication(base_size = 60) +
       scale_fill_Publication() +
       # coord_flip() +
@@ -343,8 +356,84 @@ knitr::include_graphics(paste0(path_to_results,
   
 ```
 
+___
 
 ## Extra stuff
+
+
+```{r for_deborah_4}
+colonies.counting.19Aug <- 
+  dat %>% 
+  filter(date==all.dates[6]) %>%
+  select(observer, colony_ID) %>% 
+  na.omit() %>%
+  pull(colony_ID) %>% 
+  unique() %>%
+  as.character()
+
+
+colonies.counting.17Aug <- 
+  dat %>% 
+  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
+  filter(date==all.dates[5]) %>%
+  select(observer, colony_ID) %>% 
+  na.omit() %>%
+  pull(colony_ID) %>% 
+  unique() %>%
+  as.character()
+
+# # read list of colonies and indicate which ones are counted
+# readxl::read_excel(paste0(path_to_repo, path_to_data,
+#                                  "deborah_extra_sheets/which_are_currently_counted.xlsx")) %>% 
+#   as_tibble() %>% 
+#   select(colony_ID = ID) %>% 
+#   mutate(colony_ID = as.factor(colony_ID)) %>% 
+#   mutate(counting_17Aug22 = ifelse(colony_ID %in% colonies.counting.17Aug, "yes", "no")) %>% 
+#   
+#   write.csv(.,
+#             file = paste0(path_to_repo,"/04_results/which_are_currently_counted.csv"),
+#             row.names = F)
+
+
+colonies.counting.16Aug <-
+  dat %>% 
+  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
+  filter(date==all.dates[4]) %>% 
+  select(observer, colony_ID) %>% 
+  na.omit() %>% 
+  pull(colony_ID) %>% 
+  unique() %>%
+  as.character()
+  
+
+colonies.counting.15Aug <- 
+  dat %>% 
+  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
+  filter(date==all.dates[3]) %>% 
+  select(observer, colony_ID) %>% 
+  na.omit() %>% 
+  pull(colony_ID) %>% 
+  unique() %>%
+  as.character()
+
+
+## 19 Aug v. 17 Aug
+writeLines("Observed on 19 Aug but NOT on 17 Aug")
+dplyr::setdiff(colonies.counting.19Aug, colonies.counting.17Aug)
+writeLines("Observed on 17 Aug but NOT on 19 Aug")
+dplyr::setdiff(colonies.counting.17Aug, colonies.counting.19Aug)
+
+writeLines("Which of the colonies not observed on 19 Aug are used for the bead experiment?")
+dplyr::intersect(dplyr::setdiff(colonies.counting.17Aug, colonies.counting.19Aug), bead.colonies)
+
+# ## 17 Aug v. 16 Aug
+# writeLines("Observed on 17 Aug but NOT on 16 Aug")
+# dplyr::setdiff(colonies.counting.17Aug, colonies.counting.16Aug)
+# writeLines("Observed on 16 Aug but NOT on 17 Aug")
+# dplyr::setdiff(colonies.counting.16Aug, colonies.counting.17Aug)
+
+```
+
 
 ```{r for_deborah, eval=F, echo=F}
 
@@ -478,62 +567,6 @@ tidy.dat %>%
   arrange(age_2022) %>% 
   view()
 ```
-
-
-```{r for_deborah_4}
-colonies.counting.17Aug <- 
-  dat %>% 
-  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
-  filter(date==all.dates[5]) %>%
-  select(observer, colony_ID) %>% 
-  na.omit() %>%
-  pull(colony_ID) %>% 
-  unique() %>%
-  as.character()
-
-# read list of colonies and indicate which ones are counted
-readxl::read_excel(paste0(path_to_repo, path_to_data,
-                                 "deborah_extra_sheets/which_are_currently_counted.xlsx")) %>% 
-  as_tibble() %>% 
-  select(colony_ID = ID) %>% 
-  mutate(colony_ID = as.factor(colony_ID)) %>% 
-  mutate(counting_17Aug22 = ifelse(colony_ID %in% colonies.counting.17Aug, "yes", "no")) %>% 
-  
-  write.csv(.,
-            file = paste0(path_to_repo,"/04_results/which_are_currently_counted.csv"),
-            row.names = F)
-
-
-colonies.counting.16Aug <-
-  dat %>% 
-  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
-  filter(date==all.dates[4]) %>% 
-  select(observer, colony_ID) %>% 
-  na.omit() %>% 
-  pull(colony_ID) %>% 
-  unique() %>%
-  as.character()
-  
-
-colonies.counting.15Aug <- 
-  dat %>% 
-  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
-  filter(date==all.dates[3]) %>% 
-  select(observer, colony_ID) %>% 
-  na.omit() %>% 
-  pull(colony_ID) %>% 
-  unique() %>%
-  as.character()
-
-
-## 17 Aug v. 16 Aug
-writeLines("Observed on 17 Aug but NOT on 16 Aug")
-dplyr::setdiff(colonies.counting.17Aug, colonies.counting.16Aug)
-writeLines("Observed on 16 Aug but NOT on 17 Aug")
-dplyr::setdiff(colonies.counting.16Aug, colonies.counting.17Aug)
-
-```
-
 
 ___
 
