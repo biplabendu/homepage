@@ -404,6 +404,16 @@ ___
 
 ## Extra stuff
 
+```{r assign_colonies_22Aug22, eval=F, echo=F}
+dat %>% 
+  filter(date == date.max) %>% 
+  select(observer, colony_ID) %>% 
+  group_by(observer) %>% 
+  summarise(num_colonies = n())
+
+```
+
+
 ```{r timecourse_1, eval=F, echo=F}
 previous.colonies <- c("833","859","863","1017",
                        "1068","1107","1242","1317","1368",
