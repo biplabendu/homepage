@@ -74,7 +74,7 @@ source(paste0(path_to_repo,"/03_functions/plot_zscores.R"))
 ## This is where you want to specify your parameters of choice.
 
 ## Specify the name of the master file as saved on your computer
-filename <- "arizona_2022_master_list_Aug19_1628h.csv"
+filename <- "arizona_2022_master_list_Aug21_1544h.csv"
 
 column.names <- c("date",
                   "was_it_raining",
@@ -358,13 +358,22 @@ knitr::include_graphics(paste0(path_to_results,
 
 ___
 
-## Extra stuff
+## Check consistency of data collection
+
+> Check if the colonies that were observed (obtained foraging counts) the previous day were also observed today.
+
+Please note, 
+
+- **Colony 1456** was not part of our priority list of colonies; MNW observed 1456 once on 8/19/22 but they were not active.
+
 
 
 ```{r for_deborah_4}
-colonies.counting.19Aug <- 
+n.day <- length(all.dates)
+
+colonies.counting.today <- 
   dat %>% 
-  filter(date==all.dates[6]) %>%
+  filter(date==all.dates[n.day]) %>%
   select(observer, colony_ID) %>% 
   na.omit() %>%
   pull(colony_ID) %>% 
@@ -372,67 +381,61 @@ colonies.counting.19Aug <-
   as.character()
 
 
-colonies.counting.17Aug <- 
+colonies.counting.previousday <- 
   dat %>% 
-  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
-  filter(date==all.dates[5]) %>%
+  filter(date==all.dates[n.day-1]) %>%
   select(observer, colony_ID) %>% 
   na.omit() %>%
   pull(colony_ID) %>% 
   unique() %>%
   as.character()
 
-# # read list of colonies and indicate which ones are counted
-# readxl::read_excel(paste0(path_to_repo, path_to_data,
-#                                  "deborah_extra_sheets/which_are_currently_counted.xlsx")) %>% 
-#   as_tibble() %>% 
-#   select(colony_ID = ID) %>% 
-#   mutate(colony_ID = as.factor(colony_ID)) %>% 
-#   mutate(counting_17Aug22 = ifelse(colony_ID %in% colonies.counting.17Aug, "yes", "no")) %>% 
-#   
-#   write.csv(.,
-#             file = paste0(path_to_repo,"/04_results/which_are_currently_counted.csv"),
-#             row.names = F)
+## Today v. previous day
+writeLines(paste0("Colonies observed on ", all.dates[n.day], " but NOT on ", all.dates[n.day-1]))
+dplyr::setdiff(colonies.counting.today, colonies.counting.previousday)
+writeLines(paste0("Observed on ", all.dates[n.day-1], " but NOT on ", all.dates[n.day]))
+dplyr::setdiff(colonies.counting.previousday, colonies.counting.today)
 
-
-colonies.counting.16Aug <-
-  dat %>% 
-  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
-  filter(date==all.dates[4]) %>% 
-  select(observer, colony_ID) %>% 
-  na.omit() %>% 
-  pull(colony_ID) %>% 
-  unique() %>%
-  as.character()
-  
-
-colonies.counting.15Aug <- 
-  dat %>% 
-  mutate(date = as.POSIXct(date, format="%m/%d/%Y", tz="MST")) %>% 
-  filter(date==all.dates[3]) %>% 
-  select(observer, colony_ID) %>% 
-  na.omit() %>% 
-  pull(colony_ID) %>% 
-  unique() %>%
-  as.character()
-
-
-## 19 Aug v. 17 Aug
-writeLines("Observed on 19 Aug but NOT on 17 Aug")
-dplyr::setdiff(colonies.counting.19Aug, colonies.counting.17Aug)
-writeLines("Observed on 17 Aug but NOT on 19 Aug")
-dplyr::setdiff(colonies.counting.17Aug, colonies.counting.19Aug)
-
-writeLines("Which of the colonies not observed on 19 Aug are used for the bead experiment?")
-dplyr::intersect(dplyr::setdiff(colonies.counting.17Aug, colonies.counting.19Aug), bead.colonies)
-
-# ## 17 Aug v. 16 Aug
-# writeLines("Observed on 17 Aug but NOT on 16 Aug")
-# dplyr::setdiff(colonies.counting.17Aug, colonies.counting.16Aug)
-# writeLines("Observed on 16 Aug but NOT on 17 Aug")
-# dplyr::setdiff(colonies.counting.16Aug, colonies.counting.17Aug)
 
 ```
+
+
+___
+
+## Extra stuff
+
+```{r timecourse_1, eval=F, echo=F}
+previous.colonies <- c("833","859","863","1017",
+                       "1068","1107","1242","1317","1368",
+                       "757","664","509",
+                       "1010", # also called "10"
+                       "758")
+
+dat %>% filter(colony_ID %in% previous.colonies) %>% 
+  arrange(colony_ID, date) %>% 
+  group_by(colony_ID) %>% 
+  summarize(num_days_observed = n())
+
+```
+
+
+```{r for_deborah_5, eval=F, echo=F}
+tidy.dat %>% 
+  na.omit() %>% 
+  group_by(colony_ID, date) %>% 
+  summarise(n()) %>% 
+  ungroup() %>% 
+  group_by(colony_ID) %>% 
+  summarize(num_days_counted_foraging = n()) %>% 
+  arrange(num_days_counted_foraging) %>% 
+  
+  write.csv(.,
+            file = paste0(path_to_repo, "/04_results/",
+                          "colonies_for_which_foraging_data_is_available.csv"),
+            row.names = F)
+
+```
+
 
 
 ```{r for_deborah, eval=F, echo=F}
