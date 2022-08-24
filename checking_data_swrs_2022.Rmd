@@ -74,7 +74,7 @@ source(paste0(path_to_repo,"/03_functions/plot_zscores.R"))
 ## This is where you want to specify your parameters of choice.
 
 ## Specify the name of the master file as saved on your computer
-filename <- "arizona_2022_master_list_Aug21_1544h.csv"
+filename <- "arizona_2022_master_list_Aug23_1440h.csv"
 
 column.names <- c("date",
                   "was_it_raining",
@@ -577,8 +577,7 @@ tidy.dat %>%
   mutate(age_class = ifelse(age_2022 <= 2, "1-2_yr_old",
                                   ifelse(age_2022 > 2 & age_2022 <= 4, "3-4_yr_old",
                                          "older_than_5_yr"))) %>%
-  arrange(age_2022) %>% 
-  view()
+  arrange(age_2022) 
 ```
 
 ___
