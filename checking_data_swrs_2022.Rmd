@@ -74,7 +74,7 @@ source(paste0(path_to_repo,"/03_functions/plot_zscores.R"))
 ## This is where you want to specify your parameters of choice.
 
 ## Specify the name of the master file as saved on your computer
-filename <- "arizona_2022_master_list_Aug23_1440h.csv"
+filename <- "arizona_2022_master_list_Aug29_1440h.csv"
 
 column.names <- c("date",
                   "was_it_raining",
@@ -120,11 +120,9 @@ colony.dat <-
 
 
 ## read the bead data for 2022
-bead.dat <- 
-  read.csv("/Users/biplabendudas/OneDrive - University of Central Florida/UCF de bekker/PostDoc/Labs/Gordon/00_application_package/final_round/data/bead_data_2022/bead_data_18Aug22.csv",
-           header = T, stringsAsFactors = F) %>% 
-  as_tibble()
-bead.colonies <- bead.dat %>% pull(colonyID) %>% unique()
+bead.dat <- read.csv("/Users/biplabendudas/OneDrive - University of Central Florida/UCF de bekker/PostDoc/Labs/Gordon/00_application_package/final_round/data/bead_data_2022/all_bead_data_2022/2022_bead_data_master_replicate_one_two_three_26Aug22.csv", header = T, stringsAsFactors = F) %>% as_tibble()
+# which are the bead colonies?
+bead.colonies <- bead.dat %>% pull(colonyID) %>% unique() %>% na.omit() %>% as.character()
 
 ```
 
@@ -327,7 +325,7 @@ for(i in 1:length(observers)) {
       scale_fill_Publication() +
       # coord_flip() +
     labs(x=paste0(observers[[i]], "'s colonies; time -->"),
-         y="out/in ratio") +
+         y="out-to-in ratio") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   
   # png(paste0(path_to_results,
@@ -362,11 +360,6 @@ ___
 
 > Check if the colonies that were observed (obtained foraging counts) the previous day were also observed today.
 
-Please note, 
-
-- **Colony 1456** was not part of our priority list of colonies; MNW observed 1456 once on 8/19/22 but they were not active.
-
-
 
 ```{r for_deborah_4}
 n.day <- length(all.dates)
@@ -395,10 +388,11 @@ writeLines(paste0("Colonies observed on ", all.dates[n.day], " but NOT on ", all
 dplyr::setdiff(colonies.counting.today, colonies.counting.previousday)
 writeLines(paste0("Observed on ", all.dates[n.day-1], " but NOT on ", all.dates[n.day]))
 dplyr::setdiff(colonies.counting.previousday, colonies.counting.today)
+writeLines(paste0("Bead-colonies that do not have foraging count data for ", all.dates[n.day], " :"))
+dplyr::setdiff(bead.colonies, colonies.counting.today)
 
 
 ```
-
 
 ___
 
@@ -430,19 +424,32 @@ dat %>% filter(colony_ID %in% previous.colonies) %>%
 
 
 ```{r for_deborah_5, eval=F, echo=F}
-tidy.dat %>% 
+active.dat <- 
+  tidy.dat %>% 
   na.omit() %>% 
+  filter(date != date.max) %>% 
   group_by(colony_ID, date) %>% 
   summarise(n()) %>% 
   ungroup() %>% 
   group_by(colony_ID) %>% 
   summarize(num_days_counted_foraging = n()) %>% 
-  arrange(num_days_counted_foraging) %>% 
-  
-  write.csv(.,
-            file = paste0(path_to_repo, "/04_results/",
-                          "colonies_for_which_foraging_data_is_available.csv"),
-            row.names = F)
+  arrange(num_days_counted_foraging)
+
+writeLines("Are there colonies for which there is count data, but no such colony ID exists?")
+all.colonies <- colony.dat %>% pull(colony_ID) %>% unique() %>% na.omit() %>% as.character()
+active.dat %>% 
+  pull(colony_ID) %>% 
+  unique() %>% na.omit() %>% as.character() %>% 
+  dplyr::setdiff(., all.colonies)
+
+# active.dat %>% 
+#   filter(!colony_ID %in% c("1312")) %>% 
+#   left_join(colony.dat %>% select(1:2), by="colony_ID") %>% 
+#   arrange(quad) %>% 
+#   write.csv(.,
+#             file = paste0(path_to_repo, "/04_results/",
+#                           "colonies_for_which_foraging_data_is_available_until_27Aug22.csv"),
+#             row.names = F)
 
 ```
 

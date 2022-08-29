@@ -439,7 +439,7 @@ div.tocify {
 <h1 class="title toc-ignore">Daily data check</h1>
 <h4 class="author">foraging count data for 2022 field work</h4>
 <address class="author_afil">
-In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 24 August, 2022</h4>
+In case of questions, please contact <a href="https://biplabendu.github.io/homepage/">Biplabendu Das</a><br><h4 class="date">Last updated on 29 August, 2022</h4>
 
 </div>
 
@@ -495,9 +495,9 @@ tidy.dat &lt;-
 
 all.dates &lt;- tidy.dat %&gt;% pull(date) %&gt;% na.omit() %&gt;% unique()
 date.max &lt;- tidy.dat %&gt;% pull(date) %&gt;% na.omit() %&gt;% max()</code></pre>
-<p>Analyzing data from 8/13/2022 (Aug 13, 2022) until 2022-08-23.</p>
+<p>Analyzing data from 8/13/2022 (Aug 13, 2022) until 2022-08-29.</p>
 <blockquote>
-<p>Currently showing all data for: 2022-08-23</p>
+<p>Currently showing all data for: 2022-08-29</p>
 </blockquote>
 </div>
 <div id="summarize-data" class="section level2">
@@ -527,7 +527,7 @@ tidy.dat %&gt;%
                 full_width = F, position = &quot;left&quot;, latex_options = &quot;scaled_down&quot;)</code></pre>
 <table class="table table-striped" style="width: auto !important; ">
 <caption>
-Table 1: Summary table for all foraging data collected on: 2022-08-23
+Table 1: Summary table for all foraging data collected on: 2022-08-29
 </caption>
 <thead>
 <tr>
@@ -569,7 +569,7 @@ BD
 2
 </td>
 <td style="text-align:right;">
-3
+4
 </td>
 </tr>
 <tr>
@@ -609,7 +609,7 @@ FG
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 </tr>
 <tr>
@@ -629,7 +629,7 @@ HC
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 </tr>
 <tr>
@@ -677,10 +677,10 @@ MM
 VR
 </td>
 <td style="text-align:right;">
-5
+2
 </td>
 <td style="text-align:right;">
-5
+6
 </td>
 <td style="text-align:right;">
 10
@@ -697,10 +697,10 @@ VR
 ZO
 </td>
 <td style="text-align:right;">
-4
+7
 </td>
 <td style="text-align:right;">
-5
+3
 </td>
 <td style="text-align:right;">
 3
@@ -709,7 +709,7 @@ ZO
 5
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 </tr>
 </tbody>
@@ -733,10 +733,6 @@ ZO
 <blockquote>
 <p>Check if the colonies that were observed (obtained foraging counts) the previous day were also observed today.</p>
 </blockquote>
-<p>Please note,</p>
-<ul>
-<li><strong>Colony 1456</strong> was not part of our priority list of colonies; MNW observed 1456 once on 8/19/22 but they were not active.</li>
-</ul>
 <pre class="r"><code>n.day &lt;- length(all.dates)
 
 colonies.counting.today &lt;- 
@@ -760,13 +756,17 @@ colonies.counting.previousday &lt;-
 
 ## Today v. previous day
 writeLines(paste0(&quot;Colonies observed on &quot;, all.dates[n.day], &quot; but NOT on &quot;, all.dates[n.day-1]))</code></pre>
-<pre><code>## Colonies observed on 2022-08-23 but NOT on 2022-08-22</code></pre>
+<pre><code>## Colonies observed on 2022-08-29 but NOT on 2022-08-28</code></pre>
 <pre class="r"><code>dplyr::setdiff(colonies.counting.today, colonies.counting.previousday)</code></pre>
-<pre><code>## [1] &quot;1440&quot; &quot;1552&quot; &quot;1581&quot; &quot;1543&quot; &quot;1366&quot;</code></pre>
+<pre><code>## [1] &quot;1366&quot;</code></pre>
 <pre class="r"><code>writeLines(paste0(&quot;Observed on &quot;, all.dates[n.day-1], &quot; but NOT on &quot;, all.dates[n.day]))</code></pre>
-<pre><code>## Observed on 2022-08-22 but NOT on 2022-08-23</code></pre>
+<pre><code>## Observed on 2022-08-28 but NOT on 2022-08-29</code></pre>
 <pre class="r"><code>dplyr::setdiff(colonies.counting.previousday, colonies.counting.today)</code></pre>
-<pre><code>## [1] &quot;1542&quot;</code></pre>
+<pre><code>## [1] &quot;1175&quot;</code></pre>
+<pre class="r"><code>writeLines(paste0(&quot;Bead-colonies that do not have foraging count data for &quot;, all.dates[n.day], &quot; :&quot;))</code></pre>
+<pre><code>## Bead-colonies that do not have foraging count data for 2022-08-29 :</code></pre>
+<pre class="r"><code>dplyr::setdiff(bead.colonies, colonies.counting.today)</code></pre>
+<pre><code>## character(0)</code></pre>
 <hr />
 </div>
 <div id="extra-stuff" class="section level2">
