@@ -32,8 +32,7 @@ rm(list = ls())
 
 ## 0. Housekeeping
 
-```{r housekeeping, include=FALSE}
-
+```{r load_libraries, include=FALSE}
 # Load the libraries
 pacman::p_load(tidyverse, conflicted, ggplot2, viridis, conflicted, WaveletComp)
 pacman::p_load(patchwork)
@@ -44,6 +43,10 @@ conflict_prefer("select", "dplyr")
 conflict_prefer("filter", "dplyr")
 conflict_prefer("union", "dplyr")
 conflict_prefer("lag", "dplyr")
+```
+
+
+```{r housekeeping, include=FALSE}
 
 # set path to your working directory (change, if necessary)
 path_to_repo = "/Users/biplabendudas/Documents/04_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2018_Pagliara_et_al"
@@ -688,27 +691,47 @@ for(i in 1:length(colonies)) {
 
 }
 
+
+## Set up the dataset for plotting
+auc.dat.plot <- 
+  auc.dat %>% 
+  select(colony_ID:age_class, auc, dur_mins) %>% 
+  select(-t.bin) %>% 
+  distinct() %>% 
+  
+  left_join(summ.dat %>% ungroup() %>% 
+              select(colony_ID, age_when_obs), by="colony_ID") %>% 
+  distinct() %>% 
+  
+  ## remove colony IDs that might be outliers or not have enough data
+  filter(!colony_ID %in% c("509")) 
+
 ## Plot by age-class
 
 png(paste0(path_to_repo2,
            "total_foraging_v1.png"),
     width = 30, height = 35, units = "cm", res = 200)
 
-auc.dat %>% 
-  select(colony_ID:age_class, auc, dur_mins) %>% 
-  select(-t.bin) %>% 
-  distinct() %>% 
+auc.dat.plot %>% 
 
   ggplot(aes(x=age_class, y=auc/dur_mins)) +
-    # geom_boxplot(alpha=0.5) +
-    geom_violin(alpha = 0.4) +
+    
+    # geom_violin(alpha = 0.4) +
     # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
   
-    geom_jitter(width = 0.1, size=10, alpha=0.8, aes(col=as.factor(colony_ID))) +
-  
+    geom_jitter(width = 0.1, size=10, alpha=0.8, 
+                aes(fill=as.factor(colony_ID)), 
+                shape=21) +
+      
+    # geom_boxplot(alpha=0.8, size=3, color="grey60") +
+    
     stat_summary(fun = mean, geom = "point", col="black", 
-                 size=30, alpha=0.7) +
-    stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width = 0.4) +
+                 size=20, alpha=0.8,
+                 position=position_nudge(x = 0.3, y = 0)) +
+    stat_summary(fun.data = mean_cl_boot,
+                 size=3, alpha = 0.8,
+                 geom = "errorbar", width = 0.2, fun.args = list(conf.int = 0.95),
+                 position=position_nudge(x = 0.3, y = 0)) +
 
     theme_Publication(base_size = 30) +
     # theme_classic() +
@@ -717,7 +740,7 @@ auc.dat %>%
 
     labs(title = "Colony foraging activity",
        subtitle = "standardized by duration of obs.",
-       y = "activity",
+       y = "activity \n(mean ± 95% CI)",
        x = "age-groups") +
   
     scale_color_discrete() +
@@ -739,24 +762,37 @@ png(paste0(path_to_repo2,
            "total_foraging_v2.png"),
     width = 30, height = 35, units = "cm", res = 200)
 
-auc.dat %>% 
-  select(colony_ID:age_class, auc, dur_mins) %>% 
-  select(-t.bin) %>% 
-  distinct() %>% 
+auc.dat.plot %>% 
   
-  left_join(summ.dat %>% ungroup() %>% 
-              select(colony_ID, age_when_obs), by="colony_ID") %>% 
-  distinct() %>% 
-
   ggplot(aes(x=age_when_obs, y=auc/dur_mins)) +
     # geom_boxplot(alpha=0.5) +
     # geom_violin(alpha = 0.4) +
     # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
   
-    geom_jitter(width = 0.1, size=10, alpha=0.8, aes(col=as.factor(colony_ID))) +
+    # plot polynomial model fit
+    geom_smooth(method='lm',
+                formula = y ~ poly(x, 4) ,
+                col="black", alpha=0.4, size=5) +
   
-    # stat_summary(fun.data=mean_cl_normal) + 
-    geom_smooth(method='lm', col="black", alpha=0.4, size=5) +
+    # # plot loess fit
+    # geom_smooth(method='loess',
+    #             formula = y~x,
+    #             col="black", alpha=0.4, size=5) +
+  
+    # # plot generalized additive model fit
+    # geom_smooth(method = "gam",
+    #             formula = y ~ s(x, bs = "cs", k=5),
+    #             col="black", alpha=0.4, size=5
+    #             ) +
+
+    geom_jitter(width = 0.1, size=10, alpha=0.8, 
+                aes(fill=as.factor(colony_ID)), 
+                shape=21) +
+  
+    # add the labels to the points
+    ggrepel::geom_label_repel(aes(label = colony_ID), 
+                              segment.colour = NA,
+                              alpha=0.9) +
 
     theme_Publication(base_size = 30) +
     # theme_classic() +
@@ -764,7 +800,7 @@ auc.dat %>%
     # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
 
     labs(title = "Colony foraging activity",
-       subtitle = "standardized by duration of obs.",
+       subtitle = "black line shows a fourth-order polynomial fit; y ~ poly(x, 4)",
        y = "activity",
        x = "age (in years)") +
   
@@ -786,10 +822,7 @@ png(paste0(path_to_repo2,
            "total_foraging_v3.png"),
     width = 30, height = 40, units = "cm", res = 200)
 
-auc.dat %>% 
-  select(colony_ID:age_class, auc, dur_mins) %>% 
-  select(-t.bin) %>% 
-  distinct() %>% 
+auc.dat.plot %>% 
   
   left_join(summ.dat %>% ungroup() %>% 
               select(colony_ID, age_when_obs), by="colony_ID") %>% 
@@ -803,8 +836,10 @@ auc.dat %>%
     geom_jitter(width = 0.1, size=10, alpha=0.8, 
                 aes(col=as.factor(colony_ID), shape=as.factor(age_class))) +
   
-    # stat_summary(fun.data=mean_cl_normal) + 
-    geom_smooth(method='lm', col="black", alpha=0.4, size=5) +
+    # add the labels to the points
+    ggrepel::geom_label_repel(aes(label = colony_ID),
+                              # segment.colour = "NA",
+                              alpha=0.9) +
   
 
     theme_Publication(base_size = 30) +
