@@ -1154,6 +1154,7 @@ auc.dat %&gt;%
   
   left_join(summ.dat %&gt;% ungroup() %&gt;% 
               select(colony_ID, age_when_obs), by=&quot;colony_ID&quot;) %&gt;% 
+  distinct() %&gt;% 
 
   ggplot(aes(x=age_when_obs, y=auc/dur_mins)) +
     # geom_boxplot(alpha=0.5) +
@@ -1184,6 +1185,57 @@ auc.dat %&gt;%
           legend.title = element_blank()) +
     theme(legend.position=&quot;bottom&quot;, legend.box=&quot;vertical&quot;, legend.margin=margin()) 
 
+trash &lt;- dev.off()
+
+
+## Plot by day
+
+png(paste0(path_to_repo2,
+           &quot;total_foraging_v3.png&quot;),
+    width = 30, height = 40, units = &quot;cm&quot;, res = 200)
+
+auc.dat %&gt;% 
+  select(colony_ID:age_class, auc, dur_mins) %&gt;% 
+  select(-t.bin) %&gt;% 
+  distinct() %&gt;% 
+  
+  left_join(summ.dat %&gt;% ungroup() %&gt;% 
+              select(colony_ID, age_when_obs), by=&quot;colony_ID&quot;) %&gt;% 
+  distinct() %&gt;% 
+
+  ggplot(aes(x=as.factor(day), y=auc/dur_mins)) +
+    # geom_boxplot(alpha=0.5) +
+    # geom_violin(alpha = 0.4) +
+    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
+  
+    geom_jitter(width = 0.1, size=10, alpha=0.8, 
+                aes(col=as.factor(colony_ID), shape=as.factor(age_class))) +
+  
+    # stat_summary(fun.data=mean_cl_normal) + 
+    geom_smooth(method=&#39;lm&#39;, col=&quot;black&quot;, alpha=0.4, size=5) +
+  
+
+    theme_Publication(base_size = 30) +
+    # theme_classic() +
+    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
+    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
+
+    labs(title = &quot;Colony foraging activity&quot;,
+       subtitle = &quot;standardized by duration of obs.&quot;,
+       y = &quot;activity&quot;,
+       x = &quot;day of observation&quot;) +
+  
+    scale_color_discrete() +
+    scale_fill_discrete() +
+    
+    coord_flip() +
+
+    # theme(legend.position=&quot;none&quot;) +
+
+    theme(plot.subtitle=element_text(hjust=0.5, size=20),
+          legend.title = element_blank()) +
+    theme(legend.position=&quot;bottom&quot;, legend.box=&quot;vertical&quot;, legend.margin=margin()) 
+
 trash &lt;- dev.off()</code></pre>
 <div class="figure" style="text-align: center">
 <img src="images/2022_deborah/01_timecourse_foraging/total_foraging_v1.png" alt="Total foraging activity by age-groups" width="65%" />
@@ -1195,6 +1247,12 @@ Total foraging activity by age-groups
 <img src="images/2022_deborah/01_timecourse_foraging/total_foraging_v2.png" alt="Total foraging activity by age" width="65%" />
 <p class="caption">
 Total foraging activity by age
+</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="images/2022_deborah/01_timecourse_foraging/total_foraging_v3.png" alt="Total foraging activity by day of observation" width="65%" />
+<p class="caption">
+Total foraging activity by day of observation
 </p>
 </div>
 </div>

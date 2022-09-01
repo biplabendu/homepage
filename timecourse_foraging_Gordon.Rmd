@@ -746,6 +746,7 @@ auc.dat %>%
   
   left_join(summ.dat %>% ungroup() %>% 
               select(colony_ID, age_when_obs), by="colony_ID") %>% 
+  distinct() %>% 
 
   ggplot(aes(x=age_when_obs, y=auc/dur_mins)) +
     # geom_boxplot(alpha=0.5) +
@@ -779,6 +780,57 @@ auc.dat %>%
 trash <- dev.off()
 
 
+## Plot by day
+
+png(paste0(path_to_repo2,
+           "total_foraging_v3.png"),
+    width = 30, height = 40, units = "cm", res = 200)
+
+auc.dat %>% 
+  select(colony_ID:age_class, auc, dur_mins) %>% 
+  select(-t.bin) %>% 
+  distinct() %>% 
+  
+  left_join(summ.dat %>% ungroup() %>% 
+              select(colony_ID, age_when_obs), by="colony_ID") %>% 
+  distinct() %>% 
+
+  ggplot(aes(x=as.factor(day), y=auc/dur_mins)) +
+    # geom_boxplot(alpha=0.5) +
+    # geom_violin(alpha = 0.4) +
+    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
+  
+    geom_jitter(width = 0.1, size=10, alpha=0.8, 
+                aes(col=as.factor(colony_ID), shape=as.factor(age_class))) +
+  
+    # stat_summary(fun.data=mean_cl_normal) + 
+    geom_smooth(method='lm', col="black", alpha=0.4, size=5) +
+  
+
+    theme_Publication(base_size = 30) +
+    # theme_classic() +
+    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
+    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
+
+    labs(title = "Colony foraging activity",
+       subtitle = "standardized by duration of obs.",
+       y = "activity",
+       x = "day of observation") +
+  
+    scale_color_discrete() +
+    scale_fill_discrete() +
+    
+    coord_flip() +
+
+    # theme(legend.position="none") +
+
+    theme(plot.subtitle=element_text(hjust=0.5, size=20),
+          legend.title = element_blank()) +
+    theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) 
+
+trash <- dev.off()
+
+
 ```
 
 
@@ -790,6 +842,11 @@ trash <- dev.off()
 ```{r plot_tot_foraging_v2, echo = FALSE, fig.align='center', fig.cap='Total foraging activity by age', out.width="65%"}
   knitr::include_graphics(paste0(path_to_repo2,
            "total_foraging_v2.png"))
+```
+
+```{r plot_tot_foraging_v3, echo = FALSE, fig.align='center', fig.cap='Total foraging activity by day of observation', out.width="65%"}
+  knitr::include_graphics(paste0(path_to_repo2,
+           "total_foraging_v3.png"))
 ```
 
 
