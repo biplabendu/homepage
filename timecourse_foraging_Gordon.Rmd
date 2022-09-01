@@ -51,6 +51,9 @@ path_to_repo = "/Users/biplabendudas/Documents/04_postdoc/Deborah_Gordon/04_rese
 # set path to the behavioral data within your repository 
 path_to_data = "/01_data/data/Spreadsheets/"
 
+# set path to save the graphs produced during analyses
+path_to_repo2 = "/Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/"
+
 
 # load functions
 # customized theme for publication quality figures
@@ -425,8 +428,7 @@ for(i in 1:length((colonies))) {
 
 ```{r visualize_v3, include=F}
 
-png(paste0(path_to_repo,
-           "/../2022_Nova_et_al/04_results/",
+png(paste0(path_to_repo2,
            "foraging_data.png"), 
     width = 30, height = 35, units = "cm", res = 300)
 plots %>% 
@@ -437,8 +439,7 @@ trash <- dev.off()
 
 
 ```{r plot_visualize_v3, echo = FALSE, fig.align='center', fig.cap='Density plots of number of out/in-going foragers', out.width="95%"}
-  knitr::include_graphics(paste0(path_to_repo,
-           "/../2022_Nova_et_al/04_results/",
+  knitr::include_graphics(paste0(path_to_repo2,
            "foraging_data.png"))
 
 ```
@@ -530,8 +531,7 @@ for(i in 1:length((colonies))) {
 Let's visualize the in/out rates (and compare them to the density plots).
 
 ```{r visualize_inout_v1, include=F}
-png(paste0(path_to_repo,
-           "/../2022_Nova_et_al/04_results/",
+png(paste0(path_to_repo2,
            "inout_v1.png"), 
     width = 30, height = 35, units = "cm", res = 300)
 plots %>% 
@@ -541,8 +541,7 @@ trash <- dev.off()
 ```
 
 ```{r plot_inout_v1, echo = FALSE, fig.align='center', fig.cap='Rate of out/in-going foragers', out.width="95%"}
-  knitr::include_graphics(paste0(path_to_repo,
-           "/../2022_Nova_et_al/04_results/",
+  knitr::include_graphics(paste0(path_to_repo2,
            "inout_v1.png"))
 ```
 
@@ -628,8 +627,7 @@ for(i in 1:length((colonies))) {
 
 }
 
-png(paste0(path_to_repo,
-           "/../2022_Nova_et_al/04_results/",
+png(paste0(path_to_repo2,
            "inout_v2.png"), 
     width = 30, height = 35, units = "cm", res = 300)
 plots %>% 
@@ -640,11 +638,159 @@ trash <- dev.off()
 
 
 ```{r plot_inout_v2, echo = FALSE, fig.align='center', fig.cap='Total (in + out) rate of foraging', out.width="95%"}
-  knitr::include_graphics(paste0(path_to_repo,
-           "/../2022_Nova_et_al/04_results/",
+  knitr::include_graphics(paste0(path_to_repo2,
            "inout_v2.png"))
 ```
 
+### Total activity ~ colonies
+
+Let's calculate a metric that would represent the standardized, total activity of the colonies.
+
+> standardized measure of *total_activity* = *area_under_time_activity_curve* / *duration_in_minutes*
+
+```{r total_activity_std}
+
+pacman::p_load(pracma)
+
+## Plot the in/out rates
+auc.dat <- in.out.dat %>% mutate(auc = NA, dur_mins = NA)
+# auc <- list()
+# k <- 1
+for(i in 1:length(colonies)) {
+  foo <- in.out.dat %>% filter(colony_ID == (colonies)[i])
+  days <- foo %>% pull(day) %>% unique()
+  
+  x.max <- max(foo$r_in, na.rm = T)
+  y.max <- max(foo$r_out, na.rm = T)
+  
+  if (nrow(foo)>0){
+    for (j in 1:length(days)) {
+
+    # plots[[k]] <-
+      bar <- 
+        foo %>%
+
+        filter(day==days[j]) %>%
+          rownames_to_column("time_point") %>% 
+          group_by(t.bin) %>% 
+          mutate(t_rate = r_in + r_out) %>% 
+          mutate(time_point = as.numeric(time_point))
+          
+      auc = trapz(x=bar$time_point, y=bar$t_rate)
+      dur = as.numeric(max(bar$t.bin) - min(bar$t.bin))*60
+      
+      
+      auc.dat[auc.dat$colony_ID==colonies[i] & auc.dat$day==days[j],]$auc <- auc
+      auc.dat[auc.dat$colony_ID==colonies[i] & auc.dat$day==days[j],]$dur_mins <- dur
+      }
+  
+   }
+
+}
+
+## Plot by age-class
+
+png(paste0(path_to_repo2,
+           "total_foraging_v1.png"),
+    width = 30, height = 35, units = "cm", res = 200)
+
+auc.dat %>% 
+  select(colony_ID:age_class, auc, dur_mins) %>% 
+  select(-t.bin) %>% 
+  distinct() %>% 
+
+  ggplot(aes(x=age_class, y=auc/dur_mins)) +
+    # geom_boxplot(alpha=0.5) +
+    geom_violin(alpha = 0.4) +
+    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
+  
+    geom_jitter(width = 0.1, size=10, alpha=0.8, aes(col=as.factor(colony_ID))) +
+  
+    stat_summary(fun = mean, geom = "point", col="black", 
+                 size=30, alpha=0.7) +
+    stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width = 0.4) +
+
+    theme_Publication(base_size = 30) +
+    # theme_classic() +
+    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
+    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
+
+    labs(title = "Colony foraging activity",
+       subtitle = "standardized by duration of obs.",
+       y = "activity",
+       x = "age-groups") +
+  
+    scale_color_discrete() +
+    scale_fill_discrete() +
+
+    # theme(legend.position="none") +
+
+    theme(plot.subtitle=element_text(hjust=0.5, size=20),
+          legend.title = element_blank()) +
+    theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) +
+    coord_flip()
+
+trash <- dev.off()
+
+
+## Plot by age
+
+png(paste0(path_to_repo2,
+           "total_foraging_v2.png"),
+    width = 30, height = 35, units = "cm", res = 200)
+
+auc.dat %>% 
+  select(colony_ID:age_class, auc, dur_mins) %>% 
+  select(-t.bin) %>% 
+  distinct() %>% 
+  
+  left_join(summ.dat %>% ungroup() %>% 
+              select(colony_ID, age_when_obs), by="colony_ID") %>% 
+
+  ggplot(aes(x=age_when_obs, y=auc/dur_mins)) +
+    # geom_boxplot(alpha=0.5) +
+    # geom_violin(alpha = 0.4) +
+    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
+  
+    geom_jitter(width = 0.1, size=10, alpha=0.8, aes(col=as.factor(colony_ID))) +
+  
+    # stat_summary(fun.data=mean_cl_normal) + 
+    geom_smooth(method='lm', col="black", alpha=0.4, size=5) +
+
+    theme_Publication(base_size = 30) +
+    # theme_classic() +
+    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
+    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
+
+    labs(title = "Colony foraging activity",
+       subtitle = "standardized by duration of obs.",
+       y = "activity",
+       x = "age (in years)") +
+  
+    scale_color_discrete() +
+    scale_fill_discrete() +
+
+    # theme(legend.position="none") +
+
+    theme(plot.subtitle=element_text(hjust=0.5, size=20),
+          legend.title = element_blank()) +
+    theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) 
+
+trash <- dev.off()
+
+
+```
+
+
+```{r plot_tot_foraging_v1, echo = FALSE, fig.align='center', fig.cap='Total foraging activity by age-groups', out.width="65%"}
+  knitr::include_graphics(paste0(path_to_repo2,
+           "total_foraging_v1.png"))
+```
+
+```{r plot_tot_foraging_v2, echo = FALSE, fig.align='center', fig.cap='Total foraging activity by age', out.width="65%"}
+  knitr::include_graphics(paste0(path_to_repo2,
+           "total_foraging_v2.png"))
+```
 
 
 ## 6. In v. Out rate ~ time
@@ -695,8 +841,7 @@ for(i in 1:length((colonies))) {
 
 }
 
-png(paste0(path_to_repo,
-           "/../2022_Nova_et_al/04_results/",
+png(paste0(path_to_repo2,
            "inout_v3.png"), 
     width = 30, height = 35, units = "cm", res = 300)
 plots %>% 
@@ -706,112 +851,11 @@ trash <- dev.off()
 ```
 
 ```{r plot_inout_v3, echo = FALSE, fig.align='center', fig.cap='I/O plots as a function of time', out.width="95%"}
-  knitr::include_graphics(paste0(path_to_repo,
-           "/../2022_Nova_et_al/04_results/",
+  knitr::include_graphics(paste0(path_to_repo2,
            "inout_v3.png"))
 ```
 
-
-### Total activity ~ colonies
-
-Let's calculate a metric that would represent the standardized, total activity of the colonies.
-
-> standardized measure of *total_activity* = *area_under_time_activity_curve* / *duration_in_minutes*
-
-```{r total_activity_std}
-
-pacman::p_load(pracma)
-
-## Plot the in/out rates
-auc.dat <- in.out.dat %>% mutate(auc = NA, dur_mins = NA)
-# auc <- list()
-# k <- 1
-for(i in 1:length(colonies)) {
-  foo <- in.out.dat %>% filter(colony_ID == (colonies)[i])
-  days <- foo %>% pull(day) %>% unique()
-  
-  x.max <- max(foo$r_in, na.rm = T)
-  y.max <- max(foo$r_out, na.rm = T)
-  
-  if (nrow(foo)>0){
-    for (j in 1:length(days)) {
-
-    # plots[[k]] <-
-      bar <- 
-        foo %>%
-
-        filter(day==days[j]) %>%
-          rownames_to_column("time_point") %>% 
-          group_by(t.bin) %>% 
-          mutate(t_rate = r_in + r_out) %>% 
-          mutate(time_point = as.numeric(time_point))
-          
-      auc = trapz(x=bar$time_point, y=bar$t_rate)
-      dur = as.numeric(max(bar$t.bin) - min(bar$t.bin))*60
-      
-      
-      auc.dat[auc.dat$colony_ID==colonies[i] & auc.dat$day==days[j],]$auc <- auc
-      auc.dat[auc.dat$colony_ID==colonies[i] & auc.dat$day==days[j],]$dur_mins <- dur
-      }
-  
-   }
-
-}
-
-png(paste0(path_to_repo,
-           "/../2022_Nova_et_al/04_results/",
-           "total_foraging_v1.png"),
-    width = 30, height = 35, units = "cm", res = 300)
-auc.dat %>% 
-  select(colony_ID:age_class, auc, dur_mins) %>% 
-  select(-t.bin) %>% 
-  distinct() %>% 
-  
-  
-  
-  ggplot(aes(x=age_class, y=auc/dur_mins)) +
-    # geom_boxplot(alpha=0.5) +
-    geom_violin(alpha = 0.4) +
-    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
-  
-    geom_jitter(width = 0.1, size=2, alpha=0.8, aes(col=as.factor(colony_ID))) +
-  
-    stat_summary(fun = mean, geom = "point", col="black", 
-                 size=6, alpha=0.7) +
-    stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width = 0.4) +
-
-    theme_Publication(base_size = 20) +
-    # theme_classic() +
-    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
-    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
-
-    labs(title = "Colony foraging activity",
-       subtitle = "standardized by duration of obs.",
-       y = "activity",
-       x = "age") +
-  
-    scale_color_discrete() +
-    scale_fill_discrete() +
-
-    # theme(legend.position="none") +
-
-    theme(plot.subtitle=element_text(hjust=0.5, size=15),
-          legend.title = element_blank()) +
-    theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) +
-    coord_flip()
-
-trash <- dev.off()
-
-
-```
-
-
-```{r plot_tot_foraging_v1, echo = FALSE, fig.align='center', fig.cap='I/O plots as a function of time', out.width="95%"}
-  knitr::include_graphics(paste0(path_to_repo,
-           "/../2022_Nova_et_al/04_results/",
-           "total_foraging_v1.png"))
-```
-
+___
 
 
 ## 7 Colony age classes

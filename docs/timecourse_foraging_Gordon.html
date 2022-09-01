@@ -439,7 +439,7 @@ div.tocify {
 <h1 class="title toc-ignore">TC8: Timecourse foraging</h1>
 <h3 class="subtitle">Investigating colony variation in time-budgeting of daily foraging in harvester ants</h3>
 <h4 class="author">Biplabendu Das</h4>
-<h4 class="date">31 August, 2022</h4>
+<h4 class="date">01 September, 2022</h4>
 
 </div>
 
@@ -925,7 +925,7 @@ for(i in 1:length((colonies))) {
 <p>density of foragers going out of and coming in to the colony as a function of time</p>
 </blockquote>
 <div class="figure" style="text-align: center">
-<img src="/Users/biplabendudas/Documents/04_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2022_Nova_et_al/04_results/foraging_data.png" alt="Density plots of number of out/in-going foragers" width="95%" />
+<img src="images/2022_deborah/01_timecourse_foraging/foraging_data.png" alt="Density plots of number of out/in-going foragers" width="95%" />
 <p class="caption">
 Density plots of number of out/in-going foragers
 </p>
@@ -1011,7 +1011,7 @@ for(i in 1:length((colonies))) {
 }</code></pre>
 <p>Let’s visualize the in/out rates (and compare them to the density plots).</p>
 <div class="figure" style="text-align: center">
-<img src="/Users/biplabendudas/Documents/04_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2022_Nova_et_al/04_results/inout_v1.png" alt="Rate of out/in-going foragers" width="95%" />
+<img src="images/2022_deborah/01_timecourse_foraging/inout_v1.png" alt="Rate of out/in-going foragers" width="95%" />
 <p class="caption">
 Rate of out/in-going foragers
 </p>
@@ -1046,20 +1046,11 @@ in.out.dat &lt;-
   in.dat %&gt;% 
   left_join(out.dat, by=c(&quot;colony_ID&quot;, &quot;day&quot;, &quot;t.bin&quot;, &quot;age_class&quot;))</code></pre>
 <div class="figure" style="text-align: center">
-<img src="/Users/biplabendudas/Documents/04_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2022_Nova_et_al/04_results/inout_v2.png" alt="Total (in + out) rate of foraging" width="95%" />
+<img src="images/2022_deborah/01_timecourse_foraging/inout_v2.png" alt="Total (in + out) rate of foraging" width="95%" />
 <p class="caption">
 Total (in + out) rate of foraging
 </p>
 </div>
-</div>
-</div>
-<div id="in-v.-out-rate-time" class="section level2">
-<h2>6. In v. Out rate ~ time</h2>
-<div class="figure" style="text-align: center">
-<img src="/Users/biplabendudas/Documents/04_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2022_Nova_et_al/04_results/inout_v3.png" alt="I/O plots as a function of time" width="95%" />
-<p class="caption">
-I/O plots as a function of time
-</p>
 </div>
 <div id="total-activity-colonies" class="section level3">
 <h3>Total activity ~ colonies</h3>
@@ -1105,29 +1096,29 @@ for(i in 1:length(colonies)) {
 
 }
 
-png(paste0(path_to_repo,
-           &quot;/../2022_Nova_et_al/04_results/&quot;,
+## Plot by age-class
+
+png(paste0(path_to_repo2,
            &quot;total_foraging_v1.png&quot;),
-    width = 30, height = 35, units = &quot;cm&quot;, res = 300)
+    width = 30, height = 35, units = &quot;cm&quot;, res = 200)
+
 auc.dat %&gt;% 
   select(colony_ID:age_class, auc, dur_mins) %&gt;% 
   select(-t.bin) %&gt;% 
   distinct() %&gt;% 
-  
-  
-  
+
   ggplot(aes(x=age_class, y=auc/dur_mins)) +
     # geom_boxplot(alpha=0.5) +
     geom_violin(alpha = 0.4) +
     # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
   
-    geom_jitter(width = 0.1, size=2, alpha=0.8, aes(col=as.factor(colony_ID))) +
+    geom_jitter(width = 0.1, size=10, alpha=0.8, aes(col=as.factor(colony_ID))) +
   
     stat_summary(fun = mean, geom = &quot;point&quot;, col=&quot;black&quot;, 
-                 size=6, alpha=0.7) +
+                 size=30, alpha=0.7) +
     stat_summary(fun.data = mean_cl_boot, geom = &quot;errorbar&quot;, width = 0.4) +
 
-    theme_Publication(base_size = 20) +
+    theme_Publication(base_size = 30) +
     # theme_classic() +
     # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
     # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
@@ -1135,26 +1126,88 @@ auc.dat %&gt;%
     labs(title = &quot;Colony foraging activity&quot;,
        subtitle = &quot;standardized by duration of obs.&quot;,
        y = &quot;activity&quot;,
-       x = &quot;age&quot;) +
+       x = &quot;age-groups&quot;) +
   
     scale_color_discrete() +
     scale_fill_discrete() +
 
     # theme(legend.position=&quot;none&quot;) +
 
-    theme(plot.subtitle=element_text(hjust=0.5, size=15),
+    theme(plot.subtitle=element_text(hjust=0.5, size=20),
           legend.title = element_blank()) +
     theme(legend.position=&quot;bottom&quot;, legend.box=&quot;vertical&quot;, legend.margin=margin()) +
     coord_flip()
 
+trash &lt;- dev.off()
+
+
+## Plot by age
+
+png(paste0(path_to_repo2,
+           &quot;total_foraging_v2.png&quot;),
+    width = 30, height = 35, units = &quot;cm&quot;, res = 200)
+
+auc.dat %&gt;% 
+  select(colony_ID:age_class, auc, dur_mins) %&gt;% 
+  select(-t.bin) %&gt;% 
+  distinct() %&gt;% 
+  
+  left_join(summ.dat %&gt;% ungroup() %&gt;% 
+              select(colony_ID, age_when_obs), by=&quot;colony_ID&quot;) %&gt;% 
+
+  ggplot(aes(x=age_when_obs, y=auc/dur_mins)) +
+    # geom_boxplot(alpha=0.5) +
+    # geom_violin(alpha = 0.4) +
+    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
+  
+    geom_jitter(width = 0.1, size=10, alpha=0.8, aes(col=as.factor(colony_ID))) +
+  
+    # stat_summary(fun.data=mean_cl_normal) + 
+    geom_smooth(method=&#39;lm&#39;, col=&quot;black&quot;, alpha=0.4, size=5) +
+
+    theme_Publication(base_size = 30) +
+    # theme_classic() +
+    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
+    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
+
+    labs(title = &quot;Colony foraging activity&quot;,
+       subtitle = &quot;standardized by duration of obs.&quot;,
+       y = &quot;activity&quot;,
+       x = &quot;age (in years)&quot;) +
+  
+    scale_color_discrete() +
+    scale_fill_discrete() +
+
+    # theme(legend.position=&quot;none&quot;) +
+
+    theme(plot.subtitle=element_text(hjust=0.5, size=20),
+          legend.title = element_blank()) +
+    theme(legend.position=&quot;bottom&quot;, legend.box=&quot;vertical&quot;, legend.margin=margin()) 
+
 trash &lt;- dev.off()</code></pre>
 <div class="figure" style="text-align: center">
-<img src="/Users/biplabendudas/Documents/04_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2022_Nova_et_al/04_results/total_foraging_v1.png" alt="I/O plots as a function of time" width="95%" />
+<img src="images/2022_deborah/01_timecourse_foraging/total_foraging_v1.png" alt="Total foraging activity by age-groups" width="65%" />
+<p class="caption">
+Total foraging activity by age-groups
+</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="images/2022_deborah/01_timecourse_foraging/total_foraging_v2.png" alt="Total foraging activity by age" width="65%" />
+<p class="caption">
+Total foraging activity by age
+</p>
+</div>
+</div>
+</div>
+<div id="in-v.-out-rate-time" class="section level2">
+<h2>6. In v. Out rate ~ time</h2>
+<div class="figure" style="text-align: center">
+<img src="images/2022_deborah/01_timecourse_foraging/inout_v3.png" alt="I/O plots as a function of time" width="95%" />
 <p class="caption">
 I/O plots as a function of time
 </p>
 </div>
-</div>
+<hr />
 </div>
 <div id="colony-age-classes" class="section level2">
 <h2>7 Colony age classes</h2>
