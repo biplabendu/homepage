@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Biplabendu Das" />
+
+
+<title>Deborah_bead_data</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.12/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Biplabendu Das</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="research.html">
+    <span class="fa fa-flask"></span>
+     
+    Research
+  </a>
+</li>
+<li>
+  <a href="camponotus_floridanus.html">
+    <span class="fa fa-bug"></span>
+     
+    Camponotus_floridanus
+  </a>
+</li>
+<li>
+  <a href="https://www.academia.edu/attachments/81365810/download_file">
+    <span class="fa fa-address-card"></span>
+     
+    CV
+  </a>
+</li>
+<li>
+  <a href="ecology.html">
+    <span class="fa fa-leaf"></span>
+     
+    EcologyLab
+  </a>
+</li>
+<li>
+  <a href="IUSSI2022.html">
+    <span class="fa fa-pie-chart"></span>
+     
+    IUSSI_Demography
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://twitter.com/another_ant_guy">
+    <span class="fa fa-twitter"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/biplabendu/">
+    <span class="fa fa-linkedin"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.facebook.com/biplabendu">
+    <span class="fa fa-facebook"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Deborah_bead_data</h1>
+<h4 class="author">Biplabendu Das</h4>
+<h4 class="date">05 September, 2022</h4>
+
+</div>
+
+
+<div id="overviewgoals" class="section level2">
+<h2>Overview/Goals</h2>
+<p>Email from Deborah:</p>
+<p>This data set comes from an experiment with harvester ants last summer. Harvester ant foragers bring in lots of seeds and parts of plants, some of which are rejected by ants inside the nest, and then the refuse is carried out and put on the nest mound midden.</p>
+<blockquote>
+<p>Here we presented small plastic beads coated in oil which the ants brought into the nest, and were later rejected and put back out on the midden.</p>
+</blockquote>
+<p>TO DO: - think of a hypothesis or two you could test with these data, and test them - show me a figure or two - your analysis of the data - then write a paragraph or so on what the result means or shows</p>
+</div>
+<div id="part-1-inspect-data" class="section level2">
+<h2>Part 1: INSPECT DATA</h2>
+<p>Two data sheets are available in the Excel workbook. For convenience of analysis, the excel sheets are saved individually as csv files and, if necessary, the column names for each were modified.</p>
+<p>Sheet 1: foraging_data.csv - contains three columns: date, colonyID, foraging_30s</p>
+<p>Sheet 2: beads_out.csv - contains XXX cols: num_out, date, colonyID, time_put_out, n_collected, n_returned_DayX (X %in% 1:6)</p>
+<p>Brief description of the columns: - date = date of observation - colonyID = unique colony identifier - time_put_out = time-of-day at which beads were put out - n_collected = number of beads that had been brought into the nest at the end of foraging on Day 1 - n_returned_DayX = number of beads that had been brought <em>out of the nest</em> by the end of <strong>Day X</strong></p>
+<p>Note; NA means the colony is not active that day NM means that the colony was doing nest maintenance, when they carry out refuse including beads</p>
+<p>Some additional info:</p>
+<p>Beads coated with oil were put out in 6 colonies on day 1, color green, then another 6 colonies on day 2, color green, then again with first 6 on day 3 color pink, then again with 2nd 6 on day 4 color pink, back to green days 5 and 6</p>
+<p>Numbers of beads brought out are listed separately by color. E.g., colony 1131 took out 18 green beads on day 2 of green 8-24, and 3 pink beads on day 2 of pink 8-26.</p>
+<p>For the 3rd round, for whatever number of green beads from the first round were not out by 8-27 or 8-28, then we don’t know which day those were from.</p>
+</div>
+<div id="part-2-load-data" class="section level2">
+<h2>Part 2: Load data</h2>
+<pre class="r"><code># read foraging_data.csv
+for.dat &lt;- read.csv(paste0(path_to_repo,&quot;/data/foraging_data.csv&quot;),
+                    stringsAsFactors = F, header = T) %&gt;% as_tibble()
+
+# read bead data
+bead.dat &lt;- read.csv(paste0(path_to_repo, &quot;/data/beads_out_new.csv&quot;),
+                stringsAsFactors = F, header = T) %&gt;% as_tibble()
+
+# read colony-age data
+colony.dat &lt;- read.csv(paste0(path_to_repo, &quot;/data/foraging_counts_08_13_22.csv&quot;),
+                       stringsAsFactors = F, header = T) %&gt;% as_tibble() %&gt;% 
+  select(colonyID = colony_ID, everything()) %&gt;% 
+  # mutate(colonyID = as.factor(colonyID)) %&gt;% 
+  mutate(age_class = ifelse(age_2022 &lt;= 2, &quot;1-2_yr_old&quot;,
+                                  ifelse(age_2022 &gt; 2 &amp; age_2022 &lt;= 4, &quot;3-4_yr_old&quot;,
+                                         &quot;older_than_5_yr&quot;)))</code></pre>
+</div>
+<div id="part-3-summarize-the-data" class="section level2">
+<h2>Part 3: Summarize the data</h2>
+<pre class="r"><code>writeLines(&quot;What are the names of the colonies? \nShown as: Colony-ID&quot;)</code></pre>
+<pre><code>## What are the names of the colonies? 
+## Shown as: Colony-ID</code></pre>
+<pre class="r"><code>bead.dat %&gt;% 
+  select(colonyID) %&gt;% 
+  distinct() %&gt;% 
+  left_join(colony.dat, by=&quot;colonyID&quot;) %&gt;%
+  arrange(age_2022)</code></pre>
+<pre><code>## # A tibble: 13 x 8
+##    colonyID  quad age_2022  east north colony_type  counted_08_13_22 age_class  
+##       &lt;int&gt; &lt;int&gt;    &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;      
+##  1     1474     6        3   597   472 Young        &quot;c&quot;              3-4_yr_old 
+##  2     1524     5        3   604   553 Young        &quot;C&quot;              3-4_yr_old 
+##  3     1423     5        5   585   564 Active Adult &quot;C&quot;              older_than…
+##  4     1393     3        7   381   589 Active Adult &quot;C&quot;              older_than…
+##  5     1338     4        8   360   543 Active Adult &quot;c&quot;              older_than…
+##  6     1368     4        8   426   466 Active Adult &quot;&quot;               older_than…
+##  7     1288     6       11   499   443 Active Adult &quot;c&quot;              older_than…
+##  8     1233     6       12   446   380 Active Adult &quot;c&quot;              older_than…
+##  9     1131     5       21   563   636 Active Adult &quot;C&quot;              older_than…
+## 10      922     5       22   463   589 Active Adult &quot;&quot;               older_than…
+## 11      969     6       22   515   337 Active Adult &quot;&quot;               older_than…
+## 12      961     6       22   548   327 Active Adult &quot;&quot;               older_than…
+## 13      810     6       25   565   409 Active Adult &quot;c&quot;              older_than…</code></pre>
+<pre class="r"><code># Specify the dates for green/pink beads
+green.days &lt;- c(&quot;8/23/21&quot;,&quot;8/24/21&quot;, &quot;8/27/21&quot;,&quot;8/28/21&quot;) %&gt;% as.Date(format = &quot;%m/%d/%y&quot;)
+pink.days &lt;- c(&quot;8/25/21&quot;,&quot;8/26/21&quot;) %&gt;% as.Date(format = &quot;%m/%d/%y&quot;)</code></pre>
+</div>
+<div id="part-4-clean-data" class="section level2">
+<h2>Part 4: Clean Data</h2>
+<pre class="r"><code>df &lt;-
+  bead.dat %&gt;%
+  
+  # retain only useful data
+  na.omit() %&gt;% 
+  
+  # arrange by colony IDs
+  arrange(colonyID) %&gt;% 
+  
+  mutate(date = as.Date(date, format = &quot;%m/%d/%y&quot;)) %&gt;%
+  mutate(colonyID = factor(colonyID)) %&gt;% 
+  
+  # add a column that specifies the color of beads used
+  mutate(bead_col = ifelse(date %in% green.days[1:2], &quot;green&quot;,
+                           ifelse(date %in% green.days[3:4], &quot;green-2&quot;,
+                           ifelse(date %in% pink.days, &quot;pink&quot;, NA)))) %&gt;%
+  
+  mutate(batch = ifelse(date %in% c(green.days[c(1,3)],pink.days[1]), &quot;batch_A&quot;,
+                        ifelse(date %in% c(green.days[c(2,4)],pink.days[2]), &quot;batch_B&quot;,NA))) %&gt;% 
+  
+  
+  # # SIDE NOTE: Explore the original dataset
+  # mutate_at(vars(colnames(.)[names(.) %in% c(paste0(&quot;n_returned_Day&quot;,1:6))]),
+  #       .funs = funs(ifelse(.==&quot;&quot;, NA, as.character(.)))) %&gt;% 
+  # mutate_at(vars(colnames(.)[names(.) %in% c(paste0(&quot;n_returned_Day&quot;,1:6))]),
+  #       .funs = as.numeric) %&gt;% head()
+  
+  
+  # CLEAN: Keep only data for first three days of observations after presenting beads
+  select(num_out:n_returned_Day3, bead_col, batch) %&gt;%
+  
+  # format columns appropriately
+  mutate(n_collected = as.numeric(readr::parse_number(n_collected))) %&gt;% 
+  mutate(n_returned_Day1 = as.numeric(n_returned_Day1)) %&gt;% 
+  mutate(n_returned_Day2 = as.numeric(n_returned_Day2)) %&gt;% 
+  mutate(n_returned_Day3 = as.numeric(n_returned_Day3))
+  
+
+# query 1  
+df %&gt;% 
+  # summarize the data by batch and bead_col
+  group_by(batch, bead_col, date) %&gt;%
+  summarize(n_colonies = n())</code></pre>
+<pre><code>## # A tibble: 5 x 4
+## # Groups:   batch, bead_col [5]
+##   batch   bead_col date       n_colonies
+##   &lt;chr&gt;   &lt;chr&gt;    &lt;date&gt;          &lt;int&gt;
+## 1 batch_A green    2021-08-23          6
+## 2 batch_A green-2  2021-08-27          5
+## 3 batch_A pink     2021-08-25          6
+## 4 batch_B green    2021-08-24          7
+## 5 batch_B pink     2021-08-26          5</code></pre>
+<pre class="r"><code># query 2  
+# It seems the data for 25-Aug-2021, Colony-1474 is missing (or too little);  
+df &lt;- 
+  df %&gt;% 
+  # remove it
+  filter(!is.na(n_collected))</code></pre>
+<p>CLEAN UP:</p>
+<ol style="list-style-type: decimal">
+<li><p>There are four colonies (1 green, 3 pink) that collect &lt;30 of the 50 beads presented. [n_collected = 8, 9, 17, 20]. It might be a good idea to leave them out before we analyze the dat, at least for Colonies that collected ≤10 beads of the 50 presented. [cleanup 1]</p></li>
+<li><p>Data for Colony 1288 (green-1; 24 to 26 Aug) shows that 48 beads were presented but 50 beads were collected at the refuse pile. Removing that from our dataset as I am unsure of the source of the error. [cleanup 2]</p></li>
+</ol>
+<pre class="r"><code>dat &lt;-
+  df %&gt;%
+  # remove the time column (not necessary; almost the same time) 
+  select(-4) %&gt;% 
+  filter(!(bead_col==&quot;pink&quot; &amp; colonyID %in% c(&quot;969&quot;,&quot;1338&quot;))) %&gt;%# cleanup 1
+  filter(!(bead_col==&quot;green&quot; &amp; colonyID == &quot;1288&quot;)) # cleanup 
+
+writeLines(&quot;Which colony-days remain after cleanup?&quot;)</code></pre>
+<pre><code>## Which colony-days remain after cleanup?</code></pre>
+<pre class="r"><code>dat %&gt;% 
+  select(date, colonyID) %&gt;% 
+  distinct() %&gt;% 
+  mutate(colonyID = as.numeric(as.character(colonyID))) %&gt;%
+  left_join(colony.dat, by=&quot;colonyID&quot;) %&gt;% 
+  group_by(colonyID, age_2022, age_class) %&gt;% 
+  summarize(n_days = n()) %&gt;% 
+  arrange(age_2022)</code></pre>
+<pre><code>## # A tibble: 13 x 4
+## # Groups:   colonyID, age_2022 [13]
+##    colonyID age_2022 age_class       n_days
+##       &lt;dbl&gt;    &lt;int&gt; &lt;chr&gt;            &lt;int&gt;
+##  1     1474        3 3-4_yr_old           1
+##  2     1524        3 3-4_yr_old           1
+##  3     1423        5 older_than_5_yr      1
+##  4     1393        7 older_than_5_yr      3
+##  5     1338        8 older_than_5_yr      2
+##  6     1368        8 older_than_5_yr      3
+##  7     1288       11 older_than_5_yr      1
+##  8     1233       12 older_than_5_yr      2
+##  9     1131       21 older_than_5_yr      3
+## 10      922       22 older_than_5_yr      3
+## 11      961       22 older_than_5_yr      2
+## 12      969       22 older_than_5_yr      1
+## 13      810       25 older_than_5_yr      2</code></pre>
+</div>
+<div id="round-one" class="section level2">
+<h2>ROUND ONE</h2>
+</div>
+<div id="part-5-plot-cum.-prop." class="section level2">
+<h2>Part 5: Plot cum. prop.</h2>
+<pre class="r"><code>tidydat &lt;-
+  dat %&gt;% 
+  
+  na.omit() %&gt;%
+  
+  ## only keep the colonies that collected more than 40 beads
+  filter(n_collected &gt;= 40) %&gt;% 
+  
+  # Cumulative prop 
+  # create the cumulative sums
+  mutate(cum_prop_day1 = n_returned_Day1/n_collected,
+         cum_prop_day2 = (n_returned_Day1+n_returned_Day2)/n_collected,
+         cum_prop_day3 = (n_returned_Day1+n_returned_Day2+n_returned_Day3)/n_collected) %&gt;% 
+  
+  select(num_out, date, colonyID, n_collected, bead_col, batch:cum_prop_day3) %&gt;% 
+  
+  pivot_longer(cols = starts_with(&quot;cum_prop&quot;),
+               names_to = &quot;day_of_obs&quot;,
+               values_to = &quot;cum_prop_returned&quot;) %&gt;% 
+  
+  mutate(day_of_obs = as.numeric(readr::parse_number(day_of_obs))) %&gt;% 
+  mutate(date = date+day_of_obs-1)
+  
+# sumarrize the tidydat
+tidydat %&gt;% 
+  group_by(batch, bead_col, date) %&gt;%
+  summarize(n_colonies = n())</code></pre>
+<pre><code>## # A tibble: 12 x 4
+## # Groups:   batch, bead_col [4]
+##    batch   bead_col date       n_colonies
+##    &lt;chr&gt;   &lt;chr&gt;    &lt;date&gt;          &lt;int&gt;
+##  1 batch_A green    2021-08-23          5
+##  2 batch_A green    2021-08-24          5
+##  3 batch_A green    2021-08-25          5
+##  4 batch_A pink     2021-08-25          3
+##  5 batch_A pink     2021-08-26          3
+##  6 batch_A pink     2021-08-27          3
+##  7 batch_B green    2021-08-24          4
+##  8 batch_B green    2021-08-25          4
+##  9 batch_B green    2021-08-26          4
+## 10 batch_B pink     2021-08-26          2
+## 11 batch_B pink     2021-08-27          2
+## 12 batch_B pink     2021-08-28          2</code></pre>
+<pre class="r"><code># what proportion of collected beads do they put out by day 3?
+tidydat %&gt;% 
+  filter(day_of_obs==&quot;3&quot;) %&gt;%
+# 
+#   pull(n_collected) %&gt;% sd()/sqrt(51)
+#   sd()/sqrt(17) # 17 = length of cum_prop_returned
+
+  group_by(bead_col, batch) %&gt;% 
+  summarize(n_colonies=n(),mean_prop_returned=mean(cum_prop_returned))</code></pre>
+<pre><code>## # A tibble: 4 x 4
+## # Groups:   bead_col [2]
+##   bead_col batch   n_colonies mean_prop_returned
+##   &lt;chr&gt;    &lt;chr&gt;        &lt;int&gt;              &lt;dbl&gt;
+## 1 green    batch_A          5              0.824
+## 2 green    batch_B          4              0.910
+## 3 pink     batch_A          3              0.758
+## 4 pink     batch_B          2              0.94</code></pre>
+<hr />
+<p>Selecting old colonies</p>
+<pre class="r"><code>old.summ &lt;- 
+  tidydat %&gt;% 
+  mutate(colonyID = as.character(colonyID) %&gt;% as.numeric()) %&gt;% 
+  left_join(colony.dat, by=&quot;colonyID&quot;) %&gt;% 
+  select(date, colonyID, bead_col, day_of_obs, cum_prop_returned, age_2022) %&gt;% 
+  
+  mutate(replicate = ifelse(bead_col==&quot;pink&quot;, &quot;A&quot;, &quot;B&quot;)) %&gt;% 
+  mutate(ID = paste0(colonyID,&quot;_&quot;,replicate, &quot;_&quot;, age_2022)) %&gt;% 
+  select(date:bead_col, replicate, everything())
+  
+
+old.summ %&gt;% 
+  as_tibble() %&gt;% 
+  filter(day_of_obs==&quot;3&quot;) %&gt;% 
+  group_by(colonyID) %&gt;% 
+  summarize(n_reps = n()) %&gt;% 
+  right_join(old.summ %&gt;% select(colonyID, age_2022) %&gt;% distinct()) %&gt;% 
+  arrange(age_2022)</code></pre>
+<pre><code>## # A tibble: 11 x 3
+##    colonyID n_reps age_2022
+##       &lt;dbl&gt;  &lt;int&gt;    &lt;int&gt;
+##  1     1474      1        3
+##  2     1393      1        7
+##  3     1338      1        8
+##  4     1368      1        8
+##  5     1288      1       11
+##  6     1233      1       12
+##  7     1131      2       21
+##  8      922      2       22
+##  9      961      1       22
+## 10      969      1       22
+## 11      810      2       25</code></pre>
+<pre class="r"><code>old.summ %&gt;%   
+  ggplot() + 
+  geom_line(aes(x=factor(day_of_obs), 
+                y=cum_prop_returned, group=ID, col=ID),
+            size=2,
+            alpha=0.6) +
+  facet_grid(~ID) +
+  theme_Publication(base_size = 10) +
+  # scale_color_manual(values=c(&quot;darkgreen&quot;,&quot;darkred&quot;)) +
+  
+  scale_y_continuous(breaks = c(0,.2,.4,.6,.8,1),
+                     labels = c(&quot;0&quot;, &quot;&quot;, &quot;0.4&quot;,&quot;&quot;,&quot;0.8&quot;,&quot;&quot;),
+                     limits = c(0,1)) +
+  
+  xlab(&quot;Day of obs&quot;) +
+  ylab(&quot;Cumulutative proportion \nof beads returned&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/abc-1.png" width="672" /></p>
+<hr />
+</div>
+<div id="bead-data-2022" class="section level2">
+<h2>Bead data 2022</h2>
+<blockquote>
+<p>as of 23 Aug 2022</p>
+</blockquote>
+<pre class="r"><code>filename &lt;- &quot;/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/02_bead_data/data/bead_data_2022/all_bead_data_2022/2022_bead_data_master_replicate_one_two_three_29Aug22.csv&quot;
+dat.2022 &lt;- read.csv(filename,
+                     header = T, stringsAsFactors = F,
+                     na.strings = c(&quot;&quot;,&quot; &quot;,&quot;did_not_count&quot;,&quot;NA&quot;,
+                                    &quot;did_not_check&quot;,
+                                    &quot;it_rained_could_not_check&quot;)) %&gt;% 
+  as_tibble() %&gt;% 
+  
+  # select the relevant columns
+  select(date, colonyID, age_class, age_2022, 
+         bead_color, beads_put_out, beads_collected,
+         beads_returned_Day1_beforenoon,
+         beads_returned_Day1_afternoon,
+         beads_returned_Day2_morning,
+         beads_returned_Day2_beforenoon,
+         beads_returned_Day2_afternoon,
+         beads_returned_Day3_beforenoon,
+         beads_returned_Day4_morning,
+         beads_returned_Day4_beforenoon) %&gt;% 
+  
+  # calculate the cumulative proportion of beads returned
+  group_by(date, bead_color) %&gt;% 
+    
+  # filter out the colonies for which we still need to check the data
+  filter(!(colonyID==&quot;1560&quot; &amp; bead_color==&quot;green&quot;)) %&gt;% 
+  filter(!(colonyID==&quot;1288&quot; &amp; bead_color==&quot;green&quot;)) %&gt;%
+  filter(!(colonyID==&quot;1546&quot; &amp; bead_color==&quot;green&quot;)) %&gt;%
+  
+  # convert all the bead count columns as numeric
+  mutate_at(vars(matches(&quot;beads_&quot;)), as.numeric) %&gt;% 
+  
+  ungroup()
+
+
+## Create a tidy dataset and calculate the cumulative proportion of beads returned by colonies
+tidydat &lt;-
+  dat.2022 %&gt;% 
+  
+  # replace all the NAs with 0 to be able to calculate proportions
+  mutate_at(vars(matches(&quot;beads_&quot;)), function(x) ifelse(is.na(x), 0, x)) %&gt;%
+  
+  # day 1 - before noon
+  mutate(cum_prop_returned_D1_beforenoon = round(beads_returned_Day1_beforenoon/beads_collected, 2)) %&gt;% 
+  mutate(cum_prop_returned_D1_afternoon = round(cum_prop_returned_D1_beforenoon+beads_returned_Day1_afternoon/beads_collected, 2)) %&gt;% 
+  mutate(cum_prop_returned_D2_morning = round(cum_prop_returned_D1_afternoon+beads_returned_Day2_morning/beads_collected, 2)) %&gt;% 
+  mutate(cum_prop_returned_D2_beforenoon = round(cum_prop_returned_D2_morning+beads_returned_Day2_beforenoon/beads_collected,2)) %&gt;%
+  mutate(cum_prop_returned_D2_afternoon = round(cum_prop_returned_D2_beforenoon+beads_returned_Day2_afternoon/beads_collected,2)) %&gt;% 
+  mutate(cum_prop_returned_D3_beforenoon = round(cum_prop_returned_D2_beforenoon+beads_returned_Day3_beforenoon/beads_collected,2)) %&gt;% 
+  mutate(cum_prop_returned_D4_morning = round(cum_prop_returned_D3_beforenoon+beads_returned_Day4_morning/beads_collected,2)) %&gt;% 
+  mutate(cum_prop_returned_D4_beforenoon = round(cum_prop_returned_D4_morning+beads_returned_Day4_beforenoon/beads_collected,2)) %&gt;% 
+  
+  mutate(beads_collected_group = ifelse(beads_collected &lt; 22, &quot;less_than_22&quot;, 
+                                        ifelse(beads_collected &gt; 40, 
+                                               &quot;greater_than_40&quot;, &quot;between_22_and_40&quot;))) %&gt;%
+  arrange(age_2022, beads_collected_group) %&gt;% 
+  
+  select(colonyID,
+         age_2022, age_class,
+         beads_collected_group,
+         bead_color,
+         cum_prop_returned_D1_beforenoon:cum_prop_returned_D4_beforenoon,
+         everything())
+
+# tidydat %&gt;% 
+#   # summarize the data
+#   group_by(age_class,
+#            bead_color,
+#            beads_collected_group) %&gt;% 
+#   summarise(n_colonies = n(),
+#             min_prop_returned = min(cum_prop_returned_D3_beforenoon),
+#             max_prop_returned = max(cum_prop_returned_D3_beforenoon)) %&gt;% 
+#   arrange(bead_color, age_class, beads_collected_group) %&gt;% 
+#   DT::datatable()
+  
+  
+# tidydat %&gt;% 
+#   filter(beads_collected_group == &quot;less_than_22&quot;)</code></pre>
+<pre class="r"><code>tidydat %&lt;&gt;% 
+  filter(beads_collected_group == &quot;greater_than_40&quot;) %&gt;% 
+  pivot_longer(cols = starts_with(&quot;cum_prop&quot;),
+               names_to = &quot;counted_when&quot;,
+               values_to = &quot;cum_prop&quot;) %&gt;% 
+  
+  ## format the ordinal columns correctly
+  mutate(counted_when = ifelse(counted_when == &quot;cum_prop_returned_D1_beforenoon&quot;, &quot;D1_bN&quot;,
+                            ifelse(counted_when == &quot;cum_prop_returned_D1_afternoon&quot;, &quot;D1_aN&quot;,
+                                   ifelse(counted_when == &quot;cum_prop_returned_D2_morning&quot;, &quot;D2_M&quot;,
+                                          ifelse(counted_when == &quot;cum_prop_returned_D2_beforenoon&quot;, &quot;D2_bN&quot;,
+                                            ifelse(counted_when == &quot;cum_prop_returned_D2_afternoon&quot;, &quot;D2_aN&quot;,
+                                            ifelse(counted_when == &quot;cum_prop_returned_D3_beforenoon&quot;, &quot;D3_bN&quot;,
+                                            ifelse(counted_when == &quot;cum_prop_returned_D4_morning&quot;, &quot;D4_M&quot;,
+                                                 &quot;D4_bN&quot;)))))))) %&gt;%
+  mutate(counted_when = factor(counted_when, 
+                               levels = c(&quot;D1_bN&quot;, &quot;D1_aN&quot;, 
+                                          &quot;D2_M&quot;, &quot;D2_bN&quot;, &quot;D2_aN&quot;,
+                                          &quot;D3_bN&quot;,
+                                          &quot;D4_M&quot;, &quot;D4_bN&quot;))) %&gt;% 
+  mutate(bead_color = factor(ifelse(bead_color %in% c(&quot;light_blue&quot;, &quot;dark_blue&quot;), &quot;blue&quot;, bead_color),
+                             levels = c(&quot;pink&quot;,&quot;green&quot;,&quot;blue&quot;)))  %&gt;% 
+  mutate(colonyID = factor(colonyID)) %&gt;% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # pink beads (round one)
+  filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D1_aN&quot;)) %&gt;%
+  filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D2_aN&quot;)) %&gt;%
+  filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D4_M&quot;)) %&gt;%
+  filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D4_bN&quot;)) %&gt;%
+  # green beads (round two)
+  filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D2_aN&quot;)) %&gt;%
+  filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D3_bN&quot;)) %&gt;%
+  filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D4_M&quot;)) %&gt;%
+  # blue beads (round three)
+  filter(!(bead_color==&quot;blue&quot; &amp; counted_when == &quot;D1_aN&quot;)) %&gt;%
+  filter(!(bead_color==&quot;blue&quot; &amp; counted_when == &quot;D2_bN&quot;)) %&gt;%
+  filter(!(bead_color==&quot;blue&quot; &amp; counted_when == &quot;D4_bN&quot;))</code></pre>
+<div id="cumulative-bead-returned" class="section level3">
+<h3>Cumulative bead returned</h3>
+<pre class="r"><code>tidydat %&gt;% 
+  
+  ## select relevant columns for plotting
+  select(colonyID:bead_color,counted_when, cum_prop) %&gt;% 
+  
+  na.omit() %&gt;% 
+  
+  ggplot(aes(x=counted_when, y=cum_prop, fill=age_class, color=age_class, group=age_class)) +
+  geom_jitter(size=2, alpha=0.4, width=0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  # geom_boxplot(alpha=0.3) +
+  geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
+              level=0.95,
+              alpha=0.4, size = 2,
+              aes(color=age_class)) +
+  # geom_smooth(method = &quot;lm&quot;, formula = y~x, alpha=0.3, aes(color=age_class, lty=age_class)) +
+  
+  facet_grid(~bead_color) +
+  # coord_flip() +
+  scale_y_continuous(n.breaks = 3,
+                     labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  # scale_fill_discrete() +
+  # scale_color_discrete()
+
+  # scale_fill_viridis_d(option=&quot;cividis&quot;) +
+  # scale_color_viridis_d(option = &quot;cividis&quot;)
+  
+  scale_fill_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  scale_color_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  
+  labs(x = &quot;Day-time of observation&quot;,
+       y= &quot;cumulative proportion \nof beads returned&quot;,
+       subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
+       caption = &quot;Note 
+       there were flash floods on Day 2 evening
+       (Tuesday; we missed Wednesday&#39;s field work)
+       of the second experimental run (green beads),
+       which was three days prior to the start of the third round (blue beads).&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/plot_boxplot-1.png" width="672" /></p>
+<pre class="r"><code>## All colonies - 1
+
+tidydat %&gt;% 
+  
+  na.omit() %&gt;% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D1_aN&quot;)) %&gt;%
+  # filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D3_bN&quot;)) %&gt;%
+  
+  ggplot(aes(x=counted_when, y=cum_prop, fill=age_class, color=age_class, group=age_class)) +
+  geom_jitter(size=2, alpha=0.4, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  # geom_boxplot(alpha=0.3, aes(group=age_class)) +
+  # geom_violin(alpha=0.3) +
+  # geom_smooth(method = &quot;gam&quot;, formula=y~s(x, k=5)) +
+  geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
+              alpha=0.4, size = 2,
+              aes(color=age_class)) +
+  
+  # facet_grid(~age_class) +
+  # coord_flip() +
+  scale_y_continuous(n.breaks = 3,
+                     labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  
+  scale_fill_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  scale_color_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  
+  labs(x = &quot;Day-time of observation&quot;,
+       y= &quot;cumulative proportion \nof beads returned&quot;,
+       subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
+       caption = &quot;Note
+       data shown for all three rounds of bead experiment&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/plot_boxplot-2.png" width="672" /></p>
+<pre class="r"><code>## All colonies - 2
+
+tidydat %&gt;% 
+  
+  na.omit() %&gt;% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D1_aN&quot;)) %&gt;%
+  # filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D3_bN&quot;)) %&gt;%
+  
+  ggplot(aes(x=counted_when, y=cum_prop, fill=age_class, color=age_class, group=age_class)) +
+  geom_jitter(size=2, alpha=0.2, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  geom_boxplot(alpha=0.6, aes(group=counted_when)) +
+  # geom_violin(alpha=0.3) +
+  # geom_smooth(method = &quot;gam&quot;, formula=y~s(x, k=5)) +
+  geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
+              alpha=0.5, size = 2, 
+              aes(color=age_class)) +
+  
+  facet_grid(~age_class) +
+  # coord_flip() +
+  scale_y_continuous(n.breaks = 3,
+                     labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  
+  scale_fill_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  scale_color_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  
+  labs(x = &quot;Day-time of observation&quot;,
+       y= &quot;cumulative proportion \nof beads returned&quot;,
+       subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
+       caption = &quot;Note
+       data shown for all three rounds of bead experiment&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/plot_boxplot-3.png" width="672" /></p>
+</div>
+<div id="potential-trash-accumulated-in-colony" class="section level3">
+<h3>Potential trash accumulated in colony</h3>
+<blockquote>
+
+</blockquote>
+</div>
+<div id="normalized-rate-of-trash-removal" class="section level3">
+<h3>Normalized rate of trash removal</h3>
+<blockquote>
+<p>cumulative number of beads returned / max. number of incoming foragers on Day 1</p>
+</blockquote>
+<pre class="r"><code># set path to your working directory (change, if necessary)
+path_to_repo2 = &quot;/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/04_field_work/02_rprojects/01_checking_data&quot;
+
+# set path to the behavioral data within your repository 
+path_to_data2 = &quot;/01_data/&quot;
+
+## Specify the name of the master file as saved on your computer
+filename2 &lt;- &quot;arizona_2022_master_list_Aug29_1440h.csv&quot;
+
+column.names &lt;- c(&quot;date&quot;,
+                  &quot;was_it_raining&quot;,
+                  &quot;observer&quot;,
+                  &quot;colony_ID&quot;,
+                  &quot;first_obs&quot;,
+                  &quot;second_obs&quot;,
+                  &quot;time&quot;,
+                  &quot;in_1&quot;,
+                  &quot;out_1&quot;,
+                  &quot;in_2&quot;,
+                  &quot;out_2&quot;,
+                  &quot;in_3&quot;,
+                  &quot;out_3&quot;,
+                  &quot;in_4&quot;,
+                  &quot;out_4&quot;,
+                  &quot;in_5&quot;,
+                  &quot;out_5&quot;,
+                  &quot;in_6&quot;,
+                  &quot;out_6&quot;,
+                  &quot;in_7&quot;,
+                  &quot;out_7&quot;,
+                  &quot;in_8&quot;,
+                  &quot;out_8&quot;
+                  )
+
+for.dat &lt;- 
+  read.table(paste0(path_to_repo2, path_to_data2, filename2),
+                  sep = &quot;,&quot;,
+                  header = T,
+                  na.strings = c(&quot;&quot;,&quot; &quot;),
+                  stringsAsFactors = F,
+                  skip = 1) %&gt;% 
+  as_tibble() %&gt;% 
+  mutate(date = as.POSIXct(date, format=&quot;%m/%d/%Y&quot;, tz=&quot;MST&quot;)) %&gt;% 
+  select(1:length(column.names))
+
+colnames(for.dat) &lt;- column.names
+
+tidy.for &lt;-
+  for.dat %&gt;% 
+  # remove columns containing first and second obs
+  select(-first_obs, -second_obs, -was_it_raining) %&gt;% 
+  
+  
+  group_by(date,observer,colony_ID) %&gt;% 
+  mutate(tot_in = sum(in_1,in_2,in_3,in_4,in_5,in_6,in_7,in_8, na.rm = T),
+         tot_out = sum(out_1,out_2,out_3,out_4,out_5,out_6,out_7,out_8, na.rm=T)) %&gt;% 
+  ungroup() %&gt;% 
+  
+  mutate(colony_ID = as.factor(colony_ID),
+         observer = as.factor(observer)) %&gt;% 
+  
+  # na.omit() %&gt;% 
+  
+  pivot_longer(.,
+               cols = in_1:out_8,
+               names_to = &quot;inout&quot;,
+               values_to = &quot;n_ants&quot;) %&gt;% 
+  
+  group_by(inout) %&gt;% 
+  mutate(inout2 = str_split_fixed(inout, &quot;_&quot;, 2)[1]) %&gt;%
+  ungroup() %&gt;% 
+  
+  select(date:time, inout, 
+         inout2,
+         n_ants, tot_in, tot_out, everything())
+
+all.dates &lt;- tidy.for %&gt;% pull(date) %&gt;% na.omit() %&gt;% unique()
+date.max &lt;- tidy.for %&gt;% pull(date) %&gt;% na.omit() %&gt;% max()</code></pre>
+<p>The task is to obtain the foraging (in and out) data for each of the bead colonies, for the duration of the different experimental rounds.</p>
+<blockquote>
+<p>pink: 8/16/2022; green: 8/22/22; blue: 8/26/22</p>
+</blockquote>
+<pre class="r"><code>which.dates &lt;- c(seq(as.Date(&quot;8/16/22&quot;, format=&quot;%m/%d/%y&quot;), 
+                    as.Date(&quot;8/19/22&quot;, format=&quot;%m/%d/%y&quot;), by=1),
+                 seq(as.Date(&quot;8/22/22&quot;, format=&quot;%m/%d/%y&quot;), 
+                     as.Date(&quot;8/25/22&quot;, format=&quot;%m/%d/%y&quot;), by=1),
+                 seq(as.Date(&quot;8/26/22&quot;, format=&quot;%m/%d/%y&quot;), 
+                     as.Date(&quot;8/29/22&quot;, format=&quot;%m/%d/%y&quot;), by=1))
+bead.dates &lt;- data.frame(date = which.dates,
+                         obs_day = factor(rep(c(&quot;D1&quot;, &quot;D2&quot;, &quot;D3&quot;, &quot;D4&quot;), 3),
+                                          levels = c(&quot;D1&quot;, &quot;D2&quot;, &quot;D3&quot;, &quot;D4&quot;)),
+                         bead_color = factor(rep(c(&quot;pink&quot;, &quot;green&quot;, &quot;blue&quot;), each=4),
+                                             levels = c(&quot;pink&quot;, &quot;green&quot;, &quot;blue&quot;))
+                                             )
+bead.colonies &lt;- tidydat %&gt;% pull(colonyID) %&gt;% unique()
+which.day.obs &lt;- bead.dates %&gt;% mutate(date_obs = paste0(date, obs_day)) %&gt;% pull(date_obs)
+
+tidy.for %&lt;&gt;% 
+  
+  mutate(date = as.character(date)) %&gt;% 
+  filter(date %in% unique(as.character(bead.dates$date))) %&gt;% 
+  mutate(date = as.Date(date)) %&gt;% 
+  
+  filter(colony_ID %in% bead.colonies) %&gt;% 
+  
+  left_join(bead.dates, by=c(&quot;date&quot;)) %&gt;% 
+
+  select(date, bead_color, colony_ID, obs_day, time, tot_in, tot_out) %&gt;% 
+  distinct() %&gt;% 
+  arrange(bead_color, colony_ID, date) %&gt;% 
+  ungroup()
+  
+
+s.tidydat &lt;- 
+  tidydat %&gt;% 
+  
+  mutate(date = as.Date(date, format = &quot;%m/%d/%y&quot;)) %&gt;% 
+  
+  select(colony_ID = colonyID, age_2022:beads_collected, counted_when, cum_prop) %&gt;% 
+  
+  full_join(tidy.for %&gt;% select(-time) %&gt;% filter(obs_day == &quot;D1&quot;), 
+            by = c(&quot;date&quot;,&quot;bead_color&quot;,&quot;colony_ID&quot;)) %&gt;% 
+  
+  na.omit() %&gt;% 
+  
+  mutate(s_cum_prop = round(cum_prop/tot_in, 2)) %&gt;% 
+  
+  na.omit() %&gt;% 
+  filter(s_cum_prop &lt;= 1)</code></pre>
+<pre class="r"><code>s.tidydat %&gt;% 
+  
+  ggplot(aes(x=counted_when, y=s_cum_prop, fill=age_class, color=age_class, group=age_class)) +
+  geom_jitter(size=2, alpha=0.4, width=0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  # geom_boxplot(alpha=0.3) +
+  geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
+              level=0.95,
+              alpha=0.4, size = 2,
+              aes(color=age_class)) +
+  # geom_smooth(method = &quot;lm&quot;, formula = y~x, alpha=0.3, aes(color=age_class, lty=age_class)) +
+  
+  facet_grid(~bead_color) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3, labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  # scale_fill_discrete() +
+  # scale_color_discrete()
+
+  # scale_fill_viridis_d(option=&quot;cividis&quot;) +
+  # scale_color_viridis_d(option = &quot;cividis&quot;)
+  
+  scale_fill_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  scale_color_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  
+  labs(x = &quot;Day-time of observation&quot;,
+       y= &quot;cumulative proportion \nof beads returned&quot;,
+       subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
+       caption = &quot;Note 
+       there were flash floods on Day 2 evening
+       (Tuesday; we missed Wednesday&#39;s field work)
+       of the second experimental run (green beads),
+       which was three days prior to the start of the third round (blue beads).&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/plot_normalized_bead_returns-1.png" width="672" /></p>
+<pre class="r"><code>## All colonies - 1
+
+s.tidydat %&gt;% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D1_aN&quot;)) %&gt;%
+  # filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D3_bN&quot;)) %&gt;%
+  
+  ggplot(aes(x=counted_when, y=s_cum_prop, fill=age_class, color=age_class, group=age_class)) +
+  geom_jitter(size=2, alpha=0.4, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  # geom_boxplot(alpha=0.3, aes(group=age_class)) +
+  # geom_violin(alpha=0.3) +
+  # geom_smooth(method = &quot;gam&quot;, formula=y~s(x, k=5)) +
+  geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
+              alpha=0.4, size = 2,
+              aes(color=age_class)) +
+  
+  # facet_grid(~age_class) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3, labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  
+  scale_fill_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  scale_color_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  
+  labs(x = &quot;Day-time of observation&quot;,
+       y= &quot;cumulative proportion \nof beads returned&quot;,
+       subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
+       caption = &quot;Note
+       data shown for all three rounds of bead experiment&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/plot_normalized_bead_returns-2.png" width="672" /></p>
+<pre class="r"><code>## All colonies - 2
+
+s.tidydat %&gt;% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D1_aN&quot;)) %&gt;%
+  # filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D3_bN&quot;)) %&gt;%
+  
+  ggplot(aes(x=counted_when, y=s_cum_prop, fill=age_class, color=age_class, group=age_class)) +
+  geom_jitter(size=2, alpha=0.2, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  geom_boxplot(alpha=0.6, aes(group=counted_when)) +
+  # geom_violin(alpha=0.3) +
+  # geom_smooth(method = &quot;gam&quot;, formula=y~s(x, k=5)) +
+  geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
+              alpha=0.5, size = 2, 
+              aes(color=age_class)) +
+  
+  facet_grid(~age_class) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3,labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  
+  scale_fill_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  scale_color_manual(values = c(&quot;#4EB9E6&quot;, &quot;#999215&quot;, &quot;#991D34&quot;)) +
+  
+  labs(x = &quot;Day-time of observation&quot;,
+       y= &quot;cumulative proportion \nof beads returned&quot;,
+       subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
+       caption = &quot;Note
+       data shown for all three rounds of bead experiment&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/plot_normalized_bead_returns-3.png" width="672" /></p>
+<hr />
+</div>
+</div>
+<div id="extras" class="section level2">
+<h2>Extras</h2>
+<pre class="r"><code>s.tidydat %&gt;% 
+  select(colony_ID, age_2022, bead_color, counted_when, cum_prop, tot_in, s_cum_prop) %&gt;% 
+  DT::datatable()</code></pre>
+<div id="htmlwidget-60a4a7814db74a3252d7" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-60a4a7814db74a3252d7">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127","128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143","144","145","146","147","148","149","150","151","152","153","154","155","156","157","158","159","160","161","162","163","164","165","166","167","168","169","170","171","172","173","174","175","176","177","178","179","180","181","182","183","184","185","186","187","188","189","190","191","192","193","194","195","196","197","198","199","200","201","202","203","204","205","206","207","208","209","210","211","212","213","214","215","216","217","218","219","220","221","222","223","224","225","226","227","228","229","230","231","232","233","234","235","236","237","238","239","240","241","242","243","244","245","246","247","248","249","250","251","252","253","254","255","256","257","258","259","260","261","262","263","264","265","266","267","268","269","270","271","272","273","274","275","276","277","278","279","280","281","282","283","284","285","286","287","288","289","290","291","292","293","294","295","296","297","298","299","300","301","302","303","304","305","306","307","308","309","310","311","312","313","314","315","316","317"],["1581","1581","1581","1581","1587","1587","1587","1587","1570","1570","1570","1570","1541","1541","1541","1541","1542","1542","1542","1542","1571","1571","1571","1571","1536","1536","1536","1536","1536","1536","1536","1536","1587","1587","1587","1587","1587","1570","1570","1570","1570","1570","1541","1541","1541","1541","1541","1542","1542","1542","1542","1542","1533","1533","1533","1533","1533","1552","1552","1552","1552","1552","1581","1581","1581","1581","1581","1587","1587","1587","1587","1587","1541","1541","1541","1541","1541","1542","1542","1542","1542","1542","1536","1536","1536","1536","1536","1536","1536","1536","1536","1536","1533","1533","1533","1533","1533","1504","1504","1504","1504","1506","1506","1506","1506","1512","1512","1512","1512","1559","1559","1559","1559","1486","1486","1486","1486","1504","1504","1504","1504","1504","1506","1506","1506","1506","1506","1512","1512","1512","1512","1512","1559","1559","1559","1559","1559","1486","1486","1486","1486","1486","1503","1503","1503","1503","1503","1512","1512","1512","1512","1512","1559","1559","1559","1559","1559","1546","1546","1546","1546","1546","1486","1486","1486","1486","1486","1503","1503","1503","1503","1503","1452","1452","1452","1452","1450","1450","1450","1450","1440","1440","1440","1440","1452","1452","1452","1452","1452","1450","1450","1450","1450","1450","1452","1452","1452","1452","1452","1450","1450","1450","1450","1450","1440","1440","1440","1440","1440","1393","1393","1393","1393","1393","1393","1393","1393","1393","1393","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1288","1288","1288","1288","1317","1317","1317","1317","1317","1288","1288","1288","1288","1288","1233","1233","1233","1233","1242","1242","1242","1242","1233","1233","1233","1233","1233","1242","1242","1242","1242","1242","1233","1233","1233","1233","1233","1242","1242","1242","1242","1242","1107","1107","1107","1107","1107","1107","1107","1107","1107","1017","1017","1017","1017","1017","1017","1017","1017","1017","1017","1131","1131","1131","1131","1131","1131","1131","1131","1131","810","810","810","810","810","810","810","810","810","810","810","810","810","810"],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,11,11,11,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,17,17,17,17,17,17,17,17,17,20,20,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,25,25,25,25,25,25,25,25,25,25,25,25,25,25],["pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","green","green","green","green","green","blue","blue","blue","blue","blue","pink","pink","pink","pink","green","green","green","green","green","blue","blue","blue","blue","blue","pink","pink","pink","pink","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","pink","pink","pink","pink","green","green","green","green","green","pink","pink","pink","pink","green","green","green","green","green","blue","blue","blue","blue","blue"],["D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_bN","D2_M","D2_M","D2_bN","D2_bN","D3_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D1_bN","D2_M","D2_M","D2_aN","D2_aN","D3_bN","D3_bN","D4_M","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M"],[0.59,0.64,0.74,0.76,0.6,0.6,0.86,0.88,0.06,0.33,0.62,0.74,0.2,0.28,0.44,0.46,0.65,0.85,0.87,0.87,0.06,0.58,0.87,0.87,0.04,0.04,0.33,0.33,0.44,0.44,0.53,0.53,0.28,0.64,0.7,0.7,0.76,0.4,0.64,0.66,0.7,0.78,0.58,0.92,0.94,0.96,1,0.22,0.74,0.84,0.84,0.86,0.88,1.08,1.14,1.14,1.14,0.73,0.85,0.87,0.85,0.85,0.76,0.86,0.9,0.86,0.86,0.5,0.56,0.62,0.62,0.64,0.08,0.68,0.82,0.68,0.74,0.22,0.74,0.8,0.76,0.76,0,0,0.42,0.42,0.48,0.48,0.52,0.52,0.6,0.6,0.82,0.88,0.88,0.92,0.92,0.44,0.58,0.6,0.64,0.14,0.5,0.62,0.74,0.44,0.44,0.72,0.72,0.34,0.36,0.68,0.82,0.5,0.56,0.82,0.82,0.19,0.59,0.69,0.71,0.71,0.36,0.68,0.76,0.86,0.86,0.45,0.61,0.67,0.77,0.79,0.8,0.9,0.9,0.92,0.96,0.3,0.36,0.36,0.36,0.38,0.57,0.75,0.77,0.77,0.77,0.26,0.84,0.84,0.88,0.88,0.36,0.84,0.94,0.88,0.88,0.16,0.66,0.72,0.72,0.74,0.16,0.42,0.72,0.54,0.6,0.04,0.66,0.8,0.74,0.74,0.02,0.18,0.28,0.42,0.41,0.45,0.57,0.63,0.48,0.7,0.7,0.88,0.44,0.44,0.68,0.68,0.82,0.42,0.8,0.8,0.82,0.82,0.16,0.78,0.78,0.8,0.82,0.2,0.88,0.92,0.88,0.88,0.9,1.02,1.02,1.02,1.02,0.28,0.62,0.64,0.68,0.68,0.54,0.62,0.68,0.66,0.66,0.4,0.5,0.62,0.72,0.6,0.72,0.94,0.96,0.96,0.94,0.96,0.96,0.96,0.96,0.34,0.58,0.58,0.6,0,0.19,0.19,0.28,0.28,0.38,0.72,0.76,0.74,0.74,0.12,0.42,0.78,0.82,0,0,0.06,0.1,0.56,0.88,0.9,0.92,0.92,0.04,0.32,0.32,0.36,0.4,0.7,0.88,0.94,0.9,0.9,0.12,0.48,0.56,0.54,0.64,0.04,0.22,0.8,0.8,0.22,0.22,0.32,0.42,0.42,0.07,0.41,0.46,0.53,0.58,0.66,0.94,0.96,0.94,0.94,0.1,0.14,0.66,0.66,0,0.42,0.74,0.76,0.76,0.04,0.1,0.32,0.32,0.08,0.34,0.58,0.62,0.64,0.82,0.86,0.9,0.9,0.9],[30,30,30,30,7,7,7,7,11,11,11,11,6,6,6,6,32,32,32,32,7,7,7,7,20,5,20,5,20,5,20,5,2,2,2,2,2,7,7,7,7,7,21,21,21,21,21,30,30,30,30,30,36,36,36,36,36,6,6,6,6,6,11,11,11,11,11,5,5,5,5,5,7,7,7,7,7,17,17,17,17,17,4,4,4,4,4,4,4,4,4,4,17,17,17,17,17,22,22,22,22,12,12,12,12,18,18,18,18,24,24,24,24,23,23,23,23,18,18,18,18,18,17,17,17,17,17,62,62,62,62,62,31,31,31,31,31,60,60,60,60,60,6,6,6,6,6,78,78,78,78,78,23,23,23,23,23,9,9,9,9,9,52,52,52,52,52,29,29,29,29,29,34,34,34,34,51,51,51,51,65,65,65,65,40,40,40,40,40,53,53,53,53,53,34,34,34,34,34,28,28,28,28,28,41,41,41,41,41,50,50,50,50,50,29,29,29,29,29,24,24,24,24,28,28,28,28,28,48,48,48,48,48,44,44,44,44,4,4,4,4,4,12,12,12,12,12,14,14,14,14,7,7,7,7,15,15,15,15,15,4,4,4,4,4,14,14,14,14,14,6,6,6,6,6,22,22,22,22,3,3,3,3,3,28,28,28,28,28,42,42,42,42,42,18,18,18,18,14,14,14,14,14,46,46,46,46,23,23,23,23,23,5,5,5,5,5],[0.02,0.02,0.02,0.03,0.09,0.09,0.12,0.13,0.01,0.03,0.06,0.07,0.03,0.05,0.07,0.08,0.02,0.03,0.03,0.03,0.01,0.08,0.12,0.12,0,0.01,0.02,0.07,0.02,0.09,0.03,0.11,0.14,0.32,0.35,0.35,0.38,0.06,0.09,0.09,0.1,0.11,0.03,0.04,0.04,0.05,0.05,0.01,0.02,0.03,0.03,0.03,0.02,0.03,0.03,0.03,0.03,0.12,0.14,0.14,0.14,0.14,0.07,0.08,0.08,0.08,0.08,0.1,0.11,0.12,0.12,0.13,0.01,0.1,0.12,0.1,0.11,0.01,0.04,0.05,0.04,0.04,0,0,0.1,0.1,0.12,0.12,0.13,0.13,0.15,0.15,0.05,0.05,0.05,0.05,0.05,0.02,0.03,0.03,0.03,0.01,0.04,0.05,0.06,0.02,0.02,0.04,0.04,0.01,0.02,0.03,0.03,0.02,0.02,0.04,0.04,0.01,0.03,0.04,0.04,0.04,0.02,0.04,0.04,0.05,0.05,0.01,0.01,0.01,0.01,0.01,0.03,0.03,0.03,0.03,0.03,0,0.01,0.01,0.01,0.01,0.09,0.12,0.13,0.13,0.13,0,0.01,0.01,0.01,0.01,0.02,0.04,0.04,0.04,0.04,0.02,0.07,0.08,0.08,0.08,0,0.01,0.01,0.01,0.01,0,0.02,0.03,0.03,0.03,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.01,0.02,0.02,0.02,0.02,0,0.02,0.02,0.02,0.02,0.01,0.03,0.03,0.03,0.03,0.02,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.03,0.03,0.02,0.03,0.03,0.03,0.03,0.02,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0,0.05,0.05,0.07,0.07,0.03,0.06,0.06,0.06,0.06,0.01,0.03,0.06,0.06,0,0,0.01,0.01,0.04,0.06,0.06,0.06,0.06,0.01,0.08,0.08,0.09,0.1,0.05,0.06,0.07,0.06,0.06,0.02,0.08,0.09,0.09,0.11,0,0.01,0.04,0.04,0.07,0.07,0.11,0.14,0.14,0,0.01,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.01,0.01,0.04,0.04,0,0.03,0.05,0.05,0.05,0,0,0.01,0.01,0,0.01,0.03,0.03,0.03,0.16,0.17,0.18,0.18,0.18]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>colony_ID<\/th>\n      <th>age_2022<\/th>\n      <th>bead_color<\/th>\n      <th>counted_when<\/th>\n      <th>cum_prop<\/th>\n      <th>tot_in<\/th>\n      <th>s_cum_prop<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
