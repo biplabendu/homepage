@@ -63,47 +63,47 @@ source(paste0(path_to_repo,"/functions/theme_publication.R"))
 
 Email from Deborah: 
 
-This data set comes from an experiment with harvester ants last summer. Harvester ant foragers bring in lots of seeds and parts of plants, some of which are rejected by ants inside the nest, and then the refuse is carried out and put on the nest mound midden. 
+This data set comes from an experiment with harvester ants last summer. Harvester ant foragers bring in lots of seeds and parts of plants, some of which are rejected by ants inside the nest. Eventually, the refuse is carried out and put on the nest mound midden. 
 
-> Here we presented small plastic beads coated in oil which the ants brought into the nest, and were later rejected and put back out on the midden.
+> Here we presented small plastic beads coated in oil which the ants brought into the nest, and were later put back out on the midden, outside the colony, close to the nest entrance.
 
-TO DO:
-- think of a hypothesis or two you could test with these data, and test them 
-- show me a figure or two
-- your analysis of the data
-- then write a paragraph or so on what the result means or shows
+## Bead data 2021
+
+```{r notes_v1, eval=F, include=F, echo=F}
+# ## Part 1: INSPECT DATA
+# 
+# Two data sheets are available in the Excel workbook. For convenience of analysis, the excel sheets are saved individually as csv files and, if necessary, the column names for each were modified.
+# 
+# Sheet 1: foraging_data.csv
+# - contains three columns: date, colonyID, foraging_30s
+# 
+# Sheet 2: beads_out.csv
+# - contains XXX cols: num_out, date, colonyID, time_put_out, n_collected, n_returned_DayX (X %in% 1:6)
+# 
+# Brief description of the columns:
+# - date = date of observation
+# - colonyID = unique colony identifier
+# - time_put_out = time-of-day at which beads were put out
+# - n_collected = number of beads that had been brought into the nest at the end of foraging on Day 1
+# - n_returned_DayX = number of beads that had been brought *out of the nest* by the end of **Day X**
+# 
+# Note; 
+# NA means the colony is not active that day
+# NM means that the colony was doing nest maintenance, when they carry out refuse including beads
+# 
+# Some additional info:
+# 
+# Beads coated with oil were put out in 6 colonies on day 1, color green, then another 6 colonies on day 2, color green, then again with first 6 on day 3 color pink, then again with 2nd 6 on day 4 color pink, back to green days 5 and 6
+# 
+# Numbers of beads brought out are listed separately by color. E.g., colony 1131 took out 18 green beads on day 2 of green 8-24, and 3 pink beads on day 2 of pink 8-26.
+# 
+# For the 3rd round, for whatever number of green beads from the first round were not out by 8-27 or 8-28, then we don't know which day those were from.
+
+```
 
 
-## Part 1: INSPECT DATA
 
-Two data sheets are available in the Excel workbook. For convenience of analysis, the excel sheets are saved individually as csv files and, if necessary, the column names for each were modified.
-
-Sheet 1: foraging_data.csv
-- contains three columns: date, colonyID, foraging_30s
-
-Sheet 2: beads_out.csv
-- contains XXX cols: num_out, date, colonyID, time_put_out, n_collected, n_returned_DayX (X %in% 1:6)
-
-Brief description of the columns:
-- date = date of observation
-- colonyID = unique colony identifier
-- time_put_out = time-of-day at which beads were put out
-- n_collected = number of beads that had been brought into the nest at the end of foraging on Day 1
-- n_returned_DayX = number of beads that had been brought *out of the nest* by the end of **Day X**
-
-Note; 
-NA means the colony is not active that day
-NM means that the colony was doing nest maintenance, when they carry out refuse including beads
-
-Some additional info:
-
-Beads coated with oil were put out in 6 colonies on day 1, color green, then another 6 colonies on day 2, color green, then again with first 6 on day 3 color pink, then again with 2nd 6 on day 4 color pink, back to green days 5 and 6
-
-Numbers of beads brought out are listed separately by color. E.g., colony 1131 took out 18 green beads on day 2 of green 8-24, and 3 pink beads on day 2 of pink 8-26.
-
-For the 3rd round, for whatever number of green beads from the first round were not out by 8-27 or 8-28, then we don't know which day those were from.
-
-## Part 2: Load data
+### Load data
 
 ```{r load_data}
 # read foraging_data.csv
@@ -125,7 +125,7 @@ colony.dat <- read.csv(paste0(path_to_repo, "/data/foraging_counts_08_13_22.csv"
 ```
 
 
-## Part 3: Summarize the data
+### Summarize the data
 
 ```{r summarize_data}
 
@@ -134,6 +134,7 @@ bead.dat %>%
   select(colonyID) %>% 
   distinct() %>% 
   left_join(colony.dat, by="colonyID") %>%
+  head() %>% 
   arrange(age_2022)
 
 
@@ -142,7 +143,7 @@ green.days <- c("8/23/21","8/24/21", "8/27/21","8/28/21") %>% as.Date(format = "
 pink.days <- c("8/25/21","8/26/21") %>% as.Date(format = "%m/%d/%y")
 ```
 
-## Part 4: Clean Data
+### Clean Data
 
 ```{r clean_1}
 df <-
@@ -184,10 +185,10 @@ df <-
   
 
 # query 1  
-df %>% 
-  # summarize the data by batch and bead_col
-  group_by(batch, bead_col, date) %>%
-  summarize(n_colonies = n())
+# df %>% 
+#   # summarize the data by batch and bead_col
+#   group_by(batch, bead_col, date) %>%
+#   summarize(n_colonies = n())
   
 # query 2  
 # It seems the data for 25-Aug-2021, Colony-1474 is missing (or too little);  
@@ -211,7 +212,7 @@ dat <-
   df %>%
   # remove the time column (not necessary; almost the same time) 
   select(-4) %>% 
-  filter(!(bead_col=="pink" & colonyID %in% c("969","1338"))) %>%# cleanup 1
+  filter(!(bead_col=="pink" & colonyID %in% c("969","1338"))) %>% # cleanup 1
   filter(!(bead_col=="green" & colonyID == "1288")) # cleanup 
 
 writeLines("Which colony-days remain after cleanup?")
@@ -225,12 +226,11 @@ dat %>%
   arrange(age_2022)
 ```
 
-## ROUND ONE
-
-## Part 5: Plot cum. prop.
 
 ```{r prep_data}
-tidydat <-
+## Part 5: Plot cum. prop.
+
+tidydat.2021 <-
   dat %>% 
   
   na.omit() %>%
@@ -253,52 +253,70 @@ tidydat <-
   mutate(day_of_obs = as.numeric(readr::parse_number(day_of_obs))) %>% 
   mutate(date = date+day_of_obs-1)
   
-# sumarrize the tidydat
-tidydat %>% 
-  group_by(batch, bead_col, date) %>%
-  summarize(n_colonies = n())
-
-# what proportion of collected beads do they put out by day 3?
-tidydat %>% 
-  filter(day_of_obs=="3") %>%
+# # sumarrize the tidydat
+# tidydat.2021 %>% 
+#   group_by(batch, bead_col, date) %>%
+#   summarize(n_colonies = n())
 # 
-#   pull(n_collected) %>% sd()/sqrt(51)
-#   sd()/sqrt(17) # 17 = length of cum_prop_returned
-
-  group_by(bead_col, batch) %>% 
-  summarize(n_colonies=n(),mean_prop_returned=mean(cum_prop_returned))
+# # what proportion of collected beads do they put out by day 3?
+# tidydat.2021 %>% 
+#   filter(day_of_obs=="3") %>%
+# # 
+# #   pull(n_collected) %>% sd()/sqrt(51)
+# #   sd()/sqrt(17) # 17 = length of cum_prop_returned
+# 
+#   group_by(bead_col, batch) %>% 
+#   summarize(n_colonies=n(),mean_prop_returned=mean(cum_prop_returned))
 
 ```
 
 
 ___
 
-Selecting old colonies
-
 ```{r abc}
+# Selecting old colonies
+
 old.summ <- 
-  tidydat %>% 
+  tidydat.2021 %>% 
   mutate(colonyID = as.character(colonyID) %>% as.numeric()) %>% 
   left_join(colony.dat, by="colonyID") %>% 
-  select(date, colonyID, bead_col, day_of_obs, cum_prop_returned, age_2022) %>% 
+  # select(date, colonyID, bead_col, day_of_obs, cum_prop_returned, age_2022) %>% 
   
-  mutate(replicate = ifelse(bead_col=="pink", "A", "B")) %>% 
-  mutate(ID = paste0(colonyID,"_",replicate, "_", age_2022)) %>% 
-  select(date:bead_col, replicate, everything())
+  mutate(age_obs = age_2022-1) %>% 
   
+  mutate(age_class = ifelse(age_obs <= 2, "1-2_yr_old",
+                            ifelse(age_obs >= 5, "older_than_5_yr", "3-4_yr_old"))) %>% 
+  mutate(age_class = factor(age_class, levels = c("1-2_yr_old", "3-4_yr_old", "older_than_5_yr"))) %>% 
+  
+  mutate(day_of_obs = paste0("D",day_of_obs,"_bN")) %>% 
+  mutate(day_of_obs = factor(day_of_obs, levels = c("D1_bN", "D2_bN", "D3_bN"))) %>% 
+  
+  mutate(bead_col = factor(paste0(bead_col,"-21"))) %>% 
+  mutate(ID = paste0(colonyID,"_",bead_col, "_", age_obs)) %>% 
+  
+  ## change column names to make them compatible to the 2022 dataset
+  select(colonyID, date,
+         bead_color = bead_col,
+         age_2022, age_obs, age_class, 
+         beads_collected = n_collected,
+         counted_when = day_of_obs,
+         cum_prop = cum_prop_returned)
+
 
 old.summ %>% 
   as_tibble() %>% 
-  filter(day_of_obs=="3") %>% 
-  group_by(colonyID) %>% 
+  filter(counted_when=="D3_bN") %>% 
+  group_by(colonyID,age_class) %>% 
   summarize(n_reps = n()) %>% 
-  right_join(old.summ %>% select(colonyID, age_2022) %>% distinct()) %>% 
-  arrange(age_2022)
+  right_join(old.summ %>% select(colonyID, age_obs) %>% distinct()) %>% 
+  arrange(age_obs)
 
 old.summ %>%   
+   mutate(ID = paste0(colonyID,"_",bead_color, "_", age_obs)) %>% 
+  
   ggplot() + 
-  geom_line(aes(x=factor(day_of_obs), 
-                y=cum_prop_returned, group=ID, col=ID),
+  geom_line(aes(x=factor(counted_when), 
+                y=cum_prop, group=ID, col=ID),
             size=2,
             alpha=0.6) +
   facet_grid(~ID) +
@@ -312,6 +330,41 @@ old.summ %>%
   xlab("Day of obs") +
   ylab("Cumulutative proportion \nof beads returned")
 
+
+old.summ %>% 
+    
+    ggplot(aes(x=counted_when, y=cum_prop, 
+               fill=age_class, color=age_class, group=age_class)) +
+    geom_jitter(size=2, alpha=0.4, width=0.2) +
+    # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+    # geom_boxplot(alpha=0.3) +
+    geom_smooth(method = "lm", formula = y~log2(x+1), 
+                level=0.95,
+                alpha=0.4, size = 2,
+                aes(color=age_class)) +
+  # geom_smooth(method = "lm", formula = y~x, alpha=0.3, aes(color=age_class, lty=age_class)) +
+  
+  facet_grid(~age_class) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3,
+  #                    labels = c("","0.5", "1")) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  # scale_fill_discrete() +
+  # scale_color_discrete()
+
+  # scale_fill_viridis_d(option="cividis") +
+  # scale_color_viridis_d(option = "cividis")
+  
+  scale_fill_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
+  scale_color_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
+  
+  labs(x = "Day-time of observation",
+       y= "cumulative proportion \nof beads returned",
+       subtitle = "Line indicates y ~ log2(x+1) + 95% CI")
+
 ```
 
 ___
@@ -319,7 +372,6 @@ ___
 
 ## Bead data 2022
 
-> as of 23 Aug 2022
 
 ```{r data_2022}
 filename <- "/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/02_bead_data/data/bead_data_2022/all_bead_data_2022/2022_bead_data_master_replicate_one_two_three_29Aug22.csv"
@@ -357,7 +409,7 @@ dat.2022 <- read.csv(filename,
 
 
 ## Create a tidy dataset and calculate the cumulative proportion of beads returned by colonies
-tidydat <-
+tidydat.2022 <-
   dat.2022 %>% 
   
   # replace all the NAs with 0 to be able to calculate proportions
@@ -385,27 +437,16 @@ tidydat <-
          cum_prop_returned_D1_beforenoon:cum_prop_returned_D4_beforenoon,
          everything())
 
-# tidydat %>% 
-#   # summarize the data
-#   group_by(age_class,
-#            bead_color,
-#            beads_collected_group) %>% 
-#   summarise(n_colonies = n(),
-#             min_prop_returned = min(cum_prop_returned_D3_beforenoon),
-#             max_prop_returned = max(cum_prop_returned_D3_beforenoon)) %>% 
-#   arrange(bead_color, age_class, beads_collected_group) %>% 
-#   DT::datatable()
-  
-  
-# tidydat %>% 
-#   filter(beads_collected_group == "less_than_22")
   
 ```
 
 
 ```{r prep_data_for_plot}
-tidydat %<>% 
+tidydat.2022 %<>% 
+  
+  ## keep only colonies that collected at least 40 (of 50) beads offered
   filter(beads_collected_group == "greater_than_40") %>% 
+  
   pivot_longer(cols = starts_with("cum_prop"),
                names_to = "counted_when",
                values_to = "cum_prop") %>% 
@@ -427,6 +468,9 @@ tidydat %<>%
   mutate(bead_color = factor(ifelse(bead_color %in% c("light_blue", "dark_blue"), "blue", bead_color),
                              levels = c("pink","green","blue")))  %>% 
   mutate(colonyID = factor(colonyID)) %>% 
+  mutate(date = as.Date(date, format="%m/%d/%y")) %>% 
+  
+  mutate(age_obs = age_2022) %>% 
   
   # ## remove the timepoints that we do not have data for  
   # pink beads (round one)
@@ -441,19 +485,41 @@ tidydat %<>%
   # blue beads (round three)
   filter(!(bead_color=="blue" & counted_when == "D1_aN")) %>%
   filter(!(bead_color=="blue" & counted_when == "D2_bN")) %>%
-  filter(!(bead_color=="blue" & counted_when == "D4_bN"))
-
+  filter(!(bead_color=="blue" & counted_when == "D4_bN")) %>% 
+  
+  ## select columns to make them compatible with 2021 dataset
+  select(colonyID, date,
+         bead_color,
+         age_2022, age_obs, age_class, 
+         beads_collected, counted_when, cum_prop)
   
 ```
 
+### Combine the 2021 and 2022 datasets
 
-### Cumulative bead returned
+> Currently showing all the data from 2021 and 2022.
+
+```{r combine_datasets}
+
+## Combine the two data sets
+tidydat <- rbind(old.summ, tidydat.2022) %>%
+  mutate(counted_when = factor(counted_when,
+                               levels = c("D1_bN", "D1_aN",
+                                          "D2_M", "D2_bN", "D2_aN",
+                                          "D3_bN",
+                                          "D4_M", "D4_bN")))
+
+# # use only 2022 data
+# tidydat <- tidydat.2022
+
+```
+
+
+
+## Cumulative bead returned
 
 ```{r plot_boxplot}
 tidydat %>% 
-  
-  ## select relevant columns for plotting
-  select(colonyID:bead_color,counted_when, cum_prop) %>% 
   
   na.omit() %>% 
   
@@ -469,8 +535,8 @@ tidydat %>%
   
   facet_grid(~bead_color) +
   # coord_flip() +
-  scale_y_continuous(n.breaks = 3,
-                     labels = c("","0.5", "1")) +
+  # scale_y_continuous(n.breaks = 3,
+  #                    labels = c("","0.5", "1")) +
   
   theme_Publication(base_size = 15) +
   # rotate x-axis lables
@@ -578,12 +644,12 @@ tidydat %>%
 
 ### Potential trash accumulated in colony
 
-> 
+> The daily trash accumulated in the colony is proportional to the number of incoming foragers on a given day.
 
 
-### Normalized rate of trash removal 
+## Normalized rate of trash removal 
 
-> cumulative number of beads returned / max. number of incoming foragers on Day 1
+> cumulative number of beads returned / possible number of incoming foragers on Day 1
 
 ```{r load_2022_foraging}
 # set path to your working directory (change, if necessary)
@@ -703,22 +769,71 @@ tidy.for %<>%
   ungroup()
   
 
-s.tidydat <- 
-  tidydat %>% 
+s.tidydat.2022 <- 
+  tidydat.2022 %>% 
   
   mutate(date = as.Date(date, format = "%m/%d/%y")) %>% 
   
-  select(colony_ID = colonyID, age_2022:beads_collected, counted_when, cum_prop) %>% 
-  
-  full_join(tidy.for %>% select(-time) %>% filter(obs_day == "D1"), 
-            by = c("date","bead_color","colony_ID")) %>% 
+  full_join(tidy.for %>% select(-time) %>% select(colonyID=colony_ID, everything()) %>% filter(obs_day == "D1"), 
+            by = c("date","bead_color","colonyID")) %>% 
   
   na.omit() %>% 
   
   mutate(s_cum_prop = round(cum_prop/tot_in, 2)) %>% 
   
   na.omit() %>% 
-  filter(s_cum_prop <= 1)
+  filter(s_cum_prop <= 1) %>% 
+  
+  select(colonyID:bead_color,
+         age_2022:age_class, 
+         beads_collected,
+         counted_when, cum_prop, s_cum_prop)
+
+
+## Load the foraging data for 2021 dataset
+filename3 <- "/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/02_bead_data/data/foraging_data.csv"
+
+tidy.for.2021 <-
+  read.csv(filename3) %>% as_tibble() %>%
+    mutate(date = as.Date(date, format="%m/%d/%y")) %>%
+    mutate(colonyID = as.factor(colonyID))
+
+s.tidydat.2021 <- 
+  old.summ %>%
+  mutate(colonyID = as.factor(colonyID)) %>% 
+  mutate(obs_day = parse_number(as.character(counted_when))) %>% 
+  filter(obs_day==1) %>% 
+  left_join(tidy.for.2021, by=c("colonyID", "date")) %>% 
+  select(colonyID:bead_color, obs_day, foraging_30s) %>% 
+  
+  mutate(colonyID = as.double(colonyID)) %>%
+  right_join(old.summ, by=c("colonyID", "date", "bead_color")) %>% 
+  
+  group_by(colonyID,bead_color) %>% 
+  mutate(foraging_30s = foraging_30s[1]) %>% 
+  mutate(obs_day = paste0("D",obs_day[1])) %>% 
+  ungroup() %>% 
+  
+  mutate(s_cum_prop = round(cum_prop/foraging_30s, 2)) %>%
+  
+  na.omit() %>% 
+  filter(s_cum_prop <= 1) %>% 
+  
+  select(colonyID:bead_color,
+         age_2022:age_class, 
+         beads_collected,
+         counted_when, cum_prop, s_cum_prop)
+
+
+## combine the two files
+s.tidydat <- 
+  rbind(s.tidydat.2021, s.tidydat.2022) %>% 
+    mutate(counted_when = factor(counted_when,
+                               levels = c("D1_bN", "D1_aN",
+                                          "D2_M", "D2_bN", "D2_aN",
+                                          "D3_bN",
+                                          "D4_M", "D4_bN")))
+  
 
 ```
 
@@ -837,13 +952,12 @@ s.tidydat %>%
 
 
 
-
 ___
 
 ## Extras
 
 ```{r tallying_22Aug22_green_beads}
 s.tidydat %>% 
-  select(colony_ID, age_2022, bead_color, counted_when, cum_prop, tot_in, s_cum_prop) %>% 
-  DT::datatable()
+  select(colonyID, age_obs, bead_color, date, counted_when, cum_prop, s_cum_prop) %>% 
+  DT::datatable(rownames = F)
 ```
