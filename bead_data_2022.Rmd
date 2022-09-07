@@ -998,6 +998,16 @@ afex::mixed(log_s_cum_prop ~ age_class + counted_when + (1|colonyID) + (1|bead_c
 ```
 
 
+## Prelim Analyses II
+
+> Run GAM instead of lme4::lmer()
+
+[read more here](https://fromthebottomoftheheap.net/2021/02/02/random-effects-in-gams/)
+
+```{r}
+
+```
+
 
 ___
 
