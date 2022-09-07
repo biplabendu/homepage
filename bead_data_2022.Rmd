@@ -56,7 +56,8 @@ source(paste0(path_to_repo,"/functions/theme_publication.R"))
 
 
 ```{r set_parameters}
-
+## Set color scheme for age classes
+age_colors <- c("#4EB9E6", "#397362", "#999215", "#991D34", "#F29544")
 ```
 
 ## Overview/Goals
@@ -319,7 +320,7 @@ old.summ %>%
                 y=cum_prop, group=ID, col=ID),
             size=2,
             alpha=0.6) +
-  facet_grid(~ID) +
+  facet_wrap(~ID, nrow = 2) +
   theme_Publication(base_size = 10) +
   # scale_color_manual(values=c("darkgreen","darkred")) +
   
@@ -358,8 +359,8 @@ old.summ %>%
   # scale_fill_viridis_d(option="cividis") +
   # scale_color_viridis_d(option = "cividis")
   
-  scale_fill_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
-  scale_color_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
   
   labs(x = "Day-time of observation",
        y= "cumulative proportion \nof beads returned",
@@ -507,7 +508,14 @@ tidydat <- rbind(old.summ, tidydat.2022) %>%
                                levels = c("D1_bN", "D1_aN",
                                           "D2_M", "D2_bN", "D2_aN",
                                           "D3_bN",
-                                          "D4_M", "D4_bN")))
+                                          "D4_M", "D4_bN"))) %>% 
+  mutate(age_class = ifelse(age_obs <= 2, "1-2_yr",
+                            ifelse(age_obs > 2 & age_obs <= 4, "3-4_yr",
+                                   ifelse(age_obs >=5 & age_obs < 10, "5-9_yr",
+                                                 "10+_yr")))) %>% 
+  mutate(age_class = factor(age_class, 
+                            levels = c("1-2_yr", "3-4_yr",
+                                       "5-9_yr", "10+_yr")))
 
 # # use only 2022 data
 # tidydat <- tidydat.2022
@@ -533,7 +541,7 @@ tidydat %>%
               aes(color=age_class)) +
   # geom_smooth(method = "lm", formula = y~x, alpha=0.3, aes(color=age_class, lty=age_class)) +
   
-  facet_grid(~bead_color) +
+  facet_wrap(~bead_color, nrow = 1) +
   # coord_flip() +
   # scale_y_continuous(n.breaks = 3,
   #                    labels = c("","0.5", "1")) +
@@ -547,8 +555,8 @@ tidydat %>%
   # scale_fill_viridis_d(option="cividis") +
   # scale_color_viridis_d(option = "cividis")
   
-  scale_fill_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
-  scale_color_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
   
   labs(x = "Day-time of observation",
        y= "cumulative proportion \nof beads returned",
@@ -589,8 +597,8 @@ tidydat %>%
   # rotate x-axis lables
   theme(axis.text.x=element_text(angle=90,hjust=1))+
   
-  scale_fill_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
-  scale_color_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
   
   labs(x = "Day-time of observation",
        y= "cumulative proportion \nof beads returned",
@@ -628,8 +636,8 @@ tidydat %>%
   # rotate x-axis lables
   theme(axis.text.x=element_text(angle=90,hjust=1))+
   
-  scale_fill_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
-  scale_color_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
   
   labs(x = "Day-time of observation",
        y= "cumulative proportion \nof beads returned",
@@ -650,6 +658,8 @@ tidydat %>%
 ## Normalized rate of trash removal 
 
 > cumulative number of beads returned / possible number of incoming foragers on Day 1
+
+I am using the total number of foragers going in and out of the colony, for 30 secs, on Day 1 as a proxy for the possible number of incoming foragers.
 
 ```{r load_2022_foraging}
 # set path to your working directory (change, if necessary)
@@ -705,9 +715,10 @@ tidy.for <-
   select(-first_obs, -second_obs, -was_it_raining) %>% 
   
   
-  group_by(date,observer,colony_ID) %>% 
+  group_by(date,observer,colony_ID,time) %>% 
   mutate(tot_in = sum(in_1,in_2,in_3,in_4,in_5,in_6,in_7,in_8, na.rm = T),
          tot_out = sum(out_1,out_2,out_3,out_4,out_5,out_6,out_7,out_8, na.rm=T)) %>% 
+  mutate(foraging_30s = tot_in+tot_out) %>% 
   ungroup() %>% 
   
   mutate(colony_ID = as.factor(colony_ID),
@@ -757,13 +768,13 @@ tidy.for %<>%
   
   mutate(date = as.character(date)) %>% 
   filter(date %in% unique(as.character(bead.dates$date))) %>% 
-  mutate(date = as.Date(date)) %>% 
+  mutate(date = as.Date(date)) %>%
   
   filter(colony_ID %in% bead.colonies) %>% 
   
   left_join(bead.dates, by=c("date")) %>% 
 
-  select(date, bead_color, colony_ID, obs_day, time, tot_in, tot_out) %>% 
+  select(date, bead_color, colony_ID, obs_day, time, tot_in, tot_out, foraging_30s) %>% 
   distinct() %>% 
   arrange(bead_color, colony_ID, date) %>% 
   ungroup()
@@ -779,7 +790,7 @@ s.tidydat.2022 <-
   
   na.omit() %>% 
   
-  mutate(s_cum_prop = round(cum_prop/tot_in, 2)) %>% 
+  mutate(s_cum_prop = round(cum_prop/foraging_30s, 2)) %>% 
   
   na.omit() %>% 
   filter(s_cum_prop <= 1) %>% 
@@ -832,7 +843,14 @@ s.tidydat <-
                                levels = c("D1_bN", "D1_aN",
                                           "D2_M", "D2_bN", "D2_aN",
                                           "D3_bN",
-                                          "D4_M", "D4_bN")))
+                                          "D4_M", "D4_bN"))) %>% 
+  mutate(age_class = ifelse(age_obs <= 2, "1-2_yr",
+                            ifelse(age_obs > 2 & age_obs <= 4, "3-4_yr",
+                                   ifelse(age_obs >=5 & age_obs < 10, "5-9_yr",
+                                                 "10+_yr")))) %>% 
+  mutate(age_class = factor(age_class, 
+                            levels = c("1-2_yr", "3-4_yr",
+                                       "5-9_yr", "10+_yr")))
   
 
 ```
@@ -851,7 +869,7 @@ s.tidydat %>%
               aes(color=age_class)) +
   # geom_smooth(method = "lm", formula = y~x, alpha=0.3, aes(color=age_class, lty=age_class)) +
   
-  facet_grid(~bead_color) +
+  facet_wrap(~bead_color, nrow = 1) +
   # coord_flip() +
   # scale_y_continuous(n.breaks = 3, labels = c("","0.5", "1")) +
   
@@ -864,8 +882,8 @@ s.tidydat %>%
   # scale_fill_viridis_d(option="cividis") +
   # scale_color_viridis_d(option = "cividis")
   
-  scale_fill_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
-  scale_color_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
   
   labs(x = "Day-time of observation",
        y= "cumulative proportion \nof beads returned",
@@ -903,8 +921,8 @@ s.tidydat %>%
   # rotate x-axis lables
   theme(axis.text.x=element_text(angle=90,hjust=1))+
   
-  scale_fill_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
-  scale_color_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
   
   labs(x = "Day-time of observation",
        y= "cumulative proportion \nof beads returned",
@@ -939,8 +957,8 @@ s.tidydat %>%
   # rotate x-axis lables
   theme(axis.text.x=element_text(angle=90,hjust=1))+
   
-  scale_fill_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
-  scale_color_manual(values = c("#4EB9E6", "#999215", "#991D34")) +
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
   
   labs(x = "Day-time of observation",
        y= "cumulative proportion \nof beads returned",
@@ -948,6 +966,35 @@ s.tidydat %>%
        caption = "Note
        data shown for all three rounds of bead experiment")
 
+```
+
+
+## Prelim Analyses I
+
+```{r prelim_analyses_v1}
+
+s.tidydat.mod <- s.tidydat %>% mutate(log_s_cum_prop = log2(s_cum_prop+1))
+
+
+mod.full <- lme4::lmer(log_s_cum_prop ~ age_class + counted_when + (1|colonyID) + (1|bead_color) ,
+                 data=s.tidydat.mod, REML=F)
+mod.red.1 <- lme4::lmer(log_s_cum_prop ~ counted_when + (1|colonyID) + (1|bead_color) ,
+                 data=s.tidydat.mod, REML=F)
+anova(mod.full, mod.red.1, test="Chisq")
+
+
+## Let's look at the summary of the model
+lmerTest::ranova(mod.full)
+
+
+```
+
+
+```{r prelim_analyses_v2}
+## Calculate the p-values for the fixed effects
+## Source: https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html
+afex::mixed(log_s_cum_prop ~ age_class + counted_when + (1|colonyID) + (1|bead_color) ,
+                 data=s.tidydat.mod, check_contrasts = T, test_intercept = F, method="KR")
 ```
 
 
