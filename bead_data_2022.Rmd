@@ -798,6 +798,7 @@ s.tidydat.2022 <-
   select(colonyID:bead_color,
          age_2022:age_class, 
          beads_collected,
+         foraging_30s,
          counted_when, cum_prop, s_cum_prop)
 
 
@@ -820,7 +821,7 @@ s.tidydat.2021 <-
   mutate(colonyID = as.double(colonyID)) %>%
   right_join(old.summ, by=c("colonyID", "date", "bead_color")) %>% 
   
-  group_by(colonyID,bead_color) %>% 
+  group_by(colonyID,bead_color) %>%  
   mutate(foraging_30s = foraging_30s[1]) %>% 
   mutate(obs_day = paste0("D",obs_day[1])) %>% 
   ungroup() %>% 
@@ -833,6 +834,7 @@ s.tidydat.2021 <-
   select(colonyID:bead_color,
          age_2022:age_class, 
          beads_collected,
+         foraging_30s,
          counted_when, cum_prop, s_cum_prop)
 
 
@@ -855,6 +857,99 @@ s.tidydat <-
 
 ```
 
+
+### Compare foraging across age-class
+
+```{r plot_foraging_ageclass}
+s.tidydat %>% 
+  select(colonyID, bead_color, age_obs, age_class, foraging_30s) %>% 
+  distinct() %>%
+  
+  # group_by(age_obs) %>%
+  # summarize(n_unique = length(unique(colonyID)))
+  
+  ggplot(aes(x=as.factor(age_obs), y=foraging_30s)) +
+  
+  geom_violin(alpha=0.7) +
+    
+    geom_jitter(width = 0.1, size=3, alpha=0.6, 
+                aes(fill=as.factor(colonyID)), 
+                shape=21) +
+  
+    
+    # facet_wrap(bead_color~., nrow = 2) +
+    
+    # stat_summary(fun = mean, geom = "point", col="black",
+    #              size=10, alpha=0.8,
+    #              position=position_nudge(x = 0.3, y = 0)) +
+    # stat_summary(fun.data = mean_cl_boot,
+    #              size=2, alpha = 0.8,
+    #              geom = "errorbar", width = 0.2, fun.args = list(conf.int = 0.95),
+    #              position=position_nudge(x = 0.3, y = 0)) +
+
+    theme_Publication(base_size = 13) +
+
+    labs(title = "Colony foraging across different age-groups",
+       subtitle = "observations made on Day1 of bead expmts.",
+       y = "activity \n(mean ± 95% CI)",
+       x = "age-groups") +
+  
+    # scale_color_discrete() +
+    # scale_fill_discrete() +
+
+    # theme(legend.position="none") +
+
+    theme(plot.subtitle=element_text(hjust=0.5, size=10),
+          legend.title = element_blank()) +
+    theme(legend.position="bottom")
+
+
+which.colonies <- s.tidydat %>% select(colonyID, age_obs, age_class) %>% distinct()
+
+tidy.for %>% 
+  select(date, colonyID=colony_ID, foraging_30s) %>% 
+  right_join(which.colonies, by="colonyID") %>% 
+  
+  ggplot(aes(x=as.factor(age_obs), y=foraging_30s)) +
+  
+  geom_boxplot(alpha=0.7) +
+    
+    geom_jitter(width = 0.1, size=2, alpha=0.6, 
+                aes(shape=as.factor(age_class))) +
+  
+    
+    # facet_wrap(bead_color~., nrow = 2) +
+    
+  stat_summary(fun.data = mean_cl_boot,
+                 col="red",
+                 size=1, alpha = 0.8,
+                 geom = "errorbar", width = 0.2, fun.args = list(conf.int = 0.95),
+                 position=position_nudge(x = 0.4, y = 0)) +
+  stat_summary(fun = mean, geom = "point", 
+               col=age_colors[4],
+                 size=4, alpha=0.9,
+                 position=position_nudge(x = 0.4, y = 0)) +
+
+    theme_Publication(base_size = 13) +
+
+    labs(title = "Colony foraging across different age-groups",
+       subtitle = "all observations made on bead colonies",
+       y = "activity \n(mean ± 95% CI)",
+       x = "age-groups") +
+  
+    # scale_color_discrete() +
+    # scale_fill_discrete() +
+
+    # theme(legend.position="none") +
+
+    theme(plot.subtitle=element_text(hjust=0.5, size=10),
+          legend.title = element_blank()) +
+    theme(legend.position="bottom")
+
+```
+
+
+### Plot normalized bead returns
 
 ```{r plot_normalized_bead_returns}
 s.tidydat %>% 
