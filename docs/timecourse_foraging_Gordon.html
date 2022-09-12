@@ -439,7 +439,7 @@ div.tocify {
 <h1 class="title toc-ignore">TC8: Timecourse foraging</h1>
 <h3 class="subtitle">Investigating colony variation in time-budgeting of daily foraging in harvester ants</h3>
 <h4 class="author">Biplabendu Das</h4>
-<h4 class="date">11 September, 2022</h4>
+<h4 class="date">12 September, 2022</h4>
 
 </div>
 
@@ -867,6 +867,126 @@ dat &lt;- dat %&gt;%
 <pre class="r"><code># which colonies?
 colonies &lt;- dat %&gt;% arrange(age_when_obs) %&gt;% pull(colony_ID) %&gt;% unique()
 # colonies &lt;- dat %&gt;% pull(colony_ID) %&gt;% unique() %&gt;% sort()</code></pre>
+<blockquote>
+<p>How many colonies, and which colonies, do we have for each age-class?</p>
+</blockquote>
+<pre class="r"><code>dat %&gt;% 
+  mutate(age_when_obs = factor(paste0(age_when_obs, &quot; yr&quot;), 
+                          level=paste0(sort(unique(.$age_when_obs)), &quot; yr&quot;))) %&gt;%
+  group_by(age_when_obs) %&gt;% 
+  summarize(n_colonies = length(unique(colony_ID)),
+            which_colonies = paste(as.character(unique(colony_ID)), collapse = &quot;, &quot;)) %&gt;% 
+  
+  kableExtra::kable(caption = &quot;Colonies used in bead experiments&quot;, align = &quot;c&quot;) %&gt;%
+  kableExtra::kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Colonies used in bead experiments
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+age_when_obs
+</th>
+<th style="text-align:center;">
+n_colonies
+</th>
+<th style="text-align:center;">
+which_colonies
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+3 yr
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1368
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+5 yr
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1317
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+7 yr
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1242
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+12 yr
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1107
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+14 yr
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1010, 1017, 1068
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+18 yr
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+863
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+19 yr
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+758, 859
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+24 yr
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+509
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="visualize-the-data" class="section level2">
 <h2>4. Visualize the data</h2>
