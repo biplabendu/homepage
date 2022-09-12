@@ -1262,8 +1262,25 @@ ___
 
 ## Extras
 
+> How many colonies, and which colonies, do we have for each age-class? 
+
 ```{r tallying_22Aug22_green_beads}
 s.tidydat %>% 
-  select(colonyID, age_obs, bead_color, date, counted_when, cum_prop, s_cum_prop) %>% 
-  DT::datatable(rownames = F)
+  mutate(age_obs = factor(paste0(age_obs, " yr"), 
+                          level=paste0(sort(unique(.$age_obs)), " yr"))) %>%
+  group_by(age_obs) %>% 
+  summarize(n_colonies = length(unique(colonyID)),
+            which_colonies = paste(as.character(unique(colonyID)), collapse = ", ")) %>% 
+  
+  kableExtra::kable(caption = "Colonies used in bead experiments", align = "c") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+  
+
 ```
+
+
+
+
+
+
+
