@@ -49,7 +49,7 @@ conflict_prefer("lag", "dplyr")
 ```{r housekeeping, include=FALSE}
 
 # set path to your working directory (change, if necessary)
-path_to_repo = "/Users/biplabendudas/Documents/04_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2018_Pagliara_et_al"
+path_to_repo = "/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2018_Pagliara_et_al"
 
 # set path to the behavioral data within your repository 
 path_to_data = "/01_data/data/Spreadsheets/"
@@ -75,7 +75,7 @@ source(paste0(path_to_repo,"/03_functions/plot_zscores.R"))
 which.year <- c(2015:2017)
 
 # specify bin width for calculating foraging rates (in minutes)
-bin.width <- 30
+bin.width <- 15
 
 # how many hours/day of observation do we need to include in the final analyses (in hours)
 atleast <- 2
@@ -1001,7 +1001,7 @@ mod.dat <-
 
 # convert time to circular variables
 linear.time <- mod.dat %>% pull(t.bin) %>% unique() %>% sort() %>% as.character()
-linear.time2 <- seq(6.5, 12.5, by=0.5)
+linear.time2 <- seq(6.5, 12.5, by=0.25)
 time.dat <- data.frame(t.bin = linear.time,
                        lin_time = linear.time2)
 time.dat <- cbind(time.dat, limorhyde::limorhyde(time.dat$lin_time, "time_"))
@@ -1079,14 +1079,13 @@ ___
 # number of rows = number of unique colony-days
 name.rows <-
   mod.dat %>% 
-  
   group_by(colony_ID, day, age_class) %>% 
   summarize(num_of_timepoints = n()) %>% 
-  ungroup() %>% 
-  
+  ungroup() %>%
+  group_by(colony_ID) %>% 
   mutate(which_day = row_number()) %>% 
   arrange(age_class) %>% 
-  mutate(colony_day = paste0(age_class,"_D",which_day)) %>% pull(colony_day)
+  mutate(colony_day = paste0(age_class,"| ", colony_ID, "_D",which_day)) %>% pull(colony_day)
 # number of columns = number of time points per day
 name.cols <- paste0("T",time.dat$t.bin)
 
@@ -1123,7 +1122,7 @@ par(mar=c(6.1, #bottom
 cluster.dat %>%
   # imputeTS::na_interpolation() %>% 
   plot(.,
-       col=viridis::viridis(3),
+       col=viridis::viridis(4),
        spacing.key=1.5,
          fmt.key="%.0f",
          xlab = "",
@@ -1142,21 +1141,21 @@ Next, we look to cluster these colony-day time-series. For a preliminary run, we
 > Please note, the following section is not meant to be accurate but provides an example of the type of analyses one could conduct.
 
 ```{r analyses_v6}
-# load necessary libraries
-pacman::p_load(dtwclust, imputeTS)
-# ?tsclust
-# clustering tutorial: https://rpubs.com/esobolewska/dtw-time-series
-# NA imputation tutorial: https://stackoverflow.com/questions/27368195/r-ts-with-missing-values
-
-clust.hier <- tsclust(cluster.dat %>% na_interpolation(), 
-                     type="h",
-                     k=4L, distance="dtw")
-clust.pam <- tsclust(cluster.dat %>% na_interpolation(),
-                     type="partitional",
-                     k=4L, distance="dtw", centroid="pam")
-# plot(clust.pam, type="sc")
-plot(clust.pam, type="centroids")
-t(cbind(cluster.dat[,0], cluster = clust.hier@cluster)) %>% t()
+# # load necessary libraries
+# pacman::p_load(dtwclust, imputeTS)
+# # ?tsclust
+# # clustering tutorial: https://rpubs.com/esobolewska/dtw-time-series
+# # NA imputation tutorial: https://stackoverflow.com/questions/27368195/r-ts-with-missing-values
+# 
+# clust.hier <- tsclust(cluster.dat %>% na_interpolation(), 
+#                      type="h",
+#                      k=4L, distance="dtw")
+# clust.pam <- tsclust(cluster.dat %>% na_interpolation(),
+#                      type="partitional",
+#                      k=4L, distance="dtw", centroid="pam")
+# # plot(clust.pam, type="sc")
+# plot(clust.pam, type="centroids")
+# t(cbind(cluster.dat[,0], cluster = clust.hier@cluster)) %>% t()
 
 # writeLines("comparing clustering stats")
 # writeLines("type = partitional")

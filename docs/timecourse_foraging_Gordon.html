@@ -439,7 +439,7 @@ div.tocify {
 <h1 class="title toc-ignore">TC8: Timecourse foraging</h1>
 <h3 class="subtitle">Investigating colony variation in time-budgeting of daily foraging in harvester ants</h3>
 <h4 class="author">Biplabendu Das</h4>
-<h4 class="date">01 September, 2022</h4>
+<h4 class="date">11 September, 2022</h4>
 
 </div>
 
@@ -453,12 +453,12 @@ div.tocify {
 which.year &lt;- c(2015:2017)
 
 # specify bin width for calculating foraging rates (in minutes)
-bin.width &lt;- 30
+bin.width &lt;- 15
 
 # how many hours/day of observation do we need to include in the final analyses (in hours)
 atleast &lt;- 2</code></pre>
 <ul>
-<li>bin width to calculate rate of foraging (bin width = 30 mins)</li>
+<li>bin width to calculate rate of foraging (bin width = 15 mins)</li>
 <li>minimum hours/day of observations required for including in the anlayses (at least 2 hrs)</li>
 </ul>
 <hr />
@@ -936,7 +936,7 @@ Density plots of number of out/in-going foragers
 <div id="obtain-inout-foraging-rates" class="section level2">
 <h2>5. Obtain in/out foraging rates</h2>
 <blockquote>
-<p>Making 30 minute bins for calculating rate of in/out foraging</p>
+<p>Making 15 minute bins for calculating rate of in/out foraging</p>
 </blockquote>
 <pre class="r"><code>b.dat &lt;-
   dat %&gt;% 
@@ -1346,7 +1346,7 @@ I/O plots as a function of time
 
 # convert time to circular variables
 linear.time &lt;- mod.dat %&gt;% pull(t.bin) %&gt;% unique() %&gt;% sort() %&gt;% as.character()
-linear.time2 &lt;- seq(6.5, 12.5, by=0.5)
+linear.time2 &lt;- seq(6.5, 12.5, by=0.25)
 time.dat &lt;- data.frame(t.bin = linear.time,
                        lin_time = linear.time2)
 time.dat &lt;- cbind(time.dat, limorhyde::limorhyde(time.dat$lin_time, &quot;time_&quot;))
@@ -1370,9 +1370,11 @@ anova(mod.full, mod.red.1, test=&quot;Chisq&quot;)</code></pre>
 ## mod.red.1:     day)
 ## mod.full: r_tot ~ age_class + day + (time_cos + time_sin) + (1 | colony_ID) + 
 ## mod.full:     (1 | day)
-##           Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)
-## mod.red.1 25 2156.2 2239.1 -1053.1   2106.2                         
-## mod.full  26 2155.6 2241.9 -1051.8   2103.6 2.5412      1     0.1109</code></pre>
+##           Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)  
+## mod.red.1 25 3922.9 4021.2 -1936.5   3872.9                           
+## mod.full  26 3921.6 4023.9 -1934.8   3869.6 3.2947      1     0.0695 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Ans: The (total) foraging of a colony doesn’t seem to significantly affected by age class (1-2 v. 3-4 v. &gt;=5 year old colonies).</p>
 <blockquote>
 <p>Q2. Does the rate of foraging depend on the time of day?</p>
@@ -1386,8 +1388,8 @@ anova(mod.full, mod.red.2, test=&quot;Chisq&quot;)</code></pre>
 ## mod.full: r_tot ~ age_class + day + (time_cos + time_sin) + (1 | colony_ID) + 
 ## mod.full:     (1 | day)
 ##           Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)    
-## mod.red.2 24 2166.8 2246.5 -1059.4   2118.8                             
-## mod.full  26 2155.6 2241.9 -1051.8   2103.6 15.213      2  0.0004973 ***
+## mod.red.2 24 3938.1 4032.4 -1945.0   3890.1                             
+## mod.full  26 3921.6 4023.9 -1934.8   3869.6 20.428      2  3.665e-05 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Ans: Yes, the total foraging of harvester ant colonies significantly fluctuates with time.</p>
@@ -1403,9 +1405,9 @@ anova(mod.full, mod.red.3, test=&quot;Chisq&quot;)</code></pre>
 ## mod.red.3:     (1 | day)
 ## mod.full: r_tot ~ age_class + day + (time_cos + time_sin) + (1 | colony_ID) + 
 ## mod.full:     (1 | day)
-##           Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)   
-## mod.red.3  8 2161.7 2188.2 -1072.8   2145.7                            
-## mod.full  26 2155.6 2241.9 -1051.8   2103.6 42.033     18   0.001094 **
+##           Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)    
+## mod.red.3  8 3942.7 3974.1 -1963.3   3926.7                             
+## mod.full  26 3921.6 4023.9 -1934.8   3869.6 57.015     18  6.156e-06 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Ans: As was expected, yes, the daily foraging of a colony does show significant day-to-day fluctuations.</p>
@@ -1421,9 +1423,9 @@ anova(mod.full.2, mod.full, test=&quot;Chisq&quot;)</code></pre>
 ## mod.full:     (1 | day)
 ## mod.full.2: r_tot ~ age_class * (time_cos + time_sin) + day + (1 | colony_ID) + 
 ## mod.full.2:     (1 | day)
-##            Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)   
-## mod.full   26 2155.6 2241.9 -1051.8   2103.6                            
-## mod.full.2 30 2149.7 2249.2 -1044.8   2089.7 13.983      4    0.00735 **
+##            Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)    
+## mod.full   26 3921.6 4023.9 -1934.8   3869.6                             
+## mod.full.2 30 3904.9 4022.8 -1922.4   3844.9 24.777      4  5.579e-05 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Ans: It is possible!! This result is most interesting because it rises the possibility that the daily changes in the foraging rate of colonies might have characteristic differences between age classes. Or in other words, <strong>the time-dependent foraging activity of ant colonies change with its age</strong>.</p>
@@ -1445,14 +1447,13 @@ anova(mod.full.2, mod.full, test=&quot;Chisq&quot;)</code></pre>
 # number of rows = number of unique colony-days
 name.rows &lt;-
   mod.dat %&gt;% 
-  
   group_by(colony_ID, day, age_class) %&gt;% 
   summarize(num_of_timepoints = n()) %&gt;% 
-  ungroup() %&gt;% 
-  
+  ungroup() %&gt;%
+  group_by(colony_ID) %&gt;% 
   mutate(which_day = row_number()) %&gt;% 
   arrange(age_class) %&gt;% 
-  mutate(colony_day = paste0(age_class,&quot;_D&quot;,which_day)) %&gt;% pull(colony_day)
+  mutate(colony_day = paste0(age_class,&quot;| &quot;, colony_ID, &quot;_D&quot;,which_day)) %&gt;% pull(colony_day)
 # number of columns = number of time points per day
 name.cols &lt;- paste0(&quot;T&quot;,time.dat$t.bin)
 
@@ -1489,7 +1490,7 @@ par(mar=c(6.1, #bottom
 cluster.dat %&gt;%
   # imputeTS::na_interpolation() %&gt;% 
   plot(.,
-       col=viridis::viridis(3),
+       col=viridis::viridis(4),
        spacing.key=1.5,
          fmt.key=&quot;%.0f&quot;,
          xlab = &quot;&quot;,
@@ -1507,50 +1508,23 @@ cluster.dat %&gt;%
 <blockquote>
 <p>Please note, the following section is not meant to be accurate but provides an example of the type of analyses one could conduct.</p>
 </blockquote>
-<pre class="r"><code># load necessary libraries
-pacman::p_load(dtwclust, imputeTS)
-# ?tsclust
-# clustering tutorial: https://rpubs.com/esobolewska/dtw-time-series
-# NA imputation tutorial: https://stackoverflow.com/questions/27368195/r-ts-with-missing-values
+<pre class="r"><code># # load necessary libraries
+# pacman::p_load(dtwclust, imputeTS)
+# # ?tsclust
+# # clustering tutorial: https://rpubs.com/esobolewska/dtw-time-series
+# # NA imputation tutorial: https://stackoverflow.com/questions/27368195/r-ts-with-missing-values
+# 
+# clust.hier &lt;- tsclust(cluster.dat %&gt;% na_interpolation(), 
+#                      type=&quot;h&quot;,
+#                      k=4L, distance=&quot;dtw&quot;)
+# clust.pam &lt;- tsclust(cluster.dat %&gt;% na_interpolation(),
+#                      type=&quot;partitional&quot;,
+#                      k=4L, distance=&quot;dtw&quot;, centroid=&quot;pam&quot;)
+# # plot(clust.pam, type=&quot;sc&quot;)
+# plot(clust.pam, type=&quot;centroids&quot;)
+# t(cbind(cluster.dat[,0], cluster = clust.hier@cluster)) %&gt;% t()
 
-clust.hier &lt;- tsclust(cluster.dat %&gt;% na_interpolation(), 
-                     type=&quot;h&quot;,
-                     k=4L, distance=&quot;dtw&quot;)
-clust.pam &lt;- tsclust(cluster.dat %&gt;% na_interpolation(),
-                     type=&quot;partitional&quot;,
-                     k=4L, distance=&quot;dtw&quot;, centroid=&quot;pam&quot;)
-# plot(clust.pam, type=&quot;sc&quot;)
-plot(clust.pam, type=&quot;centroids&quot;)</code></pre>
-<p><img src="timecourse_foraging_Gordon_files/figure-html/analyses_v6-1.png" width="672" /></p>
-<pre class="r"><code>t(cbind(cluster.dat[,0], cluster = clust.hier@cluster)) %&gt;% t()</code></pre>
-<pre><code>##            cluster
-## 3-4_yr_D18       1
-## 3-4_yr_D19       1
-## 5-9_yr_D13       1
-## 5-9_yr_D14       1
-## 5-9_yr_D15       2
-## 5-9_yr_D16       2
-## 5-9_yr_D17       3
-## 10+_yr_D1        3
-## 10+_yr_D2        3
-## 10+_yr_D3        3
-## 10+_yr_D4        3
-## 10+_yr_D5        3
-## 10+_yr_D6        3
-## 10+_yr_D7        3
-## 10+_yr_D8        3
-## 10+_yr_D9        3
-## 10+_yr_D10       3
-## 10+_yr_D11       3
-## 10+_yr_D12       3
-## 10+_yr_D20       3
-## 10+_yr_D21       4
-## 10+_yr_D22       4
-## 10+_yr_D23       4
-## 10+_yr_D24       4
-## 10+_yr_D25       3
-## 10+_yr_D26       3</code></pre>
-<pre class="r"><code># writeLines(&quot;comparing clustering stats&quot;)
+# writeLines(&quot;comparing clustering stats&quot;)
 # writeLines(&quot;type = partitional&quot;)
 # cvi(clust.pam)
 # writeLines(&quot;type = h | hierarchichal&quot;)
