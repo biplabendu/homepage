@@ -57,7 +57,7 @@ source(paste0(path_to_repo,"/functions/theme_publication.R"))
 
 ```{r set_parameters}
 ## Set color scheme for age classes
-age_colors <- c("#4EB9E6", "#397362", "#999215", "#991D34", "#F29544")
+age_colors <- c("#8D72A1", "#F26C7F", "#FBAD73", "#9CD5A2", "#F29544")
 ```
 
 ## Overview/Goals
@@ -709,7 +709,7 @@ for.dat <-
 
 colnames(for.dat) <- column.names
 
-tidy.for <-
+tidy.for.2022 <-
   for.dat %>% 
   # remove columns containing first and second obs
   select(-first_obs, -second_obs, -was_it_raining) %>% 
@@ -739,8 +739,8 @@ tidy.for <-
          inout2,
          n_ants, tot_in, tot_out, everything())
 
-all.dates <- tidy.for %>% pull(date) %>% na.omit() %>% unique()
-date.max <- tidy.for %>% pull(date) %>% na.omit() %>% max()
+all.dates <- tidy.for.2022 %>% pull(date) %>% na.omit() %>% unique()
+date.max <- tidy.for.2022 %>% pull(date) %>% na.omit() %>% max()
 ```
 
 
@@ -764,7 +764,7 @@ bead.dates <- data.frame(date = which.dates,
 bead.colonies <- tidydat %>% pull(colonyID) %>% unique()
 which.day.obs <- bead.dates %>% mutate(date_obs = paste0(date, obs_day)) %>% pull(date_obs)
 
-tidy.for %<>% 
+tidy.for <- tidy.for.2022 %>% 
   
   mutate(date = as.character(date)) %>% 
   filter(date %in% unique(as.character(bead.dates$date))) %>% 
@@ -861,6 +861,7 @@ s.tidydat <-
 ### Compare foraging across age-class
 
 ```{r plot_foraging_ageclass}
+## Plot 1
 s.tidydat %>% 
   select(colonyID, bead_color, age_obs, age_class, foraging_30s) %>% 
   distinct() %>%
@@ -870,14 +871,14 @@ s.tidydat %>%
   
   ggplot(aes(x=as.factor(age_obs), y=foraging_30s)) +
   
-  geom_violin(alpha=0.7) +
+  geom_boxplot(alpha=0.7, outlier.color = NA) +
     
     geom_jitter(width = 0.1, size=3, alpha=0.6, 
                 aes(fill=as.factor(colonyID)), 
                 shape=21) +
   
     
-    # facet_wrap(bead_color~., nrow = 2) +
+    geom_smooth(method = "gam", aes(group=1)) +
     
     # stat_summary(fun = mean, geom = "point", col="black",
     #              size=10, alpha=0.8,
@@ -904,6 +905,7 @@ s.tidydat %>%
     theme(legend.position="bottom")
 
 
+## Plot 2
 which.colonies <- s.tidydat %>% select(colonyID, age_obs, age_class) %>% distinct()
 
 tidy.for %>% 
@@ -915,20 +917,21 @@ tidy.for %>%
   geom_boxplot(alpha=0.7) +
     
     geom_jitter(width = 0.1, size=2, alpha=0.6, 
-                aes(shape=as.factor(age_class))) +
+                aes(shape=as.factor(age_class), col=as.factor(age_class))) +
   
     
-    # facet_wrap(bead_color~., nrow = 2) +
-    
-  stat_summary(fun.data = mean_cl_boot,
-                 col="red",
-                 size=1, alpha = 0.8,
+    stat_summary(fun.data = mean_cl_boot,
+                 col="#F26C60",
+                 size=2, alpha = 0.8,
                  geom = "errorbar", width = 0.2, fun.args = list(conf.int = 0.95),
                  position=position_nudge(x = 0.4, y = 0)) +
-  stat_summary(fun = mean, geom = "point", 
-               col=age_colors[4],
-                 size=4, alpha=0.9,
+  stat_summary(fun = mean, geom = "line", 
+               aes(group=1),
+               col="#F26C60",
+                 size=2, alpha=0.9,
                  position=position_nudge(x = 0.4, y = 0)) +
+  # geom_smooth(method = "gam", aes(group=1)) +
+  geom_smooth(method = "gam", aes(group=1), formula = y ~ splines::ns(x, 3)) +
 
     theme_Publication(base_size = 13) +
 
@@ -941,10 +944,82 @@ tidy.for %>%
     # scale_fill_discrete() +
 
     # theme(legend.position="none") +
-
     theme(plot.subtitle=element_text(hjust=0.5, size=10),
           legend.title = element_blank()) +
-    theme(legend.position="bottom")
+    theme(legend.position="bottom") +
+  
+    ## add text labels
+    ggrepel::geom_label_repel(data = . %>% 
+                    mutate(label = ifelse(foraging_30s > 100,
+                                          colonyID, "")) %>% 
+                    group_by(colonyID) %>% 
+                    mutate_at(vars(label), funs(replace(., duplicated(.), ""))),
+                    force = 11,
+                    aes(label = label), 
+                    box.padding = 0.3,
+                    show.legend = FALSE)
+
+
+## Plot 3
+tidy.for.2022 %>% 
+  mutate(colony_ID = as.numeric(as.character(colony_ID))) %>% 
+  right_join(colony.dat %>% select(colony_ID = colonyID, age_2022)) %>% 
+  na.omit() %>% 
+  mutate(age_obs = age_2022) %>% 
+  mutate(age_class = ifelse(age_obs <= 2, "1-2_yr",
+                            ifelse(age_obs > 2 & age_obs <= 4, "3-4_yr",
+                                   ifelse(age_obs >=5 & age_obs < 10, "5-9_yr",
+                                                 "10+_yr")))) %>% 
+  mutate(age_class = factor(age_class, 
+                            levels = c("1-2_yr", "3-4_yr",
+                                       "5-9_yr", "10+_yr"))) %>% 
+  
+  ## test labels
+  # mutate(label = ifelse(foraging_30s > 200,
+  #                                         colony_ID, "")) %>% 
+  #                   group_by(colony_ID) %>%
+  #                   mutate_at(vars(label), funs(replace(., duplicated(.), "")))
+  
+  # mutate(foraging_30s = log2(foraging_30s+1)) %>% 
+  
+  ggplot(aes(x=as.factor(age_obs), y=foraging_30s)) +
+  geom_boxplot(alpha=0.4, fill="#C5E4BA") +
+  geom_jitter(width = 0.2, size=1, alpha=0.2, 
+                aes(shape=as.factor(age_class), col=as.factor(age_class))) +
+  stat_summary(fun.data = mean_cl_boot,
+                 col="#F26C60",
+                 size=2, alpha = 0.8,
+                 geom = "errorbar", width = 0.2, fun.args = list(conf.int = 0.95),
+                 position=position_nudge(x = 0.4, y = 0)) +
+  stat_summary(fun = mean, geom = "line", 
+               aes(group=1),
+               col="#F26C60",
+                 size=2, alpha=0.9,
+                 position=position_nudge(x = 0.4, y = 0)) +
+  geom_smooth(method = "gam", aes(group=1)) +
+    theme_Publication(base_size = 13) +
+    labs(title = "Colony foraging across different age-groups",
+       subtitle = "all observations of colony foraging in 2022",
+       y = "activity \n(mean ± 95% CI)",
+       x = "age-groups",
+       caption = "red line indicates mean ± 95% CI; \nblue line shows a GAM fit; \nlabels indicate colonies with activity more than 150 ants/30 secs") +
+    # ylim(c(0,200)) +
+    theme(plot.subtitle=element_text(hjust=0.5, size=10),
+          plot.caption = element_text(hjust=1, size=10),
+          legend.title = element_blank()) +
+    theme(legend.position="bottom") +
+  
+    ## add text labels
+    ggrepel::geom_label_repel(data = . %>% 
+                    mutate(label = ifelse(foraging_30s > 150,
+                                          colony_ID, "")) %>% 
+                    group_by(colony_ID) %>% 
+                    mutate_at(vars(label), funs(replace(., duplicated(.), ""))),
+                    force = 1,
+                    size=2.5,
+                    aes(label = label), 
+                    box.padding = 0.3,
+                    show.legend = FALSE)
 
 ```
 
@@ -1063,6 +1138,85 @@ s.tidydat %>%
 
 ```
 
+
+> I am wondering how would it look if I plot the curves for each age.
+
+```{r plot_with_age}
+s.tidydat %>% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color=="pink" & counted_when == "D1_aN")) %>%
+  # filter(!(bead_color=="green" & counted_when == "D3_bN")) %>%
+  
+  ggplot(aes(x=counted_when, y=s_cum_prop, 
+             fill=as.factor(age_obs), color=as.factor(age_obs), group=as.factor(age_obs))) +
+  geom_jitter(size=2, alpha=0.4, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  # geom_boxplot(alpha=0.3, aes(group=age_class)) +
+  # geom_violin(alpha=0.3) +
+  # geom_smooth(method = "gam", formula=y~s(x, k=5)) +
+  geom_smooth(method = "lm", formula = y~log2(x+1), 
+              alpha=0.4, size = 2,
+              aes(color=as.factor(age_obs))) +
+  
+  facet_grid(~age_class) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3, labels = c("","0.5", "1")) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  
+  scale_fill_viridis_d() +
+  scale_color_viridis_d() +
+  
+  labs(x = "Day-time of observation",
+       y= "cumulative proportion \nof beads returned",
+       subtitle = "Line indicates y ~ log2(x+1) + 95% CI",
+       caption = "Note
+       data shown for all three rounds of bead experiment")
+```
+
+> What about colony variation withih each age-class
+
+```{r plot_with_age_2}
+s.tidydat %>% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color=="pink" & counted_when == "D1_aN")) %>%
+  # filter(!(bead_color=="green" & counted_when == "D3_bN")) %>%
+  
+  ggplot(aes(x=counted_when, y=s_cum_prop, 
+             fill=as.factor(colonyID), color=as.factor(colonyID), group=as.factor(colonyID))) +
+  geom_jitter(size=2, alpha=0.4, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  # geom_boxplot(alpha=0.3, aes(group=age_class)) +
+  # geom_violin(alpha=0.3) +
+  # geom_smooth(method = "gam", formula=y~s(x, k=5)) +
+  geom_smooth(method = "lm", formula = y~log2(x+1), 
+              alpha=0.4, size = 2,
+              aes(color=as.factor(colonyID))) +
+  
+  facet_grid(~age_class) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3, labels = c("","0.5", "1")) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  
+  scale_fill_viridis_d() +
+  scale_color_viridis_d() +
+  
+  labs(x = "Day-time of observation",
+       y= "cumulative proportion \nof beads returned",
+       subtitle = "Line indicates y ~ log2(x+1) + 95% CI",
+       caption = "Note
+       data shown for all three rounds of bead experiment")
+```
+
+
+___
 
 ## Prelim Analyses I
 

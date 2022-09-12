@@ -443,7 +443,7 @@ div.tocify {
 
 
 <pre class="r"><code>## Set color scheme for age classes
-age_colors &lt;- c(&quot;#4EB9E6&quot;, &quot;#397362&quot;, &quot;#999215&quot;, &quot;#991D34&quot;, &quot;#F29544&quot;)</code></pre>
+age_colors &lt;- c(&quot;#8D72A1&quot;, &quot;#F26C7F&quot;, &quot;#FBAD73&quot;, &quot;#9CD5A2&quot;, &quot;#F29544&quot;)</code></pre>
 <div id="overviewgoals" class="section level2">
 <h2>Overview/Goals</h2>
 <p>Email from Deborah:</p>
@@ -1051,7 +1051,7 @@ for.dat &lt;-
 
 colnames(for.dat) &lt;- column.names
 
-tidy.for &lt;-
+tidy.for.2022 &lt;-
   for.dat %&gt;% 
   # remove columns containing first and second obs
   select(-first_obs, -second_obs, -was_it_raining) %&gt;% 
@@ -1081,8 +1081,8 @@ tidy.for &lt;-
          inout2,
          n_ants, tot_in, tot_out, everything())
 
-all.dates &lt;- tidy.for %&gt;% pull(date) %&gt;% na.omit() %&gt;% unique()
-date.max &lt;- tidy.for %&gt;% pull(date) %&gt;% na.omit() %&gt;% max()</code></pre>
+all.dates &lt;- tidy.for.2022 %&gt;% pull(date) %&gt;% na.omit() %&gt;% unique()
+date.max &lt;- tidy.for.2022 %&gt;% pull(date) %&gt;% na.omit() %&gt;% max()</code></pre>
 <p>The task is to obtain the foraging (in and out) data for each of the bead colonies, for the duration of the different experimental rounds.</p>
 <blockquote>
 <p>pink: 8/16/2022; green: 8/22/22; blue: 8/26/22</p>
@@ -1102,7 +1102,7 @@ bead.dates &lt;- data.frame(date = which.dates,
 bead.colonies &lt;- tidydat %&gt;% pull(colonyID) %&gt;% unique()
 which.day.obs &lt;- bead.dates %&gt;% mutate(date_obs = paste0(date, obs_day)) %&gt;% pull(date_obs)
 
-tidy.for %&lt;&gt;% 
+tidy.for &lt;- tidy.for.2022 %&gt;% 
   
   mutate(date = as.character(date)) %&gt;% 
   filter(date %in% unique(as.character(bead.dates$date))) %&gt;% 
@@ -1193,7 +1193,8 @@ s.tidydat &lt;-
                                        &quot;5-9_yr&quot;, &quot;10+_yr&quot;)))</code></pre>
 <div id="compare-foraging-across-age-class" class="section level3">
 <h3>Compare foraging across age-class</h3>
-<pre class="r"><code>s.tidydat %&gt;% 
+<pre class="r"><code>## Plot 1
+s.tidydat %&gt;% 
   select(colonyID, bead_color, age_obs, age_class, foraging_30s) %&gt;% 
   distinct() %&gt;%
   
@@ -1202,14 +1203,14 @@ s.tidydat &lt;-
   
   ggplot(aes(x=as.factor(age_obs), y=foraging_30s)) +
   
-  geom_violin(alpha=0.7) +
+  geom_boxplot(alpha=0.7, outlier.color = NA) +
     
     geom_jitter(width = 0.1, size=3, alpha=0.6, 
                 aes(fill=as.factor(colonyID)), 
                 shape=21) +
   
     
-    # facet_wrap(bead_color~., nrow = 2) +
+    geom_smooth(method = &quot;gam&quot;, aes(group=1)) +
     
     # stat_summary(fun = mean, geom = &quot;point&quot;, col=&quot;black&quot;,
     #              size=10, alpha=0.8,
@@ -1235,7 +1236,8 @@ s.tidydat &lt;-
           legend.title = element_blank()) +
     theme(legend.position=&quot;bottom&quot;)</code></pre>
 <p><img src="bead_data_2022_files/figure-html/plot_foraging_ageclass-1.png" width="672" /></p>
-<pre class="r"><code>which.colonies &lt;- s.tidydat %&gt;% select(colonyID, age_obs, age_class) %&gt;% distinct()
+<pre class="r"><code>## Plot 2
+which.colonies &lt;- s.tidydat %&gt;% select(colonyID, age_obs, age_class) %&gt;% distinct()
 
 tidy.for %&gt;% 
   select(date, colonyID=colony_ID, foraging_30s) %&gt;% 
@@ -1246,20 +1248,21 @@ tidy.for %&gt;%
   geom_boxplot(alpha=0.7) +
     
     geom_jitter(width = 0.1, size=2, alpha=0.6, 
-                aes(shape=as.factor(age_class))) +
+                aes(shape=as.factor(age_class), col=as.factor(age_class))) +
   
     
-    # facet_wrap(bead_color~., nrow = 2) +
-    
-  stat_summary(fun.data = mean_cl_boot,
-                 col=&quot;red&quot;,
-                 size=1, alpha = 0.8,
+    stat_summary(fun.data = mean_cl_boot,
+                 col=&quot;#F26C60&quot;,
+                 size=2, alpha = 0.8,
                  geom = &quot;errorbar&quot;, width = 0.2, fun.args = list(conf.int = 0.95),
                  position=position_nudge(x = 0.4, y = 0)) +
-  stat_summary(fun = mean, geom = &quot;point&quot;, 
-               col=age_colors[4],
-                 size=4, alpha=0.9,
+  stat_summary(fun = mean, geom = &quot;line&quot;, 
+               aes(group=1),
+               col=&quot;#F26C60&quot;,
+                 size=2, alpha=0.9,
                  position=position_nudge(x = 0.4, y = 0)) +
+  # geom_smooth(method = &quot;gam&quot;, aes(group=1)) +
+  geom_smooth(method = &quot;gam&quot;, aes(group=1), formula = y ~ splines::ns(x, 3)) +
 
     theme_Publication(base_size = 13) +
 
@@ -1272,11 +1275,82 @@ tidy.for %&gt;%
     # scale_fill_discrete() +
 
     # theme(legend.position=&quot;none&quot;) +
-
     theme(plot.subtitle=element_text(hjust=0.5, size=10),
           legend.title = element_blank()) +
-    theme(legend.position=&quot;bottom&quot;)</code></pre>
+    theme(legend.position=&quot;bottom&quot;) +
+  
+    ## add text labels
+    ggrepel::geom_label_repel(data = . %&gt;% 
+                    mutate(label = ifelse(foraging_30s &gt; 100,
+                                          colonyID, &quot;&quot;)) %&gt;% 
+                    group_by(colonyID) %&gt;% 
+                    mutate_at(vars(label), funs(replace(., duplicated(.), &quot;&quot;))),
+                    force = 11,
+                    aes(label = label), 
+                    box.padding = 0.3,
+                    show.legend = FALSE)</code></pre>
 <p><img src="bead_data_2022_files/figure-html/plot_foraging_ageclass-2.png" width="672" /></p>
+<pre class="r"><code>## Plot 3
+tidy.for.2022 %&gt;% 
+  mutate(colony_ID = as.numeric(as.character(colony_ID))) %&gt;% 
+  right_join(colony.dat %&gt;% select(colony_ID = colonyID, age_2022)) %&gt;% 
+  na.omit() %&gt;% 
+  mutate(age_obs = age_2022) %&gt;% 
+  mutate(age_class = ifelse(age_obs &lt;= 2, &quot;1-2_yr&quot;,
+                            ifelse(age_obs &gt; 2 &amp; age_obs &lt;= 4, &quot;3-4_yr&quot;,
+                                   ifelse(age_obs &gt;=5 &amp; age_obs &lt; 10, &quot;5-9_yr&quot;,
+                                                 &quot;10+_yr&quot;)))) %&gt;% 
+  mutate(age_class = factor(age_class, 
+                            levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;,
+                                       &quot;5-9_yr&quot;, &quot;10+_yr&quot;))) %&gt;% 
+  
+  ## test labels
+  # mutate(label = ifelse(foraging_30s &gt; 200,
+  #                                         colony_ID, &quot;&quot;)) %&gt;% 
+  #                   group_by(colony_ID) %&gt;%
+  #                   mutate_at(vars(label), funs(replace(., duplicated(.), &quot;&quot;)))
+  
+  # mutate(foraging_30s = log2(foraging_30s+1)) %&gt;% 
+  
+  ggplot(aes(x=as.factor(age_obs), y=foraging_30s)) +
+  geom_boxplot(alpha=0.4, fill=&quot;#C5E4BA&quot;) +
+  geom_jitter(width = 0.2, size=1, alpha=0.2, 
+                aes(shape=as.factor(age_class), col=as.factor(age_class))) +
+  stat_summary(fun.data = mean_cl_boot,
+                 col=&quot;#F26C60&quot;,
+                 size=2, alpha = 0.8,
+                 geom = &quot;errorbar&quot;, width = 0.2, fun.args = list(conf.int = 0.95),
+                 position=position_nudge(x = 0.4, y = 0)) +
+  stat_summary(fun = mean, geom = &quot;line&quot;, 
+               aes(group=1),
+               col=&quot;#F26C60&quot;,
+                 size=2, alpha=0.9,
+                 position=position_nudge(x = 0.4, y = 0)) +
+  geom_smooth(method = &quot;gam&quot;, aes(group=1)) +
+    theme_Publication(base_size = 13) +
+    labs(title = &quot;Colony foraging across different age-groups&quot;,
+       subtitle = &quot;all observations of colony foraging in 2022&quot;,
+       y = &quot;activity \n(mean ± 95% CI)&quot;,
+       x = &quot;age-groups&quot;,
+       caption = &quot;red line indicates mean ± 95% CI; \nblue line shows a GAM fit; \nlabels indicate colonies with activity more than 150 ants/30 secs&quot;) +
+    # ylim(c(0,200)) +
+    theme(plot.subtitle=element_text(hjust=0.5, size=10),
+          plot.caption = element_text(hjust=1, size=10),
+          legend.title = element_blank()) +
+    theme(legend.position=&quot;bottom&quot;) +
+  
+    ## add text labels
+    ggrepel::geom_label_repel(data = . %&gt;% 
+                    mutate(label = ifelse(foraging_30s &gt; 150,
+                                          colony_ID, &quot;&quot;)) %&gt;% 
+                    group_by(colony_ID) %&gt;% 
+                    mutate_at(vars(label), funs(replace(., duplicated(.), &quot;&quot;))),
+                    force = 1,
+                    size=2.5,
+                    aes(label = label), 
+                    box.padding = 0.3,
+                    show.legend = FALSE)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/plot_foraging_ageclass-3.png" width="672" /></p>
 </div>
 <div id="plot-normalized-bead-returns" class="section level3">
 <h3>Plot normalized bead returns</h3>
@@ -1387,6 +1461,81 @@ s.tidydat %&gt;%
        caption = &quot;Note
        data shown for all three rounds of bead experiment&quot;)</code></pre>
 <p><img src="bead_data_2022_files/figure-html/plot_normalized_bead_returns-3.png" width="672" /></p>
+<blockquote>
+<p>I am wondering how would it look if I plot the curves for each age.</p>
+</blockquote>
+<pre class="r"><code>s.tidydat %&gt;% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D1_aN&quot;)) %&gt;%
+  # filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D3_bN&quot;)) %&gt;%
+  
+  ggplot(aes(x=counted_when, y=s_cum_prop, 
+             fill=as.factor(age_obs), color=as.factor(age_obs), group=as.factor(age_obs))) +
+  geom_jitter(size=2, alpha=0.4, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  # geom_boxplot(alpha=0.3, aes(group=age_class)) +
+  # geom_violin(alpha=0.3) +
+  # geom_smooth(method = &quot;gam&quot;, formula=y~s(x, k=5)) +
+  geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
+              alpha=0.4, size = 2,
+              aes(color=as.factor(age_obs))) +
+  
+  facet_grid(~age_class) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3, labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  
+  scale_fill_viridis_d() +
+  scale_color_viridis_d() +
+  
+  labs(x = &quot;Day-time of observation&quot;,
+       y= &quot;cumulative proportion \nof beads returned&quot;,
+       subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
+       caption = &quot;Note
+       data shown for all three rounds of bead experiment&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/plot_with_age-1.png" width="672" /></p>
+<blockquote>
+<p>What about colony variation withih each age-class</p>
+</blockquote>
+<pre class="r"><code>s.tidydat %&gt;% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D1_aN&quot;)) %&gt;%
+  # filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D3_bN&quot;)) %&gt;%
+  
+  ggplot(aes(x=counted_when, y=s_cum_prop, 
+             fill=as.factor(colonyID), color=as.factor(colonyID), group=as.factor(colonyID))) +
+  geom_jitter(size=2, alpha=0.4, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  # geom_boxplot(alpha=0.3, aes(group=age_class)) +
+  # geom_violin(alpha=0.3) +
+  # geom_smooth(method = &quot;gam&quot;, formula=y~s(x, k=5)) +
+  geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
+              alpha=0.4, size = 2,
+              aes(color=as.factor(colonyID))) +
+  
+  facet_grid(~age_class) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3, labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  
+  scale_fill_viridis_d() +
+  scale_color_viridis_d() +
+  
+  labs(x = &quot;Day-time of observation&quot;,
+       y= &quot;cumulative proportion \nof beads returned&quot;,
+       subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
+       caption = &quot;Note
+       data shown for all three rounds of bead experiment&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/plot_with_age_2-1.png" width="672" /></p>
+<hr />
 </div>
 </div>
 <div id="prelim-analyses-i" class="section level2">
@@ -1449,8 +1598,8 @@ afex::mixed(log_s_cum_prop ~ age_class + counted_when + (1|colonyID) + (1|bead_c
 <pre class="r"><code>s.tidydat %&gt;% 
   select(colonyID, age_obs, bead_color, date, counted_when, cum_prop, s_cum_prop) %&gt;% 
   DT::datatable(rownames = F)</code></pre>
-<div id="htmlwidget-c10230ad0bd027ecd31b" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c10230ad0bd027ecd31b">{"x":{"filter":"none","data":[["810","810","810","810","810","810","922","922","922","922","922","922","961","961","961","969","969","969","1131","1131","1131","1131","1131","1131","1288","1288","1288","1338","1338","1338","1368","1368","1368","1393","1393","1393","1581","1581","1581","1581","1587","1587","1587","1587","1570","1570","1570","1570","1541","1541","1541","1541","1542","1542","1542","1542","1571","1571","1571","1571","1536","1536","1536","1536","1536","1536","1536","1536","1587","1587","1587","1587","1587","1570","1570","1570","1570","1570","1541","1541","1541","1541","1541","1542","1542","1542","1542","1542","1533","1533","1533","1533","1533","1552","1552","1552","1552","1552","1581","1581","1581","1581","1581","1587","1587","1587","1587","1587","1541","1541","1541","1541","1541","1542","1542","1542","1542","1542","1536","1536","1536","1536","1536","1533","1533","1533","1533","1533","1504","1504","1504","1504","1506","1506","1506","1506","1512","1512","1512","1512","1559","1559","1559","1559","1486","1486","1486","1486","1504","1504","1504","1504","1504","1506","1506","1506","1506","1506","1512","1512","1512","1512","1512","1559","1559","1559","1559","1559","1486","1486","1486","1486","1486","1503","1503","1503","1503","1503","1512","1512","1512","1512","1512","1559","1559","1559","1559","1559","1546","1546","1546","1546","1546","1486","1486","1486","1486","1486","1503","1503","1503","1503","1503","1452","1452","1452","1452","1450","1450","1450","1450","1440","1440","1440","1440","1452","1452","1452","1452","1452","1450","1450","1450","1450","1450","1452","1452","1452","1452","1452","1450","1450","1450","1450","1450","1440","1440","1440","1440","1440","1393","1393","1393","1393","1393","1393","1393","1393","1393","1393","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1288","1288","1288","1288","1317","1317","1317","1317","1317","1288","1288","1288","1288","1288","1233","1233","1233","1233","1242","1242","1242","1242","1233","1233","1233","1233","1233","1242","1242","1242","1242","1242","1233","1233","1233","1233","1233","1242","1242","1242","1242","1242","1107","1107","1107","1107","1107","1107","1107","1107","1107","1017","1017","1017","1017","1017","1017","1017","1017","1017","1017","1131","1131","1131","1131","1131","1131","1131","1131","1131","810","810","810","810","810","810","810","810","810","810","810","810","810","810"],[24,24,24,24,24,24,21,21,21,21,21,21,21,21,21,21,21,21,20,20,20,20,20,20,10,10,10,7,7,7,7,7,7,6,6,6,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,11,11,11,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,17,17,17,17,17,17,17,17,17,20,20,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,25,25,25,25,25,25,25,25,25,25,25,25,25,25],["green-21","green-21","green-21","pink-21","pink-21","pink-21","green-21","green-21","green-21","pink-21","pink-21","pink-21","green-21","green-21","green-21","green-21","green-21","green-21","green-21","green-21","green-21","pink-21","pink-21","pink-21","pink-21","pink-21","pink-21","green-21","green-21","green-21","pink-21","pink-21","pink-21","green-21","green-21","green-21","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","green","green","green","green","green","blue","blue","blue","blue","blue","pink","pink","pink","pink","green","green","green","green","green","blue","blue","blue","blue","blue","pink","pink","pink","pink","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","pink","pink","pink","pink","green","green","green","green","green","pink","pink","pink","pink","green","green","green","green","green","blue","blue","blue","blue","blue"],["2021-08-24","2021-08-25","2021-08-26","2021-08-26","2021-08-27","2021-08-28","2021-08-23","2021-08-24","2021-08-25","2021-08-25","2021-08-26","2021-08-27","2021-08-24","2021-08-25","2021-08-26","2021-08-24","2021-08-25","2021-08-26","2021-08-23","2021-08-24","2021-08-25","2021-08-25","2021-08-26","2021-08-27","2021-08-26","2021-08-27","2021-08-28","2021-08-23","2021-08-24","2021-08-25","2021-08-25","2021-08-26","2021-08-27","2021-08-23","2021-08-24","2021-08-25","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26"],["D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_bN","D2_M","D2_M","D2_bN","D2_bN","D3_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M"],[0.6,0.92,0.98,0.58,0.76,0.88,0.8,0.8,0.82,0.62,0.7,0.74,0.36,0.78,0.88,0.52,0.92,0.94,0.22,0.58,0.72,0.64,0.7,0.76,0.92,0.96,1,0.6,0.74,0.82,0.7,0.775,0.775,0.96,0.96,0.98,0.59,0.64,0.74,0.76,0.6,0.6,0.86,0.88,0.06,0.33,0.62,0.74,0.2,0.28,0.44,0.46,0.65,0.85,0.87,0.87,0.06,0.58,0.87,0.87,0.04,0.04,0.33,0.33,0.44,0.44,0.53,0.53,0.28,0.64,0.7,0.7,0.76,0.4,0.64,0.66,0.7,0.78,0.58,0.92,0.94,0.96,1,0.22,0.74,0.84,0.84,0.86,0.88,1.08,1.14,1.14,1.14,0.73,0.85,0.87,0.85,0.85,0.76,0.86,0.9,0.86,0.86,0.5,0.56,0.62,0.62,0.64,0.08,0.68,0.82,0.68,0.74,0.22,0.74,0.8,0.76,0.76,0,0.42,0.48,0.52,0.6,0.82,0.88,0.88,0.92,0.92,0.44,0.58,0.6,0.64,0.14,0.5,0.62,0.74,0.44,0.44,0.72,0.72,0.34,0.36,0.68,0.82,0.5,0.56,0.82,0.82,0.19,0.59,0.69,0.71,0.71,0.36,0.68,0.76,0.86,0.86,0.45,0.61,0.67,0.77,0.79,0.8,0.9,0.9,0.92,0.96,0.3,0.36,0.36,0.36,0.38,0.57,0.75,0.77,0.77,0.77,0.26,0.84,0.84,0.88,0.88,0.36,0.84,0.94,0.88,0.88,0.16,0.66,0.72,0.72,0.74,0.16,0.42,0.72,0.54,0.6,0.04,0.66,0.8,0.74,0.74,0.02,0.18,0.28,0.42,0.41,0.45,0.57,0.63,0.48,0.7,0.7,0.88,0.44,0.44,0.68,0.68,0.82,0.42,0.8,0.8,0.82,0.82,0.16,0.78,0.78,0.8,0.82,0.2,0.88,0.92,0.88,0.88,0.9,1.02,1.02,1.02,1.02,0.28,0.62,0.64,0.68,0.68,0.54,0.62,0.68,0.66,0.66,0.4,0.5,0.62,0.72,0.6,0.72,0.94,0.96,0.96,0.94,0.96,0.96,0.96,0.96,0.34,0.58,0.58,0.6,0,0.19,0.19,0.28,0.28,0.38,0.72,0.76,0.74,0.74,0.12,0.42,0.78,0.82,0,0,0.06,0.1,0.56,0.88,0.9,0.92,0.92,0.04,0.32,0.32,0.36,0.4,0.7,0.88,0.94,0.9,0.9,0.12,0.48,0.56,0.54,0.64,0.04,0.22,0.8,0.8,0.22,0.22,0.32,0.42,0.42,0.07,0.41,0.46,0.53,0.58,0.66,0.94,0.96,0.94,0.94,0.1,0.14,0.66,0.66,0,0.42,0.74,0.76,0.76,0.04,0.1,0.32,0.32,0.08,0.34,0.58,0.62,0.64,0.82,0.86,0.9,0.9,0.9],[0.02,0.03,0.03,0.01,0.02,0.02,0.04,0.04,0.04,0.02,0.02,0.02,0.01,0.03,0.04,0.02,0.04,0.04,0,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.01,0.01,0.01,0.02,0.03,0.03,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.05,0.05,0.07,0.07,0,0.01,0.02,0.03,0.01,0.01,0.02,0.02,0.01,0.01,0.01,0.01,0,0.04,0.06,0.06,0,0.01,0.01,0.07,0.01,0.09,0.01,0.11,0.04,0.08,0.09,0.09,0.1,0.02,0.03,0.03,0.03,0.04,0.01,0.02,0.02,0.02,0.02,0,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.02,0.05,0.05,0.05,0.05,0.05,0.04,0.05,0.05,0.05,0.05,0.06,0.06,0.07,0.07,0.07,0.01,0.05,0.06,0.05,0.05,0.01,0.02,0.02,0.02,0.02,0,0.06,0.07,0.07,0.09,0.02,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0,0.02,0.02,0.02,0.01,0.01,0.02,0.02,0.01,0.01,0.01,0.02,0.01,0.01,0.02,0.02,0.01,0.02,0.02,0.02,0.02,0.01,0.02,0.02,0.03,0.03,0,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0,0,0,0,0,0.03,0.04,0.05,0.05,0.05,0,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.01,0.03,0.04,0.04,0.04,0,0,0.01,0,0.01,0,0.02,0.02,0.02,0.02,0,0,0,0.01,0,0,0.01,0.01,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0,0.01,0.01,0.01,0.01,0,0.01,0.01,0.01,0.01,0,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0,0.01,0.01,0.01,0,0.02,0.02,0.03,0.03,0.01,0.03,0.03,0.03,0.03,0.01,0.02,0.04,0.04,0,0,0,0.01,0.01,0.02,0.02,0.02,0.02,0,0.04,0.04,0.04,0.05,0.03,0.04,0.04,0.04,0.04,0.02,0.07,0.08,0.08,0.09,0,0.01,0.02,0.02,0.04,0.04,0.05,0.07,0.07,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0,0,0.02,0.02,0,0.02,0.03,0.03,0.03,0,0,0,0,0,0.01,0.01,0.01,0.02,0.04,0.05,0.05,0.05,0.05]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>colonyID<\/th>\n      <th>age_obs<\/th>\n      <th>bead_color<\/th>\n      <th>date<\/th>\n      <th>counted_when<\/th>\n      <th>cum_prop<\/th>\n      <th>s_cum_prop<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,5,6]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-76567e9a3d0438143c61" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-76567e9a3d0438143c61">{"x":{"filter":"none","data":[["810","810","810","810","810","810","922","922","922","922","922","922","961","961","961","969","969","969","1131","1131","1131","1131","1131","1131","1288","1288","1288","1338","1338","1338","1368","1368","1368","1393","1393","1393","1581","1581","1581","1581","1587","1587","1587","1587","1570","1570","1570","1570","1541","1541","1541","1541","1542","1542","1542","1542","1571","1571","1571","1571","1536","1536","1536","1536","1536","1536","1536","1536","1587","1587","1587","1587","1587","1570","1570","1570","1570","1570","1541","1541","1541","1541","1541","1542","1542","1542","1542","1542","1533","1533","1533","1533","1533","1552","1552","1552","1552","1552","1581","1581","1581","1581","1581","1587","1587","1587","1587","1587","1541","1541","1541","1541","1541","1542","1542","1542","1542","1542","1536","1536","1536","1536","1536","1533","1533","1533","1533","1533","1504","1504","1504","1504","1506","1506","1506","1506","1512","1512","1512","1512","1559","1559","1559","1559","1486","1486","1486","1486","1504","1504","1504","1504","1504","1506","1506","1506","1506","1506","1512","1512","1512","1512","1512","1559","1559","1559","1559","1559","1486","1486","1486","1486","1486","1503","1503","1503","1503","1503","1512","1512","1512","1512","1512","1559","1559","1559","1559","1559","1546","1546","1546","1546","1546","1486","1486","1486","1486","1486","1503","1503","1503","1503","1503","1452","1452","1452","1452","1450","1450","1450","1450","1440","1440","1440","1440","1452","1452","1452","1452","1452","1450","1450","1450","1450","1450","1452","1452","1452","1452","1452","1450","1450","1450","1450","1450","1440","1440","1440","1440","1440","1393","1393","1393","1393","1393","1393","1393","1393","1393","1393","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1368","1288","1288","1288","1288","1317","1317","1317","1317","1317","1288","1288","1288","1288","1288","1233","1233","1233","1233","1242","1242","1242","1242","1233","1233","1233","1233","1233","1242","1242","1242","1242","1242","1233","1233","1233","1233","1233","1242","1242","1242","1242","1242","1107","1107","1107","1107","1107","1107","1107","1107","1107","1017","1017","1017","1017","1017","1017","1017","1017","1017","1017","1131","1131","1131","1131","1131","1131","1131","1131","1131","810","810","810","810","810","810","810","810","810","810","810","810","810","810"],[24,24,24,24,24,24,21,21,21,21,21,21,21,21,21,21,21,21,20,20,20,20,20,20,10,10,10,7,7,7,7,7,7,6,6,6,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,11,11,11,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,17,17,17,17,17,17,17,17,17,20,20,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,25,25,25,25,25,25,25,25,25,25,25,25,25,25],["green-21","green-21","green-21","pink-21","pink-21","pink-21","green-21","green-21","green-21","pink-21","pink-21","pink-21","green-21","green-21","green-21","green-21","green-21","green-21","green-21","green-21","green-21","pink-21","pink-21","pink-21","pink-21","pink-21","pink-21","green-21","green-21","green-21","pink-21","pink-21","pink-21","green-21","green-21","green-21","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","green","green","green","green","green","blue","blue","blue","blue","blue","pink","pink","pink","pink","green","green","green","green","green","blue","blue","blue","blue","blue","pink","pink","pink","pink","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","pink","pink","pink","pink","green","green","green","green","green","green","green","green","green","green","blue","blue","blue","blue","blue","pink","pink","pink","pink","green","green","green","green","green","pink","pink","pink","pink","green","green","green","green","green","blue","blue","blue","blue","blue"],["2021-08-24","2021-08-25","2021-08-26","2021-08-26","2021-08-27","2021-08-28","2021-08-23","2021-08-24","2021-08-25","2021-08-25","2021-08-26","2021-08-27","2021-08-24","2021-08-25","2021-08-26","2021-08-24","2021-08-25","2021-08-26","2021-08-23","2021-08-24","2021-08-25","2021-08-25","2021-08-26","2021-08-27","2021-08-26","2021-08-27","2021-08-28","2021-08-23","2021-08-24","2021-08-25","2021-08-25","2021-08-26","2021-08-27","2021-08-23","2021-08-24","2021-08-25","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-16","2022-08-16","2022-08-16","2022-08-16","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-22","2022-08-26","2022-08-26","2022-08-26","2022-08-26","2022-08-26"],["D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_bN","D2_M","D2_M","D2_bN","D2_bN","D3_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_bN","D3_bN","D1_bN","D1_aN","D2_M","D2_bN","D4_bN","D1_bN","D2_M","D2_aN","D3_bN","D4_M"],[0.6,0.92,0.98,0.58,0.76,0.88,0.8,0.8,0.82,0.62,0.7,0.74,0.36,0.78,0.88,0.52,0.92,0.94,0.22,0.58,0.72,0.64,0.7,0.76,0.92,0.96,1,0.6,0.74,0.82,0.7,0.775,0.775,0.96,0.96,0.98,0.59,0.64,0.74,0.76,0.6,0.6,0.86,0.88,0.06,0.33,0.62,0.74,0.2,0.28,0.44,0.46,0.65,0.85,0.87,0.87,0.06,0.58,0.87,0.87,0.04,0.04,0.33,0.33,0.44,0.44,0.53,0.53,0.28,0.64,0.7,0.7,0.76,0.4,0.64,0.66,0.7,0.78,0.58,0.92,0.94,0.96,1,0.22,0.74,0.84,0.84,0.86,0.88,1.08,1.14,1.14,1.14,0.73,0.85,0.87,0.85,0.85,0.76,0.86,0.9,0.86,0.86,0.5,0.56,0.62,0.62,0.64,0.08,0.68,0.82,0.68,0.74,0.22,0.74,0.8,0.76,0.76,0,0.42,0.48,0.52,0.6,0.82,0.88,0.88,0.92,0.92,0.44,0.58,0.6,0.64,0.14,0.5,0.62,0.74,0.44,0.44,0.72,0.72,0.34,0.36,0.68,0.82,0.5,0.56,0.82,0.82,0.19,0.59,0.69,0.71,0.71,0.36,0.68,0.76,0.86,0.86,0.45,0.61,0.67,0.77,0.79,0.8,0.9,0.9,0.92,0.96,0.3,0.36,0.36,0.36,0.38,0.57,0.75,0.77,0.77,0.77,0.26,0.84,0.84,0.88,0.88,0.36,0.84,0.94,0.88,0.88,0.16,0.66,0.72,0.72,0.74,0.16,0.42,0.72,0.54,0.6,0.04,0.66,0.8,0.74,0.74,0.02,0.18,0.28,0.42,0.41,0.45,0.57,0.63,0.48,0.7,0.7,0.88,0.44,0.44,0.68,0.68,0.82,0.42,0.8,0.8,0.82,0.82,0.16,0.78,0.78,0.8,0.82,0.2,0.88,0.92,0.88,0.88,0.9,1.02,1.02,1.02,1.02,0.28,0.62,0.64,0.68,0.68,0.54,0.62,0.68,0.66,0.66,0.4,0.5,0.62,0.72,0.6,0.72,0.94,0.96,0.96,0.94,0.96,0.96,0.96,0.96,0.34,0.58,0.58,0.6,0,0.19,0.19,0.28,0.28,0.38,0.72,0.76,0.74,0.74,0.12,0.42,0.78,0.82,0,0,0.06,0.1,0.56,0.88,0.9,0.92,0.92,0.04,0.32,0.32,0.36,0.4,0.7,0.88,0.94,0.9,0.9,0.12,0.48,0.56,0.54,0.64,0.04,0.22,0.8,0.8,0.22,0.22,0.32,0.42,0.42,0.07,0.41,0.46,0.53,0.58,0.66,0.94,0.96,0.94,0.94,0.1,0.14,0.66,0.66,0,0.42,0.74,0.76,0.76,0.04,0.1,0.32,0.32,0.08,0.34,0.58,0.62,0.64,0.82,0.86,0.9,0.9,0.9],[0.02,0.03,0.03,0.01,0.02,0.02,0.04,0.04,0.04,0.02,0.02,0.02,0.01,0.03,0.04,0.02,0.04,0.04,0,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.01,0.01,0.01,0.02,0.03,0.03,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.05,0.05,0.07,0.07,0,0.01,0.02,0.03,0.01,0.01,0.02,0.02,0.01,0.01,0.01,0.01,0,0.04,0.06,0.06,0,0.01,0.01,0.07,0.01,0.09,0.01,0.11,0.04,0.08,0.09,0.09,0.1,0.02,0.03,0.03,0.03,0.04,0.01,0.02,0.02,0.02,0.02,0,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.02,0.05,0.05,0.05,0.05,0.05,0.04,0.05,0.05,0.05,0.05,0.06,0.06,0.07,0.07,0.07,0.01,0.05,0.06,0.05,0.05,0.01,0.02,0.02,0.02,0.02,0,0.06,0.07,0.07,0.09,0.02,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0,0.02,0.02,0.02,0.01,0.01,0.02,0.02,0.01,0.01,0.01,0.02,0.01,0.01,0.02,0.02,0.01,0.02,0.02,0.02,0.02,0.01,0.02,0.02,0.03,0.03,0,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0,0,0,0,0,0.03,0.04,0.05,0.05,0.05,0,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.01,0.03,0.04,0.04,0.04,0,0,0.01,0,0.01,0,0.02,0.02,0.02,0.02,0,0,0,0.01,0,0,0.01,0.01,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0,0.01,0.01,0.01,0.01,0,0.01,0.01,0.01,0.01,0,0.02,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.01,0.01,0.01,0.01,0.01,0,0.01,0.01,0.01,0,0.02,0.02,0.03,0.03,0.01,0.03,0.03,0.03,0.03,0.01,0.02,0.04,0.04,0,0,0,0.01,0.01,0.02,0.02,0.02,0.02,0,0.04,0.04,0.04,0.05,0.03,0.04,0.04,0.04,0.04,0.02,0.07,0.08,0.08,0.09,0,0.01,0.02,0.02,0.04,0.04,0.05,0.07,0.07,0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0,0,0.02,0.02,0,0.02,0.03,0.03,0.03,0,0,0,0,0,0.01,0.01,0.01,0.02,0.04,0.05,0.05,0.05,0.05]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>colonyID<\/th>\n      <th>age_obs<\/th>\n      <th>bead_color<\/th>\n      <th>date<\/th>\n      <th>counted_when<\/th>\n      <th>cum_prop<\/th>\n      <th>s_cum_prop<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,5,6]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 
 
