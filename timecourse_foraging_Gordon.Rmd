@@ -369,6 +369,23 @@ colonies <- dat %>% arrange(age_when_obs) %>% pull(colony_ID) %>% unique()
 
 ```
 
+> How many colonies, and which colonies, do we have for each age-class? 
+
+```{r tallying_22Aug22_green_beads}
+dat %>% 
+  mutate(age_when_obs = factor(paste0(age_when_obs, " yr"), 
+                          level=paste0(sort(unique(.$age_when_obs)), " yr"))) %>%
+  group_by(age_when_obs) %>% 
+  summarize(n_colonies = length(unique(colony_ID)),
+            which_colonies = paste(as.character(unique(colony_ID)), collapse = ", ")) %>% 
+  
+  kableExtra::kable(caption = "Colonies used in bead experiments", align = "c") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+  
+
+```
+
+
 
 ## 4. Visualize the data
 
