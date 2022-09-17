@@ -2296,7 +2296,7 @@ s.tidydat.mod %&gt;%
   # geom_smooth(method = &quot;lm&quot;, se=F, size=1.5, alpha=0.7) +
   geom_point(size=3, alpha=0.8, shape=21, aes(fill=age_class), col=&quot;black&quot;) +
   # geom_line(aes(group=colonyID), size=2, alpha=0.7) +
-  facet_wrap(colonyID~., nrow=6) +
+  facet_wrap(colonyID~., ncol=6) +
   theme_bw(base_size = 8) +
   # theme(axis.title.x=element_blank(),
   #       axis.text.x=element_blank())+
@@ -2308,6 +2308,81 @@ s.tidydat.mod %&gt;%
        subtitle = &quot;&quot;,
        caption = &quot;&quot;)</code></pre>
 <p><img src="bead_data_2022_files/figure-html/for_v3-2.png" width="672" /></p>
+</div>
+<div id="relative-allocation-in-foraging-and-nest-maintenance" class="section level3">
+<h3>relative allocation in foraging and nest maintenance</h3>
+<pre class="r"><code>## First, let&#39;s check how many observations we have for each time point of observation.
+# s.tidydat.mod %&gt;% 
+#   group_by(bead_color, age_class, counted_when) %&gt;% 
+#   summarise(num = n()) %&gt;% 
+#   # left_join(s.tidydat.mod %&gt;% select(colonyID, age_class), by=) %&gt;% 
+#   ggplot(aes(x=counted_when, y=num)) +
+#   geom_jitter(aes(group=bead_color, col=bead_color), size=6, width = 0.2) +
+#   facet_grid(~age_class) +
+#   # scale_color_manual(values=age_colors) +
+#   theme_Publication(base_size = 20) +
+#   scale_y_continuous(limits = c(0,25))
+#### So, we have good and bad news:
+####  we do have D2_M data for most bead-colonies in 2022, but not for 2021
+
+## 1
+s.tidydat.mod %&gt;% 
+  filter(counted_when %in% c(&quot;D2_M&quot;)) %&gt;% 
+  group_by(colonyID) %&gt;% 
+  summarize(max_D2M = max(cum_prop)) %&gt;% 
+  right_join(s.tidydat.mod) %&gt;% 
+  ungroup() %&gt;% 
+  select(colonyID:age_class, cum_prop, counted_when, foraging_30s, prop_foraging_30s, -date) %&gt;% 
+  distinct() %&gt;% 
+  na.omit() %&gt;% 
+  
+  filter(counted_when %in% c(&quot;D2_M&quot;)) %&gt;% 
+  mutate(prop_nm_D2M = round(cum_prop/max_D2M,2)) %&gt;% 
+  
+  ggplot(aes(x=prop_foraging_30s, y=prop_nm_D2M)) +
+    geom_jitter(aes(fill=age_class), shape=21, width=0, alpha=0.8, size=5) +
+    facet_wrap(age_class~., nrow = 1) +
+    geom_smooth(method = &quot;gam&quot;) +
+    scale_color_manual(values=age_colors) +
+    # scale_x_continuous(limits = c(0,1)) +
+    theme_Publication(base_size = 15) +
+    labs(x = &quot;proportion of foragers out on Day 1 (divided by max observed)&quot;,
+       y= &quot;proportion of beads returned on Day 1 \n(divided by max observed on Day1)&quot;,
+       subtitle = &quot;&quot;,
+       caption = &quot;&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/for_v4-1.png" width="672" /></p>
+<pre class="r"><code>## 2
+s.tidydat.mod %&gt;% 
+  filter(counted_when %in% c(&quot;D2_M&quot;)) %&gt;% 
+  group_by(colonyID) %&gt;% 
+  summarize(max_D2M = max(cum_prop)) %&gt;% 
+  right_join(s.tidydat.mod) %&gt;% 
+  ungroup() %&gt;% 
+  select(colonyID:age_class, cum_prop, counted_when, foraging_30s, prop_foraging_30s, -date) %&gt;% 
+  distinct() %&gt;% 
+  na.omit() %&gt;% 
+  
+  filter(counted_when %in% c(&quot;D2_M&quot;)) %&gt;% 
+  mutate(prop_nm_D2M = round(cum_prop/max_D2M,2)) %&gt;% 
+  
+  ggplot(aes(x=prop_foraging_30s, y=prop_nm_D2M, col=age_class)) +
+  geom_hline(yintercept=0.5, col=age_colors[4], size=1) +
+  geom_vline(xintercept=0.5, col=age_colors[4], size=1) +
+  # geom_smooth(method = &quot;lm&quot;, se=F, size=1.5, alpha=0.7) +
+  geom_point(size=3, alpha=0.9, aes(fill=age_class, shape=bead_color)) +
+  facet_wrap(colonyID~., ncol=6) +
+  theme_bw(base_size = 8) +
+  scale_y_continuous(limits = c(0,1.1), breaks = c(0,0.5,1.0)) +
+  # theme(axis.title.x=element_blank(),
+  #       axis.text.x=element_blank())+
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
+  
+  labs(x = &quot;proportion of foragers out on Day 1 (divided by max observed)&quot;,
+       y= &quot;proportion of beads returned on Day 1 \n(divided by max observed on Day1)&quot;,
+       subtitle = &quot;&quot;,
+       caption = &quot;&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/for_v4-2.png" width="672" /></p>
 <hr />
 </div>
 </div>
