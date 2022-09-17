@@ -430,7 +430,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Deborah_bead_data</h1>
 <h4 class="author">Biplabendu Das</h4>
-<h4 class="date">14 September, 2022</h4>
+<h4 class="date">17 September, 2022</h4>
 
 </div>
 
@@ -854,13 +854,19 @@ tidydat &lt;- rbind(old.summ, tidydat.2022) %&gt;%
                                           &quot;D2_M&quot;, &quot;D2_bN&quot;, &quot;D2_aN&quot;,
                                           &quot;D3_bN&quot;,
                                           &quot;D4_M&quot;, &quot;D4_bN&quot;))) %&gt;% 
+  ### 4 age classes
+  # mutate(age_class = ifelse(age_obs &lt;= 2, &quot;1-2_yr&quot;,
+  #                           ifelse(age_obs &gt; 2 &amp; age_obs &lt;= 4, &quot;3-4_yr&quot;,
+  #                                  ifelse(age_obs &gt;=5 &amp; age_obs &lt; 10, &quot;5-9_yr&quot;,
+  #                                                &quot;10+_yr&quot;)))) %&gt;% 
+  # mutate(age_class = factor(age_class, 
+  #                           levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;,
+  #                                      &quot;5-9_yr&quot;, &quot;10+_yr&quot;)))
+  ### 3 age classes
   mutate(age_class = ifelse(age_obs &lt;= 2, &quot;1-2_yr&quot;,
                             ifelse(age_obs &gt; 2 &amp; age_obs &lt;= 4, &quot;3-4_yr&quot;,
-                                   ifelse(age_obs &gt;=5 &amp; age_obs &lt; 10, &quot;5-9_yr&quot;,
-                                                 &quot;10+_yr&quot;)))) %&gt;% 
-  mutate(age_class = factor(age_class, 
-                            levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;,
-                                       &quot;5-9_yr&quot;, &quot;10+_yr&quot;)))
+                                   &quot;5+_yr&quot;))) %&gt;% 
+  mutate(age_class = factor(age_class, levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;, &quot;5+_yr&quot;)))
 
 # # use only 2022 data
 # tidydat &lt;- tidydat.2022
@@ -1134,6 +1140,8 @@ s.tidydat.2022 &lt;-
   mutate(s2_cum_prop = round(cum_prop/prop_foraging_30s, 2)) %&gt;% 
   na.omit() %&gt;% 
   # filter(s_cum_prop &lt;= 1) %&gt;% 
+  ## make sure the date column represents the actual dates during which the bead experiment was conducted
+  mutate(date = date+parse_number(as.character(counted_when))-1) %&gt;% 
   select(colonyID:bead_color,
          age_2022:age_class, 
          beads_collected,
@@ -1141,7 +1149,6 @@ s.tidydat.2022 &lt;-
          prop_foraging_30s,
          counted_when, cum_prop, 
          s_cum_prop, s2_cum_prop)
-
 
 ## Load the foraging data for 2021 dataset
 filename3 &lt;- &quot;/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/02_bead_data/data/foraging_data.csv&quot;
@@ -1201,19 +1208,26 @@ s.tidydat &lt;-
                                           &quot;D2_M&quot;, &quot;D2_bN&quot;, &quot;D2_aN&quot;,
                                           &quot;D3_bN&quot;,
                                           &quot;D4_M&quot;, &quot;D4_bN&quot;))) %&gt;% 
+  ## 4 age-classes
+  # mutate(age_class = ifelse(age_obs &lt;= 2, &quot;1-2_yr&quot;,
+  #                           ifelse(age_obs &gt; 2 &amp; age_obs &lt;= 4, &quot;3-4_yr&quot;,
+  #                                  ifelse(age_obs &gt;=5 &amp; age_obs &lt; 10, &quot;5-9_yr&quot;,
+  #                                                &quot;10+_yr&quot;)))) %&gt;% 
+  # mutate(age_class = factor(age_class, 
+  #                           levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;,
+  #                                      &quot;5-9_yr&quot;, &quot;10+_yr&quot;)))
+  ## 3 age-classes
   mutate(age_class = ifelse(age_obs &lt;= 2, &quot;1-2_yr&quot;,
                             ifelse(age_obs &gt; 2 &amp; age_obs &lt;= 4, &quot;3-4_yr&quot;,
-                                   ifelse(age_obs &gt;=5 &amp; age_obs &lt; 10, &quot;5-9_yr&quot;,
-                                                 &quot;10+_yr&quot;)))) %&gt;% 
-  mutate(age_class = factor(age_class, 
-                            levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;,
-                                       &quot;5-9_yr&quot;, &quot;10+_yr&quot;)))
+                                                 &quot;5+_yr&quot;))) %&gt;%
+  mutate(age_class = factor(age_class, levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;,&quot;5+_yr&quot;)))
 
 ## order the colony IDs according to age
 s.tidydat &lt;- s.tidydat %&gt;% 
   mutate(colonyID = factor(colonyID, levels = which.colonies %&gt;% arrange(age_obs) %&gt;% pull(1) %&gt;% unique()))
 
-## NEED TO BE FIXED ##
+## Data cleanup prior to running models
+#### NEED TO BE FIXED ##
 ## ISSUE 1
 # There are multiple foraging data entries for colony 1536, that needs to be corrected
 # For now, let&#39;s look at all colonies, except 1536
@@ -1221,7 +1235,9 @@ s.tidydat &lt;- s.tidydat %&gt;% filter(colonyID != &quot;1536&quot;)
 ## ISSUE 2
 # There are two colonies for which we have collected more than 100% of the beads collected
 # For now, let&#39;s remove those colonies
-s.tidydat &lt;- s.tidydat %&gt;% filter(!(colonyID == &quot;1533&quot; &amp; bead_color == &quot;green&quot;)) %&gt;% filter(!(colonyID == &quot;1440&quot; &amp; bead_color == &quot;blue&quot;))
+s.tidydat &lt;- s.tidydat %&gt;% 
+  filter(!(colonyID == &quot;1533&quot; &amp; bead_color == &quot;green&quot;)) %&gt;% 
+  filter(!(colonyID == &quot;1440&quot; &amp; bead_color == &quot;blue&quot;))
 ## ISSUE 3
 # There are colonies that have no foraging data (or the colony did not forage) on D1 of bead experiments, 
 # causing Inf values in s_cum_prop and s2_cum_prop
@@ -1334,13 +1350,19 @@ tidy.for.2022 %&gt;%
   right_join(colony.dat %&gt;% select(colony_ID = colonyID, age_2022)) %&gt;% 
   na.omit() %&gt;% 
   mutate(age_obs = age_2022) %&gt;% 
+  # mutate(age_class = ifelse(age_obs &lt;= 2, &quot;1-2_yr&quot;,
+  #                           ifelse(age_obs &gt; 2 &amp; age_obs &lt;= 4, &quot;3-4_yr&quot;,
+  #                                  ifelse(age_obs &gt;=5 &amp; age_obs &lt; 10, &quot;5-9_yr&quot;,
+  #                                                &quot;10+_yr&quot;)))) %&gt;% 
+  # mutate(age_class = factor(age_class, 
+  #                           levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;,
+  #                                      &quot;5-9_yr&quot;, &quot;10+_yr&quot;))) %&gt;% 
+  ## 3 age-classes
   mutate(age_class = ifelse(age_obs &lt;= 2, &quot;1-2_yr&quot;,
                             ifelse(age_obs &gt; 2 &amp; age_obs &lt;= 4, &quot;3-4_yr&quot;,
-                                   ifelse(age_obs &gt;=5 &amp; age_obs &lt; 10, &quot;5-9_yr&quot;,
-                                                 &quot;10+_yr&quot;)))) %&gt;% 
-  mutate(age_class = factor(age_class, 
-                            levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;,
-                                       &quot;5-9_yr&quot;, &quot;10+_yr&quot;))) %&gt;% 
+                                                 &quot;5+_yr&quot;))) %&gt;%
+  mutate(age_class = factor(age_class,
+                            levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;, &quot;5+_yr&quot;))) %&gt;% 
   
   ## test labels
   # mutate(label = ifelse(foraging_30s &gt; 200,
@@ -1392,46 +1414,7 @@ tidy.for.2022 %&gt;%
 </div>
 <div id="plot-normalized-bead-returns" class="section level3">
 <h3>Plot normalized bead returns</h3>
-<pre class="r"><code># s.tidydat[!is.infinite(rowSums(s.tidydat %&gt;% select(s_cum_prop, s2_cum_prop))),] %&gt;% 
-#   
-#   ggplot(aes(x=counted_when, y=s_cum_prop, fill=age_class, color=age_class, group=age_class)) +
-#   geom_jitter(size=2, alpha=0.4, width=0.2) +
-#   # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
-#   # geom_boxplot(alpha=0.3) +
-#   geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
-#               level=0.95,
-#               alpha=0.4, size = 2,
-#               aes(color=age_class)) +
-#   # geom_smooth(method = &quot;lm&quot;, formula = y~x, alpha=0.3, aes(color=age_class, lty=age_class)) +
-#   
-#   facet_wrap(~bead_color, nrow = 1) +
-#   # coord_flip() +
-#   # scale_y_continuous(n.breaks = 3, labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
-#   
-#   theme_Publication(base_size = 15) +
-#   # rotate x-axis lables
-#   theme(axis.text.x=element_text(angle=90,hjust=1))+
-#   # scale_fill_discrete() +
-#   # scale_color_discrete()
-# 
-#   # scale_fill_viridis_d(option=&quot;cividis&quot;) +
-#   # scale_color_viridis_d(option = &quot;cividis&quot;)
-#   
-#   scale_fill_manual(values = age_colors) +
-#   scale_color_manual(values = age_colors) +
-#   
-#   labs(x = &quot;Day-time of observation&quot;,
-#        y= &quot;cumulative proportion \nof beads returned&quot;,
-#        subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
-#        caption = &quot;Note 
-#        there were flash floods on Day 2 evening
-#        (Tuesday; we missed Wednesday&#39;s field work)
-#        of the second experimental run (green beads),
-#        which was three days prior to the start of the third round (blue beads).&quot;)
-
-
-## All colonies - 1
-
+<pre class="r"><code>## All colonies - 1
 s.tidydat %&gt;% 
   
   ggplot(aes(x=counted_when, y=s_cum_prop, fill=age_class, color=age_class, group=age_class)) +
@@ -1566,41 +1549,7 @@ s.tidydat[!is.infinite(rowSums(s.tidydat %&gt;% select(s_cum_prop, s2_cum_prop))
 <p>Standardizing by proportion of foragers outside on Day 1 of bead experiments</p>
 </blockquote>
 <p>The idea is to divide the cumulative proportion of beads returned by the proportion of foragers (among the max foragers that were observed for a given colony) out on Day 1 of the bead experiments</p>
-<pre class="r"><code># s.tidydat[!is.infinite(rowSums(s.tidydat %&gt;% select(s_cum_prop, s2_cum_prop))),] %&gt;% 
-#   
-#   ggplot(aes(x=counted_when, y=s2_cum_prop, fill=age_class, color=age_class, group=age_class)) +
-#   geom_jitter(size=2, alpha=0.4, width=0.2) +
-#   # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
-#   # geom_boxplot(alpha=0.3) +
-#   geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
-#               level=0.95,
-#               alpha=0.4, size = 2,
-#               aes(color=age_class)) +
-#   # geom_smooth(method = &quot;lm&quot;, formula = y~x, alpha=0.3, aes(color=age_class, lty=age_class)) +
-#   
-#   facet_wrap(~bead_color, nrow = 1) +
-#   # coord_flip() +
-#   # scale_y_continuous(n.breaks = 3, labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
-#   
-#   theme_Publication(base_size = 15) +
-#   # rotate x-axis lables
-#   theme(axis.text.x=element_text(angle=90,hjust=1))+
-#   # scale_fill_discrete() +
-#   # scale_color_discrete()
-# 
-#   # scale_fill_viridis_d(option=&quot;cividis&quot;) +
-#   # scale_color_viridis_d(option = &quot;cividis&quot;)
-#   
-#   scale_fill_manual(values = age_colors) +
-#   scale_color_manual(values = age_colors) +
-#   
-#   labs(x = &quot;Day-time of observation&quot;,
-#        y= &quot;cumulative proportion \nof beads returned&quot;,
-#        subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
-#        caption = &quot;&quot;)
-
-
-## All colonies - 1
+<pre class="r"><code>## All colonies - 1A
 
 s.tidydat[!is.infinite(rowSums(s.tidydat %&gt;% select(s_cum_prop, s2_cum_prop))),] %&gt;% 
   
@@ -1613,7 +1562,7 @@ s.tidydat[!is.infinite(rowSums(s.tidydat %&gt;% select(s_cum_prop, s2_cum_prop))
   # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
   # geom_boxplot(alpha=0.3, aes(group=age_class)) +
   # geom_violin(alpha=0.3) +
-  geom_smooth(method = &quot;gam&quot;, aes(group=age_class)) +
+  geom_smooth(method = &quot;gam&quot;, formula = y~s(x, bs=&quot;cs&quot;, k=8), aes(group=age_class)) +
   # geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
   #             alpha=0.4, size = 2,
   #             aes(color=age_class)) +
@@ -1632,8 +1581,42 @@ s.tidydat[!is.infinite(rowSums(s.tidydat %&gt;% select(s_cum_prop, s2_cum_prop))
   labs(x = &quot;Day-time of observation&quot;,
        y= &quot;cumulative proportion \nof beads returned&quot;,
        subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
-       caption = &quot;&quot;)</code></pre>
+       caption = &quot;normalized by proportion of maximum # of foragers observed on D1&quot;)</code></pre>
 <p><img src="bead_data_2022_files/figure-html/standardizing_v2-1.png" width="672" /></p>
+<pre class="r"><code>## All colonies - 1B
+
+s.tidydat[!is.infinite(rowSums(s.tidydat %&gt;% select(s_cum_prop, s2_cum_prop))),] %&gt;% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color==&quot;pink&quot; &amp; counted_when == &quot;D1_aN&quot;)) %&gt;%
+  # filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D3_bN&quot;)) %&gt;%
+  
+  ggplot(aes(x=counted_when, y=s2_cum_prop, fill=age_class, color=age_class, group=age_class)) +
+  geom_jitter(size=2, alpha=0.4, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  # geom_boxplot(alpha=0.3, aes(group=age_class)) +
+  # geom_violin(alpha=0.3) +
+  geom_smooth(method = &quot;gam&quot;, formula = y~s(x, bs=&quot;cs&quot;, k=8), aes(group=age_class)) +
+  # geom_smooth(method = &quot;lm&quot;, formula = y~log2(x+1), 
+  #             alpha=0.4, size = 2,
+  #             aes(color=age_class)) +
+  
+  # facet_grid(~age_class) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3, labels = c(&quot;&quot;,&quot;0.5&quot;, &quot;1&quot;)) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
+  
+  labs(x = &quot;Day-time of observation&quot;,
+       y= &quot;cumulative proportion \nof beads returned&quot;,
+       subtitle = &quot;Line indicates y ~ log2(x+1) + 95% CI&quot;,
+       caption = &quot;normalized by proportion of maximum # of foragers observed on D1&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/standardizing_v2-2.png" width="672" /></p>
 <pre class="r"><code>## All colonies - 2
 s.tidydat[!is.infinite(rowSums(s.tidydat %&gt;% select(s_cum_prop, s2_cum_prop))),] %&gt;% 
   # ## remove the timepoints that we do not have data for  
@@ -1641,7 +1624,7 @@ s.tidydat[!is.infinite(rowSums(s.tidydat %&gt;% select(s_cum_prop, s2_cum_prop))
   # filter(!(bead_color==&quot;green&quot; &amp; counted_when == &quot;D3_bN&quot;)) %&gt;%
   ggplot(aes(x=counted_when, y=s2_cum_prop, fill=age_class, color=age_class, group=age_class)) +
   geom_jitter(size=2, alpha=0.2, width = 0.2) +
-  geom_line(aes(group=bead_color), size=1, alpha=0.7) +
+  geom_line(aes(group=bead_color), size=2, alpha=0.7) +
   # geom_boxplot(alpha=0.6, aes(group=counted_when)) +
   # geom_violin(alpha=0.3) +
   # geom_smooth(method = &quot;gam&quot;, formula=y~s(x, k=5)) +
@@ -1665,110 +1648,116 @@ s.tidydat[!is.infinite(rowSums(s.tidydat %&gt;% select(s_cum_prop, s2_cum_prop))
        y= &quot;cumulative proportion \nof beads returned&quot;,
        subtitle = &quot;&quot;,
        caption = &quot;normalized by proportion of foragers out on D1 of bead experiments&quot;)</code></pre>
-<p><img src="bead_data_2022_files/figure-html/standardizing_v2-2.png" width="672" /></p>
+<p><img src="bead_data_2022_files/figure-html/standardizing_v2-3.png" width="672" /></p>
 <hr />
 </div>
 </div>
 <div id="prelim-analyses-i" class="section level2">
 <h2>Prelim Analyses I</h2>
-<pre class="r"><code>s.tidydat.mod &lt;- s.tidydat %&gt;% mutate(log_s_cum_prop = log2(s_cum_prop+1)) %&gt;% mutate(log_s2_cum_prop = log2(s2_cum_prop+1))
+<pre class="r"><code>s.tidydat.mod &lt;- s.tidydat
 
-
-mod.full.1 &lt;- lme4::lmer(s_cum_prop ~ age_class + counted_when + (1|colonyID) + (1|bead_color) ,
+mod.full.1a &lt;- lme4::lmer(s_cum_prop ~ age_class + counted_when + (1|colonyID) + (1|bead_color) ,
                  data=s.tidydat.mod, REML=F)
-mod.red.1 &lt;- lme4::lmer(s_cum_prop ~ counted_when + (1|colonyID) + (1|bead_color) ,
+mod.full.1b &lt;- lme4::lmer(s_cum_prop ~ age_obs + counted_when + (1|colonyID) + (1|bead_color) ,
                  data=s.tidydat.mod, REML=F)
-anova(mod.full.1, mod.red.1, test=&quot;Chisq&quot;)</code></pre>
+mod.full.1c &lt;- lme4::lmer(s_cum_prop ~ age_class*counted_when + (1|colonyID) + (1|bead_color) ,
+                 data=s.tidydat.mod, REML=F)
+mod.full.1d &lt;- lme4::lmer(s_cum_prop ~ age_class + poly(as.numeric(counted_when), 2) + (1|colonyID) + (1|bead_color) ,
+                 data=s.tidydat.mod, REML=F)
+# Model selection
+AIC(mod.full.1a, # best performing model among the three
+    mod.full.1b, mod.full.1c, mod.full.1d)</code></pre>
+<pre><code>##             df       AIC
+## mod.full.1a 13 -1883.493
+## mod.full.1b 12 -1876.116
+## mod.full.1c 27 -1866.654
+## mod.full.1d  8 -1891.729</code></pre>
+<pre class="r"><code>mod.red.1a &lt;- lme4::lmer(s_cum_prop ~ counted_when + (1|colonyID) + (1|bead_color), data=s.tidydat.mod, REML=F)
+mod.red.1d &lt;- lme4::lmer(s_cum_prop ~ poly(as.numeric(counted_when), 2) + (1|colonyID) + (1|bead_color),
+                        data=s.tidydat.mod, REML=F)
+anova(mod.full.1d,  mod.red.1d, test=&quot;Chisq&quot;)</code></pre>
 <pre><code>## Data: s.tidydat.mod
 ## Models:
-## mod.red.1: s_cum_prop ~ counted_when + (1 | colonyID) + (1 | bead_color)
-## mod.full.1: s_cum_prop ~ age_class + counted_when + (1 | colonyID) + (1 | 
-## mod.full.1:     bead_color)
-##            Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(&gt;Chisq)   
-## mod.red.1  11 -1878.1 -1836.5 950.04  -1900.1                            
-## mod.full.1 14 -1884.7 -1831.7 956.33  -1912.7 12.587      3    0.00562 **
+## mod.red.1d: s_cum_prop ~ poly(as.numeric(counted_when), 2) + (1 | colonyID) + 
+## mod.red.1d:     (1 | bead_color)
+## mod.full.1d: s_cum_prop ~ age_class + poly(as.numeric(counted_when), 2) + 
+## mod.full.1d:     (1 | colonyID) + (1 | bead_color)
+##             Df     AIC     BIC logLik deviance Chisq Chi Df Pr(&gt;Chisq)   
+## mod.red.1d   6 -1886.3 -1863.6 949.16  -1898.3                           
+## mod.full.1d  8 -1891.7 -1861.5 953.86  -1907.7 9.416      2   0.009023 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>## Let&#39;s look at the summary of the model
-lmerTest::ranova(mod.full.1)</code></pre>
+lmerTest::ranova(mod.full.1d)</code></pre>
 <pre><code>## ANOVA-like table for random-effects: Single term deletions
 ## 
 ## Model:
-## s_cum_prop ~ age_class + counted_when + (1 | colonyID) + (1 | bead_color)
-##                  npar logLik     AIC     LRT Df Pr(&gt;Chisq)    
-## &lt;none&gt;             14 956.33 -1884.7                          
-## (1 | colonyID)     13 880.06 -1734.1 152.553  1  &lt; 2.2e-16 ***
-## (1 | bead_color)   13 939.72 -1853.4  33.225  1  8.209e-09 ***
+## s_cum_prop ~ age_class + poly(as.numeric(counted_when), 2) + (1 | colonyID) + (1 | bead_color)
+##                  npar logLik     AIC    LRT Df Pr(&gt;Chisq)    
+## &lt;none&gt;              8 953.86 -1891.7                         
+## (1 | colonyID)      7 872.16 -1730.3 163.41  1  &lt; 2.2e-16 ***
+## (1 | bead_color)    7 933.61 -1853.2  40.50  1  1.966e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>## Calculate the p-values for the fixed effects
 ## Source: https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html
-afex::mixed(s_cum_prop ~ age_class + counted_when + (1|colonyID) + (1|bead_color) ,
-                 data=s.tidydat.mod, check_contrasts = T, test_intercept = F, method=&quot;KR&quot;)</code></pre>
+afex::mixed(formula(mod.full.1d), data=s.tidydat.mod, check_contrasts = T, test_intercept = F, method=&quot;KR&quot;)</code></pre>
 <pre><code>## Mixed Model Anova Table (Type 3 tests, KR-method)
 ## 
-## Model: s_cum_prop ~ age_class + counted_when + (1 | colonyID) + (1 | 
-## Model:     bead_color)
+## Model: s_cum_prop ~ age_class + poly(as.numeric(counted_when), 2) + 
+## Model:     (1 | colonyID) + (1 | bead_color)
 ## Data: s.tidydat.mod
-##         Effect        df         F p.value
-## 1    age_class  3, 28.31   4.57 **    .010
-## 2 counted_when 7, 284.62 10.33 ***   &lt;.001
+##                              Effect        df         F p.value
+## 1                         age_class  2, 29.45    5.05 *    .013
+## 2 poly(as.numeric(counted_when), 2) 2, 288.33 35.67 ***   &lt;.001
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;+&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 <div id="prelim-analyses-ii" class="section level2">
 <h2>Prelim Analyses II</h2>
-<pre class="r"><code>mod.full.2 &lt;- lme4::lmer(s2_cum_prop ~ age_class + counted_when + (1|colonyID) + (1|bead_color) ,
+<pre class="r"><code>mod.full.2 &lt;- lme4::lmer(s2_cum_prop ~ age_class + poly(as.numeric(counted_when), 2) + (1|colonyID) + (1|bead_color) ,
                  data=s.tidydat.mod, REML=F)
-mod.red.2 &lt;- lme4::lmer(s2_cum_prop ~ counted_when + (1|colonyID) + (1|bead_color) ,
+mod.red.2 &lt;- lme4::lmer(s2_cum_prop ~ poly(as.numeric(counted_when), 2) + (1|colonyID) + (1|bead_color) ,
                  data=s.tidydat.mod, REML=F)
 anova(mod.full.2, mod.red.2, test=&quot;Chisq&quot;)</code></pre>
 <pre><code>## Data: s.tidydat.mod
 ## Models:
-## mod.red.2: s2_cum_prop ~ counted_when + (1 | colonyID) + (1 | bead_color)
-## mod.full.2: s2_cum_prop ~ age_class + counted_when + (1 | colonyID) + (1 | 
-## mod.full.2:     bead_color)
+## mod.red.2: s2_cum_prop ~ poly(as.numeric(counted_when), 2) + (1 | colonyID) + 
+## mod.red.2:     (1 | bead_color)
+## mod.full.2: s2_cum_prop ~ age_class + poly(as.numeric(counted_when), 2) + 
+## mod.full.2:     (1 | colonyID) + (1 | bead_color)
 ##            Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)
-## mod.red.2  11 790.29 831.92 -384.15   768.29                         
-## mod.full.2 14 794.20 847.18 -383.10   766.20 2.0932      3     0.5533</code></pre>
+## mod.red.2   6 781.30 804.00 -384.65   769.30                         
+## mod.full.2  8 783.55 813.82 -383.78   767.55 1.7496      2     0.4169</code></pre>
 <pre class="r"><code>## Let&#39;s look at the summary of the model
 lmerTest::ranova(mod.full.2)</code></pre>
 <pre><code>## ANOVA-like table for random-effects: Single term deletions
 ## 
 ## Model:
-## s2_cum_prop ~ age_class + counted_when + (1 | colonyID) + (1 | bead_color)
+## s2_cum_prop ~ age_class + poly(as.numeric(counted_when), 2) + (1 | colonyID) + (1 | bead_color)
 ##                  npar  logLik    AIC    LRT Df Pr(&gt;Chisq)    
-## &lt;none&gt;             14 -383.10 794.20                         
-## (1 | colonyID)     13 -421.09 868.18 75.979  1  &lt; 2.2e-16 ***
-## (1 | bead_color)   13 -394.87 815.75 23.547  1  1.219e-06 ***
+## &lt;none&gt;              8 -383.78 783.55                         
+## (1 | colonyID)      7 -422.32 858.64 77.092  1  &lt; 2.2e-16 ***
+## (1 | bead_color)    7 -400.58 815.16 33.604  1  6.756e-09 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>## Calculate the p-values for the fixed effects
 ## Source: https://mspeekenbrink.github.io/sdam-r-companion/linear-mixed-effects-models.html
-afex::mixed(s2_cum_prop ~ age_class + counted_when + (1|colonyID) + (1|bead_color) ,
+afex::mixed(formula(mod.full.2),
                  data=s.tidydat.mod, check_contrasts = T, test_intercept = F, method=&quot;KR&quot;)</code></pre>
 <pre><code>## Mixed Model Anova Table (Type 3 tests, KR-method)
 ## 
-## Model: s2_cum_prop ~ age_class + counted_when + (1 | colonyID) + (1 | 
-## Model:     bead_color)
+## Model: s2_cum_prop ~ age_class + poly(as.numeric(counted_when), 2) + 
+## Model:     (1 | colonyID) + (1 | bead_color)
 ## Data: s.tidydat.mod
-##         Effect        df        F p.value
-## 1    age_class  3, 28.05     0.64    .597
-## 2 counted_when 7, 284.19 7.95 ***   &lt;.001
+##                              Effect        df         F p.value
+## 1                         age_class  2, 29.28      0.82    .448
+## 2 poly(as.numeric(counted_when), 2) 2, 288.86 27.76 ***   &lt;.001
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;+&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>## Compare the two full models
-AIC(mod.full.1, mod.full.2)</code></pre>
-<pre><code>##            df        AIC
-## mod.full.1 14 -1884.6651
-## mod.full.2 14   794.2015</code></pre>
-<pre class="r"><code>BIC(mod.full.1, mod.full.2)</code></pre>
-<pre><code>##            df        BIC
-## mod.full.1 14 -1831.6916
-## mod.full.2 14   847.1751</code></pre>
 <pre class="r"><code>## Checking to see how the model predictions compare against observed values
-x &lt;- predict(mod.full.1)
-y &lt;- s.tidydat.mod %&gt;% pull(s_cum_prop)
+x &lt;- predict(mod.full.2)
+y &lt;- s.tidydat.mod %&gt;% pull(s2_cum_prop)
 xy &lt;- data.frame(x,y)
 xy %&gt;% 
 ggplot(aes(x=x, y=y)) +
@@ -1787,21 +1776,22 @@ lm(x~y) %&gt;% summary()</code></pre>
 ## lm(formula = x ~ y)
 ## 
 ## Residuals:
-##        Min         1Q     Median         3Q        Max 
-## -0.0244711 -0.0050128  0.0001236  0.0041253  0.0251014 
+##      Min       1Q   Median       3Q      Max 
+## -1.37614 -0.28577 -0.02071  0.29168  1.27926 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 0.0072776  0.0007032   10.35   &lt;2e-16 ***
-## y           0.6611423  0.0243347   27.17   &lt;2e-16 ***
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.70174    0.04243   16.54   &lt;2e-16 ***
+## y            0.48652    0.02511   19.37   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.008482 on 323 degrees of freedom
-## Multiple R-squared:  0.6956, Adjusted R-squared:  0.6947 
-## F-statistic: 738.1 on 1 and 323 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 0.4498 on 323 degrees of freedom
+## Multiple R-squared:  0.5375, Adjusted R-squared:  0.5361 
+## F-statistic: 375.4 on 1 and 323 DF,  p-value: &lt; 2.2e-16</code></pre>
 <pre class="r"><code># How do the residuals look?
-residuals(mod.full.1) %&gt;% plot(main=&quot;Residuals for model mod.full.1&quot;)</code></pre>
+residuals(mod.full.2) %&gt;% plot(main=&quot;Residuals for model mod.full.1&quot;)
+abline(0,0, col=&quot;red&quot;)</code></pre>
 <p><img src="bead_data_2022_files/figure-html/prelim_analyses_v2-2.png" width="672" /></p>
 </div>
 <div id="prelim-analyses-iii" class="section level2">
@@ -1809,7 +1799,7 @@ residuals(mod.full.1) %&gt;% plot(main=&quot;Residuals for model mod.full.1&quot
 <blockquote>
 <p>Using prop_foraging_30s as a fixed effect</p>
 </blockquote>
-<pre class="r"><code>mod.full.3 &lt;- lme4::lmer(cum_prop ~ age_class + counted_when + prop_foraging_30s + (1|colonyID) + (1|bead_color) ,
+<pre class="r"><code>mod.full.3 &lt;- lme4::lmer(cum_prop ~ age_class + poly(as.numeric(counted_when), 2) + prop_foraging_30s + (1|colonyID) + (1|bead_color) ,
                  data=s.tidydat.mod, REML=F)
 # mod.red.3a &lt;- lme4::lmer(s2_cum_prop ~ counted_when + prop_foraging_30s + (1|colonyID) + (1|bead_color) ,
 #                  data=s.tidydat.mod, REML=F)
@@ -1820,17 +1810,7 @@ residuals(mod.full.1) %&gt;% plot(main=&quot;Residuals for model mod.full.1&quot
 # # Do prop_foraging_30s has a significant effect
 # anova(mod.full.3, mod.red.3b, test=&quot;Chisq&quot;)
 
-
-## Compare the two full models
-AIC(mod.full.1, mod.full.3)</code></pre>
-<pre><code>##            df        AIC
-## mod.full.1 14 -1884.6651
-## mod.full.3 15  -187.3788</code></pre>
-<pre class="r"><code>BIC(mod.full.1, mod.full.3)</code></pre>
-<pre><code>##            df        BIC
-## mod.full.1 14 -1831.6916
-## mod.full.3 15  -130.6214</code></pre>
-<pre class="r"><code>## Checking to see how the model predictions compare against observed values
+## Checking to see how the model predictions compare against observed values
 x &lt;- predict(mod.full.3)
 y &lt;- s.tidydat.mod %&gt;% pull(cum_prop)
 xy &lt;- data.frame(x,y)
@@ -1852,144 +1832,482 @@ lm(x~y) %&gt;% summary()</code></pre>
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -0.38351 -0.06897  0.02171  0.07697  0.32729 
+## -0.38269 -0.06801  0.01660  0.07774  0.32767 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  0.23107    0.01687   13.70   &lt;2e-16 ***
-## y            0.63269    0.02483   25.48   &lt;2e-16 ***
+## (Intercept)  0.23387    0.01687   13.86   &lt;2e-16 ***
+## y            0.62825    0.02484   25.29   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.1147 on 323 degrees of freedom
-## Multiple R-squared:  0.6679, Adjusted R-squared:  0.6668 
-## F-statistic: 649.5 on 1 and 323 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 0.1148 on 323 degrees of freedom
+## Multiple R-squared:  0.6645, Adjusted R-squared:  0.6634 
+## F-statistic: 639.7 on 1 and 323 DF,  p-value: &lt; 2.2e-16</code></pre>
 <pre class="r"><code># How do the residuals look?
-residuals(mod.full.3) %&gt;% plot(main=&quot;Residuals for model mod.full.3&quot;)</code></pre>
+residuals(mod.full.3) %&gt;% plot(main=&quot;Residuals for model mod.full.3&quot;)
+abline(0,0, col=&quot;red&quot;)</code></pre>
 <p><img src="bead_data_2022_files/figure-html/prelim_analyses_v3-2.png" width="672" /></p>
 </div>
-<div id="other-analyses" class="section level2">
-<h2>Other analyses</h2>
-<div id="linear-model" class="section level3">
-<h3>linear model</h3>
-</div>
-<div id="binomial-regression" class="section level3">
-<h3>binomial regression</h3>
-</div>
-<div id="generalized-additive-mixed-model" class="section level3">
-<h3>generalized additive mixed model</h3>
+<div id="additive-models" class="section level2">
+<h2>Additive models</h2>
 <blockquote>
-<p>Run GAM instead of lme4::lmer()</p>
+<p>using response variable: cum_prop</p>
 </blockquote>
-<p><a href="https://fromthebottomoftheheap.net/2021/02/02/random-effects-in-gams/">read more here</a></p>
-<pre class="r"><code>mod.gam.1 &lt;- mgcv::gam(s_cum_prop ~ age_class + counted_when + s(colonyID, bs=&quot;re&quot;) + s(bead_color, bs=&quot;re&quot;), 
-                       data = s.tidydat.mod, method=&quot;REML&quot;)
-mod.gam.1.1 &lt;- mgcv::gam(s_cum_prop ~ age_class + as.numeric(counted_when) + prop_foraging_30s + s(colonyID, bs=&quot;re&quot;) + s(bead_color, bs=&quot;re&quot;), 
-                       data = s.tidydat.mod, method=&quot;REML&quot;)
-mod.gam.1.2 &lt;- mgcv::gam(s_cum_prop ~ age_class + s(as.numeric(counted_when), bs=&quot;cr&quot;, k=4) + prop_foraging_30s + 
-                           s(colonyID, bs=&quot;re&quot;) + s(bead_color, bs=&quot;re&quot;),
-                         data = s.tidydat.mod, method=&quot;REML&quot;)
-mod.gam.1.3 &lt;- mgcv::gam(s_cum_prop ~ s(age_obs, bs=&quot;cr&quot;) + s(as.numeric(counted_when), bs=&quot;cr&quot;, k=4) + prop_foraging_30s + 
-                           s(colonyID, bs=&quot;re&quot;) + s(bead_color, bs=&quot;re&quot;),
-                         data = s.tidydat.mod, method=&quot;REML&quot;)
-mod.gam.1.4 &lt;- mgcv::gam(s_cum_prop ~ s(age_obs, bs=&quot;cr&quot;) + s(as.numeric(counted_when), bs=&quot;cr&quot;, k=4) + prop_foraging_30s,
-                         data = s.tidydat.mod, method=&quot;REML&quot;)
-
-AIC(mod.full.1, mod.full.3, 
-    mod.gam.1, 
-    mod.gam.1.1, mod.gam.1.2, 
-    mod.gam.1.3, mod.gam.1.4)</code></pre>
-<pre><code>##                   df        AIC
-## mod.full.1  14.00000 -1884.6651
-## mod.full.3  15.00000  -187.3788
-## mod.gam.1   40.56152 -1946.8340
-## mod.gam.1.1 37.02491 -2078.1549
-## mod.gam.1.2 38.90315 -2099.2858
-## mod.gam.1.3 40.15279 -2100.7829
-## mod.gam.1.4 13.58521 -1807.7270</code></pre>
-<pre class="r"><code>summary(mod.gam.1.2)</code></pre>
+<div id="model-1" class="section level3">
+<h3>model 1:</h3>
+<p>cum_prop ~ f(counted_when) + e</p>
+<pre class="r"><code>gam.1 &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;), data = s.tidydat.mod)
+## Select model
+which.mod &lt;- gam.1
+## Summarize model
+summary(which.mod)</code></pre>
 <pre><code>## 
 ## Family: gaussian 
 ## Link function: identity 
 ## 
 ## Formula:
-## s_cum_prop ~ age_class + s(as.numeric(counted_when), bs = &quot;cr&quot;, 
-##     k = 4) + prop_foraging_30s + s(colonyID, bs = &quot;re&quot;) + s(bead_color, 
-##     bs = &quot;re&quot;)
+## cum_prop ~ s(as.numeric(counted_when), k = 8, bs = &quot;cr&quot;)
 ## 
 ## Parametric coefficients:
-##                    Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)        0.055679   0.005610   9.925   &lt;2e-16 ***
-## age_class3-4_yr   -0.014921   0.006611  -2.257   0.0248 *  
-## age_class5-9_yr   -0.017797   0.009540  -1.866   0.0631 .  
-## age_class10+_yr   -0.008969   0.006528  -1.374   0.1705    
-## prop_foraging_30s -0.037356   0.002930 -12.752   &lt;2e-16 ***
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.62911    0.01198   52.51   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Approximate significance of smooth terms:
-##                                edf Ref.df     F  p-value    
-## s(as.numeric(counted_when))  2.518   2.82 40.75  &lt; 2e-16 ***
-## s(colonyID)                 26.323  28.00 19.48  &lt; 2e-16 ***
-## s(bead_color)                3.371   4.00 43.78 1.74e-07 ***
+##                               edf Ref.df     F p-value    
+## s(as.numeric(counted_when)) 2.503  3.072 43.31  &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## R-sq.(adj) =  0.783   Deviance explained = 80.7%
-## -REML = -988.8  Scale est. = 8.1491e-05  n = 325</code></pre>
-<pre class="r"><code>plot(mod.gam.1.2)</code></pre>
-<p><img src="bead_data_2022_files/figure-html/unnamed-chunk-1-1.png" width="672" /><img src="bead_data_2022_files/figure-html/unnamed-chunk-1-2.png" width="672" /><img src="bead_data_2022_files/figure-html/unnamed-chunk-1-3.png" width="672" /></p>
-<pre class="r"><code>## Let&#39;s check the model fit
-s.tidydat.mod %&gt;% 
-  
-  # response variable: s_cum_prop
-  mutate(pred_s_cum_prop = predict(mod.full.1)) %&gt;%
-  # mutate(pred_s_cum_prop = predict(mod.gam.1.2)) %&gt;%
-  group_by(age_class, counted_when) %&gt;%
-  summarise(mean_pred = mean(pred_s_cum_prop),
-            ci95 = 1.96*sd(pred_s_cum_prop)/sqrt(n())) %&gt;%
-  right_join(s.tidydat.mod) %&gt;%
-  ggplot(aes(x=counted_when, y=s_cum_prop)) +
-  
-  # # response variable: s2_cum_prop
-  # mutate(pred_s2_cum_prop = predict(mod.full.2)) %&gt;%
-  # # mutate(pred_s_cum_prop = predict(mod.gam.1.2)) %&gt;% 
-  # group_by(age_class, counted_when) %&gt;% 
-  # summarise(mean_pred = mean(pred_s2_cum_prop),
-  #           ci95 = 1.96*sd(pred_s2_cum_prop)/sqrt(n())) %&gt;% 
-  # right_join(s.tidydat.mod) %&gt;% 
-  # ggplot(aes(x=counted_when, y=s2_cum_prop)) +
+## R-sq.(adj) =  0.292   Deviance explained = 29.8%
+## GCV = 0.047164  Scale est. = 0.046655  n = 325</code></pre>
+<pre class="r"><code>## Model validation
+### using functions from mgcv package
+par(mfrow=c(2,2))
+gam.check(which.mod)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/gam_v1-1.png" width="672" /></p>
+<pre><code>## 
+## Method: GCV   Optimizer: magic
+## Smoothing parameter selection converged after 5 iterations.
+## The RMS GCV score gradient at convergence was 3.980396e-07 .
+## The Hessian was positive definite.
+## Model rank =  8 / 8 
+## 
+## Basis dimension (k) checking results. Low p-value (k-index&lt;1) may
+## indicate that k is too low, especially if edf is close to k&#39;.
+## 
+##                              k&#39; edf k-index p-value
+## s(as.numeric(counted_when)) 7.0 2.5    0.93     0.1</code></pre>
+<pre class="r"><code>par(mfrow=c(1,1))
 
-  # # response variable: cum_prop
-  # mutate(pred_cum_prop = predict(mod.full.3)) %&gt;%
-  # # mutate(pred_s_cum_prop = predict(mod.gam.1.2)) %&gt;% 
-  # group_by(age_class, counted_when) %&gt;% 
-  # summarise(mean_pred = mean(pred_cum_prop),
-  #           ci95 = 1.96*sd(pred_cum_prop)/sqrt(n())) %&gt;% 
-  # right_join(s.tidydat.mod) %&gt;% 
-  # ggplot(aes(x=counted_when, y=cum_prop)) +
+### manually (as per Zurr&#39;s book, p51-p57)
+### let&#39;s make a function that takes a gam model and creates these plots
+mod.validate &lt;- function(mod) {
+  which.mod &lt;- mod
+  ### Independence - 1
+  p1 &lt;- s.tidydat.mod %&gt;% mutate(residuals = resid(which.mod), fitted_values = fitted(which.mod)) %&gt;% 
+    ggplot(aes(x=cum_prop, y=residuals)) +
+    geom_abline(intercept = 0, slope = 0, col=&quot;red&quot;) +
+    geom_jitter(width=0.01, shape=21, size=2) +
+    theme_Publication()
+    #### Note: if the points are NOT evenly scattered around the red line indicates that the model violates
+    ####    the normality assumption (which is likely the case sense since cum_prop data are temporally correlated)
+  ### Independence - 2
+  p2 &lt;- s.tidydat.mod %&gt;% mutate(residuals = resid(which.mod), fitted_values = fitted(which.mod)) %&gt;% 
+    ggplot(aes(x=age_class, y=residuals)) +
+    geom_boxplot() +
+    geom_abline(intercept = 0, slope = 0, col=&quot;red&quot;) +
+    theme_Publication()
+    #### Note: most residuals for 5-9 year old colonies have positive values, suggesting that the covariate &quot;age-class&quot;
+    ####    should be added to the model (as per Zurr&#39;s book, pg. 51)
+  ### Independence - 3
+  p3 &lt;- s.tidydat.mod %&gt;% mutate(residuals = resid(which.mod), fitted_values = fitted(which.mod)) %&gt;% 
+    ggplot(aes(x=age_obs, y=residuals)) +
+    geom_abline(intercept = 0, slope = 0, col=&quot;red&quot;) +
+    geom_jitter(width=0.01, shape=21, size=2) +
+    theme_Publication()
+    #### Note:
+  ### Independence - 4
+  p4 &lt;- s.tidydat.mod %&gt;% mutate(residuals = resid(which.mod), fitted_values = fitted(which.mod)) %&gt;% 
+    ggplot(aes(x=prop_foraging_30s, y=residuals)) +
+    geom_abline(intercept = 0, slope = 0, col=&quot;red&quot;) +
+    geom_jitter(width=0.01, shape=21, size=2) +
+    theme_Publication()
+  ### Independence - 5
+  p5 &lt;- s.tidydat.mod %&gt;% mutate(residuals = resid(which.mod), fitted_values = fitted(which.mod)) %&gt;% 
+    ggplot(aes(x=bead_color, y=residuals)) +
+    geom_boxplot() +
+    geom_abline(intercept = 0, slope = 0, col=&quot;red&quot;) +
+    theme_Publication()
   
+  ## combine the plots and return as output
+  return((p1+p2)/(p3+p4)/p5)
+}
+# check model assumptions
+mod.validate(gam.1)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/gam_v1-2.png" width="672" /></p>
+</div>
+<div id="model-2" class="section level3">
+<h3>model 2:</h3>
+<p>cum_prop ~ f(counted_when) + f(age) + e</p>
+<pre class="r"><code>gam.2a &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;) + age_class, data = s.tidydat.mod)
+gam.2b &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;, by=age_class) + age_class, data = s.tidydat.mod)
+gam.2c &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;) + s(age_obs, k=8, bs=&quot;cr&quot;), data = s.tidydat.mod)
+## Compare models
+AIC(gam.1, gam.2a, gam.2b, gam.2c)</code></pre>
+<pre><code>##               df       AIC
+## gam.1   4.502915 -68.32035
+## gam.2a  6.500171 -70.11033
+## gam.2b 10.908133 -64.92234
+## gam.2c 10.390860 -97.18381</code></pre>
+<pre class="r"><code>## Select model
+which.mod &lt;- gam.2c
+## Summarize model
+summary(which.mod)</code></pre>
+<pre><code>## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## cum_prop ~ s(as.numeric(counted_when), k = 8, bs = &quot;cr&quot;) + s(age_obs, 
+##     k = 8, bs = &quot;cr&quot;)
+## 
+## Parametric coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.62911    0.01136   55.38   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Approximate significance of smooth terms:
+##                               edf Ref.df      F  p-value    
+## s(as.numeric(counted_when)) 2.575  3.157 46.770  &lt; 2e-16 ***
+## s(age_obs)                  5.815  6.427  5.949 4.17e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## R-sq.(adj) =  0.364   Deviance explained =   38%
+## GCV = 0.043187  Scale est. = 0.041939  n = 325</code></pre>
+<pre class="r"><code>## Model validation
+### using functions from mgcv package
+par(mfrow=c(2,2))
+gam.check(which.mod)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/gam_v2-1.png" width="672" /></p>
+<pre><code>## 
+## Method: GCV   Optimizer: magic
+## Smoothing parameter selection converged after 6 iterations.
+## The RMS GCV score gradient at convergence was 2.284708e-07 .
+## The Hessian was positive definite.
+## Model rank =  15 / 15 
+## 
+## Basis dimension (k) checking results. Low p-value (k-index&lt;1) may
+## indicate that k is too low, especially if edf is close to k&#39;.
+## 
+##                               k&#39;  edf k-index p-value    
+## s(as.numeric(counted_when)) 7.00 2.58    1.03     0.7    
+## s(age_obs)                  7.00 5.82    0.43  &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>par(mfrow=c(1,1))
+### manually
+mod.validate(which.mod)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/gam_v2-2.png" width="672" /></p>
+</div>
+<div id="model-3" class="section level3">
+<h3>model 3:</h3>
+<p>cum_prop ~ f(counted_when) + f(age) + f(prop_foraging_30s) + e</p>
+<pre class="r"><code>gam.3a &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;) + s(age_obs, k=8, bs=&quot;cr&quot;) +
+                s(prop_foraging_30s, bs=&quot;cr&quot;),
+                data = s.tidydat.mod)
+gam.3b &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;) + s(age_obs, k=8, bs=&quot;cr&quot;) +
+                s(foraging_30s, bs=&quot;cr&quot;),
+                data = s.tidydat.mod)
+gam.3c &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;) + s(age_obs, k=8, bs=&quot;cr&quot;) +
+                s(max_foraging_30s, bs=&quot;cr&quot;),
+                data = s.tidydat.mod %&gt;% ungroup() %&gt;%  
+                  mutate(max_foraging_30s = as.integer(foraging_30s*prop_foraging_30s)))
+gam.3bc &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;) + s(age_obs, k=8, bs=&quot;cr&quot;) +
+                s(max_foraging_30s, bs=&quot;cr&quot;) + s(foraging_30s, bs=&quot;cr&quot;),
+                data = s.tidydat.mod %&gt;% ungroup() %&gt;%  
+                  mutate(max_foraging_30s = as.integer(foraging_30s*prop_foraging_30s)))
+## adding interaction term between time and numerical age of observation
+gam.3d &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;, by=age_obs) + s(age_obs, k=8, bs=&quot;cr&quot;) +
+                s(max_foraging_30s, bs=&quot;cr&quot;),
+                data = s.tidydat.mod %&gt;% ungroup() %&gt;%  
+                  mutate(max_foraging_30s = as.integer(foraging_30s*prop_foraging_30s)))
+## same as gam.3c but using age-class (categorical) instead of age at observation (numerical)
+gam.3e &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;) + s(age_class, bs=&quot;fs&quot;) +
+                s(max_foraging_30s, bs=&quot;cr&quot;),
+                data = s.tidydat.mod %&gt;% ungroup() %&gt;%  
+                  mutate(max_foraging_30s = as.integer(foraging_30s*prop_foraging_30s)))
+## adding interaction term between time and age-class
+gam.3f &lt;- gam(cum_prop ~ s(as.numeric(counted_when), k=8, bs=&quot;cr&quot;, by=age_class) + s(age_class, bs=&quot;fs&quot;) +
+                s(max_foraging_30s, bs=&quot;cr&quot;),
+                data = s.tidydat.mod %&gt;% ungroup() %&gt;%  
+                  mutate(max_foraging_30s = as.integer(foraging_30s*prop_foraging_30s)))
+
+## Compare models
+AIC(gam.1, gam.2c, gam.3a, 
+    gam.3b, # seems to be the best performing model so far
+    gam.3c, # seems to be the second best performing model so far
+    gam.3bc, gam.3d, gam.3e, gam.3f)</code></pre>
+<pre><code>##                df        AIC
+## gam.1    4.502915  -68.32035
+## gam.2c  10.390860  -97.18381
+## gam.3a  18.869726  -99.43594
+## gam.3b  21.624734 -120.40695
+## gam.3c  18.921541 -116.21118
+## gam.3bc 28.311435 -135.56354
+## gam.3d  18.262454  -51.04927
+## gam.3e  14.921409 -103.58476
+## gam.3f  18.951208  -97.90827</code></pre>
+<pre class="r"><code>## Select model
+which.mod &lt;- gam.3bc
+## Summarize model
+summary(which.mod)</code></pre>
+<pre><code>## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## cum_prop ~ s(as.numeric(counted_when), k = 8, bs = &quot;cr&quot;) + s(age_obs, 
+##     k = 8, bs = &quot;cr&quot;) + s(max_foraging_30s, bs = &quot;cr&quot;) + s(foraging_30s, 
+##     bs = &quot;cr&quot;)
+## 
+## Parametric coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.62911    0.01043   60.29   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Approximate significance of smooth terms:
+##                               edf Ref.df      F  p-value    
+## s(as.numeric(counted_when)) 4.981  5.875 30.094  &lt; 2e-16 ***
+## s(age_obs)                  6.482  6.857  5.876 3.21e-06 ***
+## s(max_foraging_30s)         8.300  8.789  3.208 0.000836 ***
+## s(foraging_30s)             6.549  7.489  3.806 0.000422 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## R-sq.(adj) =  0.463   Deviance explained = 50.7%
+## GCV = 0.038632  Scale est. = 0.035386  n = 325</code></pre>
+<pre class="r"><code>## Model validation
+### using functions from mgcv package
+par(mfrow=c(2,2))
+gam.check(which.mod)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/gam_v3-1.png" width="672" /></p>
+<pre><code>## 
+## Method: GCV   Optimizer: magic
+## Smoothing parameter selection converged after 15 iterations.
+## The RMS GCV score gradient at convergence was 2.533485e-07 .
+## The Hessian was positive definite.
+## Model rank =  33 / 33 
+## 
+## Basis dimension (k) checking results. Low p-value (k-index&lt;1) may
+## indicate that k is too low, especially if edf is close to k&#39;.
+## 
+##                               k&#39;  edf k-index p-value    
+## s(as.numeric(counted_when)) 7.00 4.98    0.95    0.16    
+## s(age_obs)                  7.00 6.48    0.46  &lt;2e-16 ***
+## s(max_foraging_30s)         9.00 8.30    0.45  &lt;2e-16 ***
+## s(foraging_30s)             9.00 6.55    0.48  &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>par(mfrow=c(1,1))
+### manually
+mod.validate(which.mod)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/gam_v3-2.png" width="672" /></p>
+<pre class="r"><code># Let&#39;s see how this model fits the data
+### option 1
+vis.gam(which.mod, theta=250, color=&quot;heat&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/gam_v3-3.png" width="672" /></p>
+<pre class="r"><code># vis.gam(gam.3e, theta=250, color=&quot;heat&quot;)
+### option 2
+s.tidydat.mod %&gt;% 
+  mutate(pred = predict(which.mod)) %&gt;% 
+  group_by(age_class, counted_when) %&gt;% 
+  summarize(mPred = mean(pred)) %&gt;% 
+  right_join(s.tidydat.mod) %&gt;% 
+  ggplot(aes(x=counted_when)) +
+    geom_boxplot(aes(y=cum_prop, fill=age_class), alpha=0.5) +
+    # geom_jitter(aes(y=cum_prop, col=age_class), size=2, width=0.3) +
+    # geom_line(aes(y=cum_prop, group=interaction(colonyID, bead_color)), col=&quot;grey60&quot;, alpha=0.5, size=2) +
+    geom_line(aes(y=mPred, group=age_class, col=age_class), size=2.5) +
+    # facet_wrap(~age_class) +
+    scale_color_manual(values=age_colors) +
+    scale_fill_manual(values=age_colors) +
+    theme_Publication(base_size = 20)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/gam_v3-4.png" width="672" /></p>
+<blockquote>
+<p>SO, where are we at?</p>
+</blockquote>
+<p>There are issues we still need to deal with. (see Zurr 2013, section 2.5)</p>
+<ul>
+<li>Independece issue 1: the residual v. cum_prop graph shows that the residuals are not randomly distributed around the 0,0 line; there is a trend which might be due to temporal correlation present in our data (cum_prop of one time point depends on the cum_prop of previous time point(s)).</li>
+<li>Independece issue 2: the residual v. bead_color graph shows that there is “batch” effects; different replicate (bead_color used) shows slight different distribution of the residuals. We need to add <em>bead_color</em> as a random effect (see Zurr 2013 for ideas)</li>
+<li>The model might improve by relaxing the assumption that the residual errors for different age-classes follow the same distribution (here, considered to be normally distributed around 0). As you can see from the histogram of residuals, the distribution is bell-shaped but not centered at 0.(See Zurr, section 2.8 for allowing heterogeniety)</li>
+<li></li>
+</ul>
+</div>
+</div>
+<div id="part-two" class="section level2">
+<h2>Part TWO</h2>
+</div>
+<div id="foraging-v.-bead-returns" class="section level2">
+<h2>Foraging v. bead returns</h2>
+<div id="foraging-on-day-1" class="section level3">
+<h3>foraging on Day 1</h3>
+<pre class="r"><code>s.tidydat.mod %&gt;% 
+  group_by(colonyID, bead_color) %&gt;% 
+  summarize(mBeadreturned = max(cum_prop)) %&gt;% 
+  right_join(s.tidydat.mod) %&gt;% 
   
-  # scale_x_continuous(limits = c(0,0.1)) +
-  # scale_y_continuous(limits = c(0,0.1)) +
+  select(colonyID:age_class, foraging_30s, prop_foraging_30s, -date) %&gt;% 
+  distinct() %&gt;% 
   
-  geom_jitter(color=&quot;grey60&quot;, size=2, alpha=0.5, width = 0.2) +
+  ggplot(aes(x=foraging_30s, y=mBeadreturned)) +
+    geom_jitter(aes(fill=age_class), size=5, shape=21, width=0, alpha=0.8) +
+    facet_wrap(age_class~., nrow = 2) +
+    geom_smooth(method = &quot;gam&quot;) +
+    scale_color_manual(values=age_colors) +
+    # scale_x_continuous(limits = c(0,1)) +
+    theme_Publication(base_size = 15) +
+  labs(x = &quot;total foraging for 30s on D1&quot;,
+       y= &quot;proportion of beads \nreturned at end of exp.&quot;,
+       subtitle = &quot;&quot;,
+       caption = &quot;&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/for_v1-1.png" width="672" /></p>
+<pre class="r"><code>## 2
+s.tidydat.mod %&gt;% 
+  group_by(colonyID, bead_color) %&gt;% 
+  summarize(mBeadreturned = max(cum_prop)) %&gt;% 
+  right_join(s.tidydat.mod) %&gt;% 
   
-  geom_line(aes(y=mean_pred, x=counted_when, color=age_class, group=age_class), alpha=1, size=3) +
-  geom_line(aes(y=mean_pred-ci95, x=counted_when, color=age_class, group=age_class), lty=2, alpha=1, size=1.5) +
-  geom_line(aes(y=mean_pred+ci95, x=counted_when, color=age_class, group=age_class), lty=2, alpha=1, size=1.5) +
+  select(colonyID:age_class, foraging_30s, prop_foraging_30s, -date) %&gt;% 
+  distinct() %&gt;% 
   
-  facet_wrap(age_class~., nrow=2) +
-  
-  theme_Publication(base_size = 20) +
-  labs(x=&quot;time&quot;) +
+  ggplot(aes(x=foraging_30s, y=mBeadreturned, col=age_class)) +
+  geom_hline(yintercept=0.75, col=age_colors[4], size=1) +
+  geom_vline(xintercept=100, col=age_colors[4], size=1) +
+  # geom_smooth(method = &quot;lm&quot;, se=F, size=1.5, alpha=0.7) +
+  geom_point(size=3, alpha=0.8, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=2, alpha=0.7) +
+  facet_wrap(colonyID~., nrow=6) +
+  theme_bw(base_size = 8) +
+  # theme(axis.title.x=element_blank(),
+  #       axis.text.x=element_blank())+
+  scale_fill_manual(values = age_colors) +
   scale_color_manual(values = age_colors) +
-  theme(axis.text.x = element_blank())</code></pre>
-<p><img src="bead_data_2022_files/figure-html/unnamed-chunk-1-4.png" width="672" /></p>
-<pre class="r"><code># ## What about a GAMM?
-# mod.gam.2 &lt;- mgcv::gamm(s2_cum_prop ~ age_class + s(as.numeric(counted_when), bs=&quot;cr&quot;, k=5),
-#                         random=list(colonyID=~1, bead_color=~1), data = s.tidydat.mod)
-# plot(mod.gam.2$gam)</code></pre>
+  
+  labs(x = &quot;total foraging for 30s on D1&quot;,
+       y= &quot;proportion of beads \nreturned at end of exp.&quot;,
+       subtitle = &quot;&quot;,
+       caption = &quot;&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/for_v1-2.png" width="672" /></p>
+</div>
+<div id="proportion-of-foragers-on-day-1" class="section level3">
+<h3>proportion of foragers on Day 1</h3>
+<pre class="r"><code>## 1
+s.tidydat.mod %&gt;% 
+  group_by(colonyID, bead_color) %&gt;% 
+  summarize(mBeadreturned = max(cum_prop)) %&gt;% 
+  right_join(s.tidydat.mod) %&gt;% 
+  ungroup() %&gt;% 
+  select(colonyID:age_class, foraging_30s, prop_foraging_30s, -date) %&gt;% 
+  distinct() %&gt;% 
+  
+  ggplot(aes(x=prop_foraging_30s, y=mBeadreturned)) +
+    geom_jitter(aes(fill=age_class), shape=21, width=0, alpha=0.8, size=5) +
+    facet_wrap(age_class~., nrow = 2) +
+    geom_smooth(method = &quot;gam&quot;) +
+    scale_color_manual(values=age_colors) +
+    # scale_x_continuous(limits = c(0,1)) +
+    theme_Publication(base_size = 15) +
+  labs(x = &quot;proportion of foragers out on D1&quot;,
+       y= &quot;proportion of beads \nreturned at end of exp.&quot;,
+       subtitle = &quot;&quot;,
+       caption = &quot;&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/for_v2-1.png" width="672" /></p>
+<pre class="r"><code>## 2
+s.tidydat.mod %&gt;% 
+  group_by(colonyID, bead_color) %&gt;% 
+  summarize(mBeadreturned = max(cum_prop)) %&gt;% 
+  right_join(s.tidydat.mod) %&gt;% 
+  ungroup() %&gt;% 
+  select(colonyID:age_class, foraging_30s, prop_foraging_30s, -date) %&gt;% 
+  distinct() %&gt;% 
+  
+  ggplot(aes(x=prop_foraging_30s, y=mBeadreturned, col=age_class)) +
+  geom_hline(yintercept=0.75, col=age_colors[4], size=1) +
+  geom_vline(xintercept=0.75, col=age_colors[4], size=1) +
+  # geom_smooth(method = &quot;lm&quot;, se=F, size=1.5, alpha=0.7) +
+  geom_point(size=3, alpha=0.8, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=2, alpha=0.7) +
+  facet_wrap(colonyID~., nrow=6) +
+  theme_bw(base_size = 8) +
+  # theme(axis.title.x=element_blank(),
+  #       axis.text.x=element_blank())+
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
+  labs(x = &quot;proportion of foragers out on D1&quot;,
+       y= &quot;proportion of beads \nreturned at end of exp.&quot;,
+       subtitle = &quot;&quot;,
+       caption = &quot;&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/for_v2-2.png" width="672" /></p>
+</div>
+<div id="foraging-and-bead-returns-on-day-1" class="section level3">
+<h3>foraging and bead returns on Day 1</h3>
+<pre class="r"><code>## 1
+s.tidydat.mod %&gt;% 
+  filter(counted_when %in% c(&quot;D1_bN&quot;, &quot;D1_aN&quot;)) %&gt;% 
+  group_by(colonyID, bead_color) %&gt;% 
+  summarize(mBeadreturned = max(cum_prop)) %&gt;% 
+  right_join(s.tidydat.mod) %&gt;% 
+  ungroup() %&gt;% 
+  select(colonyID:age_class, foraging_30s, prop_foraging_30s, -date) %&gt;% 
+  distinct() %&gt;% 
+  
+  ggplot(aes(x=prop_foraging_30s, y=mBeadreturned)) +
+    geom_jitter(aes(fill=age_class), shape=21, width=0, alpha=0.8, size=5) +
+    facet_wrap(age_class~., nrow = 1) +
+    geom_smooth(method = &quot;gam&quot;) +
+    scale_color_manual(values=age_colors) +
+    # scale_x_continuous(limits = c(0,1)) +
+    theme_Publication(base_size = 15) +
+    labs(x = &quot;proportion of foragers out on D1&quot;,
+       y= &quot;max. proportion \nof beads returned on Day 1&quot;,
+       subtitle = &quot;&quot;,
+       caption = &quot;&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/for_v3-1.png" width="672" /></p>
+<pre class="r"><code>## 2
+s.tidydat.mod %&gt;% 
+  filter(counted_when %in% c(&quot;D1_bN&quot;, &quot;D1_aN&quot;)) %&gt;% 
+  group_by(colonyID, bead_color) %&gt;% 
+  summarize(mBeadreturned = max(cum_prop)) %&gt;% 
+  right_join(s.tidydat.mod) %&gt;% 
+  ungroup() %&gt;% 
+  select(colonyID:age_class, foraging_30s, prop_foraging_30s, -date) %&gt;% 
+  distinct() %&gt;% 
+  
+  ggplot(aes(x=prop_foraging_30s, y=mBeadreturned, col=age_class)) +
+  geom_hline(yintercept=0.75, col=age_colors[4], size=1) +
+  geom_vline(xintercept=0.75, col=age_colors[4], size=1) +
+  # geom_smooth(method = &quot;lm&quot;, se=F, size=1.5, alpha=0.7) +
+  geom_point(size=3, alpha=0.8, shape=21, aes(fill=age_class), col=&quot;black&quot;) +
+  # geom_line(aes(group=colonyID), size=2, alpha=0.7) +
+  facet_wrap(colonyID~., nrow=6) +
+  theme_bw(base_size = 8) +
+  # theme(axis.title.x=element_blank(),
+  #       axis.text.x=element_blank())+
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
+  
+  labs(x = &quot;proportion of foragers out on D1&quot;,
+       y= &quot;max. proportion \nof beads returned on Day 1&quot;,
+       subtitle = &quot;&quot;,
+       caption = &quot;&quot;)</code></pre>
+<p><img src="bead_data_2022_files/figure-html/for_v3-2.png" width="672" /></p>
 <hr />
 </div>
 </div>
