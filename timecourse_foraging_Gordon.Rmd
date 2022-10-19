@@ -337,6 +337,7 @@ all.dat <-
     summarize(start_time = min(time),
               end_time = max(time),
               duration = difftime(end_time,start_time, units = "hours") %>% round(.,2)) %>%
+    ungroup() %>% 
     arrange(year,colony_ID) %>% 
     mutate(keep_row = ifelse(duration>=atleast, "yes","no")) %>% 
     right_join(all.dat)
@@ -353,10 +354,9 @@ dat <- dat %>%
 dat <- dat %>%
   mutate(age_class = ifelse(age_when_obs <= 2, "1-2_yr",
                                   ifelse(age_when_obs > 2 & age_when_obs <= 4, "3-4_yr",
-                                         ifelse(age_when_obs >=5 & age_when_obs < 10, "5-9_yr",
-                                         "10+_yr")))) %>% 
+                                         "5+_yr"))) %>% 
   mutate(age_class = factor(age_class,
-                            levels = c("1-2_yr", "3-4_yr", "5-9_yr", "10+_yr")))
+                            levels = c("1-2_yr", "3-4_yr", "5+_yr")))
 
 ```
 
@@ -368,23 +368,6 @@ colonies <- dat %>% arrange(age_when_obs) %>% pull(colony_ID) %>% unique()
 # colonies <- dat %>% pull(colony_ID) %>% unique() %>% sort()
 
 ```
-
-> How many colonies, and which colonies, do we have for each age-class? 
-
-```{r tallying_22Aug22_green_beads}
-dat %>% 
-  mutate(age_when_obs = factor(paste0(age_when_obs, " yr"), 
-                          level=paste0(sort(unique(.$age_when_obs)), " yr"))) %>%
-  group_by(age_when_obs) %>% 
-  summarize(n_colonies = length(unique(colony_ID)),
-            which_colonies = paste(as.character(unique(colony_ID)), collapse = ", ")) %>% 
-  
-  kableExtra::kable(caption = "Colonies used in bead experiments", align = "c") %>%
-  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
-  
-
-```
-
 
 
 ## 4. Visualize the data
@@ -469,11 +452,67 @@ ___
 
 ## 5. Obtain in/out foraging rates
 
+### Data for 2022 field season
+
+```{r 2022_field_season}
+path_to_2022data <- paste0(path_to_repo, "/../../04_field_work/00_data/")
+
+dat.2022 <- read.csv(paste0(path_to_2022data, "timecourse_foraging_2022.csv"), header = T,
+                     stringsAsFactors = F, na.strings = c(""," ","NA")) %>% as_tibble()
+
+dat.2022 <-
+  dat.2022 %>% 
+  select(-was_it_raining, -observer_initial, -obs_1, -obs_2) %>% 
+  filter(!is.na(time)) %>% 
+  arrange(colony_ID) %>%
+  mutate(n_in = select(., starts_with("in")) %>% rowSums(., na.rm = T),
+         n_out = select(., starts_with("out")) %>% rowSums(., na.rm = T)) %>% 
+  select(day, colony_ID, time, n_in, n_out) %>% 
+  # calculate rate as ants/minute
+  mutate(r_in = round(n_in/0.5,2), 
+         r_out = round(n_out/0.5,2)) %>% 
+   
+  
+  mutate(t.obs=as.POSIXct(time,format="%H:%M")) %>%
+  # create the bins here
+  mutate(t.bin = floor_date(t.obs, paste(bin.width,"minutes"))) %>% 
+  
+  group_by(colony_ID, day, t.bin) %>% 
+  summarize(r_in = mean(r_in),
+            r_out = mean(r_out)) %>% 
+  ungroup() %>% 
+  
+  pivot_longer(cols = r_in:r_out,
+               names_to = "inout",
+               values_to = "r_ants") %>% 
+  
+  mutate(inout = ifelse(inout=="r_in", "In", "Out")) %>% 
+  mutate(day = as.POSIXct(day, format="%m/%d/%y")) %>% 
+  mutate(day = as.character(day))
+
+## colony age info
+path_to_2022colonydata <- "/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/02_bead_data"
+colony.dat.2 <- read.csv(paste0(path_to_2022colonydata, "/data/foraging_counts_08_13_22.csv"),
+                       stringsAsFactors = F, header = T) %>% as_tibble() %>% 
+  select(colony_ID, everything()) %>% 
+  # mutate(colonyID = as.factor(colonyID)) %>% 
+  mutate(age_class = ifelse(age_2022 <= 2, "1-2_yr",
+                                  ifelse(age_2022 > 2 & age_2022 <= 4, "3-4_yr",
+                                         "5+_yr")))
+
+## add colony age info to dat.2022
+dat.2022 <- dat.2022 %>% 
+  left_join(colony.dat.2 %>% select(colony_ID, age_obs=age_2022, age_class), by="colony_ID") %>% 
+  mutate(colony_ID = as.character(colony_ID)) %>% 
+  distinct()
+
+```
+
+### Combine 2022 data with previous data
+
 > Making `r bin.width` minute bins for calculating rate of in/out foraging
 
-
-```{r inout_v1}
-
+```{r inout_combine}
 b.dat <-
   dat %>% 
   as_tibble() %>% 
@@ -491,9 +530,24 @@ b.dat <-
   group_by(colony_ID,inout, day, t.bin, age_class) %>%
       summarize(n_ants =n()) %>% 
       mutate(r_ants = n_ants/bin.width) %>% 
-      ungroup()
+  ungroup() %>% 
+  select(-n_ants) %>% 
+  left_join(dat %>% select(colony_ID,age_obs=age_when_obs), by="colony_ID") %>% 
+  select(colony_ID, day, t.bin, inout, r_ants, age_obs, age_class) %>% 
+  distinct()
 
+## Combine the previous data (b.dat) with 2022 dataset (dat.2022)
+b.dat <- rbind(dat.2022, b.dat) %>% distinct()
 
+## Clean up space
+rm(all.dat, dat.nova, dat.pagliara)
+
+colonies <- b.dat %>% arrange(age_obs) %>% pull(colony_ID) %>% unique()
+```
+
+Let's visualize the in/out rates (and compare them to the density plots).
+
+```{r inout_v1}
 ## Plot the in/out rates
 x.lims <- c(min(b.dat$t.bin), max(b.dat$t.bin))
 
@@ -525,7 +579,7 @@ for(i in 1:length((colonies))) {
       ggplot(aes(x=t.bin, y=r_ants, fill=as.factor(inout), group=as.factor(inout))) +
       geom_area(position = position_dodge(width = 1), alpha=0.7) +
       
-      facet_grid(~age_class) +
+      facet_grid(~age_obs) +
 
       labs(title = paste0("Colony: ",(colonies)[i]),
            subtitle = paste0("Date: ", days[j])) +
@@ -543,19 +597,17 @@ for(i in 1:length((colonies))) {
   }
   
   }
-
 }
 
 ```
 
-Let's visualize the in/out rates (and compare them to the density plots).
 
 ```{r visualize_inout_v1, include=F}
 png(paste0(path_to_repo2,
            "inout_v1.png"), 
-    width = 30, height = 35, units = "cm", res = 300)
+    width = 30, height = 45, units = "cm", res = 300)
 plots %>% 
-  multi.plot(., rows = 6, cols=5, multipages = "0")
+  multi.plot(., rows = 8, cols=5, multipages = "0")
 trash <- dev.off()
 
 ```
@@ -569,34 +621,14 @@ trash <- dev.off()
 ### Total foraging rate
 
 ```{r inout_v2}
-in.dat <- 
-  b.dat %>% 
-    # group_by(colony_ID,inout, day, t.bin) %>%
-    # summarize(n_ants =n()) %>% 
-    # mutate(r_ants = n_ants/bin.width) %>% 
-    filter(inout=="In") %>% 
-    ungroup() %>% 
-    select(colony_ID, t.bin, day, age_class,
-           n_in = n_ants, 
-           r_in = r_ants)
-
-out.dat <- 
-  b.dat %>% 
-    # group_by(colony_ID,inout, day, t.bin) %>%
-    # summarize(n_ants =n()) %>% 
-    # mutate(r_ants = n_ants/bin.width) %>% 
-    filter(inout=="Out") %>% 
-    ungroup() %>% 
-    select(colony_ID, t.bin, day, age_class,
-           n_out = n_ants,
-           r_out = r_ants)
-  
-
-## Combine the in.dat and out.dat 
 in.out.dat <- 
-  in.dat %>% 
-  left_join(out.dat, by=c("colony_ID", "day", "t.bin", "age_class"))
-
+  b.dat %>% 
+  distinct() %>% 
+  group_by(colony_ID, day, t.bin, age_obs, age_class) %>% 
+  pivot_wider(names_from = inout,
+              values_from = r_ants) %>% 
+  ungroup() %>% 
+  rename(c(r_in = "In", r_out = "Out"))
 ```
 
 
@@ -649,9 +681,9 @@ for(i in 1:length((colonies))) {
 
 png(paste0(path_to_repo2,
            "inout_v2.png"), 
-    width = 30, height = 35, units = "cm", res = 300)
+    width = 30, height = 50, units = "cm", res = 300)
 plots %>% 
-  multi.plot(., rows = 6, cols=5, multipages = "0")
+  multi.plot(., rows = 8, cols=5, multipages = "0")
 trash <- dev.off()
 
 ```
@@ -715,13 +747,11 @@ auc.dat.plot <-
   select(colony_ID:age_class, auc, dur_mins) %>% 
   select(-t.bin) %>% 
   distinct() %>% 
+  arrange(colony_ID) %>% 
+  na.omit()
   
-  left_join(summ.dat %>% ungroup() %>% 
-              select(colony_ID, age_when_obs), by="colony_ID") %>% 
-  distinct() %>% 
-  
-  ## remove colony IDs that might be outliers or not have enough data
-  filter(!colony_ID %in% c("509")) 
+  # ## remove colony IDs that might be outliers or not have enough data
+  # filter(!colony_ID %in% c("509")) 
 
 ## Plot by age-class
 
@@ -781,41 +811,22 @@ png(paste0(path_to_repo2,
 
 auc.dat.plot %>% 
   
-  ggplot(aes(x=age_when_obs, y=auc/dur_mins)) +
-    # geom_boxplot(alpha=0.5) +
-    # geom_violin(alpha = 0.4) +
-    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
-  
+  ggplot(aes(x=age_obs, y=auc/dur_mins)) +
     # plot polynomial model fit
     geom_smooth(method='lm',
                 formula = y ~ poly(x, 4) ,
                 col="black", alpha=0.4, size=5) +
   
-    # # plot loess fit
-    # geom_smooth(method='loess',
-    #             formula = y~x,
-    #             col="black", alpha=0.4, size=5) +
-  
-    # # plot generalized additive model fit
-    # geom_smooth(method = "gam",
-    #             formula = y ~ s(x, bs = "cs", k=5),
-    #             col="black", alpha=0.4, size=5
-    #             ) +
-
     geom_jitter(width = 0.1, size=10, alpha=0.8, 
                 aes(fill=as.factor(colony_ID)), 
                 shape=21) +
-  
     # add the labels to the points
     ggrepel::geom_label_repel(aes(label = colony_ID), 
                               segment.colour = NA,
                               alpha=0.9) +
 
     theme_Publication(base_size = 30) +
-    # theme_classic() +
-    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
-    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
-
+  
     labs(title = "Colony foraging activity",
        subtitle = "black line shows a fourth-order polynomial fit; y ~ poly(x, 4)",
        y = "activity",
@@ -952,9 +963,9 @@ for(i in 1:length((colonies))) {
 
 png(paste0(path_to_repo2,
            "inout_v3.png"), 
-    width = 30, height = 35, units = "cm", res = 300)
+    width = 30, height = 50, units = "cm", res = 300)
 plots %>% 
-  multi.plot(., rows = 6, cols=5, multipages = "0")
+  multi.plot(., rows = 8, cols=5, multipages = "0")
 trash <- dev.off()
 
 ```
@@ -973,39 +984,14 @@ ___
 
 - ≤ 2: young
 - 2-4: teen
-- 5-9: young-adult
-- above 10: adult/old
+- above 5: adult/old
 
-```{r categorize_colonies}
-# colony.dat <- 
-#   summ.dat %>% 
-#   ungroup() %>% 
-#   mutate(category = ifelse(age_when_obs <= 2, "young",
-#                            ifelse(age_when_obs > 2 & age_when_obs <= 4, "teen",
-#                                   ifelse(age_when_obs > 4 & age_when_obs <= 9, "young-adult",
-#                                          ifelse(age_when_obs > 9 & age_when_obs <= 17, "adult",
-#                                                 "old"))))) %>% 
-#   select(colony_ID, age_when_obs, category) %>% 
-#   distinct() %>% 
-#   right_join(colony.dat, by="colony_ID") %>% 
-#   arrange(category)
-# 
-# colony.dat %>% 
-#   kableExtra::kable(caption = "Colony metadata",
-#                     align = "c") %>% 
-#   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+### Colony per age-class?
 
-```
-
-
-## 8. Prelim. analyses I
-
-Now, let's see what explains the variation in *total foraging* rate of the different colonies.
 
 ```{r prep_mod_data}
 mod.dat <-
   in.out.dat %>% 
-  select(-n_in, -n_out) %>% 
   mutate(r_tot = r_in + r_out) %>% 
   
   mutate(age_class = as.factor(age_class)) %>% 
@@ -1013,12 +999,14 @@ mod.dat <-
   # mutate(t.bin = as.numeric(t.bin)) %>% # time as numeric
   
   select(colony_ID:r_out, r_tot, everything()) %>% 
-  ## remove rows for 
-  na.omit()
+  na.omit() %>% 
+  mutate(day = as.factor(day),
+         colony_ID = as.factor(colony_ID))
+  
 
 # convert time to circular variables
 linear.time <- mod.dat %>% pull(t.bin) %>% unique() %>% sort() %>% as.character()
-linear.time2 <- seq(6.5, 12.5, by=0.25)
+linear.time2 <- seq(6.75, 12.75, by=0.25)
 time.dat <- data.frame(t.bin = linear.time,
                        lin_time = linear.time2)
 time.dat <- cbind(time.dat, limorhyde::limorhyde(time.dat$lin_time, "time_"))
@@ -1030,27 +1018,89 @@ mod.dat <-
 ```
 
 
+```{r summarize_colonydays}
+mod.dat %>% 
+  select(colony_ID, day, age_obs, age_class) %>% 
+  distinct() %>% 
+  group_by(age_obs) %>% 
+  summarize(col_days = n(),
+            which_colonies = paste(unique(colony_ID), collapse = ", ")) %>% 
+  kableExtra::kable(caption = "Annotated data | example of annotation added to the data",
+                    align = "c") %>% 
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+  
+```
+
+> summarize the daily foraging rhythms for each age-class
+
+```{r summary_ageclass}
+mod.dat %>% 
+  
+  group_by(age_class, t.bin) %>% 
+  summarize(
+    avg_in = mean(r_in),
+    avg_out = mean(r_out),
+    avg_tot = mean(r_tot),
+    se_tot = sd(r_tot)/n()
+  ) %>%
+  
+  ggplot(aes(x=t.bin, y=avg_out, group=age_class, color=age_class, fill=age_class)) +
+  # ggplot(aes(x=t.bin, y=avg_in, group=age_class, color=age_class, fill=age_class)) +
+  # ggplot(aes(x=t.bin, y=avg_out, group=age_class, color=age_class, fill=age_class)) +
+  geom_area(position = position_dodge(width = 0), alpha=0.75) +
+        geom_line(size=2, col="black", alpha=0.65) +
+  
+        facet_grid(age_class~.) +
+        
+        # coord_flip() +
+        labs(x="time of day (h)",
+             y="ants per min",
+             title = "average rate of \noutgoing foragers \n") +
+        # labs(title = paste0("Colony: ",(colonies)[i]),
+        #    subtitle = paste0("Date: ", days[j])) +
+        
+        scale_y_continuous(n.breaks = 4, labels = c("","25","","75")) +
+        # scale_x_datetime(limits = x.lims, date_breaks = "3 hours", date_labels = "%H:%m") +
+        theme_Publication(base_size = 20) +
+        theme(axis.text.x=element_text(angle=90,hjust=1)) +
+        scale_x_discrete( labels = c("","7:00","","",
+                                    "","8:00","","",
+                                    "","9:00","","",
+                                    "","10:00","","",
+                                    "","11:00","","",
+                                    "","12:00","","", "")) +
+        # scale_fill_manual(values = c("red","blue","green"))
+        theme(plot.subtitle=element_text(hjust=0.5))
+
+```
+
+
+
+## 8. Prelim. analyses I
+
+Now, let's see what explains the variation in *total foraging* rate of the different colonies.
+
 ___
 
 > Q1. Do colonies belonging to differet age categories show differences in their foraging?
 
 ```{r analyses_v1}
 
-mod.full <- lme4::lmer(r_tot ~ age_class + day + (time_cos + time_sin) + (1|colony_ID) + (1|day),
+mod.full <- lme4::lmer(r_out ~ age_class + (time_cos + time_sin) + day + (1|colony_ID) + (1|day:colony_ID),
                  data=mod.dat, REML=F)
-mod.red.1 <- lme4::lmer(r_tot ~ day + (time_cos + time_sin) + (1|colony_ID) + (1|day),
+mod.red.1 <- lme4::lmer(r_out ~ day + (time_cos + time_sin) + (1|colony_ID) + (1|day:colony_ID),
                  data=mod.dat, REML=F)
 anova(mod.full, mod.red.1, test="Chisq")
 
 ```
 
-Ans: The (total) foraging of a colony doesn't seem to significantly affected by age class (1-2 v. 3-4 v. >=5 year old colonies).
+Ans: The (outgoing) foraging of a colony doesn't seem to significantly affected by age class (1-2 v. 3-4 v. >=5 year old colonies).
 
 
 > Q2. Does the rate of foraging depend on the time of day?
 
 ```{r analyses_v2}
-mod.red.2 <- lme4::lmer(r_tot ~ age_class + day + (1|colony_ID) + (1|day),
+mod.red.2 <- lme4::lmer(r_out ~ age_class + day + (1|colony_ID) + (1|day:colony_ID),
                  data=mod.dat, REML=F)
 anova(mod.full, mod.red.2, test="Chisq")
 ```
@@ -1061,7 +1111,7 @@ Ans: Yes, the total foraging of harvester ant colonies significantly fluctuates 
 > Q3. Does the rate of foraging change on a day-to-day basis?
 
 ```{r analyses_v3}
-mod.red.3 <- lme4::lmer(r_tot ~ age_class + (time_cos + time_sin) + (1|colony_ID) + (1|day),
+mod.red.3 <- lme4::lmer(r_out ~ age_class + (time_cos + time_sin) + (1|colony_ID),
                  data=mod.dat, REML=F)
 anova(mod.full, mod.red.3, test="Chisq")
 ```
@@ -1069,15 +1119,17 @@ anova(mod.full, mod.red.3, test="Chisq")
 Ans: As was expected, yes, the daily foraging of a colony does show significant day-to-day fluctuations.
 
 
-> Q4. Does the time-dependent foraging of different age classes differ?
+> Q4. Does the temporal patterns in foraging of different age classes differ?
 
 ```{r analyses_v4}
-mod.full.2 <- lme4::lmer(r_tot ~ age_class*(time_cos + time_sin) + day + (1|colony_ID) + (1|day),
+mod.full.2 <- lme4::lmer(r_out ~ age_class*(time_cos + time_sin) + day + (1|colony_ID) + (1|day:colony_ID),
                  data=mod.dat, REML=F)
 anova(mod.full.2, mod.full, test="Chisq")
 ```
 
-Ans: It is possible!! This result is most interesting because it rises the possibility that the daily changes in the foraging rate of colonies might have characteristic differences between age classes. Or in other words, **the time-dependent foraging activity of ant colonies change with its age**.
+Ans: The current data suggests **NOT** 
+A **yes** would suggest that temporal patterns in foraging of colonies are different between age classes. However, as the summary table above shows, we do not have enough data for the 1-2-year and 3-4-year-old colonies as compared to adults (5 and above). So, we will need to obtain more data, especially for younger colonies, before we can interpret results.
+
 
 ___
 
@@ -1096,13 +1148,13 @@ ___
 # number of rows = number of unique colony-days
 name.rows <-
   mod.dat %>% 
-  group_by(colony_ID, day, age_class) %>% 
+  group_by(colony_ID, day, age_obs) %>% 
   summarize(num_of_timepoints = n()) %>% 
   ungroup() %>%
   group_by(colony_ID) %>% 
   mutate(which_day = row_number()) %>% 
-  arrange(age_class) %>% 
-  mutate(colony_day = paste0(age_class,"| ", colony_ID, "_D",which_day)) %>% pull(colony_day)
+  arrange(age_obs) %>% 
+  mutate(colony_day = paste0(age_obs," yr | ", colony_ID, "_D",which_day)) %>% pull(colony_day)
 # number of columns = number of time points per day
 name.cols <- paste0("T",time.dat$t.bin)
 
