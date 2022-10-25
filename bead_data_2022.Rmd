@@ -28,6 +28,7 @@ rm(list = ls())
 
 ```
 
+### Housekeeping
 
 ```{r housekeeping, include=FALSE}
 ## Load the libraries
@@ -594,7 +595,7 @@ tidydat %>%
   geom_jitter(size=2, alpha=0.4, width = 0.2) +
   
   # geom_smooth(method = "gam", aes(group=age_class), formula = y~s(x, bs="cs", k=3), alpha=0.4, size = 2) +
-  geom_smooth(method = "lm", formula = y~log2(x+1), alpha=0.4, size = 2, aes(color=age_class)) +
+  geom_smooth(method = "lm", formula = y~log2(x+1), alpha=0.4, size = 2, aes(color=age_class), se=F) +
   
   # facet_grid(~age_class) +
   # coord_flip() +
@@ -718,8 +719,7 @@ tidy.for.2022 <-
   for.dat %>% 
   # remove columns containing first and second obs
   select(-first_obs, -second_obs, -was_it_raining) %>% 
-  
-  
+
   group_by(date,observer,colony_ID,time) %>% 
   mutate(tot_in = sum(in_1,in_2,in_3,in_4,in_5,in_6,in_7,in_8, na.rm = T),
          tot_out = sum(out_1,out_2,out_3,out_4,out_5,out_6,out_7,out_8, na.rm=T)) %>% 
@@ -794,8 +794,7 @@ tidy.for <-
     right_join(tidy.for) %>% 
     mutate(prop_foraging_30s = foraging_30s/max_foraging_30s) %>% 
     mutate_if(is.numeric, round, 2)
-    
-  
+
 
 s.tidydat.2022 <-
   tidydat.2022 %>% 
@@ -1097,8 +1096,8 @@ s.tidydat %>%
   ggplot(aes(x=counted_when, y=s_cum_prop, fill=age_class, color=age_class, group=age_class)) +
   geom_jitter(size=2, alpha=0.4, width = 0.2) +
   
-  geom_smooth(method = "gam", aes(group=age_class), formula = y~s(x, bs="cs", k=3), alpha=0.4, size = 2) +
-  # geom_smooth(method = "lm", formula = y~log2(x+1), alpha=0.4, size = 2, aes(color=age_class)) +
+  # geom_smooth(method = "gam", aes(group=age_class), formula = y~s(x, bs="cs", k=3), alpha=0.4, size = 2) +
+  geom_smooth(method = "lm", formula = y~log2(x+1), alpha=0.4, size = 2, aes(color=age_class), se=F) +
   
   theme_Publication(base_size = 15) +
   # rotate x-axis lables
@@ -1252,10 +1251,8 @@ s.tidydat[!is.infinite(rowSums(s.tidydat %>% select(s_cum_prop, s2_cum_prop))),]
   # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
   # geom_boxplot(alpha=0.3, aes(group=age_class)) +
   # geom_violin(alpha=0.3) +
-  geom_smooth(method = "gam", formula = y~s(x, bs="cs", k=8), aes(group=age_class)) +
-  # geom_smooth(method = "lm", formula = y~log2(x+1), 
-  #             alpha=0.4, size = 2,
-  #             aes(color=age_class)) +
+  # geom_smooth(method = "gam", formula = y~s(x, bs="cs", k=8), aes(group=age_class)) +
+  geom_smooth(method = "lm", formula = y~log2(x+1), alpha=0.4, size = 2, aes(color=age_class), se=F) +
   
   # facet_grid(~age_class) +
   # coord_flip() +
@@ -1271,41 +1268,41 @@ s.tidydat[!is.infinite(rowSums(s.tidydat %>% select(s_cum_prop, s2_cum_prop))),]
   labs(x = "Day-time of observation",
        y= "cumulative proportion \nof beads returned",
        subtitle = "Line indicates y ~ log2(x+1) + 95% CI",
-       caption = "normalized by proportion of maximum # of foragers observed on D1")
+       caption = "normalized by proportion of maximum # of foragers observed on D1 - V1")
 
 ## All colonies - 1B
 
-s.tidydat[!is.infinite(rowSums(s.tidydat %>% select(s_cum_prop, s2_cum_prop))),] %>% 
-  
-  # ## remove the timepoints that we do not have data for  
-  # filter(!(bead_color=="pink" & counted_when == "D1_aN")) %>%
-  # filter(!(bead_color=="green" & counted_when == "D3_bN")) %>%
-  
-  ggplot(aes(x=counted_when, y=s2_cum_prop, fill=age_class, color=age_class, group=age_class)) +
-  geom_jitter(size=2, alpha=0.4, width = 0.2) +
-  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
-  # geom_boxplot(alpha=0.3, aes(group=age_class)) +
-  # geom_violin(alpha=0.3) +
-  geom_smooth(method = "gam", formula = y~s(x, bs="cs", k=8), aes(group=age_class)) +
-  # geom_smooth(method = "lm", formula = y~log2(x+1), 
-  #             alpha=0.4, size = 2,
-  #             aes(color=age_class)) +
-  
-  # facet_grid(~age_class) +
-  # coord_flip() +
-  # scale_y_continuous(n.breaks = 3, labels = c("","0.5", "1")) +
-  
-  theme_Publication(base_size = 15) +
-  # rotate x-axis lables
-  theme(axis.text.x=element_text(angle=90,hjust=1))+
-  
-  scale_fill_manual(values = age_colors) +
-  scale_color_manual(values = age_colors) +
-  
-  labs(x = "Day-time of observation",
-       y= "cumulative proportion \nof beads returned",
-       subtitle = "Line indicates y ~ log2(x+1) + 95% CI",
-       caption = "normalized by proportion of maximum # of foragers observed on D1")
+# s.tidydat[!is.infinite(rowSums(s.tidydat %>% select(s_cum_prop, s2_cum_prop))),] %>% 
+#   
+#   # ## remove the timepoints that we do not have data for  
+#   # filter(!(bead_color=="pink" & counted_when == "D1_aN")) %>%
+#   # filter(!(bead_color=="green" & counted_when == "D3_bN")) %>%
+#   
+#   ggplot(aes(x=counted_when, y=s2_cum_prop, fill=age_class, color=age_class, group=age_class)) +
+#   geom_jitter(size=2, alpha=0.4, width = 0.2) +
+#   # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+#   # geom_boxplot(alpha=0.3, aes(group=age_class)) +
+#   # geom_violin(alpha=0.3) +
+#   geom_smooth(method = "gam", formula = y~s(x, bs="cs", k=8), aes(group=age_class)) +
+#   # geom_smooth(method = "lm", formula = y~log2(x+1), 
+#   #             alpha=0.4, size = 2,
+#   #             aes(color=age_class)) +
+#   
+#   # facet_grid(~age_class) +
+#   # coord_flip() +
+#   # scale_y_continuous(n.breaks = 3, labels = c("","0.5", "1")) +
+#   
+#   theme_Publication(base_size = 15) +
+#   # rotate x-axis lables
+#   theme(axis.text.x=element_text(angle=90,hjust=1))+
+#   
+#   scale_fill_manual(values = age_colors) +
+#   scale_color_manual(values = age_colors) +
+#   
+#   labs(x = "Day-time of observation",
+#        y= "cumulative proportion \nof beads returned",
+#        subtitle = "Line indicates y ~ log2(x+1) + 95% CI",
+#        caption = "normalized by proportion of maximum # of foragers observed on D1")
 
 ## All colonies - 2
 s.tidydat[!is.infinite(rowSums(s.tidydat %>% select(s_cum_prop, s2_cum_prop))),] %>% 
@@ -1337,10 +1334,125 @@ s.tidydat[!is.infinite(rowSums(s.tidydat %>% select(s_cum_prop, s2_cum_prop))),]
   labs(x = "Day-time of observation",
        y= "cumulative proportion \nof beads returned",
        subtitle = "",
-       caption = "normalized by proportion of foragers out on D1 of bead experiments")
+       caption = "normalized by proportion of foragers out on D1 of bead experiments - V1")
 
 
 ```
+
+
+### Plot normalized bead returns v3
+
+> Standardizing by proportion of foragers outside on Day 1 of bead experiments
+
+The idea is to divide the cumulative proportion of beads returned by the proportion of foragers (among the max foragers that were observed for a given colony) out on Day 1 of the bead experiments 
+
+```{r standardizing_v3}
+
+## All colonies - 1A
+
+s.tidydat[!is.infinite(rowSums(s.tidydat %>% select(s_cum_prop, s2_cum_prop))),] %>% 
+  mutate(s3_cum_prop = cum_prop/prop_foraging_30s) %>% 
+  mutate(s3_cum_prop = cum_prop/prop_foraging_30s) %>% 
+  
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color=="pink" & counted_when == "D1_aN")) %>%
+  # filter(!(bead_color=="green" & counted_when == "D3_bN")) %>%
+  
+  ggplot(aes(x=counted_when, y=s3_cum_prop, fill=age_class, color=age_class, group=age_class)) +
+  geom_jitter(size=2, alpha=0.4, width = 0.2) +
+  # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+  # geom_boxplot(alpha=0.3, aes(group=age_class)) +
+  # geom_violin(alpha=0.3) +
+  # geom_smooth(method = "gam", formula = y~s(x, bs="cs", k=8), aes(group=age_class)) +
+  geom_smooth(method = "lm", formula = y~log2(x+1), alpha=0.4, size = 2, aes(color=age_class), se=F) +
+  
+  # facet_grid(~age_class) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3, labels = c("","0.5", "1")) +
+  
+  theme_Publication(base_size = 15) +
+  # rotate x-axis lables
+  theme(axis.text.x=element_text(angle=90,hjust=1))+
+  
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
+  
+  labs(x = "Day-time of observation",
+       y= "cumulative proportion \nof beads returned",
+       subtitle = "Line indicates y ~ log2(x+1) + 95% CI",
+       caption = "normalized by proportion of maximum # of foragers observed on D1 - V2")
+
+## All colonies - 1B
+
+# s.tidydat[!is.infinite(rowSums(s.tidydat %>% select(s_cum_prop, s2_cum_prop))),] %>% 
+#   
+#   # ## remove the timepoints that we do not have data for  
+#   # filter(!(bead_color=="pink" & counted_when == "D1_aN")) %>%
+#   # filter(!(bead_color=="green" & counted_when == "D3_bN")) %>%
+#   
+#   ggplot(aes(x=counted_when, y=s2_cum_prop, fill=age_class, color=age_class, group=age_class)) +
+#   geom_jitter(size=2, alpha=0.4, width = 0.2) +
+#   # geom_line(aes(group=colonyID), size=0.5, alpha=0.7) +
+#   # geom_boxplot(alpha=0.3, aes(group=age_class)) +
+#   # geom_violin(alpha=0.3) +
+#   geom_smooth(method = "gam", formula = y~s(x, bs="cs", k=8), aes(group=age_class)) +
+#   # geom_smooth(method = "lm", formula = y~log2(x+1), 
+#   #             alpha=0.4, size = 2,
+#   #             aes(color=age_class)) +
+#   
+#   # facet_grid(~age_class) +
+#   # coord_flip() +
+#   # scale_y_continuous(n.breaks = 3, labels = c("","0.5", "1")) +
+#   
+#   theme_Publication(base_size = 15) +
+#   # rotate x-axis lables
+#   theme(axis.text.x=element_text(angle=90,hjust=1))+
+#   
+#   scale_fill_manual(values = age_colors) +
+#   scale_color_manual(values = age_colors) +
+#   
+#   labs(x = "Day-time of observation",
+#        y= "cumulative proportion \nof beads returned",
+#        subtitle = "Line indicates y ~ log2(x+1) + 95% CI",
+#        caption = "normalized by proportion of maximum # of foragers observed on D1")
+
+## All colonies - 2
+s.tidydat[!is.infinite(rowSums(s.tidydat %>% select(s_cum_prop, s2_cum_prop))),] %>% 
+  mutate(s3_cum_prop = cum_prop/prop_foraging_30s) %>%
+  # ## remove the timepoints that we do not have data for  
+  # filter(!(bead_color=="pink" & counted_when == "D1_aN")) %>%
+  # filter(!(bead_color=="green" & counted_when == "D3_bN")) %>%
+  ggplot(aes(x=counted_when, y=s3_cum_prop, fill=age_class, color=age_class, group=age_class)) +
+  geom_jitter(size=2, alpha=0.2, width = 0.2) +
+  geom_line(aes(group=bead_color), size=2, alpha=0.7) +
+  # geom_boxplot(alpha=0.6, aes(group=counted_when)) +
+  # geom_violin(alpha=0.3) +
+  # geom_smooth(method = "gam", formula=y~s(x, k=5)) +
+  # geom_smooth(method = "lm", formula = y~log2(x+1), 
+  #             alpha=0.5, size = 2, 
+  #             aes(color=age_class)) +
+  facet_wrap(colonyID~bead_color, nrow=6) +
+  # coord_flip() +
+  # scale_y_continuous(n.breaks = 3,labels = c("","0.5", "1")) +
+  
+  # theme_Publication(base_size = 8) +
+  theme_bw(base_size = 8) +
+  # remove x-axis labels and ticks
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank())+
+  
+  scale_fill_manual(values = age_colors) +
+  scale_color_manual(values = age_colors) +
+  
+  labs(x = "Day-time of observation",
+       y= "cumulative proportion \nof beads returned",
+       subtitle = "",
+       caption = "normalized by proportion of foragers out on D1 of bead experiments - V2")
+
+
+```
+
+
 
 
 ___
