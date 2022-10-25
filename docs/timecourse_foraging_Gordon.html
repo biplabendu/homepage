@@ -15,7 +15,7 @@
 
 <title>TC8: Timecourse foraging</title>
 
-<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -29,14 +29,6 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
-<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="site_libs/datatables-binding-0.12/datatables.js"></script>
-<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -439,7 +431,7 @@ div.tocify {
 <h1 class="title toc-ignore">TC8: Timecourse foraging</h1>
 <h3 class="subtitle">Investigating colony variation in time-budgeting of daily foraging in harvester ants</h3>
 <h4 class="author">Biplabendu Das</h4>
-<h4 class="date">18 October, 2022</h4>
+<h4 class="date">25 October, 2022</h4>
 
 </div>
 
@@ -465,316 +457,184 @@ atleast &lt;- 2</code></pre>
 </div>
 <div id="annotate-the-data" class="section level2">
 <h2>1. Annotate the data</h2>
-<pre class="r"><code># specify colony names that you want to use
-colonies &lt;- list(&quot;2015&quot;=c(&quot;863&quot;), # can&#39;t do &quot;833&quot; since the data is formatted differently.
-                 &quot;2016&quot;=c(&quot;1017&quot;,&quot;1317&quot;,&quot;D19&quot;,&quot;D30&quot;),
-                 &quot;2017&quot;=c(&quot;859&quot;,&quot;1068&quot;,&quot;1107&quot;))
-
-# ANNOTATE DATA 
-for (j in 1:length(which.year)){
-
-    # where to look for data
-    folder.loc &lt;- paste0(path_to_repo,path_to_data,which.year[j], &quot;/&quot;)
-    which.colonies &lt;- list.files(folder.loc)
-    
-    which.colonies &lt;- which.colonies[readr::parse_number(which.colonies) %in% colonies[[j]]]
-    
-    # specify the order of the ants
-    # ants &lt;- ants[order(match(ants,(left.incu %&gt;% pull(values))))]
-    
-    for (k in 1:length(which.colonies)) {
-      
-      folder.loc2 &lt;- paste0(folder.loc, which.colonies[[k]])
-      files &lt;- list.files(folder.loc2)
-      
-      for(i in 1:length(files)) {
-      
-      # Specify the ant
-      file.names &lt;- files[i]
-      
-      ## extract the name of the video and ant
-      colony.name &lt;- readr::parse_number(which.colonies[[k]])
-      
-      ## read the data files:
-      foo &lt;- readxl::read_excel(paste0(folder.loc2,&quot;/&quot;,file.names),
-                                col_names = F)
-      
-      
-      ## define new colnames 
-      if (ncol(foo)==2){
-      colnames(foo) &lt;- c(&quot;time&quot;, &quot;inout&quot;)
-      levs &lt;- foo %&gt;% pull(inout) %&gt;% as.factor() %&gt;% levels()
-        if (length(levs) &gt; 2) {
-            foo &lt;- foo[-1,]
-            levs &lt;- foo %&gt;% pull(inout) %&gt;% as.factor() %&gt;% levels()
-        }
-        
-        if (&quot;0&quot; %in% levs) {
-          foo &lt;- foo %&gt;% mutate(inout = ifelse(inout==1, &quot;In&quot;, &quot;Out&quot;))
-        }
-      
-      } else if (ncol(foo)&gt;2) {
-        foo &lt;- foo[-1,c(1:2)]
-        colnames(foo) &lt;- c(&quot;time&quot;, &quot;inout&quot;)
-        foo &lt;- foo %&gt;% mutate(inout = ifelse(inout==1, &quot;In&quot;, &quot;Out&quot;))
-        
-      } else {
-        print(&quot;The number of columns are not equal to 2. Please check the file.&quot;)
-        stop()
-      }
-      
-      
-      ## annotate the data - PART I
-      # foo %&gt;%
-      foo %&lt;&gt;%
-        as_tibble() %&gt;% 
-        
-        # add colony_ID and treatment columns
-        mutate(colony_ID=colony.name) %&gt;% 
-        mutate(year=which.year[j]) %&gt;% 
-        
-        # extract date_time data
-        mutate(day = str_split(time,pattern = &quot;T&quot;, n=2, simplify = T)[2]) %&gt;% 
-        mutate(t = str_extract(time, &quot;(?&lt;=[T])[^.]+&quot;)) %&gt;% 
-        # mutate(date_time = as.POSIXct(paste0(day,&quot; &quot;,time))) %&gt;% 
-        mutate(inout = trimws(inout, which = c(&quot;both&quot;)))
-        # remove placeholder columns
-        # select(-day, -t)
-      
-      
-      ## annotate the data - PART II
-      
-        ## annotate the data
-        foo %&gt;% 
-        
-          mutate(ant_ID = &quot;unmarked&quot;) %&gt;% 
-          
-          # rearrange colnames for aes
-          select(colony_ID, year, inout, ant_ID,
-               everything()) %&gt;% 
-          
-          as.data.frame() %&gt;% 
-          write.csv(.,
-                      file = paste0(path_to_repo,path_to_data,
-                                    &quot;../annotated/&quot;,
-                                    which.year[j],
-                                    &quot;/annotated_&quot;,
-                                    str_split_fixed(file.names,&quot;.x&quot;,2)[1],&quot;.csv&quot;),
-                      row.names = F)
-      
-      
-    }
-      
-  }
-    
-}</code></pre>
+<pre class="r"><code># # set path to your working directory (change, if necessary)
+# path_to_repo = &quot;/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2018_Pagliara_et_al&quot;
+# 
+# # set path to the behavioral data within your repository 
+# path_to_data = &quot;/01_data/data/Spreadsheets/&quot;
+# 
+# # set path to save the graphs produced during analyses
+# path_to_repo2 = &quot;/Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/&quot;
+# 
+# # specify colony names that you want to use
+# colonies &lt;- list(&quot;2015&quot;=c(&quot;863&quot;), # can&#39;t do &quot;833&quot; since the data is formatted differently.
+#                  &quot;2016&quot;=c(&quot;1017&quot;,&quot;1317&quot;,&quot;D19&quot;,&quot;D30&quot;),
+#                  &quot;2017&quot;=c(&quot;859&quot;,&quot;1068&quot;,&quot;1107&quot;))
+# 
+# # ANNOTATE DATA 
+# for (j in 1:length(which.year)){
+# 
+#     # where to look for data
+#     folder.loc &lt;- paste0(path_to_repo,path_to_data,which.year[j], &quot;/&quot;)
+#     which.colonies &lt;- list.files(folder.loc)
+#     
+#     which.colonies &lt;- which.colonies[readr::parse_number(which.colonies) %in% colonies[[j]]]
+#     
+#     # specify the order of the ants
+#     # ants &lt;- ants[order(match(ants,(left.incu %&gt;% pull(values))))]
+#     
+#     for (k in 1:length(which.colonies)) {
+#       
+#       folder.loc2 &lt;- paste0(folder.loc, which.colonies[[k]])
+#       files &lt;- list.files(folder.loc2)
+#       
+#       for(i in 1:length(files)) {
+#       
+#       # Specify the ant
+#       file.names &lt;- files[i]
+#       
+#       ## extract the name of the video and ant
+#       colony.name &lt;- readr::parse_number(which.colonies[[k]])
+#       
+#       ## read the data files:
+#       foo &lt;- readxl::read_excel(paste0(folder.loc2,&quot;/&quot;,file.names),
+#                                 col_names = F)
+#       
+#       
+#       ## define new colnames 
+#       if (ncol(foo)==2){
+#       colnames(foo) &lt;- c(&quot;time&quot;, &quot;inout&quot;)
+#       levs &lt;- foo %&gt;% pull(inout) %&gt;% as.factor() %&gt;% levels()
+#         if (length(levs) &gt; 2) {
+#             foo &lt;- foo[-1,]
+#             levs &lt;- foo %&gt;% pull(inout) %&gt;% as.factor() %&gt;% levels()
+#         }
+#         
+#         if (&quot;0&quot; %in% levs) {
+#           foo &lt;- foo %&gt;% mutate(inout = ifelse(inout==1, &quot;In&quot;, &quot;Out&quot;))
+#         }
+#       
+#       } else if (ncol(foo)&gt;2) {
+#         foo &lt;- foo[-1,c(1:2)]
+#         colnames(foo) &lt;- c(&quot;time&quot;, &quot;inout&quot;)
+#         foo &lt;- foo %&gt;% mutate(inout = ifelse(inout==1, &quot;In&quot;, &quot;Out&quot;))
+#         
+#       } else {
+#         print(&quot;The number of columns are not equal to 2. Please check the file.&quot;)
+#         stop()
+#       }
+#       
+#       
+#       ## annotate the data - PART I
+#       # foo %&gt;%
+#       foo %&lt;&gt;%
+#         as_tibble() %&gt;% 
+#         
+#         # add colony_ID and treatment columns
+#         mutate(colony_ID=colony.name) %&gt;% 
+#         mutate(year=which.year[j]) %&gt;% 
+#         
+#         # extract date_time data
+#         mutate(day = str_split(time,pattern = &quot;T&quot;, n=2, simplify = T)[2]) %&gt;% 
+#         mutate(t = str_extract(time, &quot;(?&lt;=[T])[^.]+&quot;)) %&gt;% 
+#         # mutate(date_time = as.POSIXct(paste0(day,&quot; &quot;,time))) %&gt;% 
+#         mutate(inout = trimws(inout, which = c(&quot;both&quot;)))
+#         # remove placeholder columns
+#         # select(-day, -t)
+#       
+#       
+#       ## annotate the data - PART II
+#       
+#         ## annotate the data
+#         foo %&gt;% 
+#         
+#           mutate(ant_ID = &quot;unmarked&quot;) %&gt;% 
+#           
+#           # rearrange colnames for aes
+#           select(colony_ID, year, inout, ant_ID,
+#                everything()) %&gt;% 
+#           
+#           as.data.frame() %&gt;% 
+#           write.csv(.,
+#                       file = paste0(path_to_repo,path_to_data,
+#                                     &quot;../annotated/&quot;,
+#                                     which.year[j],
+#                                     &quot;/annotated_&quot;,
+#                                     str_split_fixed(file.names,&quot;.x&quot;,2)[1],&quot;.csv&quot;),
+#                       row.names = F)
+#       
+#       
+#     }
+#       
+#   }
+#     
+# }</code></pre>
 <blockquote>
 <p>Here, I have performed several steps to get the data into a consistent format, and to embed the metadata into the table (see example below).</p>
 </blockquote>
-<pre class="r"><code>foo %&gt;% 
-  head() %&gt;% 
-  kableExtra::kable(caption = &quot;Annotated data | example of annotation added to the data&quot;,
-                    align = &quot;c&quot;) %&gt;% 
-  kableExtra::kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
-<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<caption>
-Annotated data | example of annotation added to the data
-</caption>
-<thead>
-<tr>
-<th style="text-align:center;">
-time
-</th>
-<th style="text-align:center;">
-inout
-</th>
-<th style="text-align:center;">
-colony_ID
-</th>
-<th style="text-align:center;">
-year
-</th>
-<th style="text-align:center;">
-day
-</th>
-<th style="text-align:center;">
-t
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center;">
-2017-08-21T08:04:25.185-07:00
-</td>
-<td style="text-align:center;">
-In
-</td>
-<td style="text-align:center;">
-859
-</td>
-<td style="text-align:center;">
-2017
-</td>
-<td style="text-align:center;">
-2017-08-21
-</td>
-<td style="text-align:center;">
-08:04:25
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-2017-08-21T08:07:44.222-07:00
-</td>
-<td style="text-align:center;">
-Out
-</td>
-<td style="text-align:center;">
-859
-</td>
-<td style="text-align:center;">
-2017
-</td>
-<td style="text-align:center;">
-2017-08-21
-</td>
-<td style="text-align:center;">
-08:07:44
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-2017-08-21T08:08:26.435-07:00
-</td>
-<td style="text-align:center;">
-Out
-</td>
-<td style="text-align:center;">
-859
-</td>
-<td style="text-align:center;">
-2017
-</td>
-<td style="text-align:center;">
-2017-08-21
-</td>
-<td style="text-align:center;">
-08:08:26
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-2017-08-21T08:09:05.866-07:00
-</td>
-<td style="text-align:center;">
-Out
-</td>
-<td style="text-align:center;">
-859
-</td>
-<td style="text-align:center;">
-2017
-</td>
-<td style="text-align:center;">
-2017-08-21
-</td>
-<td style="text-align:center;">
-08:09:05
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-2017-08-21T08:09:21.373-07:00
-</td>
-<td style="text-align:center;">
-Out
-</td>
-<td style="text-align:center;">
-859
-</td>
-<td style="text-align:center;">
-2017
-</td>
-<td style="text-align:center;">
-2017-08-21
-</td>
-<td style="text-align:center;">
-08:09:21
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-2017-08-21T08:09:29.703-07:00
-</td>
-<td style="text-align:center;">
-Out
-</td>
-<td style="text-align:center;">
-859
-</td>
-<td style="text-align:center;">
-2017
-</td>
-<td style="text-align:center;">
-2017-08-21
-</td>
-<td style="text-align:center;">
-08:09:29
-</td>
-</tr>
-</tbody>
-</table>
+<pre class="r"><code># foo %&gt;%
+#   head() %&gt;%
+#   kableExtra::kable(caption = &quot;Annotated data | example of annotation added to the data&quot;,
+#                     align = &quot;c&quot;) %&gt;%
+#   kableExtra::kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
 <p>Note, I have extracted the <code>year</code>, <code>day</code>, and <code>t</code> values from the <code>time</code> column, and added the <code>colony_ID</code> to indicate the observed colony.</p>
 <hr />
 </div>
 <div id="combine-all-the-data" class="section level2">
 <h2>2. Combine all the data</h2>
-<pre class="r"><code>## create a data.frame to save the results
-dat.pagliara &lt;- data.frame()
-
-for(j in 1:length(which.year)) {
-  
-    # where to look for data
-    folder.loc &lt;- paste0(path_to_repo,path_to_data,
-                         &quot;../annotated/&quot;,
-                         which.year[j], &quot;/&quot;)
-    files &lt;- list.files(folder.loc)
-    
-    for(i in 1:length(files)) {
-      
-      # load the file
-      annot.data &lt;- read.csv(paste0(folder.loc,files[i]),
-                        header = T, stringsAsFactors = F)
-      
-      # # check if there is at least two hours of data
-      # annot.data %&gt;%
-      #   mutate(t = as.POSIXct(t,format=&quot;%H:%M:%S&quot;)) %&gt;%
-      #   group_by(colony_ID, day) %&gt;%
-      #   summarize(duration = max(t)-min(t))
-      
-        if(nrow(dat.pagliara)==0) {
-          dat.pagliara &lt;- annot.data
-        } else {
-          dat.pagliara &lt;- rbind(dat.pagliara,annot.data)
-        }
-      
-    }
-}</code></pre>
+<pre class="r"><code># ## create a data.frame to save the results
+# dat.pagliara &lt;- data.frame()
+# 
+# for(j in 1:length(which.year)) {
+#   
+#     # where to look for data
+#     folder.loc &lt;- paste0(path_to_repo,path_to_data,
+#                          &quot;../annotated/&quot;,
+#                          which.year[j], &quot;/&quot;)
+#     files &lt;- list.files(folder.loc)
+#     
+#     for(i in 1:length(files)) {
+#       
+#       # load the file
+#       annot.data &lt;- read.csv(paste0(folder.loc,files[i]),
+#                         header = T, stringsAsFactors = F)
+#       
+#       # # check if there is at least two hours of data
+#       # annot.data %&gt;%
+#       #   mutate(t = as.POSIXct(t,format=&quot;%H:%M:%S&quot;)) %&gt;%
+#       #   group_by(colony_ID, day) %&gt;%
+#       #   summarize(duration = max(t)-min(t))
+#       
+#         if(nrow(dat.pagliara)==0) {
+#           dat.pagliara &lt;- annot.data
+#         } else {
+#           dat.pagliara &lt;- rbind(dat.pagliara,annot.data)
+#         }
+#       
+#     }
+# }
+# 
+# dat.pagliara %&gt;% 
+#   write.csv(., file = paste0(path_to_repo, &quot;/04_results/all_data_2018_pagliara_et_al.csv&quot;), row.names = F)</code></pre>
 <div id="data-2018-nova-et-al." class="section level3">
 <h3>2.1 Data 2018 Nova et al.</h3>
 <blockquote>
 <p>Add the data from 2022 Nova et al. to the 2018 Pagliara et al. dataset</p>
 </blockquote>
-<pre class="r"><code>dat.nova &lt;- read.csv(paste0(path_to_repo,&quot;/../2022_Nova_et_al/04_results/all_data_2022_nova_et_al.csv&quot;), header = T)
+<pre class="r"><code>dat.pagliara &lt;- read.csv(paste0(path_to_repo, &quot;/01_data/2018_Pagliara_et_al/all_data_2018_pagliara_et_al.csv&quot;), header=T)
+dat.nova &lt;- read.csv(paste0(path_to_repo,&quot;/01_data/2022_Nova_et_al/all_data_2022_nova_et_al.csv&quot;), header = T)
 
 all.dat &lt;- rbind(dat.pagliara,dat.nova) %&gt;% as_tibble()</code></pre>
 </div>
 <div id="replace-colony-id-10-to-1010" class="section level3">
 <h3>Replace colony ID == “10” to “1010”</h3>
-<pre class="r"><code>all.dat &lt;- 
-  all.dat %&gt;% 
-  mutate(colony_ID = ifelse(colony_ID == &quot;10&quot;, &quot;1010&quot;, colony_ID))</code></pre>
+<pre class="r"><code>all.dat &lt;-
+  all.dat %&gt;%
+  mutate(colony_ID = ifelse(colony_ID == &quot;10&quot;, &quot;1010&quot;, colony_ID))
+
+# ## Save all.datcure
+# all.dat %&gt;% 
+#   write.csv(., file = paste0(path_to_repo,&quot;/01_data/99_curated_data/all_data_pagliara_nova.csv&quot;))</code></pre>
 </div>
 <div id="summarize-data" class="section level3">
 <h3>2.2 Summarize data</h3>
@@ -782,48 +642,47 @@ all.dat &lt;- rbind(dat.pagliara,dat.nova) %&gt;% as_tibble()</code></pre>
 <p>Summary table | number of hours of observations per colony on a given day</p>
 </blockquote>
 <pre class="r"><code># obtain colony age information
-colony.dat &lt;- read.csv(paste0(path_to_repo,&quot;/01_data/colony_age_info.csv&quot;), 
+colony.dat &lt;- read.csv(paste0(path_to_repo,&quot;/01_data/colony_age_info.csv&quot;),
                        header = T, stringsAsFactors = F,
-                       na.strings = c(&quot;&quot;,&quot; &quot;,NA)) %&gt;% as_tibble() %&gt;% 
+                       na.strings = c(&quot;&quot;,&quot; &quot;,NA)) %&gt;% as_tibble() %&gt;%
   mutate(colony_ID = ifelse(colony_ID == &quot;10&quot;, &quot;1010&quot;, colony_ID))
 
-summ.dat &lt;- all.dat %&gt;% 
-    mutate(time = as.POSIXct(paste(day, t),format=&quot;%Y-%m-%d %H:%M:%S&quot;)) %&gt;% 
+summ.dat &lt;- all.dat %&gt;%
+    mutate(time = as.POSIXct(paste(day, t),format=&quot;%Y-%m-%d %H:%M:%S&quot;)) %&gt;%
     group_by(colony_ID, day, year) %&gt;%
     summarize(start_time = min(time),
               end_time = max(time)) %&gt;%
-    mutate(duration = difftime(end_time,start_time, units = &quot;hours&quot;) %&gt;% round(.,2)) %&gt;% 
-    mutate(start_time = format(start_time, format = &quot;%H:%M:%S&quot;)) %&gt;% 
+    mutate(duration = difftime(end_time,start_time, units = &quot;hours&quot;) %&gt;% round(.,2)) %&gt;%
+    mutate(start_time = format(start_time, format = &quot;%H:%M:%S&quot;)) %&gt;%
     mutate(end_time = format(end_time, format = &quot;%H:%M:%S&quot;)) %&gt;%
-    arrange(year,colony_ID) %&gt;% 
-    
+    arrange(year,colony_ID) %&gt;%
+
     ## add colony info
-    left_join(colony.dat, by=&quot;colony_ID&quot;) %&gt;% 
-  
+    left_join(colony.dat, by=&quot;colony_ID&quot;) %&gt;%
+
     ## calculate age at observation
-    mutate(age_when_obs = year-year_age_one+1) %&gt;% 
-  
+    mutate(age_when_obs = year-year_age_one+1) %&gt;%
+
     ## calculate age when dead
     mutate(age_dead = year_dead-year_age_one+1)
 
-# View the summary table
-summ.dat %&gt;% 
-  select(colony_ID:year_age_one) %&gt;% 
-  DT::datatable()</code></pre>
-<div id="htmlwidget-9bf82c79b9e060a4a781" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9bf82c79b9e060a4a781">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44"],["1010","1010","1010","1010","1010","509","509","664","664","664","758","758","758","758","758","833","833","833","863","863","863","863","863","985","1017","1017","1017","1017","1317","1317","1317","1068","1068","1107","1107","1107","1107","1107","1242","1242","1368","1368","859","859"],["2015-08-26","2015-08-28","2015-08-31","2015-09-02","2015-09-03","2015-08-28","2015-09-02","2015-08-31","2015-09-03","2015-09-05","2015-08-29","2015-09-01","2015-09-02","2015-09-03","2015-09-05","2015-08-27","2015-08-28","2015-09-04","2015-08-31","2015-09-01","2015-09-02","2015-09-03","2015-09-05","2015-09-01","2016-08-19","2016-08-23","2016-08-24","2016-08-26","2016-08-20","2016-08-25","2016-08-26","2017-08-15","2017-08-16","2017-08-16","2017-08-20","2017-08-21","2017-08-25","2017-08-26","2018-08-22","2018-08-23","2018-08-24","2018-08-25","2017-08-20","2017-08-21"],[2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2015,2016,2016,2016,2016,2016,2016,2016,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017],["07:31:47","10:55:16","09:08:28","10:35:46","07:28:13","10:26:49","10:23:46","10:08:27","10:38:13","10:42:26","10:34:06","09:43:12","09:56:20","08:08:34","09:38:09","10:40:08","10:42:44","09:30:03","07:26:22","09:27:12","10:32:18","07:27:02","07:40:57","10:32:13","07:16:53","07:43:00","07:43:02","08:18:12","07:44:20","07:37:39","08:16:50","07:50:46","07:25:19","07:51:15","07:41:57","07:46:24","07:50:06","08:14:51","06:50:23","06:53:05","06:59:23","07:01:23","09:40:20","08:04:25"],["10:11:27","12:49:56","11:23:14","11:12:05","09:00:36","12:41:42","10:26:45","11:15:44","11:32:23","11:37:59","11:13:51","10:36:52","11:14:26","11:26:41","11:35:50","11:39:17","12:37:54","10:44:37","10:43:27","11:15:00","10:49:22","11:24:00","11:31:06","10:47:08","10:29:21","10:47:56","08:43:00","10:42:05","12:36:46","11:02:01","10:47:43","10:51:10","11:30:45","11:29:23","12:22:46","11:57:53","11:22:37","11:02:44","11:07:41","10:43:08","11:10:29","11:25:06","12:48:34","11:59:22"],[2.66,1.91,2.25,0.61,1.54,2.25,0.05,1.12,0.9,0.93,0.66,0.89,1.3,3.3,1.96,0.99,1.92,1.24,3.28,1.8,0.28,3.95,3.84,0.25,3.21,3.08,1,2.4,4.87,3.41,2.51,3.01,4.09,3.64,4.68,4.19,3.54,2.8,4.29,3.83,4.18,4.4,3.14,3.92],[2002,2002,2002,2002,2002,1992,1992,1996,1996,1996,1997,1997,1997,1997,1997,1998,1998,1998,1998,1998,1998,1998,1998,null,2003,2003,2003,2003,2012,2012,2012,2004,2004,2006,2006,2006,2006,2006,2011,2011,2015,2015,1999,1999]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>colony_ID<\/th>\n      <th>day<\/th>\n      <th>year<\/th>\n      <th>start_time<\/th>\n      <th>end_time<\/th>\n      <th>duration<\/th>\n      <th>year_age_one<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
-<pre class="r"><code>## Save the summary table to a csv file
-summ.dat %&gt;% 
-  ungroup() %&gt;% 
-  select(colony_ID, year,
-         day_of_obs = day,
-         duration_hrs = duration,
-         everything()) %&gt;% 
-  mutate_all(as.character) %&gt;% 
-  # save the file
-  write.csv(.,
-            paste0(path_to_repo,&quot;/04_results/&quot;,&quot;all_data_summary.csv&quot;),
-            row.names = F)</code></pre>
+# # View the summary table
+# summ.dat %&gt;% 
+#   select(colony_ID:year_age_one) %&gt;% 
+#   DT::datatable()
+# 
+# ## Save the summary table to a csv file
+# summ.dat %&gt;% 
+#   ungroup() %&gt;% 
+#   select(colony_ID, year,
+#          day_of_obs = day,
+#          duration_hrs = duration,
+#          everything()) %&gt;% 
+#   mutate_all(as.character) %&gt;% 
+#   # save the file
+#   write.csv(.,
+#             paste0(path_to_repo,&quot;/04_results/&quot;,&quot;all_data_pagliara_nova_summary.csv&quot;),
+#             row.names = F)</code></pre>
 <blockquote>
 <p>For our purposes, we are only going to use colonies that have <strong>at least 2 hours</strong> of foraging data for a given day.</p>
 </blockquote>
@@ -834,102 +693,96 @@ summ.dat %&gt;%
 <blockquote>
 <p>Remove the colony-days that have less than 2 hours of observations.</p>
 </blockquote>
-<pre class="r"><code>all.dat &lt;- 
-  all.dat %&gt;% 
-    mutate(time = as.POSIXct(paste(day, t),format=&quot;%Y-%m-%d %H:%M:%S&quot;)) %&gt;% 
-    group_by(colony_ID, day, year) %&gt;%
-    summarize(start_time = min(time),
-              end_time = max(time),
-              duration = difftime(end_time,start_time, units = &quot;hours&quot;) %&gt;% round(.,2)) %&gt;%
-    ungroup() %&gt;% 
-    arrange(year,colony_ID) %&gt;% 
-    mutate(keep_row = ifelse(duration&gt;=atleast, &quot;yes&quot;,&quot;no&quot;)) %&gt;% 
-    right_join(all.dat)
-
-
-# Subset the dataset accordingly
-dat &lt;- all.dat %&gt;% filter(keep_row==&quot;yes&quot;)
-
-# Add the colony age information
-dat &lt;- dat %&gt;% 
-  left_join(summ.dat %&gt;% select(colony_ID, day, age_when_obs, age_dead), by = c(&quot;colony_ID&quot;,&quot;day&quot;)) 
-  
-# Classify into age class (1-2, 3-4, 5+ years old)
-dat &lt;- dat %&gt;%
-  mutate(age_class = ifelse(age_when_obs &lt;= 2, &quot;1-2_yr&quot;,
-                                  ifelse(age_when_obs &gt; 2 &amp; age_when_obs &lt;= 4, &quot;3-4_yr&quot;,
-                                         &quot;5+_yr&quot;))) %&gt;% 
-  mutate(age_class = factor(age_class,
-                            levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;, &quot;5+_yr&quot;)))</code></pre>
+<pre class="r"><code># all.dat &lt;-
+#   all.dat %&gt;% 
+#     mutate(time = as.POSIXct(paste(day, t),format=&quot;%Y-%m-%d %H:%M:%S&quot;)) %&gt;% 
+#     group_by(colony_ID, day, year) %&gt;%
+#     summarize(start_time = min(time),
+#               end_time = max(time),
+#               duration = difftime(end_time,start_time, units = &quot;hours&quot;) %&gt;% round(.,2)) %&gt;%
+#     ungroup() %&gt;% 
+#     arrange(year,colony_ID) %&gt;% 
+#     mutate(keep_row = ifelse(duration&gt;=atleast, &quot;yes&quot;,&quot;no&quot;)) %&gt;% 
+#     right_join(all.dat)
+# 
+# 
+# # Subset the dataset accordingly
+# dat &lt;- all.dat %&gt;% filter(keep_row==&quot;yes&quot;)
+# 
+# # Add the colony age information
+# dat &lt;- dat %&gt;% 
+#   left_join(summ.dat %&gt;% select(colony_ID, day, age_when_obs, age_dead), by = c(&quot;colony_ID&quot;,&quot;day&quot;)) 
+#   
+# # Classify into age class (1-2, 3-4, 5+ years old)
+# dat &lt;- dat %&gt;%
+#   mutate(age_class = ifelse(age_when_obs &lt;= 2, &quot;1-2_yr&quot;,
+#                                   ifelse(age_when_obs &gt; 2 &amp; age_when_obs &lt;= 4, &quot;3-4_yr&quot;,
+#                                          &quot;5+_yr&quot;))) %&gt;% 
+#   mutate(age_class = factor(age_class,
+#                             levels = c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;, &quot;5+_yr&quot;)))</code></pre>
 <blockquote>
 <p>Setting the order of the colonies to match age-class…</p>
 </blockquote>
-<pre class="r"><code># which colonies?
-colonies &lt;- dat %&gt;% arrange(age_when_obs) %&gt;% pull(colony_ID) %&gt;% unique()
-# colonies &lt;- dat %&gt;% pull(colony_ID) %&gt;% unique() %&gt;% sort()</code></pre>
+<pre class="r"><code># # which colonies?
+# colonies &lt;- dat %&gt;% arrange(age_when_obs) %&gt;% pull(colony_ID) %&gt;% unique()
+# # colonies &lt;- dat %&gt;% pull(colony_ID) %&gt;% unique() %&gt;% sort()</code></pre>
 </div>
 <div id="visualize-the-data" class="section level2">
 <h2>4. Visualize the data</h2>
 <blockquote>
 <p>Plot outgoing/incoming foragers v. time</p>
 </blockquote>
-<pre class="r"><code># what is the range for time of observation?
-x.lims &lt;- c(min(as.POSIXct(dat$t,format=&quot;%H:%M:%S&quot;)), max(as.POSIXct(dat$t,format=&quot;%H:%M:%S&quot;)))
-
-plots &lt;- list()
-k &lt;- 1
-for(i in 1:length((colonies))) {
-
-
-  foo &lt;- dat %&gt;% filter(colony_ID == (colonies)[i])
-  days &lt;- foo %&gt;% pull(day) %&gt;% unique()
-  if (nrow(foo)&gt;0){
-    for (j in 1:length(days)) {
-
-    plots[[k]] &lt;-
-      foo %&gt;%
-
-      filter(day==days[j]) %&gt;%
-      # filter(treatment==&quot;unmarked&quot;) %&gt;%
-      # select(t, treatment) %&gt;%
-
-      mutate(t.obs=as.POSIXct(t,format=&quot;%H:%M:%S&quot;)) %&gt;%
-
-      ggplot(aes(x=t.obs, fill=as.factor(inout))) +
-      # geom_bar(position = &quot;dodge&quot;) +
-      geom_density(alpha=0.7) +
-        
-      facet_grid(~age_class) +
-
-      labs(title = paste0(&quot;Colony: &quot;,(colonies)[i]),
-           subtitle = paste0(&quot;Date: &quot;, days[j])) +
-      labs(x=&quot;time of day&quot;, y=&quot;density&quot;) +
-      
-      scale_x_datetime(limits = x.lims) +
-      scale_y_continuous(breaks = 3) +
-
-      theme_Publication(base_size = 10) +
-      scale_fill_Publication(name = &quot;&quot;) +
-      
-      theme(plot.subtitle=element_text(hjust=0.5))
-
-    k &lt;- k+1  
-  }
-  
-  }
-
-}</code></pre>
+<pre class="r"><code># # what is the range for time of observation?
+# x.lims &lt;- c(min(as.POSIXct(dat$t,format=&quot;%H:%M:%S&quot;)), max(as.POSIXct(dat$t,format=&quot;%H:%M:%S&quot;)))
+# 
+# plots &lt;- list()
+# k &lt;- 1
+# for(i in 1:length((colonies))) {
+# 
+# 
+#   foo &lt;- dat %&gt;% filter(colony_ID == (colonies)[i])
+#   days &lt;- foo %&gt;% pull(day) %&gt;% unique()
+#   if (nrow(foo)&gt;0){
+#     for (j in 1:length(days)) {
+# 
+#     plots[[k]] &lt;-
+#       foo %&gt;%
+# 
+#       filter(day==days[j]) %&gt;%
+#       # filter(treatment==&quot;unmarked&quot;) %&gt;%
+#       # select(t, treatment) %&gt;%
+# 
+#       mutate(t.obs=as.POSIXct(t,format=&quot;%H:%M:%S&quot;)) %&gt;%
+# 
+#       ggplot(aes(x=t.obs, fill=as.factor(inout))) +
+#       # geom_bar(position = &quot;dodge&quot;) +
+#       geom_density(alpha=0.7) +
+#         
+#       facet_grid(~age_class) +
+# 
+#       labs(title = paste0(&quot;Colony: &quot;,(colonies)[i]),
+#            subtitle = paste0(&quot;Date: &quot;, days[j])) +
+#       labs(x=&quot;time of day&quot;, y=&quot;density&quot;) +
+#       
+#       scale_x_datetime(limits = x.lims) +
+#       scale_y_continuous(breaks = 3) +
+# 
+#       theme_Publication(base_size = 10) +
+#       scale_fill_Publication(name = &quot;&quot;) +
+#       
+#       theme(plot.subtitle=element_text(hjust=0.5))
+# 
+#     k &lt;- k+1  
+#   }
+#   
+#   }
+# 
+# }</code></pre>
 <div id="visualize-daily-fluctuations" class="section level3">
 <h3>Visualize daily fluctuations</h3>
 <blockquote>
 <p>density of foragers going out of and coming in to the colony as a function of time</p>
 </blockquote>
-<div class="figure" style="text-align: center">
-<img src="images/2022_deborah/01_timecourse_foraging/foraging_data.png" alt="Density plots of number of out/in-going foragers" width="95%" />
-<p class="caption">
-Density plots of number of out/in-going foragers
-</p>
-</div>
 <hr />
 </div>
 </div>
@@ -937,138 +790,315 @@ Density plots of number of out/in-going foragers
 <h2>5. Obtain in/out foraging rates</h2>
 <div id="data-for-2022-field-season" class="section level3">
 <h3>Data for 2022 field season</h3>
-<pre class="r"><code>path_to_2022data &lt;- paste0(path_to_repo, &quot;/../../04_field_work/00_data/&quot;)
-
-dat.2022 &lt;- read.csv(paste0(path_to_2022data, &quot;timecourse_foraging_2022.csv&quot;), header = T,
-                     stringsAsFactors = F, na.strings = c(&quot;&quot;,&quot; &quot;,&quot;NA&quot;)) %&gt;% as_tibble()
-
-dat.2022 &lt;-
-  dat.2022 %&gt;% 
-  select(-was_it_raining, -observer_initial, -obs_1, -obs_2) %&gt;% 
-  filter(!is.na(time)) %&gt;% 
-  arrange(colony_ID) %&gt;%
-  mutate(n_in = select(., starts_with(&quot;in&quot;)) %&gt;% rowSums(., na.rm = T),
-         n_out = select(., starts_with(&quot;out&quot;)) %&gt;% rowSums(., na.rm = T)) %&gt;% 
-  select(day, colony_ID, time, n_in, n_out) %&gt;% 
-  # calculate rate as ants/minute
-  mutate(r_in = round(n_in/0.5,2), 
-         r_out = round(n_out/0.5,2)) %&gt;% 
-   
-  
-  mutate(t.obs=as.POSIXct(time,format=&quot;%H:%M&quot;)) %&gt;%
-  # create the bins here
-  mutate(t.bin = floor_date(t.obs, paste(bin.width,&quot;minutes&quot;))) %&gt;% 
-  
-  group_by(colony_ID, day, t.bin) %&gt;% 
-  summarize(r_in = mean(r_in),
-            r_out = mean(r_out)) %&gt;% 
-  ungroup() %&gt;% 
-  
-  pivot_longer(cols = r_in:r_out,
-               names_to = &quot;inout&quot;,
-               values_to = &quot;r_ants&quot;) %&gt;% 
-  
-  mutate(inout = ifelse(inout==&quot;r_in&quot;, &quot;In&quot;, &quot;Out&quot;)) %&gt;% 
-  mutate(day = as.POSIXct(day, format=&quot;%m/%d/%y&quot;)) %&gt;% 
-  mutate(day = as.character(day))
-
-## colony age info
-path_to_2022colonydata &lt;- &quot;/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/02_bead_data&quot;
-colony.dat.2 &lt;- read.csv(paste0(path_to_2022colonydata, &quot;/data/foraging_counts_08_13_22.csv&quot;),
-                       stringsAsFactors = F, header = T) %&gt;% as_tibble() %&gt;% 
-  select(colony_ID, everything()) %&gt;% 
-  # mutate(colonyID = as.factor(colonyID)) %&gt;% 
-  mutate(age_class = ifelse(age_2022 &lt;= 2, &quot;1-2_yr&quot;,
-                                  ifelse(age_2022 &gt; 2 &amp; age_2022 &lt;= 4, &quot;3-4_yr&quot;,
-                                         &quot;5+_yr&quot;)))
-
-## add colony age info to dat.2022
-dat.2022 &lt;- dat.2022 %&gt;% 
-  left_join(colony.dat.2 %&gt;% select(colony_ID, age_obs=age_2022, age_class), by=&quot;colony_ID&quot;) %&gt;% 
-  mutate(colony_ID = as.character(colony_ID)) %&gt;% 
-  distinct()</code></pre>
+<pre class="r"><code># path_to_2022data &lt;- paste0(path_to_repo, &quot;/01_data/2022_billu_fieldwork/&quot;)
+# 
+# dat.2022 &lt;- read.csv(paste0(path_to_2022data, &quot;timecourse_foraging_2022.csv&quot;), header = T,
+#                      stringsAsFactors = F, na.strings = c(&quot;&quot;,&quot; &quot;,&quot;NA&quot;)) %&gt;% as_tibble()
+# 
+# dat.2022 &lt;-
+#   dat.2022 %&gt;% 
+#   select(-was_it_raining, -observer_initial, -obs_1, -obs_2) %&gt;% 
+#   filter(!is.na(time)) %&gt;% 
+#   arrange(colony_ID) %&gt;%
+#   mutate(n_in = select(., starts_with(&quot;in&quot;)) %&gt;% rowSums(., na.rm = T),
+#          n_out = select(., starts_with(&quot;out&quot;)) %&gt;% rowSums(., na.rm = T)) %&gt;% 
+#   select(day, colony_ID, time, n_in, n_out) %&gt;% 
+#   # calculate rate as ants/minute
+#   mutate(r_in = round(n_in/0.5,2), 
+#          r_out = round(n_out/0.5,2)) %&gt;% 
+#    
+#   
+#   mutate(t.obs=as.POSIXct(time,format=&quot;%H:%M&quot;)) %&gt;%
+#   # create the bins here
+#   mutate(t.bin = floor_date(t.obs, paste(bin.width,&quot;minutes&quot;))) %&gt;% 
+#   
+#   group_by(colony_ID, day, t.bin) %&gt;% 
+#   summarize(r_in = mean(r_in),
+#             r_out = mean(r_out)) %&gt;% 
+#   ungroup() %&gt;% 
+#   
+#   pivot_longer(cols = r_in:r_out,
+#                names_to = &quot;inout&quot;,
+#                values_to = &quot;r_ants&quot;) %&gt;% 
+#   
+#   mutate(inout = ifelse(inout==&quot;r_in&quot;, &quot;In&quot;, &quot;Out&quot;)) %&gt;% 
+#   mutate(day = as.POSIXct(day, format=&quot;%m/%d/%y&quot;)) %&gt;% 
+#   mutate(day = as.character(day))
+# 
+# ## colony age info
+# path_to_2022colonydata &lt;- &quot;/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/02_bead_data&quot;
+# colony.dat.2 &lt;- read.csv(paste0(path_to_2022colonydata, &quot;/data/foraging_counts_08_13_22.csv&quot;),
+#                        stringsAsFactors = F, header = T) %&gt;% as_tibble() %&gt;% 
+#   select(colony_ID, everything()) %&gt;% 
+#   # mutate(colonyID = as.factor(colonyID)) %&gt;% 
+#   mutate(age_class = ifelse(age_2022 &lt;= 2, &quot;1-2_yr&quot;,
+#                                   ifelse(age_2022 &gt; 2 &amp; age_2022 &lt;= 4, &quot;3-4_yr&quot;,
+#                                          &quot;5+_yr&quot;)))
+# 
+# ## add colony age info to dat.2022
+# dat.2022 &lt;- dat.2022 %&gt;% 
+#   left_join(colony.dat.2 %&gt;% select(colony_ID, age_obs=age_2022, age_class), by=&quot;colony_ID&quot;) %&gt;% 
+#   mutate(colony_ID = as.character(colony_ID)) %&gt;% 
+#   distinct()</code></pre>
 </div>
 <div id="combine-2022-data-with-previous-data" class="section level3">
 <h3>Combine 2022 data with previous data</h3>
 <blockquote>
 <p>Making 15 minute bins for calculating rate of in/out foraging</p>
 </blockquote>
+<pre class="r"><code># b.dat &lt;-
+#   dat %&gt;% 
+#   as_tibble() %&gt;% 
+#   # head(100) %&gt;% 
+#   
+#   filter(keep_row == &quot;yes&quot;) %&gt;% 
+#   
+#   mutate(t.obs=as.POSIXct(t,format=&quot;%H:%M:%S&quot;)) %&gt;%
+#   
+#   # select(colony_ID:treatment,inout,ant_ID,day, t.obs) %&gt;%
+#   
+#   # create the bins here
+#   mutate(t.bin = floor_date(t.obs, paste(bin.width,&quot;minutes&quot;))) %&gt;% 
+#   # calculate the rate of foraging
+#   group_by(colony_ID,inout, day, t.bin, age_class) %&gt;%
+#       summarize(n_ants =n()) %&gt;% 
+#       mutate(r_ants = n_ants/bin.width) %&gt;% 
+#   ungroup() %&gt;% 
+#   select(-n_ants) %&gt;% 
+#   left_join(dat %&gt;% select(colony_ID,age_obs=age_when_obs), by=&quot;colony_ID&quot;) %&gt;% 
+#   select(colony_ID, day, t.bin, inout, r_ants, age_obs, age_class) %&gt;% 
+#   distinct()
+# 
+# ## Combine the previous data (b.dat) with 2022 dataset (dat.2022)
+# b.dat &lt;- rbind(dat.2022, b.dat) %&gt;% distinct()
+# 
+# ## Clean up space
+# rm(all.dat, dat.nova, dat.pagliara, dat)
+# 
+# ## save the compiled data
+# b.dat %&gt;% 
+#   write.csv(., 
+#             file = paste0(path_to_repo,&quot;/01_data/all_data_pagliara_nova_billu2022.csv&quot;),
+#             row.names=F)</code></pre>
+</div>
+</div>
+<div id="analyses-starts-here" class="section level2">
+<h2>ANALYSES STARTS HERE</h2>
 <pre class="r"><code>b.dat &lt;-
-  dat %&gt;% 
+  read.csv(paste0(path_to_repo,&quot;/01_data/all_data_pagliara_nova_billu2022.csv&quot;), 
+                  stringsAsFactors=F) %&gt;% 
   as_tibble() %&gt;% 
-  # head(100) %&gt;% 
+  mutate_at(c(&quot;colony_ID&quot;,&quot;day&quot;), as.character) %&gt;% 
+  # mutate(t.bin = str_split(t.bin, pattern = &quot; &quot;)[[1]][2]) %&gt;% 
+  mutate(t.bin = as.POSIXct(as_datetime(t.bin))) %&gt;% 
+  mutate(age_class = factor(age_class, level=c(&quot;1-2_yr&quot;, &quot;3-4_yr&quot;, &quot;5+_yr&quot;)))
   
-  filter(keep_row == &quot;yes&quot;) %&gt;% 
-  
-  mutate(t.obs=as.POSIXct(t,format=&quot;%H:%M:%S&quot;)) %&gt;%
-  
-  # select(colony_ID:treatment,inout,ant_ID,day, t.obs) %&gt;%
-  
-  # create the bins here
-  mutate(t.bin = floor_date(t.obs, paste(bin.width,&quot;minutes&quot;))) %&gt;% 
-  # calculate the rate of foraging
-  group_by(colony_ID,inout, day, t.bin, age_class) %&gt;%
-      summarize(n_ants =n()) %&gt;% 
-      mutate(r_ants = n_ants/bin.width) %&gt;% 
-  ungroup() %&gt;% 
-  select(-n_ants) %&gt;% 
-  left_join(dat %&gt;% select(colony_ID,age_obs=age_when_obs), by=&quot;colony_ID&quot;) %&gt;% 
-  select(colony_ID, day, t.bin, inout, r_ants, age_obs, age_class) %&gt;% 
-  distinct()
-
-## Combine the previous data (b.dat) with 2022 dataset (dat.2022)
-b.dat &lt;- rbind(dat.2022, b.dat) %&gt;% distinct()
-
-## Clean up space
-rm(all.dat, dat.nova, dat.pagliara)
-
 colonies &lt;- b.dat %&gt;% arrange(age_obs) %&gt;% pull(colony_ID) %&gt;% unique()</code></pre>
-<p>Let’s visualize the in/out rates (and compare them to the density plots).</p>
+</div>
+<div id="add-climate-data" class="section level2">
+<h2>ADD CLIMATE DATA</h2>
+<pre class="r"><code>clim.dat.all &lt;- read.csv(file = paste0(path_to_repo, &quot;/01_data/all_climate_data_pagliara_nova_billu2022.csv&quot;),
+                     stringsAsFactors = F) %&gt;% as_tibble()
+bd.saveplot(
+  name = &quot;clim_data&quot;,
+  width=30, height=30,
+  clim.dat.all %&gt;% 
+  select(date, time, temp_F, rH) %&gt;% 
+  mutate(time = as.POSIXct(time, format=&quot;%H:%M&quot;)) %&gt;% 
+  
+  ggplot(aes(x=time)) +
+  geom_rect(aes(xmin = as.POSIXct(&quot;06:00&quot;, format=&quot;%H:%M&quot;), 
+                xmax = as.POSIXct(&quot;13:00&quot;, format=&quot;%H:%M&quot;), 
+                ymin = -Inf, ymax = Inf),
+            fill = &quot;grey80&quot;, col=NA, alpha = 0.2) +
+  geom_line(aes(group=as.factor(date), y=rH), col=&quot;orange&quot;, size=2, alpha=0.95) +
+  geom_line(aes(group=as.factor(date), y=temp_F), color=&quot;red&quot;, size=2, alpha=0.8) +
+  scale_y_continuous(breaks = c(20,60,100))+
+  facet_wrap(date~., nrow = 4, ncol = 6) +
+  theme_Publication(base_size = 20) +
+  theme(axis.text.x = element_blank()) +
+  labs(subtitle = &quot;shaded portion shows values between 6AM and 1PM\nhumidity (%rH, orange); temp (ºF, red)&quot;,
+       x = &quot;time&quot;,
+       y = &quot;&quot;)
+)</code></pre>
+<pre><code>## Plot is being saved to 
+## /Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/clim_data.png</code></pre>
+<p><img src="images/2022_deborah/01_timecourse_foraging/clim_data.png" width="95%" style="display: block; margin: auto;" /></p>
+<blockquote>
+<p>let’s group the days as low, medium, and high humidity days</p>
+</blockquote>
+<div id="classify-humidity-days" class="section level3">
+<h3>Classify humidity days</h3>
+<pre class="r"><code>clim.dat &lt;-
+  clim.dat.all %&gt;% 
+  select(date:time,
+         temp_F, rH) %&gt;% 
+  group_by(date) %&gt;% 
+  summarize(temp_min=min(temp_F, na.rm=T),
+            temp_mean=mean(temp_F, na.rm=T),
+            temp_median=median(temp_F, na.rm = T),
+            temp_max=max(temp_F, na.rm=T),
+            
+            rH_min=min(rH, na.rm=T),
+            rH_mean=mean(rH, na.rm = T),
+            rH_median=median(rH, na.rm = T),
+            rH_max=max(rH, na.rm = T)) %&gt;% 
+  pivot_longer(cols= temp_min:rH_max,
+               values_to = &quot;value&quot;)
+    
+
+bd.saveplot(name=&quot;distribution_rH_tempF&quot;,
+            width=15,height=20,
+            clim.dat %&gt;% 
+                group_by(name) %&gt;% 
+                mutate(name2=str_split(name, &quot;_&quot;)[[1]][1]) %&gt;% 
+                ungroup() %&gt;% 
+                ggplot(aes(x=as.factor(name), y=value)) +
+                geom_boxplot(outlier.color = NA, aes(fill=name2), alpha=0.75) +
+                geom_jitter(aes(group=name), width = 0.2, alpha=0.55) +
+                theme_Publication(base_size = 20) +
+                scale_fill_manual(values = c(&quot;orange&quot;,&quot;red&quot;)) +
+                coord_flip() +
+                theme(legend.title = element_blank(),
+                      legend.position = &quot;none&quot;) +
+                labs(subtitle = &quot;humidity (%rH, orange)\ntemp (ºF, red)&quot;,
+                     x = &quot;&quot;,
+                     y = &quot;&quot;)
+            )</code></pre>
+<pre><code>## Plot is being saved to 
+## /Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/distribution_rH_tempF.png</code></pre>
+<p>It appears that the values of rH_max and temp_mean have the tighter distribution.</p>
+<blockquote>
+<p>Let’s explore groupings based on rH_max</p>
+</blockquote>
+<pre class="r"><code>var.of.interest &lt;- &quot;rH_max&quot;
+foo &lt;-
+  clim.dat %&gt;% 
+  filter(name==var.of.interest) %&gt;% 
+  pull(value) %&gt;% 
+  summary() %&gt;% 
+  as.vector()
+
+q1 &lt;- foo[2]
+q2 &lt;- foo[5]
+
+clim.groups &lt;- 
+  clim.dat %&gt;% 
+  filter(name==var.of.interest) %&gt;% 
+  # make the grouping based on inter-quartile ranges
+  mutate(rH_group=ifelse(value&lt;=q1, &quot;low_rH&quot;,
+                         ifelse(value&gt;q1&amp;value&lt;q2, &quot;medium_rH&quot;, &quot;high_rH&quot;))) %&gt;% 
+  select(day=date, rH_max=value, rH_group) 
+
+## Summarize; sample sizes
+clim.groups %&gt;% 
+  # obtain colony data
+  right_join(b.dat %&gt;% select(day,colony_ID,age_class), by=&quot;day&quot;) %&gt;% 
+  distinct() %&gt;% 
+  group_by(day) %&gt;% 
+  mutate(year=str_split(day, &quot;-&quot;)[[1]][1]) %&gt;% 
+  ungroup() %&gt;% 
+  # # obtain summary | rH_group
+  # group_by(rH_group) %&gt;%
+  # # obtain summary | age_class
+  # group_by(age_class) %&gt;% 
+  # obtain summary - both
+  group_by(age_class,rH_group) %&gt;% 
+  summarise(n.colonies=length(unique(colony_ID)),
+            n.days=length(unique(day)),
+            which.years=paste(unique(year), collapse = &quot;, &quot;)) %&gt;% 
+  ungroup()</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##   age_class rH_group  n.colonies n.days which.years     
+##   &lt;fct&gt;     &lt;chr&gt;          &lt;int&gt;  &lt;int&gt; &lt;chr&gt;           
+## 1 1-2_yr    high_rH            4      1 2022            
+## 2 3-4_yr    high_rH            4      2 2022, 2018      
+## 3 3-4_yr    medium_rH          1      1 2018            
+## 4 5+_yr     high_rH            6      5 2022, 2015, 2017
+## 5 5+_yr     low_rH             3      6 2016, 2017      
+## 6 5+_yr     medium_rH          7      8 2015, 2017, 2018</code></pre>
+<pre class="r"><code>time.points &lt;- 
+  b.dat %&gt;% 
+  group_by(t.bin) %&gt;% 
+  mutate(t.bin2=str_split(as.character(t.bin),&quot; &quot;)[[1]][2]) %&gt;%
+  pull(t.bin2) %&gt;% unique()
+
+b.dat &lt;-
+  clim.dat.all %&gt;% 
+  mutate(time=time %&gt;% as.POSIXct(., format=&quot;%H:%M&quot;)) %&gt;% 
+  mutate(t.bin=floor_date(time, paste(bin.width,&quot;minutes&quot;))) %&gt;% 
+  group_by(t.bin) %&gt;% 
+  mutate(t.bin2=str_split(as.character(t.bin),&quot; &quot;)[[1]][2]) %&gt;%  
+  ungroup() %&gt;% 
+  group_by(date,t.bin2) %&gt;% 
+  summarize(temp_F=mean(temp_F, na.rm = T),
+            rH = mean(rH, na.rm = T)) %&gt;% 
+  ungroup() %&gt;% 
+  select(day=date, everything()) %&gt;% 
+  right_join(b.dat %&gt;% group_by(t.bin) %&gt;% mutate(t.bin2=str_split(as.character(t.bin),&quot; &quot;)[[1]][2]), 
+             by=c(&quot;day&quot;,&quot;t.bin2&quot;)) %&gt;% 
+  left_join(clim.groups %&gt;% select(-rH_max), by=&quot;day&quot;)</code></pre>
+</div>
+<div id="outgoing-foraging-rate" class="section level3">
+<h3>Outgoing foraging rate</h3>
+<blockquote>
+<p>format the data</p>
+</blockquote>
+<pre class="r"><code>in.out.dat &lt;- 
+  b.dat %&gt;% 
+  distinct() %&gt;% 
+  group_by(colony_ID, day, t.bin, age_obs, age_class) %&gt;% 
+  pivot_wider(names_from = inout,
+              values_from = r_ants) %&gt;% 
+  ungroup() %&gt;% 
+  rename(c(r_in = &quot;In&quot;, r_out = &quot;Out&quot;))</code></pre>
+<p>Let’s visualize the rate of outgoing foragers</p>
 <pre class="r"><code>## Plot the in/out rates
 x.lims &lt;- c(min(b.dat$t.bin), max(b.dat$t.bin))
 
 plots &lt;- list()
 k &lt;- 1
 for(i in 1:length((colonies))) {
-
-
-  foo &lt;- b.dat %&gt;% filter(colony_ID == (colonies)[i])
-  days &lt;- foo %&gt;% pull(day) %&gt;% unique()
   
-  y.max &lt;- max(foo$r_ants, na.rm = T)
+  foo &lt;- in.out.dat %&gt;% filter(colony_ID==colonies[i]) %&gt;% na.omit()
+  days &lt;- foo %&gt;% pull(day) %&gt;% unique()
+  # y.max &lt;- max(foo$r_ants, na.rm = T)
   
   if (nrow(foo)&gt;0){
     for (j in 1:length(days)) {
-
+    which.group &lt;- foo[foo$day==days[[j]],]$rH_group %&gt;% unique()
+    age &lt;- foo[foo$day==days[[j]],]$age_obs %&gt;% unique() %&gt;% as.character()
+    
     plots[[k]] &lt;-
       foo %&gt;%
-
       filter(day==days[j]) %&gt;%
-      # filter(treatment==&quot;unmarked&quot;) %&gt;%
-      # select(t, treatment) %&gt;%
-      
-      # group_by(colony_ID,inout, day, t.bin) %&gt;%
-      # summarize(n_ants =n()) %&gt;% 
-      # mutate(r_ants = n_ants/bin.width) %&gt;% 
-      # ungroup() %&gt;% 
+      ungroup() %&gt;% 
+      # zscore both relative humidity and out-rate
+      mutate(r_out = (r_out-mean(r_out))/sd(r_out),
+             temp_F = (temp_F-mean(temp_F))/sd(temp_F), 
+             rH = (rH-mean(rH))/sd(rH)) %&gt;%  
 
-      ggplot(aes(x=t.bin, y=r_ants, fill=as.factor(inout), group=as.factor(inout))) +
-      geom_area(position = position_dodge(width = 1), alpha=0.7) +
-      
-      facet_grid(~age_obs) +
-
-      labs(title = paste0(&quot;Colony: &quot;,(colonies)[i]),
-           subtitle = paste0(&quot;Date: &quot;, days[j])) +
-      labs(x=&quot;time of day&quot;, y=&quot;rate (ants/min)&quot;) +
-      
-      scale_y_continuous(n.breaks = 3, limits = c(0,y.max)) +
-      scale_x_datetime(limits = x.lims, date_breaks = &quot;3 hours&quot;, date_labels = &quot;%H:%m&quot;) +
+      ggplot(aes(x=t.bin, y=r_out)) +
+        # plot rH
+        geom_area(aes(x=t.bin, y=rH),size=3, col=NA, fill=&quot;orange&quot;, alpha=0.5) +
+        # # plot temp_F
+        # geom_area(aes(x=t.bin, y=temp_F),size=3, col=NA, fill=&quot;red&quot;, alpha=0.5) +
+        # plot total foraging
+        geom_area(position = position_dodge(width = 1), fill=&quot;grey60&quot;, alpha=0.65) +
+        geom_line(size=2, col=&quot;black&quot;, alpha=0.65) +
+        # facet_grid(~age_obs) +
         
-      theme_Publication(base_size = 10) +
-      scale_fill_Publication(name = &quot;&quot;) +
-      
-      theme(plot.subtitle=element_text(hjust=0.5))
-
+        # coord_flip() +
+        labs(title = paste0(&quot;Colony: &quot;,(colonies)[i], &quot;\nAge = &quot;, age),
+           subtitle = paste0(which.group, &quot;, &quot;, days[j])) +
+        labs(x=&quot;&quot;,
+             y=&quot;&quot;)  +
+        
+        scale_y_continuous(breaks = c(-1,0,1)) +
+        
+        scale_x_datetime(limits = x.lims, date_breaks = &quot;2 hours&quot;, date_labels = &quot;%H:%m&quot;) +
+        theme_Publication(base_size = 10) +
+        theme(plot.subtitle=element_text(hjust=0.5))
     k &lt;- k+1  
   }
   
@@ -1083,14 +1113,6 @@ Rate of out/in-going foragers
 </div>
 <div id="total-foraging-rate" class="section level3">
 <h3>Total foraging rate</h3>
-<pre class="r"><code>in.out.dat &lt;- 
-  b.dat %&gt;% 
-  distinct() %&gt;% 
-  group_by(colony_ID, day, t.bin, age_obs, age_class) %&gt;% 
-  pivot_wider(names_from = inout,
-              values_from = r_ants) %&gt;% 
-  ungroup() %&gt;% 
-  rename(c(r_in = &quot;In&quot;, r_out = &quot;Out&quot;))</code></pre>
 <div class="figure" style="text-align: center">
 <img src="images/2022_deborah/01_timecourse_foraging/inout_v2.png" alt="Total (in + out) rate of foraging" width="95%" />
 <p class="caption">
@@ -1106,24 +1128,16 @@ Total (in + out) rate of foraging
 </blockquote>
 <pre class="r"><code>pacman::p_load(pracma)
 
-## Plot the in/out rates
 auc.dat &lt;- in.out.dat %&gt;% mutate(auc = NA, dur_mins = NA)
-# auc &lt;- list()
-# k &lt;- 1
+## Plot the in/out rates
 for(i in 1:length(colonies)) {
   foo &lt;- in.out.dat %&gt;% filter(colony_ID == (colonies)[i])
   days &lt;- foo %&gt;% pull(day) %&gt;% unique()
   
-  x.max &lt;- max(foo$r_in, na.rm = T)
-  y.max &lt;- max(foo$r_out, na.rm = T)
-  
   if (nrow(foo)&gt;0){
     for (j in 1:length(days)) {
-
-    # plots[[k]] &lt;-
       bar &lt;- 
         foo %&gt;%
-
         filter(day==days[j]) %&gt;%
           rownames_to_column(&quot;time_point&quot;) %&gt;% 
           group_by(t.bin) %&gt;% 
@@ -1132,7 +1146,6 @@ for(i in 1:length(colonies)) {
           
       auc = trapz(x=bar$time_point, y=bar$t_rate)
       dur = as.numeric(max(bar$t.bin) - min(bar$t.bin))*60
-      
       
       auc.dat[auc.dat$colony_ID==colonies[i] &amp; auc.dat$day==days[j],]$auc &lt;- auc
       auc.dat[auc.dat$colony_ID==colonies[i] &amp; auc.dat$day==days[j],]$dur_mins &lt;- dur
@@ -1144,13 +1157,15 @@ for(i in 1:length(colonies)) {
 
 
 ## Set up the dataset for plotting
-auc.dat.plot &lt;- 
+auc.dat.plot &lt;-
   auc.dat %&gt;% 
-  select(colony_ID:age_class, auc, dur_mins) %&gt;% 
+  select(colony_ID:age_class, auc, dur_mins, day) %&gt;%
   select(-t.bin) %&gt;% 
   distinct() %&gt;% 
   arrange(colony_ID) %&gt;% 
-  na.omit()
+  na.omit() %&gt;% 
+  left_join(clim.groups %&gt;% select(-rH_max), by=&quot;day&quot;) %&gt;% 
+  mutate(rH_group=factor(rH_group, levels = c(&quot;low_rH&quot;,&quot;medium_rH&quot;,&quot;high_rH&quot;)))
   
   # ## remove colony IDs that might be outliers or not have enough data
   # filter(!colony_ID %in% c(&quot;509&quot;)) 
@@ -1159,169 +1174,138 @@ auc.dat.plot &lt;-
 
 png(paste0(path_to_repo2,
            &quot;total_foraging_v1.png&quot;),
-    width = 30, height = 35, units = &quot;cm&quot;, res = 200)
+    width = 30, height = 15, units = &quot;cm&quot;, res = 200)
 
-auc.dat.plot %&gt;% 
-
+auc.dat.plot %&gt;%
   ggplot(aes(x=age_class, y=auc/dur_mins)) +
-    
-    # geom_violin(alpha = 0.4) +
-    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
-  
-    geom_jitter(width = 0.1, size=10, alpha=0.8, 
-                aes(fill=as.factor(colony_ID)), 
-                shape=21) +
-      
-    # geom_boxplot(alpha=0.8, size=3, color=&quot;grey60&quot;) +
-    
-    stat_summary(fun = mean, geom = &quot;point&quot;, col=&quot;black&quot;, 
-                 size=20, alpha=0.8,
-                 position=position_nudge(x = 0.3, y = 0)) +
-    stat_summary(fun.data = mean_cl_boot,
-                 size=3, alpha = 0.8,
-                 geom = &quot;errorbar&quot;, width = 0.2, fun.args = list(conf.int = 0.95),
-                 position=position_nudge(x = 0.3, y = 0)) +
-
+    geom_boxplot(aes(group=age_class, fill=age_class), alpha=0.75, outlier.color = NA) +
+    geom_jitter(width = 0.1, size=3, alpha=0.5) +
+    facet_grid(~rH_group) +
+    # stat_summary(fun = mean, geom = &quot;point&quot;, col=&quot;black&quot;, 
+    #              size=5, alpha=0.8,
+    #              position=position_nudge(x = 0.3, y = 0)) +
+    # stat_summary(fun.data = mean_cl_boot,
+    #              size=2, alpha = 0.8,
+    #              geom = &quot;errorbar&quot;, width = 0.2, fun.args = list(conf.int = 0.95),
+    #              position=position_nudge(x = 0.3, y = 0)) +
     theme_Publication(base_size = 30) +
-    # theme_classic() +
-    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
-    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
-
     labs(title = &quot;Colony foraging activity&quot;,
        subtitle = &quot;standardized by duration of obs.&quot;,
-       y = &quot;activity \n(mean ± 95% CI)&quot;,
+       y = &quot;daily-activity&quot;,
        x = &quot;age-groups&quot;) +
-  
     scale_color_discrete() +
     scale_fill_discrete() +
-
-    # theme(legend.position=&quot;none&quot;) +
-
+    scale_y_continuous(n.breaks = 3) +
     theme(plot.subtitle=element_text(hjust=0.5, size=20),
           legend.title = element_blank()) +
-    theme(legend.position=&quot;bottom&quot;, legend.box=&quot;vertical&quot;, legend.margin=margin()) +
-    coord_flip()
+    theme(legend.position=&quot;bottom&quot;, 
+          legend.box=&quot;vertical&quot;, 
+          legend.margin=margin()) +
+    theme(axis.text.x = element_text(angle = 90),
+          axis.text.x.bottom = element_blank())
 
 trash &lt;- dev.off()
 
-
-## Plot by age
-
-png(paste0(path_to_repo2,
-           &quot;total_foraging_v2.png&quot;),
-    width = 30, height = 35, units = &quot;cm&quot;, res = 200)
-
-auc.dat.plot %&gt;% 
-  
-  ggplot(aes(x=age_obs, y=auc/dur_mins)) +
-    # plot polynomial model fit
-    geom_smooth(method=&#39;lm&#39;,
-                formula = y ~ poly(x, 4) ,
-                col=&quot;black&quot;, alpha=0.4, size=5) +
-  
-    geom_jitter(width = 0.1, size=10, alpha=0.8, 
-                aes(fill=as.factor(colony_ID)), 
-                shape=21) +
-    # add the labels to the points
-    ggrepel::geom_label_repel(aes(label = colony_ID), 
-                              segment.colour = NA,
-                              alpha=0.9) +
-
-    theme_Publication(base_size = 30) +
-  
-    labs(title = &quot;Colony foraging activity&quot;,
-       subtitle = &quot;black line shows a fourth-order polynomial fit; y ~ poly(x, 4)&quot;,
-       y = &quot;activity&quot;,
-       x = &quot;age (in years)&quot;) +
-  
-    scale_color_discrete() +
-    scale_fill_discrete() +
-
-    # theme(legend.position=&quot;none&quot;) +
-
-    theme(plot.subtitle=element_text(hjust=0.5, size=20),
-          legend.title = element_blank()) +
-    theme(legend.position=&quot;bottom&quot;, legend.box=&quot;vertical&quot;, legend.margin=margin()) 
-
-trash &lt;- dev.off()
-
-
-## Plot by day
-
-png(paste0(path_to_repo2,
-           &quot;total_foraging_v3.png&quot;),
-    width = 30, height = 40, units = &quot;cm&quot;, res = 200)
-
-auc.dat.plot %&gt;% 
-  
-  left_join(summ.dat %&gt;% ungroup() %&gt;% 
-              select(colony_ID, age_when_obs), by=&quot;colony_ID&quot;) %&gt;% 
-  distinct() %&gt;% 
-
-  ggplot(aes(x=as.factor(day), y=auc/dur_mins)) +
-    # geom_boxplot(alpha=0.5) +
-    # geom_violin(alpha = 0.4) +
-    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
-  
-    geom_jitter(width = 0.1, size=10, alpha=0.8, 
-                aes(col=as.factor(colony_ID), shape=as.factor(age_class))) +
-  
-    # add the labels to the points
-    ggrepel::geom_label_repel(aes(label = colony_ID),
-                              # segment.colour = &quot;NA&quot;,
-                              alpha=0.9) +
-  
-
-    theme_Publication(base_size = 30) +
-    # theme_classic() +
-    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
-    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
-
-    labs(title = &quot;Colony foraging activity&quot;,
-       subtitle = &quot;standardized by duration of obs.&quot;,
-       y = &quot;activity&quot;,
-       x = &quot;day of observation&quot;) +
-  
-    scale_color_discrete() +
-    scale_fill_discrete() +
-    
-    coord_flip() +
-
-    # theme(legend.position=&quot;none&quot;) +
-
-    theme(plot.subtitle=element_text(hjust=0.5, size=20),
-          legend.title = element_blank()) +
-    theme(legend.position=&quot;bottom&quot;, legend.box=&quot;vertical&quot;, legend.margin=margin()) 
-
-trash &lt;- dev.off()</code></pre>
+# 
+# ## Plot by age
+# 
+# png(paste0(path_to_repo2,
+#            &quot;total_foraging_v2.png&quot;),
+#     width = 30, height = 35, units = &quot;cm&quot;, res = 200)
+# 
+# auc.dat.plot %&gt;% 
+#   
+#   ggplot(aes(x=age_obs, y=auc/dur_mins)) +
+#     # plot polynomial model fit
+#     geom_smooth(method=&#39;lm&#39;,
+#                 formula = y ~ poly(x, 4) ,
+#                 col=&quot;black&quot;, alpha=0.4, size=5) +
+#   
+#     geom_jitter(width = 0.1, size=10, alpha=0.8, 
+#                 aes(fill=as.factor(colony_ID)), 
+#                 shape=21) +
+#     # add the labels to the points
+#     ggrepel::geom_label_repel(aes(label = colony_ID), 
+#                               segment.colour = NA,
+#                               alpha=0.9) +
+# 
+#     theme_Publication(base_size = 30) +
+#   
+#     labs(title = &quot;Colony foraging activity&quot;,
+#        subtitle = &quot;black line shows a fourth-order polynomial fit; y ~ poly(x, 4)&quot;,
+#        y = &quot;activity&quot;,
+#        x = &quot;age (in years)&quot;) +
+#   
+#     scale_color_discrete() +
+#     scale_fill_discrete() +
+# 
+#     # theme(legend.position=&quot;none&quot;) +
+# 
+#     theme(plot.subtitle=element_text(hjust=0.5, size=20),
+#           legend.title = element_blank()) +
+#     theme(legend.position=&quot;bottom&quot;, legend.box=&quot;vertical&quot;, legend.margin=margin()) 
+# 
+# trash &lt;- dev.off()
+# 
+# 
+# ## Plot by day
+# 
+# png(paste0(path_to_repo2,
+#            &quot;total_foraging_v3.png&quot;),
+#     width = 30, height = 40, units = &quot;cm&quot;, res = 200)
+# 
+# auc.dat.plot %&gt;% 
+#   
+#   left_join(summ.dat %&gt;% ungroup() %&gt;% 
+#               select(colony_ID, age_when_obs), by=&quot;colony_ID&quot;) %&gt;% 
+#   distinct() %&gt;% 
+# 
+#   ggplot(aes(x=as.factor(day), y=auc/dur_mins)) +
+#     # geom_boxplot(alpha=0.5) +
+#     # geom_violin(alpha = 0.4) +
+#     # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
+#   
+#     geom_jitter(width = 0.1, size=10, alpha=0.8, 
+#                 aes(col=as.factor(colony_ID), shape=as.factor(age_class))) +
+#   
+#     # add the labels to the points
+#     ggrepel::geom_label_repel(aes(label = colony_ID),
+#                               # segment.colour = &quot;NA&quot;,
+#                               alpha=0.9) +
+#   
+# 
+#     theme_Publication(base_size = 30) +
+#     # theme_classic() +
+#     # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
+#     # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
+# 
+#     labs(title = &quot;Colony foraging activity&quot;,
+#        subtitle = &quot;standardized by duration of obs.&quot;,
+#        y = &quot;activity&quot;,
+#        x = &quot;day of observation&quot;) +
+#   
+#     scale_color_discrete() +
+#     scale_fill_discrete() +
+#     
+#     coord_flip() +
+# 
+#     # theme(legend.position=&quot;none&quot;) +
+# 
+#     theme(plot.subtitle=element_text(hjust=0.5, size=20),
+#           legend.title = element_blank()) +
+#     theme(legend.position=&quot;bottom&quot;, legend.box=&quot;vertical&quot;, legend.margin=margin()) 
+# 
+# trash &lt;- dev.off()</code></pre>
 <div class="figure" style="text-align: center">
 <img src="images/2022_deborah/01_timecourse_foraging/total_foraging_v1.png" alt="Total foraging activity by age-groups" width="65%" />
 <p class="caption">
 Total foraging activity by age-groups
 </p>
 </div>
-<div class="figure" style="text-align: center">
-<img src="images/2022_deborah/01_timecourse_foraging/total_foraging_v2.png" alt="Total foraging activity by age" width="65%" />
-<p class="caption">
-Total foraging activity by age
-</p>
-</div>
-<div class="figure" style="text-align: center">
-<img src="images/2022_deborah/01_timecourse_foraging/total_foraging_v3.png" alt="Total foraging activity by day of observation" width="65%" />
-<p class="caption">
-Total foraging activity by day of observation
-</p>
-</div>
 </div>
 </div>
 <div id="in-v.-out-rate-time" class="section level2">
 <h2>6. In v. Out rate ~ time</h2>
-<div class="figure" style="text-align: center">
-<img src="images/2022_deborah/01_timecourse_foraging/inout_v3.png" alt="I/O plots as a function of time" width="95%" />
-<p class="caption">
-I/O plots as a function of time
-</p>
-</div>
 <hr />
 </div>
 <div id="colony-age-classes" class="section level2">
@@ -1536,9 +1520,13 @@ which_colonies
 <blockquote>
 <p>summarize the daily foraging rhythms for each age-class</p>
 </blockquote>
-<pre class="r"><code>mod.dat %&gt;% 
+<pre class="r"><code>bd.saveplot(
+  name = &quot;daily_foraging_pattern_avg&quot;,
+  width = 25,height = 20,
   
-  group_by(age_class, t.bin) %&gt;% 
+  mod.dat %&gt;% 
+  mutate(rH_group=factor(rH_group, levels = c(&quot;high_rH&quot;,&quot;medium_rH&quot;,&quot;low_rH&quot;))) %&gt;% 
+  group_by(age_class, rH_group, t.bin) %&gt;% 
   summarize(
     avg_in = mean(r_in),
     avg_out = mean(r_out),
@@ -1551,8 +1539,8 @@ which_colonies
   # ggplot(aes(x=t.bin, y=avg_out, group=age_class, color=age_class, fill=age_class)) +
   geom_area(position = position_dodge(width = 0), alpha=0.75) +
         geom_line(size=2, col=&quot;black&quot;, alpha=0.65) +
-  
-        facet_grid(age_class~.) +
+
+        facet_grid(rH_group~age_class) +
         
         # coord_flip() +
         labs(x=&quot;time of day (h)&quot;,
@@ -1561,7 +1549,7 @@ which_colonies
         # labs(title = paste0(&quot;Colony: &quot;,(colonies)[i]),
         #    subtitle = paste0(&quot;Date: &quot;, days[j])) +
         
-        scale_y_continuous(n.breaks = 4, labels = c(&quot;&quot;,&quot;25&quot;,&quot;&quot;,&quot;75&quot;)) +
+        scale_y_continuous(n.breaks = 4) +
         # scale_x_datetime(limits = x.lims, date_breaks = &quot;3 hours&quot;, date_labels = &quot;%H:%m&quot;) +
         theme_Publication(base_size = 20) +
         theme(axis.text.x=element_text(angle=90,hjust=1)) +
@@ -1572,8 +1560,12 @@ which_colonies
                                     &quot;&quot;,&quot;11:00&quot;,&quot;&quot;,&quot;&quot;,
                                     &quot;&quot;,&quot;12:00&quot;,&quot;&quot;,&quot;&quot;, &quot;&quot;)) +
         # scale_fill_manual(values = c(&quot;red&quot;,&quot;blue&quot;,&quot;green&quot;))
-        theme(plot.subtitle=element_text(hjust=0.5))</code></pre>
-<p><img src="timecourse_foraging_Gordon_files/figure-html/summary_ageclass-1.png" width="672" /></p>
+        theme(plot.subtitle=element_text(hjust=0.5),
+              legend.position = &quot;none&quot;)
+)</code></pre>
+<pre><code>## Plot is being saved to 
+## /Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/daily_foraging_pattern_avg.png</code></pre>
+<p><img src="images/2022_deborah/01_timecourse_foraging/daily_foraging_pattern_avg.png" width="95%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="prelim.-analyses-i" class="section level2">

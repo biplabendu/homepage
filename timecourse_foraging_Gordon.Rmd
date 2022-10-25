@@ -37,26 +37,36 @@ rm(list = ls())
 pacman::p_load(tidyverse, conflicted, ggplot2, viridis, conflicted, WaveletComp)
 pacman::p_load(patchwork)
 pacman::p_load(lubridate)
+pacman::p_load(default)
 
 # set conflict preference
 conflict_prefer("select", "dplyr")
 conflict_prefer("filter", "dplyr")
 conflict_prefer("union", "dplyr")
 conflict_prefer("lag", "dplyr")
+
+## set default arguments
+default(mean.default) <- list(na.rm=TRUE)
+default(sd) <- list(na.rm=TRUE)
+
+## custom functions
+bd.saveplot <- function(plot,name="myplot",width,height) {
+  savingto <- paste0(path_to_repo2,name,".png")
+  writeLines(paste0("Plot is being saved to \n",savingto))
+  png(savingto, 
+    width = width, height = height, units = "cm", res = 300)
+  print(plot)
+  trash <- dev.off()
+}
 ```
 
 
 ```{r housekeeping, include=FALSE}
 
 # set path to your working directory (change, if necessary)
-path_to_repo = "/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2018_Pagliara_et_al"
-
-# set path to the behavioral data within your repository 
-path_to_data = "/01_data/data/Spreadsheets/"
-
-# set path to save the graphs produced during analyses
+path_to_repo = "/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/03_timecourse_foraging"
+# set path to the website's github to save files for the webpage
 path_to_repo2 = "/Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/"
-
 
 # load functions
 # customized theme for publication quality figures
@@ -91,120 +101,129 @@ ___
 
 ```{r annotate_data}
 
-# specify colony names that you want to use
-colonies <- list("2015"=c("863"), # can't do "833" since the data is formatted differently.
-                 "2016"=c("1017","1317","D19","D30"),
-                 "2017"=c("859","1068","1107"))
-
-# ANNOTATE DATA 
-for (j in 1:length(which.year)){
-
-    # where to look for data
-    folder.loc <- paste0(path_to_repo,path_to_data,which.year[j], "/")
-    which.colonies <- list.files(folder.loc)
-    
-    which.colonies <- which.colonies[readr::parse_number(which.colonies) %in% colonies[[j]]]
-    
-    # specify the order of the ants
-    # ants <- ants[order(match(ants,(left.incu %>% pull(values))))]
-    
-    for (k in 1:length(which.colonies)) {
-      
-      folder.loc2 <- paste0(folder.loc, which.colonies[[k]])
-      files <- list.files(folder.loc2)
-      
-      for(i in 1:length(files)) {
-      
-      # Specify the ant
-      file.names <- files[i]
-      
-      ## extract the name of the video and ant
-      colony.name <- readr::parse_number(which.colonies[[k]])
-      
-      ## read the data files:
-      foo <- readxl::read_excel(paste0(folder.loc2,"/",file.names),
-                                col_names = F)
-      
-      
-      ## define new colnames 
-      if (ncol(foo)==2){
-      colnames(foo) <- c("time", "inout")
-      levs <- foo %>% pull(inout) %>% as.factor() %>% levels()
-        if (length(levs) > 2) {
-            foo <- foo[-1,]
-            levs <- foo %>% pull(inout) %>% as.factor() %>% levels()
-        }
-        
-        if ("0" %in% levs) {
-          foo <- foo %>% mutate(inout = ifelse(inout==1, "In", "Out"))
-        }
-      
-      } else if (ncol(foo)>2) {
-        foo <- foo[-1,c(1:2)]
-        colnames(foo) <- c("time", "inout")
-        foo <- foo %>% mutate(inout = ifelse(inout==1, "In", "Out"))
-        
-      } else {
-        print("The number of columns are not equal to 2. Please check the file.")
-        stop()
-      }
-      
-      
-      ## annotate the data - PART I
-      # foo %>%
-      foo %<>%
-        as_tibble() %>% 
-        
-        # add colony_ID and treatment columns
-        mutate(colony_ID=colony.name) %>% 
-        mutate(year=which.year[j]) %>% 
-        
-        # extract date_time data
-        mutate(day = str_split(time,pattern = "T", n=2, simplify = T)[2]) %>% 
-        mutate(t = str_extract(time, "(?<=[T])[^.]+")) %>% 
-        # mutate(date_time = as.POSIXct(paste0(day," ",time))) %>% 
-        mutate(inout = trimws(inout, which = c("both")))
-        # remove placeholder columns
-        # select(-day, -t)
-      
-      
-      ## annotate the data - PART II
-      
-        ## annotate the data
-        foo %>% 
-        
-          mutate(ant_ID = "unmarked") %>% 
-          
-          # rearrange colnames for aes
-          select(colony_ID, year, inout, ant_ID,
-               everything()) %>% 
-          
-          as.data.frame() %>% 
-          write.csv(.,
-                      file = paste0(path_to_repo,path_to_data,
-                                    "../annotated/",
-                                    which.year[j],
-                                    "/annotated_",
-                                    str_split_fixed(file.names,".x",2)[1],".csv"),
-                      row.names = F)
-      
-      
-    }
-      
-  }
-    
-}
+# # set path to your working directory (change, if necessary)
+# path_to_repo = "/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/01_field_season_2022/01_readings/2018_Pagliara_et_al"
+# 
+# # set path to the behavioral data within your repository 
+# path_to_data = "/01_data/data/Spreadsheets/"
+# 
+# # set path to save the graphs produced during analyses
+# path_to_repo2 = "/Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/"
+# 
+# # specify colony names that you want to use
+# colonies <- list("2015"=c("863"), # can't do "833" since the data is formatted differently.
+#                  "2016"=c("1017","1317","D19","D30"),
+#                  "2017"=c("859","1068","1107"))
+# 
+# # ANNOTATE DATA 
+# for (j in 1:length(which.year)){
+# 
+#     # where to look for data
+#     folder.loc <- paste0(path_to_repo,path_to_data,which.year[j], "/")
+#     which.colonies <- list.files(folder.loc)
+#     
+#     which.colonies <- which.colonies[readr::parse_number(which.colonies) %in% colonies[[j]]]
+#     
+#     # specify the order of the ants
+#     # ants <- ants[order(match(ants,(left.incu %>% pull(values))))]
+#     
+#     for (k in 1:length(which.colonies)) {
+#       
+#       folder.loc2 <- paste0(folder.loc, which.colonies[[k]])
+#       files <- list.files(folder.loc2)
+#       
+#       for(i in 1:length(files)) {
+#       
+#       # Specify the ant
+#       file.names <- files[i]
+#       
+#       ## extract the name of the video and ant
+#       colony.name <- readr::parse_number(which.colonies[[k]])
+#       
+#       ## read the data files:
+#       foo <- readxl::read_excel(paste0(folder.loc2,"/",file.names),
+#                                 col_names = F)
+#       
+#       
+#       ## define new colnames 
+#       if (ncol(foo)==2){
+#       colnames(foo) <- c("time", "inout")
+#       levs <- foo %>% pull(inout) %>% as.factor() %>% levels()
+#         if (length(levs) > 2) {
+#             foo <- foo[-1,]
+#             levs <- foo %>% pull(inout) %>% as.factor() %>% levels()
+#         }
+#         
+#         if ("0" %in% levs) {
+#           foo <- foo %>% mutate(inout = ifelse(inout==1, "In", "Out"))
+#         }
+#       
+#       } else if (ncol(foo)>2) {
+#         foo <- foo[-1,c(1:2)]
+#         colnames(foo) <- c("time", "inout")
+#         foo <- foo %>% mutate(inout = ifelse(inout==1, "In", "Out"))
+#         
+#       } else {
+#         print("The number of columns are not equal to 2. Please check the file.")
+#         stop()
+#       }
+#       
+#       
+#       ## annotate the data - PART I
+#       # foo %>%
+#       foo %<>%
+#         as_tibble() %>% 
+#         
+#         # add colony_ID and treatment columns
+#         mutate(colony_ID=colony.name) %>% 
+#         mutate(year=which.year[j]) %>% 
+#         
+#         # extract date_time data
+#         mutate(day = str_split(time,pattern = "T", n=2, simplify = T)[2]) %>% 
+#         mutate(t = str_extract(time, "(?<=[T])[^.]+")) %>% 
+#         # mutate(date_time = as.POSIXct(paste0(day," ",time))) %>% 
+#         mutate(inout = trimws(inout, which = c("both")))
+#         # remove placeholder columns
+#         # select(-day, -t)
+#       
+#       
+#       ## annotate the data - PART II
+#       
+#         ## annotate the data
+#         foo %>% 
+#         
+#           mutate(ant_ID = "unmarked") %>% 
+#           
+#           # rearrange colnames for aes
+#           select(colony_ID, year, inout, ant_ID,
+#                everything()) %>% 
+#           
+#           as.data.frame() %>% 
+#           write.csv(.,
+#                       file = paste0(path_to_repo,path_to_data,
+#                                     "../annotated/",
+#                                     which.year[j],
+#                                     "/annotated_",
+#                                     str_split_fixed(file.names,".x",2)[1],".csv"),
+#                       row.names = F)
+#       
+#       
+#     }
+#       
+#   }
+#     
+# }
 
 ```
 
 > Here, I have performed several steps to get the data into a consistent format, and to embed the metadata into the table (see example below).
 
 ```{r visualize_annotated_data}
-foo %>% 
-  head() %>% 
-  kableExtra::kable(caption = "Annotated data | example of annotation added to the data",
-                    align = "c") %>% 
-  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+# foo %>%
+#   head() %>%
+#   kableExtra::kable(caption = "Annotated data | example of annotation added to the data",
+#                     align = "c") %>%
+#   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 
 ```
 
@@ -217,38 +236,40 @@ ___
 
 ```{r combine_data}
 
-## create a data.frame to save the results
-dat.pagliara <- data.frame()
-
-for(j in 1:length(which.year)) {
-  
-    # where to look for data
-    folder.loc <- paste0(path_to_repo,path_to_data,
-                         "../annotated/",
-                         which.year[j], "/")
-    files <- list.files(folder.loc)
-    
-    for(i in 1:length(files)) {
-      
-      # load the file
-      annot.data <- read.csv(paste0(folder.loc,files[i]),
-                        header = T, stringsAsFactors = F)
-      
-      # # check if there is at least two hours of data
-      # annot.data %>%
-      #   mutate(t = as.POSIXct(t,format="%H:%M:%S")) %>%
-      #   group_by(colony_ID, day) %>%
-      #   summarize(duration = max(t)-min(t))
-      
-        if(nrow(dat.pagliara)==0) {
-          dat.pagliara <- annot.data
-        } else {
-          dat.pagliara <- rbind(dat.pagliara,annot.data)
-        }
-      
-    }
-}
-
+# ## create a data.frame to save the results
+# dat.pagliara <- data.frame()
+# 
+# for(j in 1:length(which.year)) {
+#   
+#     # where to look for data
+#     folder.loc <- paste0(path_to_repo,path_to_data,
+#                          "../annotated/",
+#                          which.year[j], "/")
+#     files <- list.files(folder.loc)
+#     
+#     for(i in 1:length(files)) {
+#       
+#       # load the file
+#       annot.data <- read.csv(paste0(folder.loc,files[i]),
+#                         header = T, stringsAsFactors = F)
+#       
+#       # # check if there is at least two hours of data
+#       # annot.data %>%
+#       #   mutate(t = as.POSIXct(t,format="%H:%M:%S")) %>%
+#       #   group_by(colony_ID, day) %>%
+#       #   summarize(duration = max(t)-min(t))
+#       
+#         if(nrow(dat.pagliara)==0) {
+#           dat.pagliara <- annot.data
+#         } else {
+#           dat.pagliara <- rbind(dat.pagliara,annot.data)
+#         }
+#       
+#     }
+# }
+# 
+# dat.pagliara %>% 
+#   write.csv(., file = paste0(path_to_repo, "/04_results/all_data_2018_pagliara_et_al.csv"), row.names = F)
 
 ```
 
@@ -256,8 +277,8 @@ for(j in 1:length(which.year)) {
 > Add the data from 2022 Nova et al. to the 2018 Pagliara et al. dataset
 
 ```{r combine_data_v2}
-
-dat.nova <- read.csv(paste0(path_to_repo,"/../2022_Nova_et_al/04_results/all_data_2022_nova_et_al.csv"), header = T)
+dat.pagliara <- read.csv(paste0(path_to_repo, "/01_data/2018_Pagliara_et_al/all_data_2018_pagliara_et_al.csv"), header=T)
+dat.nova <- read.csv(paste0(path_to_repo,"/01_data/2022_Nova_et_al/all_data_2022_nova_et_al.csv"), header = T)
 
 all.dat <- rbind(dat.pagliara,dat.nova) %>% as_tibble()
 
@@ -265,9 +286,13 @@ all.dat <- rbind(dat.pagliara,dat.nova) %>% as_tibble()
 
 ### Replace colony ID == "10" to "1010"
 ```{r fix_colony_names}
-all.dat <- 
-  all.dat %>% 
+all.dat <-
+  all.dat %>%
   mutate(colony_ID = ifelse(colony_ID == "10", "1010", colony_ID))
+
+# ## Save all.datcure
+# all.dat %>% 
+#   write.csv(., file = paste0(path_to_repo,"/01_data/99_curated_data/all_data_pagliara_nova.csv"))
 ```
 
 
@@ -277,47 +302,47 @@ all.dat <-
 
 ```{r summarize_data}
 # obtain colony age information
-colony.dat <- read.csv(paste0(path_to_repo,"/01_data/colony_age_info.csv"), 
+colony.dat <- read.csv(paste0(path_to_repo,"/01_data/colony_age_info.csv"),
                        header = T, stringsAsFactors = F,
-                       na.strings = c(""," ",NA)) %>% as_tibble() %>% 
+                       na.strings = c(""," ",NA)) %>% as_tibble() %>%
   mutate(colony_ID = ifelse(colony_ID == "10", "1010", colony_ID))
 
-summ.dat <- all.dat %>% 
-    mutate(time = as.POSIXct(paste(day, t),format="%Y-%m-%d %H:%M:%S")) %>% 
+summ.dat <- all.dat %>%
+    mutate(time = as.POSIXct(paste(day, t),format="%Y-%m-%d %H:%M:%S")) %>%
     group_by(colony_ID, day, year) %>%
     summarize(start_time = min(time),
               end_time = max(time)) %>%
-    mutate(duration = difftime(end_time,start_time, units = "hours") %>% round(.,2)) %>% 
-    mutate(start_time = format(start_time, format = "%H:%M:%S")) %>% 
+    mutate(duration = difftime(end_time,start_time, units = "hours") %>% round(.,2)) %>%
+    mutate(start_time = format(start_time, format = "%H:%M:%S")) %>%
     mutate(end_time = format(end_time, format = "%H:%M:%S")) %>%
-    arrange(year,colony_ID) %>% 
-    
+    arrange(year,colony_ID) %>%
+
     ## add colony info
-    left_join(colony.dat, by="colony_ID") %>% 
-  
+    left_join(colony.dat, by="colony_ID") %>%
+
     ## calculate age at observation
-    mutate(age_when_obs = year-year_age_one+1) %>% 
-  
+    mutate(age_when_obs = year-year_age_one+1) %>%
+
     ## calculate age when dead
     mutate(age_dead = year_dead-year_age_one+1)
 
-# View the summary table
-summ.dat %>% 
-  select(colony_ID:year_age_one) %>% 
-  DT::datatable()
-
-## Save the summary table to a csv file
-summ.dat %>% 
-  ungroup() %>% 
-  select(colony_ID, year,
-         day_of_obs = day,
-         duration_hrs = duration,
-         everything()) %>% 
-  mutate_all(as.character) %>% 
-  # save the file
-  write.csv(.,
-            paste0(path_to_repo,"/04_results/","all_data_summary.csv"),
-            row.names = F)
+# # View the summary table
+# summ.dat %>% 
+#   select(colony_ID:year_age_one) %>% 
+#   DT::datatable()
+# 
+# ## Save the summary table to a csv file
+# summ.dat %>% 
+#   ungroup() %>% 
+#   select(colony_ID, year,
+#          day_of_obs = day,
+#          duration_hrs = duration,
+#          everything()) %>% 
+#   mutate_all(as.character) %>% 
+#   # save the file
+#   write.csv(.,
+#             paste0(path_to_repo,"/04_results/","all_data_pagliara_nova_summary.csv"),
+#             row.names = F)
 
 ```
 
@@ -330,42 +355,42 @@ summ.dat %>%
 > Remove the colony-days that have less than `r atleast` hours of observations.
 
 ```{r clean_v1}
-all.dat <- 
-  all.dat %>% 
-    mutate(time = as.POSIXct(paste(day, t),format="%Y-%m-%d %H:%M:%S")) %>% 
-    group_by(colony_ID, day, year) %>%
-    summarize(start_time = min(time),
-              end_time = max(time),
-              duration = difftime(end_time,start_time, units = "hours") %>% round(.,2)) %>%
-    ungroup() %>% 
-    arrange(year,colony_ID) %>% 
-    mutate(keep_row = ifelse(duration>=atleast, "yes","no")) %>% 
-    right_join(all.dat)
-
-
-# Subset the dataset accordingly
-dat <- all.dat %>% filter(keep_row=="yes")
-
-# Add the colony age information
-dat <- dat %>% 
-  left_join(summ.dat %>% select(colony_ID, day, age_when_obs, age_dead), by = c("colony_ID","day")) 
-  
-# Classify into age class (1-2, 3-4, 5+ years old)
-dat <- dat %>%
-  mutate(age_class = ifelse(age_when_obs <= 2, "1-2_yr",
-                                  ifelse(age_when_obs > 2 & age_when_obs <= 4, "3-4_yr",
-                                         "5+_yr"))) %>% 
-  mutate(age_class = factor(age_class,
-                            levels = c("1-2_yr", "3-4_yr", "5+_yr")))
+# all.dat <-
+#   all.dat %>% 
+#     mutate(time = as.POSIXct(paste(day, t),format="%Y-%m-%d %H:%M:%S")) %>% 
+#     group_by(colony_ID, day, year) %>%
+#     summarize(start_time = min(time),
+#               end_time = max(time),
+#               duration = difftime(end_time,start_time, units = "hours") %>% round(.,2)) %>%
+#     ungroup() %>% 
+#     arrange(year,colony_ID) %>% 
+#     mutate(keep_row = ifelse(duration>=atleast, "yes","no")) %>% 
+#     right_join(all.dat)
+# 
+# 
+# # Subset the dataset accordingly
+# dat <- all.dat %>% filter(keep_row=="yes")
+# 
+# # Add the colony age information
+# dat <- dat %>% 
+#   left_join(summ.dat %>% select(colony_ID, day, age_when_obs, age_dead), by = c("colony_ID","day")) 
+#   
+# # Classify into age class (1-2, 3-4, 5+ years old)
+# dat <- dat %>%
+#   mutate(age_class = ifelse(age_when_obs <= 2, "1-2_yr",
+#                                   ifelse(age_when_obs > 2 & age_when_obs <= 4, "3-4_yr",
+#                                          "5+_yr"))) %>% 
+#   mutate(age_class = factor(age_class,
+#                             levels = c("1-2_yr", "3-4_yr", "5+_yr")))
 
 ```
 
 > Setting the order of the colonies to match age-class...
 
 ```{r setting_colony_order}
-# which colonies?
-colonies <- dat %>% arrange(age_when_obs) %>% pull(colony_ID) %>% unique()
-# colonies <- dat %>% pull(colony_ID) %>% unique() %>% sort()
+# # which colonies?
+# colonies <- dat %>% arrange(age_when_obs) %>% pull(colony_ID) %>% unique()
+# # colonies <- dat %>% pull(colony_ID) %>% unique() %>% sort()
 
 ```
 
@@ -375,52 +400,52 @@ colonies <- dat %>% arrange(age_when_obs) %>% pull(colony_ID) %>% unique()
 > Plot outgoing/incoming foragers v. time
 
 ```{r visualize_v1}
-# what is the range for time of observation?
-x.lims <- c(min(as.POSIXct(dat$t,format="%H:%M:%S")), max(as.POSIXct(dat$t,format="%H:%M:%S")))
-
-plots <- list()
-k <- 1
-for(i in 1:length((colonies))) {
-
-
-  foo <- dat %>% filter(colony_ID == (colonies)[i])
-  days <- foo %>% pull(day) %>% unique()
-  if (nrow(foo)>0){
-    for (j in 1:length(days)) {
-
-    plots[[k]] <-
-      foo %>%
-
-      filter(day==days[j]) %>%
-      # filter(treatment=="unmarked") %>%
-      # select(t, treatment) %>%
-
-      mutate(t.obs=as.POSIXct(t,format="%H:%M:%S")) %>%
-
-      ggplot(aes(x=t.obs, fill=as.factor(inout))) +
-      # geom_bar(position = "dodge") +
-      geom_density(alpha=0.7) +
-        
-      facet_grid(~age_class) +
-
-      labs(title = paste0("Colony: ",(colonies)[i]),
-           subtitle = paste0("Date: ", days[j])) +
-      labs(x="time of day", y="density") +
-      
-      scale_x_datetime(limits = x.lims) +
-      scale_y_continuous(breaks = 3) +
-
-      theme_Publication(base_size = 10) +
-      scale_fill_Publication(name = "") +
-      
-      theme(plot.subtitle=element_text(hjust=0.5))
-
-    k <- k+1  
-  }
-  
-  }
-
-}
+# # what is the range for time of observation?
+# x.lims <- c(min(as.POSIXct(dat$t,format="%H:%M:%S")), max(as.POSIXct(dat$t,format="%H:%M:%S")))
+# 
+# plots <- list()
+# k <- 1
+# for(i in 1:length((colonies))) {
+# 
+# 
+#   foo <- dat %>% filter(colony_ID == (colonies)[i])
+#   days <- foo %>% pull(day) %>% unique()
+#   if (nrow(foo)>0){
+#     for (j in 1:length(days)) {
+# 
+#     plots[[k]] <-
+#       foo %>%
+# 
+#       filter(day==days[j]) %>%
+#       # filter(treatment=="unmarked") %>%
+#       # select(t, treatment) %>%
+# 
+#       mutate(t.obs=as.POSIXct(t,format="%H:%M:%S")) %>%
+# 
+#       ggplot(aes(x=t.obs, fill=as.factor(inout))) +
+#       # geom_bar(position = "dodge") +
+#       geom_density(alpha=0.7) +
+#         
+#       facet_grid(~age_class) +
+# 
+#       labs(title = paste0("Colony: ",(colonies)[i]),
+#            subtitle = paste0("Date: ", days[j])) +
+#       labs(x="time of day", y="density") +
+#       
+#       scale_x_datetime(limits = x.lims) +
+#       scale_y_continuous(breaks = 3) +
+# 
+#       theme_Publication(base_size = 10) +
+#       scale_fill_Publication(name = "") +
+#       
+#       theme(plot.subtitle=element_text(hjust=0.5))
+# 
+#     k <- k+1  
+#   }
+#   
+#   }
+# 
+# }
 
 ```
 
@@ -431,19 +456,19 @@ for(i in 1:length((colonies))) {
 
 ```{r visualize_v3, include=F}
 
-png(paste0(path_to_repo2,
-           "foraging_data.png"), 
-    width = 30, height = 35, units = "cm", res = 300)
-plots %>% 
-  multi.plot(., rows = 6, cols=5, multipages = "0")
-trash <- dev.off()
+# png(paste0(path_to_repo2,
+#            "foraging_data.png"), 
+#     width = 30, height = 35, units = "cm", res = 300)
+# plots %>% 
+#   multi.plot(., rows = 6, cols=5, multipages = "0")
+# trash <- dev.off()
 
 ```
 
 
 ```{r plot_visualize_v3, echo = FALSE, fig.align='center', fig.cap='Density plots of number of out/in-going foragers', out.width="95%"}
-  knitr::include_graphics(paste0(path_to_repo2,
-           "foraging_data.png"))
+# knitr::include_graphics(paste0(path_to_repo2,
+#            "foraging_data.png"))
 
 ```
 
@@ -455,56 +480,56 @@ ___
 ### Data for 2022 field season
 
 ```{r 2022_field_season}
-path_to_2022data <- paste0(path_to_repo, "/../../04_field_work/00_data/")
-
-dat.2022 <- read.csv(paste0(path_to_2022data, "timecourse_foraging_2022.csv"), header = T,
-                     stringsAsFactors = F, na.strings = c(""," ","NA")) %>% as_tibble()
-
-dat.2022 <-
-  dat.2022 %>% 
-  select(-was_it_raining, -observer_initial, -obs_1, -obs_2) %>% 
-  filter(!is.na(time)) %>% 
-  arrange(colony_ID) %>%
-  mutate(n_in = select(., starts_with("in")) %>% rowSums(., na.rm = T),
-         n_out = select(., starts_with("out")) %>% rowSums(., na.rm = T)) %>% 
-  select(day, colony_ID, time, n_in, n_out) %>% 
-  # calculate rate as ants/minute
-  mutate(r_in = round(n_in/0.5,2), 
-         r_out = round(n_out/0.5,2)) %>% 
-   
-  
-  mutate(t.obs=as.POSIXct(time,format="%H:%M")) %>%
-  # create the bins here
-  mutate(t.bin = floor_date(t.obs, paste(bin.width,"minutes"))) %>% 
-  
-  group_by(colony_ID, day, t.bin) %>% 
-  summarize(r_in = mean(r_in),
-            r_out = mean(r_out)) %>% 
-  ungroup() %>% 
-  
-  pivot_longer(cols = r_in:r_out,
-               names_to = "inout",
-               values_to = "r_ants") %>% 
-  
-  mutate(inout = ifelse(inout=="r_in", "In", "Out")) %>% 
-  mutate(day = as.POSIXct(day, format="%m/%d/%y")) %>% 
-  mutate(day = as.character(day))
-
-## colony age info
-path_to_2022colonydata <- "/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/02_bead_data"
-colony.dat.2 <- read.csv(paste0(path_to_2022colonydata, "/data/foraging_counts_08_13_22.csv"),
-                       stringsAsFactors = F, header = T) %>% as_tibble() %>% 
-  select(colony_ID, everything()) %>% 
-  # mutate(colonyID = as.factor(colonyID)) %>% 
-  mutate(age_class = ifelse(age_2022 <= 2, "1-2_yr",
-                                  ifelse(age_2022 > 2 & age_2022 <= 4, "3-4_yr",
-                                         "5+_yr")))
-
-## add colony age info to dat.2022
-dat.2022 <- dat.2022 %>% 
-  left_join(colony.dat.2 %>% select(colony_ID, age_obs=age_2022, age_class), by="colony_ID") %>% 
-  mutate(colony_ID = as.character(colony_ID)) %>% 
-  distinct()
+# path_to_2022data <- paste0(path_to_repo, "/01_data/2022_billu_fieldwork/")
+# 
+# dat.2022 <- read.csv(paste0(path_to_2022data, "timecourse_foraging_2022.csv"), header = T,
+#                      stringsAsFactors = F, na.strings = c(""," ","NA")) %>% as_tibble()
+# 
+# dat.2022 <-
+#   dat.2022 %>% 
+#   select(-was_it_raining, -observer_initial, -obs_1, -obs_2) %>% 
+#   filter(!is.na(time)) %>% 
+#   arrange(colony_ID) %>%
+#   mutate(n_in = select(., starts_with("in")) %>% rowSums(., na.rm = T),
+#          n_out = select(., starts_with("out")) %>% rowSums(., na.rm = T)) %>% 
+#   select(day, colony_ID, time, n_in, n_out) %>% 
+#   # calculate rate as ants/minute
+#   mutate(r_in = round(n_in/0.5,2), 
+#          r_out = round(n_out/0.5,2)) %>% 
+#    
+#   
+#   mutate(t.obs=as.POSIXct(time,format="%H:%M")) %>%
+#   # create the bins here
+#   mutate(t.bin = floor_date(t.obs, paste(bin.width,"minutes"))) %>% 
+#   
+#   group_by(colony_ID, day, t.bin) %>% 
+#   summarize(r_in = mean(r_in),
+#             r_out = mean(r_out)) %>% 
+#   ungroup() %>% 
+#   
+#   pivot_longer(cols = r_in:r_out,
+#                names_to = "inout",
+#                values_to = "r_ants") %>% 
+#   
+#   mutate(inout = ifelse(inout=="r_in", "In", "Out")) %>% 
+#   mutate(day = as.POSIXct(day, format="%m/%d/%y")) %>% 
+#   mutate(day = as.character(day))
+# 
+# ## colony age info
+# path_to_2022colonydata <- "/Users/biplabendudas/Documents/05_postdoc/Deborah_Gordon/04_research/2022/02_bead_data"
+# colony.dat.2 <- read.csv(paste0(path_to_2022colonydata, "/data/foraging_counts_08_13_22.csv"),
+#                        stringsAsFactors = F, header = T) %>% as_tibble() %>% 
+#   select(colony_ID, everything()) %>% 
+#   # mutate(colonyID = as.factor(colonyID)) %>% 
+#   mutate(age_class = ifelse(age_2022 <= 2, "1-2_yr",
+#                                   ifelse(age_2022 > 2 & age_2022 <= 4, "3-4_yr",
+#                                          "5+_yr")))
+# 
+# ## add colony age info to dat.2022
+# dat.2022 <- dat.2022 %>% 
+#   left_join(colony.dat.2 %>% select(colony_ID, age_obs=age_2022, age_class), by="colony_ID") %>% 
+#   mutate(colony_ID = as.character(colony_ID)) %>% 
+#   distinct()
 
 ```
 
@@ -513,114 +538,213 @@ dat.2022 <- dat.2022 %>%
 > Making `r bin.width` minute bins for calculating rate of in/out foraging
 
 ```{r inout_combine}
+# b.dat <-
+#   dat %>% 
+#   as_tibble() %>% 
+#   # head(100) %>% 
+#   
+#   filter(keep_row == "yes") %>% 
+#   
+#   mutate(t.obs=as.POSIXct(t,format="%H:%M:%S")) %>%
+#   
+#   # select(colony_ID:treatment,inout,ant_ID,day, t.obs) %>%
+#   
+#   # create the bins here
+#   mutate(t.bin = floor_date(t.obs, paste(bin.width,"minutes"))) %>% 
+#   # calculate the rate of foraging
+#   group_by(colony_ID,inout, day, t.bin, age_class) %>%
+#       summarize(n_ants =n()) %>% 
+#       mutate(r_ants = n_ants/bin.width) %>% 
+#   ungroup() %>% 
+#   select(-n_ants) %>% 
+#   left_join(dat %>% select(colony_ID,age_obs=age_when_obs), by="colony_ID") %>% 
+#   select(colony_ID, day, t.bin, inout, r_ants, age_obs, age_class) %>% 
+#   distinct()
+# 
+# ## Combine the previous data (b.dat) with 2022 dataset (dat.2022)
+# b.dat <- rbind(dat.2022, b.dat) %>% distinct()
+# 
+# ## Clean up space
+# rm(all.dat, dat.nova, dat.pagliara, dat)
+# 
+# ## save the compiled data
+# b.dat %>% 
+#   write.csv(., 
+#             file = paste0(path_to_repo,"/01_data/all_data_pagliara_nova_billu2022.csv"),
+#             row.names=F)
+
+```
+
+## ANALYSES STARTS HERE
+
+```{r load_data}
 b.dat <-
-  dat %>% 
+  read.csv(paste0(path_to_repo,"/01_data/all_data_pagliara_nova_billu2022.csv"), 
+                  stringsAsFactors=F) %>% 
   as_tibble() %>% 
-  # head(100) %>% 
+  mutate_at(c("colony_ID","day"), as.character) %>% 
+  # mutate(t.bin = str_split(t.bin, pattern = " ")[[1]][2]) %>% 
+  mutate(t.bin = as.POSIXct(as_datetime(t.bin))) %>% 
+  mutate(age_class = factor(age_class, level=c("1-2_yr", "3-4_yr", "5+_yr")))
   
-  filter(keep_row == "yes") %>% 
-  
-  mutate(t.obs=as.POSIXct(t,format="%H:%M:%S")) %>%
-  
-  # select(colony_ID:treatment,inout,ant_ID,day, t.obs) %>%
-  
-  # create the bins here
-  mutate(t.bin = floor_date(t.obs, paste(bin.width,"minutes"))) %>% 
-  # calculate the rate of foraging
-  group_by(colony_ID,inout, day, t.bin, age_class) %>%
-      summarize(n_ants =n()) %>% 
-      mutate(r_ants = n_ants/bin.width) %>% 
-  ungroup() %>% 
-  select(-n_ants) %>% 
-  left_join(dat %>% select(colony_ID,age_obs=age_when_obs), by="colony_ID") %>% 
-  select(colony_ID, day, t.bin, inout, r_ants, age_obs, age_class) %>% 
-  distinct()
-
-## Combine the previous data (b.dat) with 2022 dataset (dat.2022)
-b.dat <- rbind(dat.2022, b.dat) %>% distinct()
-
-## Clean up space
-rm(all.dat, dat.nova, dat.pagliara)
-
 colonies <- b.dat %>% arrange(age_obs) %>% pull(colony_ID) %>% unique()
 ```
 
-Let's visualize the in/out rates (and compare them to the density plots).
+## ADD CLIMATE DATA
 
-```{r inout_v1}
-## Plot the in/out rates
-x.lims <- c(min(b.dat$t.bin), max(b.dat$t.bin))
-
-plots <- list()
-k <- 1
-for(i in 1:length((colonies))) {
-
-
-  foo <- b.dat %>% filter(colony_ID == (colonies)[i])
-  days <- foo %>% pull(day) %>% unique()
+```{r read_climate_data}
+clim.dat.all <- read.csv(file = paste0(path_to_repo, "/01_data/all_climate_data_pagliara_nova_billu2022.csv"),
+                     stringsAsFactors = F) %>% as_tibble()
+bd.saveplot(
+  name = "clim_data",
+  width=30, height=30,
+  clim.dat.all %>% 
+  select(date, time, temp_F, rH) %>% 
+  mutate(time = as.POSIXct(time, format="%H:%M")) %>% 
   
-  y.max <- max(foo$r_ants, na.rm = T)
-  
-  if (nrow(foo)>0){
-    for (j in 1:length(days)) {
-
-    plots[[k]] <-
-      foo %>%
-
-      filter(day==days[j]) %>%
-      # filter(treatment=="unmarked") %>%
-      # select(t, treatment) %>%
-      
-      # group_by(colony_ID,inout, day, t.bin) %>%
-      # summarize(n_ants =n()) %>% 
-      # mutate(r_ants = n_ants/bin.width) %>% 
-      # ungroup() %>% 
-
-      ggplot(aes(x=t.bin, y=r_ants, fill=as.factor(inout), group=as.factor(inout))) +
-      geom_area(position = position_dodge(width = 1), alpha=0.7) +
-      
-      facet_grid(~age_obs) +
-
-      labs(title = paste0("Colony: ",(colonies)[i]),
-           subtitle = paste0("Date: ", days[j])) +
-      labs(x="time of day", y="rate (ants/min)") +
-      
-      scale_y_continuous(n.breaks = 3, limits = c(0,y.max)) +
-      scale_x_datetime(limits = x.lims, date_breaks = "3 hours", date_labels = "%H:%m") +
-        
-      theme_Publication(base_size = 10) +
-      scale_fill_Publication(name = "") +
-      
-      theme(plot.subtitle=element_text(hjust=0.5))
-
-    k <- k+1  
-  }
-  
-  }
-}
+  ggplot(aes(x=time)) +
+  geom_rect(aes(xmin = as.POSIXct("06:00", format="%H:%M"), 
+                xmax = as.POSIXct("13:00", format="%H:%M"), 
+                ymin = -Inf, ymax = Inf),
+            fill = "grey80", col=NA, alpha = 0.2) +
+  geom_line(aes(group=as.factor(date), y=rH), col="orange", size=2, alpha=0.95) +
+  geom_line(aes(group=as.factor(date), y=temp_F), color="red", size=2, alpha=0.8) +
+  scale_y_continuous(breaks = c(20,60,100))+
+  facet_wrap(date~., nrow = 4, ncol = 6) +
+  theme_Publication(base_size = 20) +
+  theme(axis.text.x = element_blank()) +
+  labs(subtitle = "shaded portion shows values between 6AM and 1PM\nhumidity (%rH, orange); temp (ºF, red)",
+       x = "time",
+       y = "")
+)
 
 ```
 
 
-```{r visualize_inout_v1, include=F}
-png(paste0(path_to_repo2,
-           "inout_v1.png"), 
-    width = 30, height = 45, units = "cm", res = 300)
-plots %>% 
-  multi.plot(., rows = 8, cols=5, multipages = "0")
-trash <- dev.off()
-
+```{r plot_clim_data, echo = FALSE, fig.align='center', fig.cap='', out.width="95%"}
+knitr::include_graphics(paste0(path_to_repo2,
+           "clim_data.png"))
 ```
 
-```{r plot_inout_v1, echo = FALSE, fig.align='center', fig.cap='Rate of out/in-going foragers', out.width="95%"}
-  knitr::include_graphics(paste0(path_to_repo2,
-           "inout_v1.png"))
+> let's group the days as low, medium, and high humidity days
+
+### Classify humidity days
+
+```{r group_clim_data}
+clim.dat <-
+  clim.dat.all %>% 
+  select(date:time,
+         temp_F, rH) %>% 
+  group_by(date) %>% 
+  summarize(temp_min=min(temp_F, na.rm=T),
+            temp_mean=mean(temp_F, na.rm=T),
+            temp_median=median(temp_F, na.rm = T),
+            temp_max=max(temp_F, na.rm=T),
+            
+            rH_min=min(rH, na.rm=T),
+            rH_mean=mean(rH, na.rm = T),
+            rH_median=median(rH, na.rm = T),
+            rH_max=max(rH, na.rm = T)) %>% 
+  pivot_longer(cols= temp_min:rH_max,
+               values_to = "value")
+    
+
+bd.saveplot(name="distribution_rH_tempF",
+            width=15,height=20,
+            clim.dat %>% 
+                group_by(name) %>% 
+                mutate(name2=str_split(name, "_")[[1]][1]) %>% 
+                ungroup() %>% 
+                ggplot(aes(x=as.factor(name), y=value)) +
+                geom_boxplot(outlier.color = NA, aes(fill=name2), alpha=0.75) +
+                geom_jitter(aes(group=name), width = 0.2, alpha=0.55) +
+                theme_Publication(base_size = 20) +
+                scale_fill_manual(values = c("orange","red")) +
+                coord_flip() +
+                theme(legend.title = element_blank(),
+                      legend.position = "none") +
+                labs(subtitle = "humidity (%rH, orange)\ntemp (ºF, red)",
+                     x = "",
+                     y = "")
+            )
+  
+  
 ```
 
 
-### Total foraging rate
+It appears that the values of rH_max and temp_mean have the tighter distribution.
 
-```{r inout_v2}
+> Let's explore groupings based on rH_max
+
+```{r specify_groups}
+var.of.interest <- "rH_max"
+foo <-
+  clim.dat %>% 
+  filter(name==var.of.interest) %>% 
+  pull(value) %>% 
+  summary() %>% 
+  as.vector()
+
+q1 <- foo[2]
+q2 <- foo[5]
+
+clim.groups <- 
+  clim.dat %>% 
+  filter(name==var.of.interest) %>% 
+  # make the grouping based on inter-quartile ranges
+  mutate(rH_group=ifelse(value<=q1, "low_rH",
+                         ifelse(value>q1&value<q2, "medium_rH", "high_rH"))) %>% 
+  select(day=date, rH_max=value, rH_group) 
+
+## Summarize; sample sizes
+clim.groups %>% 
+  # obtain colony data
+  right_join(b.dat %>% select(day,colony_ID,age_class), by="day") %>% 
+  distinct() %>% 
+  group_by(day) %>% 
+  mutate(year=str_split(day, "-")[[1]][1]) %>% 
+  ungroup() %>% 
+  # # obtain summary | rH_group
+  # group_by(rH_group) %>%
+  # # obtain summary | age_class
+  # group_by(age_class) %>% 
+  # obtain summary - both
+  group_by(age_class,rH_group) %>% 
+  summarise(n.colonies=length(unique(colony_ID)),
+            n.days=length(unique(day)),
+            which.years=paste(unique(year), collapse = ", ")) %>% 
+  ungroup()
+
+time.points <- 
+  b.dat %>% 
+  group_by(t.bin) %>% 
+  mutate(t.bin2=str_split(as.character(t.bin)," ")[[1]][2]) %>%
+  pull(t.bin2) %>% unique()
+
+b.dat <-
+  clim.dat.all %>% 
+  mutate(time=time %>% as.POSIXct(., format="%H:%M")) %>% 
+  mutate(t.bin=floor_date(time, paste(bin.width,"minutes"))) %>% 
+  group_by(t.bin) %>% 
+  mutate(t.bin2=str_split(as.character(t.bin)," ")[[1]][2]) %>%  
+  ungroup() %>% 
+  group_by(date,t.bin2) %>% 
+  summarize(temp_F=mean(temp_F, na.rm = T),
+            rH = mean(rH, na.rm = T)) %>% 
+  ungroup() %>% 
+  select(day=date, everything()) %>% 
+  right_join(b.dat %>% group_by(t.bin) %>% mutate(t.bin2=str_split(as.character(t.bin)," ")[[1]][2]), 
+             by=c("day","t.bin2")) %>% 
+  left_join(clim.groups %>% select(-rH_max), by="day")
+  
+  
+```
+
+### Outgoing foraging rate
+
+> format the data
+
+```{r inout}
 in.out.dat <- 
   b.dat %>% 
   distinct() %>% 
@@ -632,6 +756,81 @@ in.out.dat <-
 ```
 
 
+Let's visualize the rate of outgoing foragers
+
+```{r inout_v1}
+## Plot the in/out rates
+x.lims <- c(min(b.dat$t.bin), max(b.dat$t.bin))
+
+plots <- list()
+k <- 1
+for(i in 1:length((colonies))) {
+  
+  foo <- in.out.dat %>% filter(colony_ID==colonies[i]) %>% na.omit()
+  days <- foo %>% pull(day) %>% unique()
+  # y.max <- max(foo$r_ants, na.rm = T)
+  
+  if (nrow(foo)>0){
+    for (j in 1:length(days)) {
+    which.group <- foo[foo$day==days[[j]],]$rH_group %>% unique()
+    age <- foo[foo$day==days[[j]],]$age_obs %>% unique() %>% as.character()
+    
+    plots[[k]] <-
+      foo %>%
+      filter(day==days[j]) %>%
+      ungroup() %>% 
+      # zscore both relative humidity and out-rate
+      mutate(r_out = (r_out-mean(r_out))/sd(r_out),
+             temp_F = (temp_F-mean(temp_F))/sd(temp_F), 
+             rH = (rH-mean(rH))/sd(rH)) %>%  
+
+      ggplot(aes(x=t.bin, y=r_out)) +
+        # plot rH
+        geom_area(aes(x=t.bin, y=rH),size=3, col=NA, fill="orange", alpha=0.5) +
+        # # plot temp_F
+        # geom_area(aes(x=t.bin, y=temp_F),size=3, col=NA, fill="red", alpha=0.5) +
+        # plot total foraging
+        geom_area(position = position_dodge(width = 1), fill="grey60", alpha=0.65) +
+        geom_line(size=2, col="black", alpha=0.65) +
+        # facet_grid(~age_obs) +
+        
+        # coord_flip() +
+        labs(title = paste0("Colony: ",(colonies)[i], "\nAge = ", age),
+           subtitle = paste0(which.group, ", ", days[j])) +
+        labs(x="",
+             y="")  +
+        
+        scale_y_continuous(breaks = c(-1,0,1)) +
+        
+        scale_x_datetime(limits = x.lims, date_breaks = "2 hours", date_labels = "%H:%m") +
+        theme_Publication(base_size = 10) +
+        theme(plot.subtitle=element_text(hjust=0.5))
+    k <- k+1  
+  }
+  
+  }
+}
+
+```
+
+```{r visualize_inout_v1, include=F}
+png(paste0(path_to_repo2,
+           "inout_v1.png"), 
+    width = 40, height = 40, units = "cm", res = 300)
+plots %>% 
+  multi.plot(., rows=6, cols=6, multipages = "0")
+trash <- dev.off()
+
+```
+
+```{r plot_inout_v1, echo = FALSE, fig.align='center', fig.cap='Rate of out/in-going foragers', out.width="95%"}
+knitr::include_graphics(paste0(path_to_repo2,
+           "inout_v1.png"))
+```
+
+
+### Total foraging rate
+
 ```{r visualize_inout_v2, include=F}
 
 ## Plot the in/out rates
@@ -639,58 +838,63 @@ x.lims <- c(min(in.out.dat$t.bin), max(in.out.dat$t.bin))
 plots <- list()
 k <- 1
 for(i in 1:length((colonies))) {
-
-
-  foo <- in.out.dat %>% filter(colony_ID == (colonies)[i]) %>% mutate(r_total = r_in+r_out)
-  days <- foo %>% pull(day) %>% unique()
   
-  y.max <- max(foo$r_total, na.rm = T)
+  foo <- in.out.dat %>% filter(colony_ID==colonies[i]) %>% mutate(r_total=r_in+r_out) %>% na.omit()
+  days <- foo %>% pull(day) %>% unique()
   
   if (nrow(foo)>0){
     for (j in 1:length(days)) {
-
+    which.group <- foo[foo$day==days[[j]],]$rH_group %>% unique()
+    age <- foo[foo$day==days[[j]],]$age_obs %>% unique() %>% as.character()
+    
     plots[[k]] <-
       foo %>%
-
       filter(day==days[j]) %>%
-  
-        ggplot(aes(x=t.bin, y=r_total)) +
-        geom_area(position = position_dodge(width = 1), fill="grey60", alpha=0.75) +
+      ungroup() %>% 
+      # zscore both relative humidity and out-rate
+      mutate(r_total = (r_total-mean(r_total))/sd(r_total),
+             temp_F = (temp_F-mean(temp_F))/sd(temp_F), 
+             rH = (rH-mean(rH))/sd(rH)) %>%  
+
+      ggplot(aes(x=t.bin, y=r_total)) +
+        # plot rH
+        geom_area(aes(x=t.bin, y=rH),size=3, col=NA, fill="orange", alpha=0.5) +
+        # # plot temp_F
+        # geom_area(aes(x=t.bin, y=temp_F),size=3, col=NA, fill="red", alpha=0.5) +
+        # plot total foraging
+        geom_area(position = position_dodge(width = 1), fill="grey60", alpha=0.65) +
         geom_line(size=2, col="black", alpha=0.65) +
-      
-        facet_grid(~age_class) +
+        # facet_grid(~age_obs) +
         
         # coord_flip() +
-        labs(x="time of day (h)",
-             y="rate (ants/min)") +
-        labs(title = paste0("Colony: ",(colonies)[i]),
-           subtitle = paste0("Date: ", days[j])) +
+        labs(title = paste0("Colony: ",(colonies)[i], "\nAge = ", age),
+           subtitle = paste0(which.group, ", ", days[j])) +
+        labs(x="",
+             y="")  +
         
-        scale_y_continuous(n.breaks = 3, limits = c(0,y.max)) +
-        scale_x_datetime(limits = x.lims, date_breaks = "3 hours", date_labels = "%H:%m") +
+        scale_y_continuous(breaks = c(-1,0,1)) +
+        
+        scale_x_datetime(limits = x.lims, date_breaks = "2 hours", date_labels = "%H:%m") +
         theme_Publication(base_size = 10) +
-        # scale_fill_Publication(name="") +
         theme(plot.subtitle=element_text(hjust=0.5))
-
     k <- k+1  
   }
   
   }
-
 }
 
 png(paste0(path_to_repo2,
            "inout_v2.png"), 
-    width = 30, height = 50, units = "cm", res = 300)
+    width = 40, height = 40, units = "cm", res = 300)
 plots %>% 
-  multi.plot(., rows = 8, cols=5, multipages = "0")
+  multi.plot(., rows = 6, cols=6, multipages = "0")
 trash <- dev.off()
 
 ```
 
 
 ```{r plot_inout_v2, echo = FALSE, fig.align='center', fig.cap='Total (in + out) rate of foraging', out.width="95%"}
-  knitr::include_graphics(paste0(path_to_repo2,
+knitr::include_graphics(paste0(path_to_repo2,
            "inout_v2.png"))
 ```
 
@@ -704,24 +908,16 @@ Let's calculate a metric that would represent the standardized, total activity o
 
 pacman::p_load(pracma)
 
-## Plot the in/out rates
 auc.dat <- in.out.dat %>% mutate(auc = NA, dur_mins = NA)
-# auc <- list()
-# k <- 1
+## Plot the in/out rates
 for(i in 1:length(colonies)) {
   foo <- in.out.dat %>% filter(colony_ID == (colonies)[i])
   days <- foo %>% pull(day) %>% unique()
   
-  x.max <- max(foo$r_in, na.rm = T)
-  y.max <- max(foo$r_out, na.rm = T)
-  
   if (nrow(foo)>0){
     for (j in 1:length(days)) {
-
-    # plots[[k]] <-
       bar <- 
         foo %>%
-
         filter(day==days[j]) %>%
           rownames_to_column("time_point") %>% 
           group_by(t.bin) %>% 
@@ -730,7 +926,6 @@ for(i in 1:length(colonies)) {
           
       auc = trapz(x=bar$time_point, y=bar$t_rate)
       dur = as.numeric(max(bar$t.bin) - min(bar$t.bin))*60
-      
       
       auc.dat[auc.dat$colony_ID==colonies[i] & auc.dat$day==days[j],]$auc <- auc
       auc.dat[auc.dat$colony_ID==colonies[i] & auc.dat$day==days[j],]$dur_mins <- dur
@@ -742,13 +937,15 @@ for(i in 1:length(colonies)) {
 
 
 ## Set up the dataset for plotting
-auc.dat.plot <- 
+auc.dat.plot <-
   auc.dat %>% 
-  select(colony_ID:age_class, auc, dur_mins) %>% 
+  select(colony_ID:age_class, auc, dur_mins, day) %>%
   select(-t.bin) %>% 
   distinct() %>% 
   arrange(colony_ID) %>% 
-  na.omit()
+  na.omit() %>% 
+  left_join(clim.groups %>% select(-rH_max), by="day") %>% 
+  mutate(rH_group=factor(rH_group, levels = c("low_rH","medium_rH","high_rH")))
   
   # ## remove colony IDs that might be outliers or not have enough data
   # filter(!colony_ID %in% c("509")) 
@@ -757,141 +954,128 @@ auc.dat.plot <-
 
 png(paste0(path_to_repo2,
            "total_foraging_v1.png"),
-    width = 30, height = 35, units = "cm", res = 200)
+    width = 30, height = 15, units = "cm", res = 200)
 
-auc.dat.plot %>% 
-
+auc.dat.plot %>%
   ggplot(aes(x=age_class, y=auc/dur_mins)) +
-    
-    # geom_violin(alpha = 0.4) +
-    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
-  
-    geom_jitter(width = 0.1, size=10, alpha=0.8, 
-                aes(fill=as.factor(colony_ID)), 
-                shape=21) +
-      
-    # geom_boxplot(alpha=0.8, size=3, color="grey60") +
-    
-    stat_summary(fun = mean, geom = "point", col="black", 
-                 size=20, alpha=0.8,
-                 position=position_nudge(x = 0.3, y = 0)) +
-    stat_summary(fun.data = mean_cl_boot,
-                 size=3, alpha = 0.8,
-                 geom = "errorbar", width = 0.2, fun.args = list(conf.int = 0.95),
-                 position=position_nudge(x = 0.3, y = 0)) +
-
+    geom_boxplot(aes(group=age_class, fill=age_class), alpha=0.75, outlier.color = NA) +
+    geom_jitter(width = 0.1, size=3, alpha=0.5) +
+    facet_grid(~rH_group) +
+    # stat_summary(fun = mean, geom = "point", col="black", 
+    #              size=5, alpha=0.8,
+    #              position=position_nudge(x = 0.3, y = 0)) +
+    # stat_summary(fun.data = mean_cl_boot,
+    #              size=2, alpha = 0.8,
+    #              geom = "errorbar", width = 0.2, fun.args = list(conf.int = 0.95),
+    #              position=position_nudge(x = 0.3, y = 0)) +
     theme_Publication(base_size = 30) +
-    # theme_classic() +
-    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
-    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
-
     labs(title = "Colony foraging activity",
        subtitle = "standardized by duration of obs.",
-       y = "activity \n(mean ± 95% CI)",
+       y = "daily-activity",
        x = "age-groups") +
-  
     scale_color_discrete() +
     scale_fill_discrete() +
-
-    # theme(legend.position="none") +
-
+    scale_y_continuous(n.breaks = 3) +
     theme(plot.subtitle=element_text(hjust=0.5, size=20),
           legend.title = element_blank()) +
-    theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) +
-    coord_flip()
+    theme(legend.position="bottom", 
+          legend.box="vertical", 
+          legend.margin=margin()) +
+    theme(axis.text.x = element_text(angle = 90),
+          axis.text.x.bottom = element_blank())
 
 trash <- dev.off()
 
-
-## Plot by age
-
-png(paste0(path_to_repo2,
-           "total_foraging_v2.png"),
-    width = 30, height = 35, units = "cm", res = 200)
-
-auc.dat.plot %>% 
-  
-  ggplot(aes(x=age_obs, y=auc/dur_mins)) +
-    # plot polynomial model fit
-    geom_smooth(method='lm',
-                formula = y ~ poly(x, 4) ,
-                col="black", alpha=0.4, size=5) +
-  
-    geom_jitter(width = 0.1, size=10, alpha=0.8, 
-                aes(fill=as.factor(colony_ID)), 
-                shape=21) +
-    # add the labels to the points
-    ggrepel::geom_label_repel(aes(label = colony_ID), 
-                              segment.colour = NA,
-                              alpha=0.9) +
-
-    theme_Publication(base_size = 30) +
-  
-    labs(title = "Colony foraging activity",
-       subtitle = "black line shows a fourth-order polynomial fit; y ~ poly(x, 4)",
-       y = "activity",
-       x = "age (in years)") +
-  
-    scale_color_discrete() +
-    scale_fill_discrete() +
-
-    # theme(legend.position="none") +
-
-    theme(plot.subtitle=element_text(hjust=0.5, size=20),
-          legend.title = element_blank()) +
-    theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) 
-
-trash <- dev.off()
-
-
-## Plot by day
-
-png(paste0(path_to_repo2,
-           "total_foraging_v3.png"),
-    width = 30, height = 40, units = "cm", res = 200)
-
-auc.dat.plot %>% 
-  
-  left_join(summ.dat %>% ungroup() %>% 
-              select(colony_ID, age_when_obs), by="colony_ID") %>% 
-  distinct() %>% 
-
-  ggplot(aes(x=as.factor(day), y=auc/dur_mins)) +
-    # geom_boxplot(alpha=0.5) +
-    # geom_violin(alpha = 0.4) +
-    # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
-  
-    geom_jitter(width = 0.1, size=10, alpha=0.8, 
-                aes(col=as.factor(colony_ID), shape=as.factor(age_class))) +
-  
-    # add the labels to the points
-    ggrepel::geom_label_repel(aes(label = colony_ID),
-                              # segment.colour = "NA",
-                              alpha=0.9) +
-  
-
-    theme_Publication(base_size = 30) +
-    # theme_classic() +
-    # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
-    # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
-
-    labs(title = "Colony foraging activity",
-       subtitle = "standardized by duration of obs.",
-       y = "activity",
-       x = "day of observation") +
-  
-    scale_color_discrete() +
-    scale_fill_discrete() +
-    
-    coord_flip() +
-
-    # theme(legend.position="none") +
-
-    theme(plot.subtitle=element_text(hjust=0.5, size=20),
-          legend.title = element_blank()) +
-    theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) 
-
-trash <- dev.off()
+# 
+# ## Plot by age
+# 
+# png(paste0(path_to_repo2,
+#            "total_foraging_v2.png"),
+#     width = 30, height = 35, units = "cm", res = 200)
+# 
+# auc.dat.plot %>% 
+#   
+#   ggplot(aes(x=age_obs, y=auc/dur_mins)) +
+#     # plot polynomial model fit
+#     geom_smooth(method='lm',
+#                 formula = y ~ poly(x, 4) ,
+#                 col="black", alpha=0.4, size=5) +
+#   
+#     geom_jitter(width = 0.1, size=10, alpha=0.8, 
+#                 aes(fill=as.factor(colony_ID)), 
+#                 shape=21) +
+#     # add the labels to the points
+#     ggrepel::geom_label_repel(aes(label = colony_ID), 
+#                               segment.colour = NA,
+#                               alpha=0.9) +
+# 
+#     theme_Publication(base_size = 30) +
+#   
+#     labs(title = "Colony foraging activity",
+#        subtitle = "black line shows a fourth-order polynomial fit; y ~ poly(x, 4)",
+#        y = "activity",
+#        x = "age (in years)") +
+#   
+#     scale_color_discrete() +
+#     scale_fill_discrete() +
+# 
+#     # theme(legend.position="none") +
+# 
+#     theme(plot.subtitle=element_text(hjust=0.5, size=20),
+#           legend.title = element_blank()) +
+#     theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) 
+# 
+# trash <- dev.off()
+# 
+# 
+# ## Plot by day
+# 
+# png(paste0(path_to_repo2,
+#            "total_foraging_v3.png"),
+#     width = 30, height = 40, units = "cm", res = 200)
+# 
+# auc.dat.plot %>% 
+#   
+#   left_join(summ.dat %>% ungroup() %>% 
+#               select(colony_ID, age_when_obs), by="colony_ID") %>% 
+#   distinct() %>% 
+# 
+#   ggplot(aes(x=as.factor(day), y=auc/dur_mins)) +
+#     # geom_boxplot(alpha=0.5) +
+#     # geom_violin(alpha = 0.4) +
+#     # geom_point(size=2, alpha=0.7, aes(col=colony_ID)) +  
+#   
+#     geom_jitter(width = 0.1, size=10, alpha=0.8, 
+#                 aes(col=as.factor(colony_ID), shape=as.factor(age_class))) +
+#   
+#     # add the labels to the points
+#     ggrepel::geom_label_repel(aes(label = colony_ID),
+#                               # segment.colour = "NA",
+#                               alpha=0.9) +
+#   
+# 
+#     theme_Publication(base_size = 30) +
+#     # theme_classic() +
+#     # scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
+#     # scale_y_continuous(n.breaks = 3, limits = c(0,max(.$auc/.$dur_mins))) +
+# 
+#     labs(title = "Colony foraging activity",
+#        subtitle = "standardized by duration of obs.",
+#        y = "activity",
+#        x = "day of observation") +
+#   
+#     scale_color_discrete() +
+#     scale_fill_discrete() +
+#     
+#     coord_flip() +
+# 
+#     # theme(legend.position="none") +
+# 
+#     theme(plot.subtitle=element_text(hjust=0.5, size=20),
+#           legend.title = element_blank()) +
+#     theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) 
+# 
+# trash <- dev.off()
 
 
 ```
@@ -903,76 +1087,76 @@ trash <- dev.off()
 ```
 
 ```{r plot_tot_foraging_v2, echo = FALSE, fig.align='center', fig.cap='Total foraging activity by age', out.width="65%"}
-  knitr::include_graphics(paste0(path_to_repo2,
-           "total_foraging_v2.png"))
+  # knitr::include_graphics(paste0(path_to_repo2,
+  #          "total_foraging_v2.png"))
 ```
 
 ```{r plot_tot_foraging_v3, echo = FALSE, fig.align='center', fig.cap='Total foraging activity by day of observation', out.width="65%"}
-  knitr::include_graphics(paste0(path_to_repo2,
-           "total_foraging_v3.png"))
+  # knitr::include_graphics(paste0(path_to_repo2,
+  #          "total_foraging_v3.png"))
 ```
 
 
 ## 6. In v. Out rate ~ time
 
 ```{r visualize_inout_v3, include=F}
-
-## Plot the in/out rates
-plots <- list()
-k <- 1
-for(i in 1:length((colonies))) {
-  foo <- in.out.dat %>% filter(colony_ID == (colonies)[i])
-  days <- foo %>% pull(day) %>% unique()
-  
-  x.max <- max(foo$r_in, na.rm = T)
-  y.max <- max(foo$r_out, na.rm = T)
-  
-  if (nrow(foo)>0){
-    for (j in 1:length(days)) {
-
-    plots[[k]] <-
-      foo %>%
-
-      filter(day==days[j]) %>%
-      
-      ggplot(aes(x=r_in, y=r_out, color=as.factor(t.bin), group=1)) +
-        geom_path(size=1.5) +
-        geom_abline(alpha=0.5, color="grey60") +
-      
-        facet_grid(~age_class) +
-        
-        theme_Publication(base_size = 10) +
-        # theme_classic() +
-        scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
-        scale_y_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
-      
-        labs(title = paste0("Colony: ",(colonies)[i]),
-           subtitle = paste0("Date: ", days[j])) +
-      
-        scale_color_viridis_d() +
-        theme(legend.position="none") +
-        
-        theme(plot.subtitle=element_text(hjust=0.5))
-
-    k <- k+1  
-  }
-  
- }
-
-}
-
-png(paste0(path_to_repo2,
-           "inout_v3.png"), 
-    width = 30, height = 50, units = "cm", res = 300)
-plots %>% 
-  multi.plot(., rows = 8, cols=5, multipages = "0")
-trash <- dev.off()
+# 
+# ## Plot the in/out rates
+# plots <- list()
+# k <- 1
+# for(i in 1:length((colonies))) {
+#   foo <- in.out.dat %>% filter(colony_ID == (colonies)[i])
+#   days <- foo %>% pull(day) %>% unique()
+#   
+#   x.max <- max(foo$r_in, na.rm = T)
+#   y.max <- max(foo$r_out, na.rm = T)
+#   
+#   if (nrow(foo)>0){
+#     for (j in 1:length(days)) {
+# 
+#     plots[[k]] <-
+#       foo %>%
+# 
+#       filter(day==days[j]) %>%
+#       
+#       ggplot(aes(x=r_in, y=r_out, color=as.factor(t.bin), group=1)) +
+#         geom_path(size=1.5) +
+#         geom_abline(alpha=0.5, color="grey60") +
+#       
+#         facet_grid(~age_class) +
+#         
+#         theme_Publication(base_size = 10) +
+#         # theme_classic() +
+#         scale_x_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
+#         scale_y_continuous(n.breaks = 3, limits = c(0,max(x.max,y.max))) +
+#       
+#         labs(title = paste0("Colony: ",(colonies)[i]),
+#            subtitle = paste0("Date: ", days[j])) +
+#       
+#         scale_color_viridis_d() +
+#         theme(legend.position="none") +
+#         
+#         theme(plot.subtitle=element_text(hjust=0.5))
+# 
+#     k <- k+1  
+#   }
+#   
+#  }
+# 
+# }
+# 
+# png(paste0(path_to_repo2,
+#            "inout_v3.png"), 
+#     width = 30, height = 50, units = "cm", res = 300)
+# plots %>% 
+#   multi.plot(., rows = 8, cols=5, multipages = "0")
+# trash <- dev.off()
 
 ```
 
 ```{r plot_inout_v3, echo = FALSE, fig.align='center', fig.cap='I/O plots as a function of time', out.width="95%"}
-  knitr::include_graphics(paste0(path_to_repo2,
-           "inout_v3.png"))
+  # knitr::include_graphics(paste0(path_to_repo2,
+  #          "inout_v3.png"))
 ```
 
 ___
@@ -1034,9 +1218,13 @@ mod.dat %>%
 > summarize the daily foraging rhythms for each age-class
 
 ```{r summary_ageclass}
-mod.dat %>% 
+bd.saveplot(
+  name = "daily_foraging_pattern_avg",
+  width = 25,height = 20,
   
-  group_by(age_class, t.bin) %>% 
+  mod.dat %>% 
+  mutate(rH_group=factor(rH_group, levels = c("high_rH","medium_rH","low_rH"))) %>% 
+  group_by(age_class, rH_group, t.bin) %>% 
   summarize(
     avg_in = mean(r_in),
     avg_out = mean(r_out),
@@ -1049,8 +1237,8 @@ mod.dat %>%
   # ggplot(aes(x=t.bin, y=avg_out, group=age_class, color=age_class, fill=age_class)) +
   geom_area(position = position_dodge(width = 0), alpha=0.75) +
         geom_line(size=2, col="black", alpha=0.65) +
-  
-        facet_grid(age_class~.) +
+
+        facet_grid(rH_group~age_class) +
         
         # coord_flip() +
         labs(x="time of day (h)",
@@ -1059,7 +1247,7 @@ mod.dat %>%
         # labs(title = paste0("Colony: ",(colonies)[i]),
         #    subtitle = paste0("Date: ", days[j])) +
         
-        scale_y_continuous(n.breaks = 4, labels = c("","25","","75")) +
+        scale_y_continuous(n.breaks = 4) +
         # scale_x_datetime(limits = x.lims, date_breaks = "3 hours", date_labels = "%H:%m") +
         theme_Publication(base_size = 20) +
         theme(axis.text.x=element_text(angle=90,hjust=1)) +
@@ -1070,10 +1258,17 @@ mod.dat %>%
                                     "","11:00","","",
                                     "","12:00","","", "")) +
         # scale_fill_manual(values = c("red","blue","green"))
-        theme(plot.subtitle=element_text(hjust=0.5))
+        theme(plot.subtitle=element_text(hjust=0.5),
+              legend.position = "none")
+)
 
 ```
 
+
+```{r plot_summary_ageclass, echo = FALSE, fig.align='center', fig.cap='', out.width="95%"}
+  knitr::include_graphics(paste0(path_to_repo2,
+           "daily_foraging_pattern_avg.png"))
+```
 
 
 ## 8. Prelim. analyses I
