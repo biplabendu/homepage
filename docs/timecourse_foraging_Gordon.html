@@ -431,7 +431,7 @@ div.tocify {
 <h1 class="title toc-ignore">TC8: Timecourse foraging</h1>
 <h3 class="subtitle">Investigating colony variation in time-budgeting of daily foraging in harvester ants</h3>
 <h4 class="author">Biplabendu Das</h4>
-<h4 class="date">25 October, 2022</h4>
+<h4 class="date">26 October, 2022</h4>
 
 </div>
 
@@ -1150,7 +1150,7 @@ for(i in 1:length(colonies)) {
       auc.dat[auc.dat$colony_ID==colonies[i] &amp; auc.dat$day==days[j],]$auc &lt;- auc
       auc.dat[auc.dat$colony_ID==colonies[i] &amp; auc.dat$day==days[j],]$dur_mins &lt;- dur
       }
-  
+
    }
 
 }
@@ -1520,9 +1520,9 @@ which_colonies
 <blockquote>
 <p>summarize the daily foraging rhythms for each age-class</p>
 </blockquote>
-<pre class="r"><code>bd.saveplot(
-  name = &quot;daily_foraging_pattern_avg&quot;,
-  width = 25,height = 20,
+<pre class="r"><code># bd.saveplot(
+#   name = &quot;daily_foraging_pattern_avg&quot;,
+#   width = 25,height = 20,
   
   mod.dat %&gt;% 
   mutate(rH_group=factor(rH_group, levels = c(&quot;high_rH&quot;,&quot;medium_rH&quot;,&quot;low_rH&quot;))) %&gt;% 
@@ -1561,11 +1561,114 @@ which_colonies
                                     &quot;&quot;,&quot;12:00&quot;,&quot;&quot;,&quot;&quot;, &quot;&quot;)) +
         # scale_fill_manual(values = c(&quot;red&quot;,&quot;blue&quot;,&quot;green&quot;))
         theme(plot.subtitle=element_text(hjust=0.5),
-              legend.position = &quot;none&quot;)
+              legend.position = &quot;none&quot;)</code></pre>
+<p><img src="timecourse_foraging_Gordon_files/figure-html/summary_ageclass_v1-1.png" width="672" /></p>
+<pre class="r"><code># )</code></pre>
+<p><img src="images/2022_deborah/01_timecourse_foraging/daily_foraging_pattern_avg.png" width="95%" style="display: block; margin: auto;" /></p>
+<blockquote>
+<p>Compare foraging with humidity changes</p>
+</blockquote>
+<pre class="r"><code>bd.saveplot(
+  name = &quot;daily_foraging_pattern_avg_summary&quot;,
+  width = 25,height = 20,
+  mod.dat %&gt;% 
+    mutate(rH_group=factor(rH_group, levels = c(&quot;high_rH&quot;,&quot;medium_rH&quot;,&quot;low_rH&quot;))) %&gt;% 
+    group_by(age_class, rH_group, t.bin) %&gt;% 
+    summarize(
+      avg_out = mean(r_out),
+      avg_rH = mean(rH)
+    ) %&gt;% 
+    ungroup() %&gt;% 
+    group_by(age_class, rH_group) %&gt;% 
+    mutate(avg_out=(avg_out-mean(avg_out))/sd(avg_out),
+           avg_rH=(avg_rH-mean(avg_rH))/sd(avg_rH)) %&gt;% 
+    
+    ggplot(aes(x=t.bin, y=avg_out, group=1)) +
+          geom_area(aes(x=t.bin, y=avg_rH, group=1),
+                    size=3, col=NA, fill=&quot;orange&quot;, alpha=0.5) +
+          geom_line(aes(x=t.bin, y=avg_rH, group=1),
+                    size=1, col=&quot;black&quot;, alpha=0.65) +
+          geom_area(position = position_dodge(width = 1),
+                    aes(fill=age_class), alpha=0.65) +
+          geom_line(size=2, col=&quot;black&quot;, alpha=0.85) +
+          facet_grid(rH_group~age_class) +
+    # coord_flip() +
+          labs(x=&quot;time of day (h)&quot;,
+               y=&quot;&quot;,
+               title = &quot;orange: humidity\nother colors: foraging&quot;) +
+          # scale_y_continuous(n.breaks = 4) +
+          theme_Publication(base_size = 20) +
+          theme(axis.text.x=element_text(angle=90,hjust=1)) +
+          scale_y_continuous(breaks = c(-1,0,1)) +
+          scale_x_discrete( labels = c(&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,
+                                      &quot;&quot;,&quot;8:00&quot;,&quot;&quot;,&quot;&quot;,
+                                      &quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,
+                                      &quot;&quot;,&quot;10:00&quot;,&quot;&quot;,&quot;&quot;,
+                                      &quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,
+                                      &quot;&quot;,&quot;12:00&quot;,&quot;&quot;,&quot;&quot;, &quot;&quot;)) +
+          # scale_fill_manual(values = c(&quot;red&quot;,&quot;blue&quot;,&quot;green&quot;))
+          theme(plot.subtitle=element_text(hjust=0.5),
+                legend.position = &quot;none&quot;)
 )</code></pre>
 <pre><code>## Plot is being saved to 
-## /Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/daily_foraging_pattern_avg.png</code></pre>
-<p><img src="images/2022_deborah/01_timecourse_foraging/daily_foraging_pattern_avg.png" width="95%" style="display: block; margin: auto;" /></p>
+## /Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/daily_foraging_pattern_avg_summary.png</code></pre>
+<p><img src="images/2022_deborah/01_timecourse_foraging/daily_foraging_pattern_avg_summary.png" width="95%" style="display: block; margin: auto;" /></p>
+<blockquote>
+<p>Compare foraging with temperature</p>
+</blockquote>
+<pre class="r"><code>bd.saveplot(
+  name = &quot;daily_foraging_pattern_avg_summary3&quot;,
+  width = 25,height = 20,
+  mod.dat %&gt;% 
+    mutate(rH_group=factor(rH_group, levels = c(&quot;high_rH&quot;,&quot;medium_rH&quot;,&quot;low_rH&quot;))) %&gt;% 
+    group_by(age_class, rH_group, t.bin) %&gt;% 
+    summarize(
+      avg_out = mean(r_out),
+      avg_rH = mean(rH),
+      avg_temp = mean(temp_F)
+    ) %&gt;% 
+    ungroup() %&gt;% 
+    group_by(age_class, rH_group) %&gt;% 
+    mutate(avg_out=(avg_out-mean(avg_out))/sd(avg_out),
+           avg_rH=(avg_rH-mean(avg_rH))/sd(avg_rH),
+           avg_temp=(avg_temp-mean(avg_temp))/sd(avg_temp)) %&gt;% 
+    
+    ggplot(aes(x=t.bin, y=avg_out, group=1)) +
+          geom_area(aes(x=t.bin, y=avg_rH, group=1),
+                    size=3, col=NA, fill=&quot;orange&quot;, alpha=0.5) +
+          geom_line(aes(x=t.bin, y=avg_rH, group=1),
+                    size=1, col=&quot;black&quot;, alpha=0.65) +
+          geom_area(aes(x=t.bin, y=avg_temp, group=1),
+                    size=3, col=NA, fill=&quot;red&quot;, alpha=0.5) +
+          geom_line(aes(x=t.bin, y=avg_temp, group=1),
+                    size=1, col=&quot;black&quot;, alpha=0.65) +
+          geom_area(position = position_dodge(width = 1),
+                    # aes(fill=age_class), 
+                    fill=&quot;grey60&quot;,
+                    alpha=0.65) +
+          geom_line(size=2, col=&quot;black&quot;, alpha=0.85) +
+          facet_grid(rH_group~age_class) +
+    # coord_flip() +
+          labs(x=&quot;time of day (h)&quot;,
+               y=&quot;&quot;,
+               title = &quot;orange: temperature\nother colors: foraging&quot;) +
+          # scale_y_continuous(n.breaks = 4) +
+          theme_Publication(base_size = 20) +
+          theme(axis.text.x=element_text(angle=90,hjust=1)) +
+          scale_y_continuous(breaks = c(-1,0,1)) +
+          scale_x_discrete( labels = c(&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,
+                                      &quot;&quot;,&quot;8:00&quot;,&quot;&quot;,&quot;&quot;,
+                                      &quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,
+                                      &quot;&quot;,&quot;10:00&quot;,&quot;&quot;,&quot;&quot;,
+                                      &quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,
+                                      &quot;&quot;,&quot;12:00&quot;,&quot;&quot;,&quot;&quot;, &quot;&quot;)) +
+          # scale_fill_manual(values = c(&quot;red&quot;,&quot;blue&quot;,&quot;green&quot;))
+          theme(plot.subtitle=element_text(hjust=0.5),
+                legend.position = &quot;none&quot;)
+)</code></pre>
+<pre><code>## Plot is being saved to 
+## /Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/daily_foraging_pattern_avg_summary3.png</code></pre>
+<p><img src="images/2022_deborah/01_timecourse_foraging/daily_foraging_pattern_avg_summary2.png" width="95%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="prelim.-analyses-i" class="section level2">

@@ -930,7 +930,7 @@ for(i in 1:length(colonies)) {
       auc.dat[auc.dat$colony_ID==colonies[i] & auc.dat$day==days[j],]$auc <- auc
       auc.dat[auc.dat$colony_ID==colonies[i] & auc.dat$day==days[j],]$dur_mins <- dur
       }
-  
+
    }
 
 }
@@ -1217,10 +1217,10 @@ mod.dat %>%
 
 > summarize the daily foraging rhythms for each age-class
 
-```{r summary_ageclass}
-bd.saveplot(
-  name = "daily_foraging_pattern_avg",
-  width = 25,height = 20,
+```{r summary_ageclass_v1}
+# bd.saveplot(
+#   name = "daily_foraging_pattern_avg",
+#   width = 25,height = 20,
   
   mod.dat %>% 
   mutate(rH_group=factor(rH_group, levels = c("high_rH","medium_rH","low_rH"))) %>% 
@@ -1260,15 +1260,127 @@ bd.saveplot(
         # scale_fill_manual(values = c("red","blue","green"))
         theme(plot.subtitle=element_text(hjust=0.5),
               legend.position = "none")
-)
+# )
 
 ```
 
-
-```{r plot_summary_ageclass, echo = FALSE, fig.align='center', fig.cap='', out.width="95%"}
+```{r plot_summary_ageclass_v1, echo = FALSE, fig.align='center', fig.cap='', out.width="95%"}
   knitr::include_graphics(paste0(path_to_repo2,
            "daily_foraging_pattern_avg.png"))
 ```
+
+> Compare foraging with humidity changes
+
+```{r summary_ageclass_v2}
+bd.saveplot(
+  name = "daily_foraging_pattern_avg_summary",
+  width = 25,height = 20,
+  mod.dat %>% 
+    mutate(rH_group=factor(rH_group, levels = c("high_rH","medium_rH","low_rH"))) %>% 
+    group_by(age_class, rH_group, t.bin) %>% 
+    summarize(
+      avg_out = mean(r_out),
+      avg_rH = mean(rH)
+    ) %>% 
+    ungroup() %>% 
+    group_by(age_class, rH_group) %>% 
+    mutate(avg_out=(avg_out-mean(avg_out))/sd(avg_out),
+           avg_rH=(avg_rH-mean(avg_rH))/sd(avg_rH)) %>% 
+    
+    ggplot(aes(x=t.bin, y=avg_out, group=1)) +
+          geom_area(aes(x=t.bin, y=avg_rH, group=1),
+                    size=3, col=NA, fill="orange", alpha=0.5) +
+          geom_line(aes(x=t.bin, y=avg_rH, group=1),
+                    size=1, col="black", alpha=0.65) +
+          geom_area(position = position_dodge(width = 1),
+                    aes(fill=age_class), alpha=0.65) +
+          geom_line(size=2, col="black", alpha=0.85) +
+          facet_grid(rH_group~age_class) +
+    # coord_flip() +
+          labs(x="time of day (h)",
+               y="",
+               title = "orange: humidity\nother colors: foraging") +
+          # scale_y_continuous(n.breaks = 4) +
+          theme_Publication(base_size = 20) +
+          theme(axis.text.x=element_text(angle=90,hjust=1)) +
+          scale_y_continuous(breaks = c(-1,0,1)) +
+          scale_x_discrete( labels = c("","","","",
+                                      "","8:00","","",
+                                      "","","","",
+                                      "","10:00","","",
+                                      "","","","",
+                                      "","12:00","","", "")) +
+          # scale_fill_manual(values = c("red","blue","green"))
+          theme(plot.subtitle=element_text(hjust=0.5),
+                legend.position = "none")
+)
+```
+
+```{r plot_summary_ageclass_v2, echo = FALSE, fig.align='center', fig.cap='', out.width="95%"}
+  knitr::include_graphics(paste0(path_to_repo2,
+           "daily_foraging_pattern_avg_summary.png"))
+```
+
+> Compare foraging with temperature
+
+```{r summary_ageclass_v3}
+bd.saveplot(
+  name = "daily_foraging_pattern_avg_summary3",
+  width = 25,height = 20,
+  mod.dat %>% 
+    mutate(rH_group=factor(rH_group, levels = c("high_rH","medium_rH","low_rH"))) %>% 
+    group_by(age_class, rH_group, t.bin) %>% 
+    summarize(
+      avg_out = mean(r_out),
+      avg_rH = mean(rH),
+      avg_temp = mean(temp_F)
+    ) %>% 
+    ungroup() %>% 
+    group_by(age_class, rH_group) %>% 
+    mutate(avg_out=(avg_out-mean(avg_out))/sd(avg_out),
+           avg_rH=(avg_rH-mean(avg_rH))/sd(avg_rH),
+           avg_temp=(avg_temp-mean(avg_temp))/sd(avg_temp)) %>% 
+    
+    ggplot(aes(x=t.bin, y=avg_out, group=1)) +
+          geom_area(aes(x=t.bin, y=avg_rH, group=1),
+                    size=3, col=NA, fill="orange", alpha=0.5) +
+          geom_line(aes(x=t.bin, y=avg_rH, group=1),
+                    size=1, col="black", alpha=0.65) +
+          geom_area(aes(x=t.bin, y=avg_temp, group=1),
+                    size=3, col=NA, fill="red", alpha=0.5) +
+          geom_line(aes(x=t.bin, y=avg_temp, group=1),
+                    size=1, col="black", alpha=0.65) +
+          geom_area(position = position_dodge(width = 1),
+                    # aes(fill=age_class), 
+                    fill="grey60",
+                    alpha=0.65) +
+          geom_line(size=2, col="black", alpha=0.85) +
+          facet_grid(rH_group~age_class) +
+    # coord_flip() +
+          labs(x="time of day (h)",
+               y="",
+               title = "orange: temperature\nother colors: foraging") +
+          # scale_y_continuous(n.breaks = 4) +
+          theme_Publication(base_size = 20) +
+          theme(axis.text.x=element_text(angle=90,hjust=1)) +
+          scale_y_continuous(breaks = c(-1,0,1)) +
+          scale_x_discrete( labels = c("","","","",
+                                      "","8:00","","",
+                                      "","","","",
+                                      "","10:00","","",
+                                      "","","","",
+                                      "","12:00","","", "")) +
+          # scale_fill_manual(values = c("red","blue","green"))
+          theme(plot.subtitle=element_text(hjust=0.5),
+                legend.position = "none")
+)
+```
+
+```{r plot_summary_ageclass_v3, echo = FALSE, fig.align='center', fig.cap='', out.width="95%"}
+  knitr::include_graphics(paste0(path_to_repo2,
+           "daily_foraging_pattern_avg_summary2.png"))
+```
+
 
 
 ## 8. Prelim. analyses I
