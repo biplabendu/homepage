@@ -38,6 +38,7 @@ pacman::p_load(tidyverse, conflicted, ggplot2, viridis, conflicted, WaveletComp)
 pacman::p_load(patchwork)
 pacman::p_load(lubridate)
 pacman::p_load(default)
+pacman::p_load(dbplyr)
 
 # set conflict preference
 conflict_prefer("select", "dplyr")
@@ -592,12 +593,22 @@ colonies <- b.dat %>% arrange(age_obs) %>% pull(colony_ID) %>% unique()
 
 ## ADD CLIMATE DATA
 
+```{r load_clim_db}
+climate.db <- DBI::dbConnect(RSQLite::SQLite(),
+                             paste0(path_to_repo, "/01_data/all_climate_data.db"))
+# src_dbi(climate.db)
+clim.dat.all <- 
+  tbl(climate.db, "obs_day_climate_data") %>% 
+  collect()
+```
+
+
 ```{r read_climate_data}
-clim.dat.all <- read.csv(file = paste0(path_to_repo, "/01_data/all_climate_data_pagliara_nova_billu2022.csv"),
-                     stringsAsFactors = F) %>% as_tibble()
-bd.saveplot(
-  name = "clim_data",
-  width=30, height=30,
+# clim.dat.all <- read.csv(file = paste0(path_to_repo, "/01_data/all_climate_data_pagliara_nova_billu2022.csv"),
+#                      stringsAsFactors = F) %>% as_tibble()
+# bd.saveplot(
+  # name = "clim_data",
+  # width=30, height=30,
   clim.dat.all %>% 
   select(date, time, temp_F, rH) %>% 
   mutate(time = as.POSIXct(time, format="%H:%M")) %>% 
@@ -616,7 +627,7 @@ bd.saveplot(
   labs(subtitle = "shaded portion shows values between 6AM and 1PM\nhumidity (%rH, orange); temp (ºF, red)",
        x = "time",
        y = "")
-)
+# )
 
 ```
 
@@ -631,42 +642,42 @@ knitr::include_graphics(paste0(path_to_repo2,
 ### Classify humidity days
 
 ```{r group_clim_data}
-clim.dat <-
-  clim.dat.all %>% 
-  select(date:time,
-         temp_F, rH) %>% 
-  group_by(date) %>% 
-  summarize(temp_min=min(temp_F, na.rm=T),
-            temp_mean=mean(temp_F, na.rm=T),
-            temp_median=median(temp_F, na.rm = T),
-            temp_max=max(temp_F, na.rm=T),
-            
-            rH_min=min(rH, na.rm=T),
-            rH_mean=mean(rH, na.rm = T),
-            rH_median=median(rH, na.rm = T),
-            rH_max=max(rH, na.rm = T)) %>% 
-  pivot_longer(cols= temp_min:rH_max,
-               values_to = "value")
+# clim.dat <-
+#   clim.dat.all %>% 
+#   select(date:time,
+#          temp_F, rH) %>% 
+#   group_by(date) %>% 
+#   summarize(temp_min=min(temp_F, na.rm=T),
+#             temp_mean=mean(temp_F, na.rm=T),
+#             temp_median=median(temp_F, na.rm = T),
+#             temp_max=max(temp_F, na.rm=T),
+#             
+#             rH_min=min(rH, na.rm=T),
+#             rH_mean=mean(rH, na.rm = T),
+#             rH_median=median(rH, na.rm = T),
+#             rH_max=max(rH, na.rm = T)) %>% 
+#   pivot_longer(cols= temp_min:rH_max,
+#                values_to = "value")
     
 
-bd.saveplot(name="distribution_rH_tempF",
-            width=15,height=20,
-            clim.dat %>% 
-                group_by(name) %>% 
-                mutate(name2=str_split(name, "_")[[1]][1]) %>% 
-                ungroup() %>% 
-                ggplot(aes(x=as.factor(name), y=value)) +
-                geom_boxplot(outlier.color = NA, aes(fill=name2), alpha=0.75) +
-                geom_jitter(aes(group=name), width = 0.2, alpha=0.55) +
-                theme_Publication(base_size = 20) +
-                scale_fill_manual(values = c("orange","red")) +
-                coord_flip() +
-                theme(legend.title = element_blank(),
-                      legend.position = "none") +
-                labs(subtitle = "humidity (%rH, orange)\ntemp (ºF, red)",
-                     x = "",
-                     y = "")
-            )
+# bd.saveplot(name="distribution_rH_tempF",
+#             width=15,height=20,
+            # clim.dat %>% 
+            #     group_by(name) %>% 
+            #     mutate(name2=str_split(name, "_")[[1]][1]) %>% 
+            #     ungroup() %>% 
+            #     ggplot(aes(x=as.factor(name), y=value)) +
+            #     geom_boxplot(outlier.color = NA, aes(fill=name2), alpha=0.75) +
+            #     geom_jitter(aes(group=name), width = 0.2, alpha=0.55) +
+            #     theme_Publication(base_size = 20) +
+            #     scale_fill_manual(values = c("orange","red")) +
+            #     coord_flip() +
+            #     theme(legend.title = element_blank(),
+            #           legend.position = "none") +
+            #     labs(subtitle = "humidity (%rH, orange)\ntemp (ºF, red)",
+            #          x = "",
+            #          y = "")
+            # )
   
   
 ```
@@ -677,24 +688,10 @@ It appears that the values of rH_max and temp_mean have the tighter distribution
 > Let's explore groupings based on rH_max
 
 ```{r specify_groups}
-var.of.interest <- "rH_max"
-foo <-
-  clim.dat %>% 
-  filter(name==var.of.interest) %>% 
-  pull(value) %>% 
-  summary() %>% 
-  as.vector()
-
-q1 <- foo[2]
-q2 <- foo[5]
-
-clim.groups <- 
-  clim.dat %>% 
-  filter(name==var.of.interest) %>% 
-  # make the grouping based on inter-quartile ranges
-  mutate(rH_group=ifelse(value<=q1, "low_rH",
-                         ifelse(value>q1&value<q2, "medium_rH", "high_rH"))) %>% 
-  select(day=date, rH_max=value, rH_group) 
+clim.groups <-
+  tbl(climate.db, "rH_group_climate_data") %>% 
+  select(day=date, rH_max=dmax_rH, rH_group) %>% 
+  collect()
 
 ## Summarize; sample sizes
 clim.groups %>% 
@@ -755,6 +752,7 @@ in.out.dat <-
   rename(c(r_in = "In", r_out = "Out"))
 ```
 
+## BOOKMARK
 
 Let's visualize the rate of outgoing foragers
 
@@ -1215,15 +1213,18 @@ mod.dat %>%
   
 ```
 
+### Summary Plot 1
+
 > summarize the daily foraging rhythms for each age-class
 
 ```{r summary_ageclass_v1}
-# bd.saveplot(
-#   name = "daily_foraging_pattern_avg",
-#   width = 25,height = 20,
+clim.group.ids <- c("wet-day","average-day","dry-day")
+bd.saveplot(
+  name = "daily_foraging_pattern_avg",
+  width = 25,height = 20,
   
   mod.dat %>% 
-  mutate(rH_group=factor(rH_group, levels = c("high_rH","medium_rH","low_rH"))) %>% 
+  mutate(rH_group=factor(rH_group, levels = clim.group.ids)) %>% 
   group_by(age_class, rH_group, t.bin) %>% 
   summarize(
     avg_in = mean(r_in),
@@ -1260,7 +1261,7 @@ mod.dat %>%
         # scale_fill_manual(values = c("red","blue","green"))
         theme(plot.subtitle=element_text(hjust=0.5),
               legend.position = "none")
-# )
+)
 
 ```
 
@@ -1269,6 +1270,7 @@ mod.dat %>%
            "daily_foraging_pattern_avg.png"))
 ```
 
+### Summary Plot 2
 > Compare foraging with humidity changes
 
 ```{r summary_ageclass_v2}
@@ -1276,7 +1278,7 @@ bd.saveplot(
   name = "daily_foraging_pattern_avg_summary",
   width = 25,height = 20,
   mod.dat %>% 
-    mutate(rH_group=factor(rH_group, levels = c("high_rH","medium_rH","low_rH"))) %>% 
+    mutate(rH_group=factor(rH_group, levels = clim.group.ids)) %>% 
     group_by(age_class, rH_group, t.bin) %>% 
     summarize(
       avg_out = mean(r_out),
@@ -1284,8 +1286,8 @@ bd.saveplot(
     ) %>% 
     ungroup() %>% 
     group_by(age_class, rH_group) %>% 
-    mutate(avg_out=(avg_out-mean(avg_out))/sd(avg_out),
-           avg_rH=(avg_rH-mean(avg_rH))/sd(avg_rH)) %>% 
+    mutate(avg_out=(avg_out-median(avg_out))/sd(avg_out),
+           avg_rH=(avg_rH-median(avg_rH))/sd(avg_rH)) %>% 
     
     ggplot(aes(x=t.bin, y=avg_out, group=1)) +
           geom_area(aes(x=t.bin, y=avg_rH, group=1),
@@ -1321,14 +1323,15 @@ bd.saveplot(
            "daily_foraging_pattern_avg_summary.png"))
 ```
 
-> Compare foraging with temperature
+### Summary Plot 3
+> Compare foraging with humidity and temperature
 
 ```{r summary_ageclass_v3}
 bd.saveplot(
   name = "daily_foraging_pattern_avg_summary3",
   width = 25,height = 20,
   mod.dat %>% 
-    mutate(rH_group=factor(rH_group, levels = c("high_rH","medium_rH","low_rH"))) %>% 
+    mutate(rH_group=factor(rH_group, levels = clim.group.ids)) %>% 
     group_by(age_class, rH_group, t.bin) %>% 
     summarize(
       avg_out = mean(r_out),
@@ -1359,11 +1362,11 @@ bd.saveplot(
     # coord_flip() +
           labs(x="time of day (h)",
                y="",
-               title = "orange: temperature\nother colors: foraging") +
+               title = "orange: humidity, red: temperature\nother colors: foraging") +
           # scale_y_continuous(n.breaks = 4) +
           theme_Publication(base_size = 20) +
           theme(axis.text.x=element_text(angle=90,hjust=1)) +
-          scale_y_continuous(breaks = c(-1,0,1)) +
+          scale_y_continuous(breaks = c(-2,0,2)) +
           scale_x_discrete( labels = c("","","","",
                                       "","8:00","","",
                                       "","","","",
@@ -1378,7 +1381,7 @@ bd.saveplot(
 
 ```{r plot_summary_ageclass_v3, echo = FALSE, fig.align='center', fig.cap='', out.width="95%"}
   knitr::include_graphics(paste0(path_to_repo2,
-           "daily_foraging_pattern_avg_summary2.png"))
+           "daily_foraging_pattern_avg_summary3.png"))
 ```
 
 
@@ -1442,6 +1445,68 @@ ___
 
 ## 9. Prelim. analyses II
 
+```{r using_humidity}
+mod.dat2 <- 
+  mod.dat %>% 
+    mutate(rH_group=factor(rH_group, levels = clim.group.ids)) %>% 
+    group_by(colony_ID, day) %>% 
+    mutate(rH=(rH-mean(rH))/sd(rH),
+           temp_F=(temp_F-mean(temp_F))/sd(temp_F))
+```
+
+In this class of analyses, we can replace time of day with humidity, and bin days as low/high/medium humidity days.
+
+> Q1. Do colonies belonging to differet age categories show differences in their foraging?
+
+```{r analyses_v1.1}
+
+mod.full.h <- lme4::lmer(r_out ~ age_class + rH + rH_group + (1|colony_ID) + (1|rH_group:colony_ID),
+                 data=mod.dat2, REML=F)
+mod.red.h.1 <- lme4::lmer(r_out ~ rH_group + rH + (1|colony_ID) + (1|rH_group:colony_ID),
+                 data=mod.dat2, REML=F)
+anova(mod.full.h, mod.red.h.1, test="Chisq")
+
+```
+
+Ans: No.
+
+
+> Q2. Does the rate of foraging depend on temporal fluctuations in humidity?
+
+```{r analyses_v2.1}
+mod.red.h.2 <- lme4::lmer(r_out ~ age_class + rH_group + (1|colony_ID) + (1|rH_group:colony_ID),
+                 data=mod.dat2, REML=F)
+anova(mod.full.h, mod.red.h.2, test="Chisq")
+```
+
+Ans: No.
+
+
+> Q3. Does the rate of foraging change between wet/average/dry humidity days?
+
+```{r analyses_v3.1}
+mod.red.h.3 <- lme4::lmer(r_out ~ age_class + rH + (1|colony_ID) + (1|rH_group:colony_ID),
+                 data=mod.dat2, REML=F)
+anova(mod.full.h, mod.red.h.3, test="Chisq")
+```
+
+Ans: Possible.
+
+
+> Q4. Does the temporal patterns in foraging of different age classes differ?
+
+```{r analyses_v4.1}
+mod.full.h.2 <- lme4::lmer(r_out ~ age_class*rH + rH_group + (1|colony_ID) + (1|rH_group:colony_ID),
+                 data=mod.dat2, REML=F)
+anova(mod.full.h.2, mod.full.h, test="Chisq")
+```
+
+Ans: The current data suggests, NOT.
+
+___
+
+## 10. Prelim. analyses III
+
 > Up next: Clustering the different colonies based on their daily foraging activity (r_tot)
 
 ### 9.1 Prep data
@@ -1466,13 +1531,18 @@ name.rows <-
 name.cols <- paste0("T",time.dat$t.bin)
 
 cluster.dat <- matrix(data=0,nrow=length(name.rows), ncol=length(name.cols))
-rownames(cluster.dat) <- name.rows
-colnames(cluster.dat) <- name.cols
+# rownames(cluster.dat) <- name.rows 
+# colnames(cluster.dat) <- name.cols 
+rownames(cluster.dat) <- rep("",length(name.rows))
+colnames(cluster.dat) <- rep("",length(name.cols))
+cluster.dat2 <- matrix(data=0,nrow=length(name.rows), ncol=length(name.cols))
+rownames(cluster.dat2) <- rep("",length(name.rows))
+colnames(cluster.dat2) <- rep("",length(name.cols))
 
 k <- 1
 for(i in 1:length(colonies)) {
   
-  foo <- mod.dat %>% filter(colony_ID == colonies[[i]]) %>% select(t.bin, day, r_tot)
+  foo <- mod.dat %>% filter(colony_ID == colonies[[i]]) %>% select(t.bin, day, r_tot, rH)
   days <- foo %>% pull(day) %>% unique()
   
   for (j in 1:length(days)) {
@@ -1484,6 +1554,14 @@ for(i in 1:length(colonies)) {
         pull(r_tot) %>% 
         round(.,2) %>% 
         scale(., center = T, scale = T)
+    
+    cluster.dat2[k,] <- 
+      foo %>% 
+        filter(day==days[[j]]) %>% 
+        right_join(time.dat, by="t.bin") %>% 
+        pull(rH) %>% 
+        round(.,2)
+
     k <- k+1
     
   }
@@ -1491,20 +1569,36 @@ for(i in 1:length(colonies)) {
 
 ## Plot the matrix
 library(plot.matrix)
+par(mfrow=c(1,2))
 par(mar=c(6.1, #bottom
-          10.1, #left
-          1, #top
-          3.1)) #right
+          2, #left
+          2, #top
+          1)) #right 
 cluster.dat %>%
-  # imputeTS::na_interpolation() %>% 
   plot(.,
-       col=viridis::viridis(4),
+       col=viridis::viridis(2),
+       main="outgoing foraging rate",
        spacing.key=1.5,
          fmt.key="%.0f",
          xlab = "",
          ylab = "",
          axis.col=list(side=1, las=2), axis.row = list(side=2, las=1)
        )
+par(mar=c(6.1, #bottom
+          2, #left
+          2, #top
+          3.1)) #right
+cluster.dat2 %>%
+  plot(.,
+       col=viridis::viridis(7),
+       main="humidity %rH",
+       spacing.key=1.5,
+         fmt.key="%.0f",
+         xlab = "",
+         ylab = "",
+         axis.col=list(side=1, las=2), axis.row = list(side=2, las=1)
+       )
+# trash <- dev.off()
 ```
 
 > In the above plot, colors represent the relative foraging rate (z-scores = x-mean/sd) for a given colony-day. Yellow blocks point to the time of day of highest foraging activity.
