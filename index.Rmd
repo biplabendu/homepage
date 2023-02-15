@@ -1,14 +1,11 @@
 ---
-title: "Homepage"
+title: ""
 output: 
   html_document:
     includes:
       in_header: analytics.html
 ---
 
-<style>
-body {text-align: justify}
-</style>
 
 ```{r, echo=F, warning=F, message=F}
 library(rmarkdown)
@@ -16,6 +13,8 @@ library(knitr)
 library(jpeg)
 ```
 
+###
+###
 
 ```{r, echo=FALSE, fig.cap="Biplabendu Das (BILLU)", out.width = '20%', fig.align='center'}
 knitr::include_graphics("dp.jpg")
@@ -24,7 +23,7 @@ knitr::include_graphics("dp.jpg")
 <h6 style="text-align: center;" markdown="1">Email: biplabendu[dot]das[at]gmail[dot]com</h6>     
        
 ### 
-    
+
 I am an integrative biologist working at the intersection of chronobiology, animal behavior, infectious diseases, and aging. I am currently working with [Prof. Deborah Gordon](http://web.stanford.edu/~dmgordon/index.html) as a postdoctoral researcher. For my dissertation, I worked with [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), during which we explored the role of biological clocks in behavioral plasticity and parasitic manipulation of host behavior using the "zombie ant" system.
 
 
@@ -44,11 +43,10 @@ library(vembedr)
 
 ----------------------------------
 
-### Publications and tutorials
+> Publications, Tutorials, and R code
 
-----------------------------------
 
-5. _de Bekker, C. and **Das, B.** (2022)_ Hijacking time: How Ophiocordyceps fungi could be using ant host clocks to manipulate behavior. _Parasite Immunology_ [*PDF*](https://doi.org/10.1111/pim.12909)
+4. _de Bekker, C. and **Das, B.** (2022)_ Hijacking time: How Ophiocordyceps fungi could be using ant host clocks to manipulate behavior. _Parasite Immunology_ [*PDF*](https://doi.org/10.1111/pim.12909)
 <div class='altmetric-embed' data-badge-popover="right" data-badge-type='medium-bar' data-doi="10.1111/pim.12909"></div>
 
 - [*Code*: R tutorial for building and annotating temporal gene expression networks](https://github.com/biplabendu/deBekker_and_Das_2021/blob/master/scripts/methods_tutorial_wgcna_cflo_ophio_22Oct21.Rmd)
@@ -56,20 +54,11 @@ library(vembedr)
 
 ----------------------------------
 
-4. _**Das, B.** and de Bekker, C. (2022)_ Time-course RNASeq of _Camponotus floridanus_ forager and nurse
+3. _**Das, B.** and de Bekker, C. (2022)_ Time-course RNASeq of _Camponotus floridanus_ forager and nurse
 ant brains indicate links between plasticity in the biological clock and behavioral division of labor. _BMC Genomics_ [*PDF*](https://rdcu.be/cHq80)  
 <div class='altmetric-embed' data-badge-popover="right" data-badge-type='medium-bar' data-doi="10.1186/s12864-021-08282-x"></div>
     
 - [*Code*: Shiny app to visualize daily expression of all genes expressed in *C. floridanus* brains](https://biplabendu.shinyapps.io/CFlo_Daily_Gene_Expression/)
-
-----------------------------------
-
-3. _**Das, B.** and de Bekker, C. (2021)_ Time-course RNASeq of _Camponotus floridanus_ forager and nurse
-ant brains suggests links between plasticity in the biological clock and behavioral division of labor. _bioRxiv_ [*PDF*](https://www.biorxiv.org/content/10.1101/2021.03.27.433505v1.abstract)  
-<div class='altmetric-embed' data-badge-popover="right" data-badge-type='medium-bar' data-doi="10.1101/2021.03.27.433505"></div>
-
-- [*Code:* Time-course analyses of RNASeq data, overrepresentation analyses, dataviz](https://github.com/biplabendu/Das_et_al_2021)
-- an updated function is coming soon
 
 ----------------------------------
 
