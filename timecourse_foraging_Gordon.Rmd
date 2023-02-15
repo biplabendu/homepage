@@ -91,6 +91,8 @@ bin.width <- 15
 # how many hours/day of observation do we need to include in the final analyses (in hours)
 atleast <- 2
 
+# Classification of observation days as wet/average/dry days
+clim.group.ids <- c("wet-day","average-day","dry-day")
 ```
 
 - bin width to calculate rate of foraging (bin width = `r bin.width` mins)
@@ -591,7 +593,7 @@ b.dat <-
 colonies <- b.dat %>% arrange(age_obs) %>% pull(colony_ID) %>% unique()
 ```
 
-## ADD CLIMATE DATA
+## Adding climate data
 
 ```{r load_clim_db}
 climate.db <- DBI::dbConnect(RSQLite::SQLite(),
@@ -606,9 +608,9 @@ clim.dat.all <-
 ```{r read_climate_data}
 # clim.dat.all <- read.csv(file = paste0(path_to_repo, "/01_data/all_climate_data_pagliara_nova_billu2022.csv"),
 #                      stringsAsFactors = F) %>% as_tibble()
-# bd.saveplot(
-  # name = "clim_data",
-  # width=30, height=30,
+bd.saveplot(
+name = "clim_data",
+width=30, height=30,
   clim.dat.all %>% 
   select(date, time, temp_F, rH) %>% 
   mutate(time = as.POSIXct(time, format="%H:%M")) %>% 
@@ -627,7 +629,7 @@ clim.dat.all <-
   labs(subtitle = "shaded portion shows values between 6AM and 1PM\nhumidity (%rH, orange); temp (ºF, red)",
        x = "time",
        y = "")
-# )
+)
 
 ```
 
@@ -637,7 +639,7 @@ knitr::include_graphics(paste0(path_to_repo2,
            "clim_data.png"))
 ```
 
-> let's group the days as low, medium, and high humidity days
+> let's group the days as wet (high rH), average (medium rH), and dry (low rH) days
 
 ### Classify humidity days
 
@@ -685,7 +687,7 @@ knitr::include_graphics(paste0(path_to_repo2,
 
 It appears that the values of rH_max and temp_mean have the tighter distribution.
 
-> Let's explore groupings based on rH_max
+> Groupings created based on rH_max
 
 ```{r specify_groups}
 clim.groups <-
@@ -751,8 +753,6 @@ in.out.dat <-
   ungroup() %>% 
   rename(c(r_in = "In", r_out = "Out"))
 ```
-
-## BOOKMARK
 
 Let's visualize the rate of outgoing foragers
 
@@ -1218,7 +1218,6 @@ mod.dat %>%
 > summarize the daily foraging rhythms for each age-class
 
 ```{r summary_ageclass_v1}
-clim.group.ids <- c("wet-day","average-day","dry-day")
 bd.saveplot(
   name = "daily_foraging_pattern_avg",
   width = 25,height = 20,

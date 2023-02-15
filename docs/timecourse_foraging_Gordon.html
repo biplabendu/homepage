@@ -448,7 +448,10 @@ which.year &lt;- c(2015:2017)
 bin.width &lt;- 15
 
 # how many hours/day of observation do we need to include in the final analyses (in hours)
-atleast &lt;- 2</code></pre>
+atleast &lt;- 2
+
+# Classification of observation days as wet/average/dry days
+clim.group.ids &lt;- c(&quot;wet-day&quot;,&quot;average-day&quot;,&quot;dry-day&quot;)</code></pre>
 <ul>
 <li>bin width to calculate rate of foraging (bin width = 15 mins)</li>
 <li>minimum hours/day of observations required for including in the anlayses (at least 2 hrs)</li>
@@ -895,8 +898,8 @@ summ.dat &lt;- all.dat %&gt;%
   
 colonies &lt;- b.dat %&gt;% arrange(age_obs) %&gt;% pull(colony_ID) %&gt;% unique()</code></pre>
 </div>
-<div id="add-climate-data" class="section level2">
-<h2>ADD CLIMATE DATA</h2>
+<div id="adding-climate-data" class="section level2">
+<h2>Adding climate data</h2>
 <pre class="r"><code>climate.db &lt;- DBI::dbConnect(RSQLite::SQLite(),
                              paste0(path_to_repo, &quot;/01_data/all_climate_data.db&quot;))
 # src_dbi(climate.db)
@@ -905,9 +908,9 @@ clim.dat.all &lt;-
   collect()</code></pre>
 <pre class="r"><code># clim.dat.all &lt;- read.csv(file = paste0(path_to_repo, &quot;/01_data/all_climate_data_pagliara_nova_billu2022.csv&quot;),
 #                      stringsAsFactors = F) %&gt;% as_tibble()
-# bd.saveplot(
-  # name = &quot;clim_data&quot;,
-  # width=30, height=30,
+bd.saveplot(
+name = &quot;clim_data&quot;,
+width=30, height=30,
   clim.dat.all %&gt;% 
   select(date, time, temp_F, rH) %&gt;% 
   mutate(time = as.POSIXct(time, format=&quot;%H:%M&quot;)) %&gt;% 
@@ -925,12 +928,13 @@ clim.dat.all &lt;-
   theme(axis.text.x = element_blank()) +
   labs(subtitle = &quot;shaded portion shows values between 6AM and 1PM\nhumidity (%rH, orange); temp (ºF, red)&quot;,
        x = &quot;time&quot;,
-       y = &quot;&quot;)</code></pre>
-<p><img src="timecourse_foraging_Gordon_files/figure-html/read_climate_data-1.png" width="672" /></p>
-<pre class="r"><code># )</code></pre>
+       y = &quot;&quot;)
+)</code></pre>
+<pre><code>## Plot is being saved to 
+## /Users/biplabendudas/Documents/GitHub/homepage/images/2022_deborah/01_timecourse_foraging/clim_data.png</code></pre>
 <p><img src="images/2022_deborah/01_timecourse_foraging/clim_data.png" width="95%" style="display: block; margin: auto;" /></p>
 <blockquote>
-<p>let’s group the days as low, medium, and high humidity days</p>
+<p>let’s group the days as wet (high rH), average (medium rH), and dry (low rH) days</p>
 </blockquote>
 <div id="classify-humidity-days" class="section level3">
 <h3>Classify humidity days</h3>
@@ -972,7 +976,7 @@ clim.dat.all &lt;-
             # )</code></pre>
 <p>It appears that the values of rH_max and temp_mean have the tighter distribution.</p>
 <blockquote>
-<p>Let’s explore groupings based on rH_max</p>
+<p>Groupings created based on rH_max</p>
 </blockquote>
 <pre class="r"><code>clim.groups &lt;-
   tbl(climate.db, &quot;rH_group_climate_data&quot;) %&gt;% 
@@ -1039,10 +1043,6 @@ b.dat &lt;-
               values_from = r_ants) %&gt;% 
   ungroup() %&gt;% 
   rename(c(r_in = &quot;In&quot;, r_out = &quot;Out&quot;))</code></pre>
-</div>
-</div>
-<div id="bookmark" class="section level2">
-<h2>BOOKMARK</h2>
 <p>Let’s visualize the rate of outgoing foragers</p>
 <pre class="r"><code>## Plot the in/out rates
 x.lims &lt;- c(min(b.dat$t.bin), max(b.dat$t.bin))
@@ -1100,6 +1100,7 @@ for(i in 1:length((colonies))) {
 <p class="caption">
 Rate of out/in-going foragers
 </p>
+</div>
 </div>
 <div id="total-foraging-rate" class="section level3">
 <h3>Total foraging rate</h3>
@@ -1513,8 +1514,7 @@ which_colonies
 <blockquote>
 <p>summarize the daily foraging rhythms for each age-class</p>
 </blockquote>
-<pre class="r"><code>clim.group.ids &lt;- c(&quot;wet-day&quot;,&quot;average-day&quot;,&quot;dry-day&quot;)
-bd.saveplot(
+<pre class="r"><code>bd.saveplot(
   name = &quot;daily_foraging_pattern_avg&quot;,
   width = 25,height = 20,
   
