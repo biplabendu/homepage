@@ -1,5 +1,5 @@
 ---
-title: ""
+title: " "
 output: 
   html_document:
     includes:
@@ -24,7 +24,7 @@ knitr::include_graphics("dp.jpg")
        
 ### 
 
-I am an integrative biologist working at the intersection of chronobiology, animal behavior, infectious diseases, and aging. I am currently working with [Prof. Deborah Gordon](http://web.stanford.edu/~dmgordon/index.html) as a postdoctoral researcher. For my dissertation, I worked with [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), during which we explored the role of biological clocks in behavioral plasticity and parasitic manipulation of host behavior using the "zombie ant" system.
+An integrative biologist working at the intersection of chronobiology, animal behavior, infectious diseases, and aging. I am currently working with [Prof. Deborah Gordon](http://web.stanford.edu/~dmgordon/index.html) as a postdoctoral researcher. For my dissertation, I worked with [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), exploring the role of biological clocks in behavioral plasticity and parasitic manipulation of host behavior using the "zombie ant" system. 
 
 
 <style>
@@ -43,10 +43,23 @@ library(vembedr)
 
 ----------------------------------
 
-> Publications, Tutorials, and R code
+> Publications, Tutorials, R code
 
+7. _**Das, B.**, Gordon, D.M. (2023)_ Biological rhythms and task allocation in ant colonies. _Current Opinion in Insect Science_ (submitted; in review)
 
-4. _de Bekker, C. and **Das, B.** (2022)_ Hijacking time: How Ophiocordyceps fungi could be using ant host clocks to manipulate behavior. _Parasite Immunology_ [*PDF*](https://doi.org/10.1111/pim.12909)
+----------------------------------
+
+6. _**Das, B.**, Brouns, R., Will, I., Brachmann, A., de Bekker, C. (2023)_ Using RNASeq to investigate the involvement of the _Ophiocordyceps_ clock in ant host infection and behavioral manipulation. _bioRxiv_ [*PDF*](https://www.biorxiv.org/content/10.1101/2023.01.20.524843v2.abstract)
+<div class='altmetric-embed' data-badge-popover="right" data-badge-type='medium-bar' data-doi="10.1101/2023.01.20.524843"></div>
+
+----------------------------------
+
+5. _**Das, B.**, Brachmann, A., de Bekker, C. (2023)_ Both behavior-manipulating and non-manipulating entomopathogenic fungi affect rhythmic gene expression in carpenter ant foragers upon infection. _bioRxiv_ [*PDF*](https://www.biorxiv.org/content/10.1101/2023.01.19.524837v2.abstract)
+<div class='altmetric-embed' data-badge-popover="right" data-badge-type='medium-bar' data-doi="10.1101/2023.01.19.524837"></div>
+
+----------------------------------
+
+4. _de Bekker, C. and **Das, B.** (2022)_ Hijacking time: How _Ophiocordyceps_ fungi could be using ant host clocks to manipulate behavior. _Parasite Immunology_ [*PDF*](https://doi.org/10.1111/pim.12909)
 <div class='altmetric-embed' data-badge-popover="right" data-badge-type='medium-bar' data-doi="10.1111/pim.12909"></div>
 
 - [*Code*: R tutorial for building and annotating temporal gene expression networks](https://github.com/biplabendu/deBekker_and_Das_2021/blob/master/scripts/methods_tutorial_wgcna_cflo_ophio_22Oct21.Rmd)
@@ -65,26 +78,11 @@ ant brains indicate links between plasticity in the biological clock and behavio
 2. _Will, I., **Das, B.**, Trinh, T., Brachmann, A., Ohm, R. A., de Bekker, C. (2019)_ Genetic underpinnings of host manipulation by Ophiocordyceps as revealed by comparative transcriptomics. _G3: Genes, Genomes, Genetics_ [*PDF*](https://academic.oup.com/g3journal/article/10/7/2275/6026297)  
 <div class='altmetric-embed' data-badge-popover="right" data-badge-type='medium-bar' data-doi="10.1534/g3.120.401290"></div>
     
-- [*Code*: A customizable R function for overrepresentation analyses (uses hypergeometric test)](https://github.com/biplabendu/Will_et_al_2020)
+- [*Code*: function for overrepresentation analyses (deprecated); use _timecourseRnaseq_ package instead](https://github.com/biplabendu/Will_et_al_2020)
 
 ----------------------------------
-  
+
 1. _de Bekker, C., Will, I., **Das, B**., Adams, R.M.M. (2018)_, The ants (Hymenoptera: Formicidae) and their parasites: effects of parasitic manipulations and host responses on ant behavioral ecology. _Myrmecological News_ [*PDF*](https://myrmecologicalnews.org/cms/index.php?option=com_content&view=category&id=1528&Itemid=425)
 
 ----------------------------------
-
-
-```{r, echo=F}
-#Things that I intend to add here:
-
-#1. Current projects
-#1. Past research 
-#1. Cricket in Orlando
-#1. Academic resources 
-#1. Others
-```
-
-```{r}
-# For my past and current research projects, refer to my CV.
-```
 

@@ -38,18 +38,23 @@ library(vembedr)
 
 ## Behavioral plasticity and clocks
 
-*Identifying the molecular links between biological clocks, behavioral plasticity, and parasitic manipulation of host behavior*
+Animals exhibit daily rhythms in physiology and behavior, anticipating predictable fluctuations in their environment. Behavioral rhythms are “flexible” since the phase, amplitude, and period can change throughout an animal’s life. 
 
-Animals often exhibit daily rhythms in behavior as a way to anticipate predictable fluctuations in their environment with regards to the presence and absence of abiotic (e.g., light, temperature) and biotic (e.g., food, predators) factors. Such daily rhythmicity is the phenotypic result of genes and proteins that are under control of endogenous biological clocks. Behavioral rhythms are “flexible” since their phase, amplitude, and period can change throughout an animal’s life hallmarked by changes in so-called chronotype. This demonstrates that there is a certain plasticity present in clock-controlled behaviors. As such, characterizing the properties of rhythmic behavior and their underlying molecular mechanisms can further our understanding of the inherent plasticity in animal behavior and the major pathways involved.
+>_I study the molecular links between plasticity of the biological clock and behavioral plasticity._
 
-> How do "zombie ants" keep time?
+While clock-controlled behavioral plasticity is crucial to a species’ survival and fitness, it has also been hypothesized to be a conserved target for several manipulative parasites that induce timely changes to host behavior in order to maximize growth and transmission.
 
-```{r echo=FALSE, out.width='70%', fig.align='center', fig.cap="*Camponotus floridanus* infected and killed by the fungal parasite *Ophiocordyceps camponoti-floridani*. Photo by [Danny Goodding](https://www.dannygoodding.com/)"}
+```{r echo=FALSE, out.width='70%', fig.align='center', fig.cap=""}
 library(knitr)
 knitr::include_graphics("zombie_ant.png")
 ```
+
+<h6 style="text-align: center;" markdown="-1">
+*Camponotus floridanus* cadaver, killed by the fungal parasite *Ophiocordyceps camponoti-floridani*. Photo by [Danny Goodding](https://www.dannygoodding.com/)
+</h6>     
   
-While clock-controlled behavioral plasticity is crucial to a species’ survival and fitness, it has also been hypothesized to be a conserved target for several manipulative parasites that induce timely changes to host behavior in order to maximize growth and transmission. Using the Florida carpenter ant *Camponotus floridanus* as a model, Dr. de Bekker and I intend to bridge some of the existing knowledge gaps between sociobiology, chronobiology and parasitology by combining controlled behavioral experiments with time-course transcriptomics.
+During my Phd, I studied the Florida carpenter ant *Camponotus floridanus*, and its specialized _Ophiocordyceps_ fungi, to explore questions at the intersection of sociobiology, chronobiology, and parasitology by combining controlled behavioral experiments with time-course transcriptomics.
+
 
 ___
 
@@ -63,7 +68,7 @@ Explain briefly the necessary Background and the questions involved.
 
 ___
 
-## Analyzing timeseries Omics data
+## Analyzing timeseries -omics data
 
 > Goal: more info here
 
