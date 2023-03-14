@@ -16,15 +16,17 @@ library(jpeg)
 ###
 ###
 
-```{r, echo=FALSE, fig.cap="Biplabendu Das (BILLU)", out.width = '20%', fig.align='center'}
-knitr::include_graphics("dp.jpg")
+```{r, echo=FALSE, fig.cap=" ", out.width = '20%', fig.align='center'}
+knitr::include_graphics("dp2.jpeg")
 ```
-   
-<h6 style="text-align: center;" markdown="1">Email: biplabendu[dot]das[at]gmail[dot]com</h6>     
+
+<h3 style="text-align: center;" markdown="1">Biplabendu [ Billu ] Das</h3>     
+
+<h6 style="text-align: center;" markdown="1">Email: biplabendu [dot] das [at] gmail [dot] com</h6>     
        
 ### 
 
-An integrative biologist working at the intersection of chronobiology, animal behavior, infectious diseases, and aging. I am currently working with [Prof. Deborah Gordon](http://web.stanford.edu/~dmgordon/index.html) as a postdoctoral researcher. For my dissertation, I worked with [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), exploring the role of biological clocks in behavioral plasticity and parasitic manipulation of host behavior using the "zombie ant" system. 
+I am integrative biologist working at the intersection of chronobiology, animal behavior, infectious diseases, and aging. I am currently working with [Prof. Deborah Gordon](http://web.stanford.edu/~dmgordon/index.html) as a postdoctoral researcher. For my dissertation, I worked with [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), exploring the role of biological clocks in behavioral plasticity and parasitic manipulation of host behavior using the "zombie ant" system. 
 
 
 <style>
