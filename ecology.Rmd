@@ -1,12 +1,18 @@
 ---
-title: "PCB3044L - Principles of Ecology"
+title: "Statistics and R programming"
 output:
   html_document:
     includes:
       in_header: analytics.html
 ---
 
-A site maintained by Biplabendu Das (Lab Instructor, PCB3044L-Spring2019, UCF-Biology)
+___
+
+#### Courses taught: 
+* Instructor of record, PCB3044L Principles of Ecology, UCF-Biology (2 yrs)
+* Lab instructor, General Biology II (2 yrs)
+
+___
 
 <style>
 body {text-align: justify}
@@ -20,7 +26,7 @@ library(vembedr)
 <a id="headlines"></a>
 ----------------------------------
 
-### Lab Materials
+### Course Materials Created
 
 ##### 3. [Plotting publication-quality figures using R](#3)
 ##### 2. [Plotting means and standard deviations in Excel](#2)
@@ -60,6 +66,7 @@ Note: This tutorial was created for students taking PCB3044L-Principles of Ecolo
    
 
 ----------------------------------
+
 <a id="1"></a>
 ----------------------------------
 

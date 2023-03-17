@@ -2,9 +2,10 @@
 title: ""
 output:
   html_document:
-    toc: yes
+    toc: true
     toc_depth: 3
-    toc_float: yes
+    toc_float: true
+    theme: yeti
     includes:
       in_header: analytics.html
 ---
