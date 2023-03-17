@@ -15,16 +15,16 @@ navbar:
   - text: Research
     href: research.html
     icon: fa-flask
-  - text: Camponotus_floridanus
+  - text: Applications
     href: camponotus_floridanus.html
     icon: fa-bug
-  - text: CV
+  - text: Resume
     href: resume_10Mar23.pdf
     icon: fa-address-card
-  - text: EcologyLab
+  - text: Teaching
     href: ecology.html
     icon: fa-leaf  
-  - text: IUSSI_Demography
+  - text: IUSSI
     href: IUSSI2022.html
     icon: fa-pie-chart
   right:
