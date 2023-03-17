@@ -10,7 +10,6 @@ output:
     toc: true
     toc_depth: 3
     toc_float: true
-    theme: yeti
     keep_md: no
     code_folding: hide
     includes:

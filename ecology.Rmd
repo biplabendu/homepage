@@ -1,5 +1,5 @@
 ---
-title: "Statistics and R programming"
+title: "Statistical_Programming"
 output:
   html_document:
     includes:
