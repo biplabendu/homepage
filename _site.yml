@@ -32,5 +32,5 @@ navbar:
     href: https://twitter.com/another_ant_guy
     align: right
   - { icon: "fa-linkedin", href: "https://www.linkedin.com/in/biplabendu/", align: right }
-  - { icon: "fa-facebook", href: "https://www.facebook.com/biplabendu", align: right }
+  - { icon: "fa-github", href: "https://github.com/biplabendu", align: right }
 

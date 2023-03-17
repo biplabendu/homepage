@@ -40,7 +40,7 @@ library(vembedr)
 
 Animals exhibit daily rhythms in physiology and behavior, anticipating predictable fluctuations in their environment. Behavioral rhythms are “flexible” since the phase, amplitude, and period can change throughout an animal’s life. 
 
->_I study the molecular links between plasticity of the biological clock and behavioral plasticity._
+>_I study how the biological clock regulates behavioral plasticity in social organisms._
 
 While clock-controlled behavioral plasticity is crucial to a species’ survival and fitness, it has also been hypothesized to be a conserved target for several manipulative parasites that induce timely changes to host behavior in order to maximize growth and transmission.
 
