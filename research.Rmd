@@ -5,7 +5,6 @@ output:
     toc: true
     toc_depth: 3
     toc_float: true
-    theme: yeti
     includes:
       in_header: analytics.html
 ---
@@ -35,6 +34,9 @@ library(vembedr)
 ```
 
 
+##
+
+##
 
 
 ## Behavioral plasticity and clocks

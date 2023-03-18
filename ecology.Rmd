@@ -1,5 +1,5 @@
 ---
-title: "Statistical_Programming"
+title: "Statistical Programming for Ecologists"
 output:
   html_document:
     includes:
