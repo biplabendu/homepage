@@ -81,9 +81,7 @@ Description of the dataset: Three forager and three nurse ant brains were sample
 
 One would need to perform the usual steps – trimming the reads, mapping the reads to the genome, and quantifying normalized gene counts – to obtain normalized gene expression data from the raw reads. At the end, for each gene in the genome, we should have the normalized expression for each time point, throughout the 24h day.
 
-For the purpose of this tutorial, we assume that you have organized the processed data into a (gene-expr X time-point) format, in a chronological order, as shown below.
-
-> figure goes here
+For the purpose of this tutorial, we assume that you have organized the processed data into a (gene-expr X time-point) format, in a chronological order.
 
 X2F = forager brain sampled at ZT2 (2h after lights were turned on), X4F = forager brain sampled at ZT4, and so on. 
 
@@ -105,9 +103,7 @@ dat <-
   collect()
 
 dim(dat)
-
 ```
-
 ### 1.2 Clean data
 
 The above dataset contains all genes (n=13,813) in the ant genome. However, not all of these genes are expressed in the ant brain, and some are expressed at very low levels that are not biologically meaningful. 
@@ -673,7 +669,7 @@ The names have the following meanings:
 - pogo-rH-pos = Cflo-orthologs of pogonomyrmex genes whose expression show a positive correlation with collective response to abiotic changes
 - pogo-rH-neg = Cflo-orthologs of pogonomyrmex genes whose expression show a negative correlation with collective response to abiotic changes
 
-```{r pogo_module}
+```{r pogo_module, fig.width=9, fig.height=6}
 ## LIST THREE - genes underlying behavioral plasticity and parasitic behavioral manipulation
 list4 <- list(for.up, for.down, # same as list three
               for.rhy, for24.nur8,
@@ -690,15 +686,7 @@ nGenes.pogo <- pogo.cflo %>% pull(cflo_gene) %>% unique() %>% length()
 ## make a GOM object
 gom.1v4 <- newGOM(list1, list4,
        genome.size = nGenes.pogo)
-trash <- dev.off()
-## visualize the overlaps
-png(paste0(path_to_pogodata, "/results/df2020_humidity_cor_per5.png"),
-# png(paste0(path_to_pogodata, "/results/df2020_humidity_cor_per10.png"),
-# png(paste0(path_to_pogodata, "/results/df2020_humidity_cor_per15.png"),
-# png(paste0(path_to_pogodata, "/results/df2020_humidity_cor_per20.png"),
-# png(paste0(path_to_pogodata, "/results/df2020_humidity_cor_per25.png"),
-# png(paste0(path_to_pogodata, "/results/df2020_humidity_cor_per50.png"),
-    width = 25, height = 18, units = "cm", res = 400)
+
 drawHeatmap(gom.1v4,
               adj.p=T,
               cutoff=0.01,
@@ -706,9 +694,5 @@ drawHeatmap(gom.1v4,
               # what="Jaccard",
               log.scale = T,
               note.col = "grey60")
-trash <- dev.off()
-```
 
-```{r plot_pogo_module, echo = FALSE, fig.align='center', fig.cap=''}
-knitr::include_graphics(paste0(path_to_pogodata, "/results/df2020_humidity_cor_per5.png"))
 ```
