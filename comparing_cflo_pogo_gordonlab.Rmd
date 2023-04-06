@@ -7,9 +7,10 @@ output:
     toc: true
     toc_depth: 3
     toc_float: true
-    theme: united
     keep_md: no
     code_folding: hide
+    includes:
+      in_header: analytics.html
 editor_options: 
   chunk_output_type: console
 ---
