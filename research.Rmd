@@ -70,7 +70,9 @@ Right: A worker of *Camponotus floridanus*. Photo source: [Fullbright-Australia]
 
 While clock-controlled behavioral plasticity is crucial to a species’ survival and fitness, it has also been hypothesized to be a conserved target for several manipulative parasites that induce timely changes to host behavior in order to maximize growth and transmission.
   
-During my Phd, I studied the Florida carpenter ant *Camponotus floridanus*, and its specialized _Ophiocordyceps_ fungi, to explore questions at the intersection of sociobiology, chronobiology, and parasitology by combining controlled behavioral experiments with time-course transcriptomics. The major take-home messages from my dissertation are shown below.
+For my dissertation, I studied the Florida carpenter ant *Camponotus floridanus*, and its specialized _Ophiocordyceps_ fungi, to explore questions at the intersection of sociobiology, chronobiology, and parasitology by combining controlled behavioral experiments with time-course transcriptomics. 
+
+> The findings from my dissertation suggest that:
 
 
 ```{r echo=FALSE, out.width='100%', fig.align='center', fig.cap=""}
@@ -88,7 +90,7 @@ knitr::include_graphics(paste0(path_to_repo, "/images/research/phd2.png"))
 ___
 ___
 
-## 2. Ecology
+## 2. Molecular Ecology
 
 > Do biological clocks play an ecological function in harvester ants?
 
