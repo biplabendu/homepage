@@ -15,7 +15,7 @@ navbar:
   - text: Research
     href: research.html
     icon: fa-flask
-  - text: Applications
+  - text: Software
     href: camponotus_floridanus.html
     icon: fa-bug
   - text: Resume
