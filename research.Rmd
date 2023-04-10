@@ -40,7 +40,7 @@ ___
 
 Animals exhibit daily rhythms in physiology and behavior, anticipating predictable fluctuations in their environment. Behavioral rhythms are “flexible” since the phase, amplitude, and period can change throughout an animal’s life.
 
-```{r echo=FALSE, out.width='100%', fig.align='center', fig.cap=""}
+```{r echo=FALSE, out.width='75%', fig.align='center', fig.cap=""}
 knitr::include_graphics(paste0(path_to_repo, "/images/research/phd4.png"))
 ```
 
