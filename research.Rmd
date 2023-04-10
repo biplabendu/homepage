@@ -31,48 +31,121 @@ body {text-align: left}
 library(htmltools)
 library(vembedr)
 
+## path to folder
+path_to_repo <- "/Users/biplabendudas/Documents/GitHub/homepage"
+
 ```
 
+___
 
-##
-
-##
-
-
-## Behavioral plasticity and clocks
+## Ants: an intro
 
 Animals exhibit daily rhythms in physiology and behavior, anticipating predictable fluctuations in their environment. Behavioral rhythms are “flexible” since the phase, amplitude, and period can change throughout an animal’s life. 
 
->_I study how the biological clock regulates behavioral plasticity in social organisms._
+Ants, like most animals, have a biological clock that regulates daily rhythms in physiology and behavior. Both colonies of the carpenter ant *Camponotus floridanus* and the seed-harvester ant *Pogonomyrmex barbatus* have one reproductive queen and thousands of non-reproductive worker ants that perform most of the tasks. One task group of workers forages outside the nest for food and resources, while another group, the nurses, stays inside dark nest chambers and cares for the brood (eggs, larvae, and pupa). The task identity of an ant is plastic, changing with age (nurses are young and foragers older individuals in the colony) and colony needs (increased demand for foraging induces precocious nurse-to-forager transition and vice-versa).
 
-While clock-controlled behavioral plasticity is crucial to a species’ survival and fitness, it has also been hypothesized to be a conserved target for several manipulative parasites that induce timely changes to host behavior in order to maximize growth and transmission.
 
-```{r echo=FALSE, out.width='70%', fig.align='center', fig.cap=""}
+
+___
+___
+
+## 1. Behavior and Disease
+
+We examined the role of the biological clock in regulating the plasticity of behavioral states of individual *Camponotus floridanus* ants within a colony. The expression of several genes, including Period and Shaggy, involved in transcriptional regulation, phosphorylation, and GPCR-mediated signal transduction oscillate every 24h in foragers’ brains but every 8h in nurses. Therefore, different rhythms of core clock and clock-controlled gene expression in the ant brain are associated with distinct behavioral states. 
+
+>I study how the biological clock regulates behavioral plasticity in social organisms, and how such plasticity can be targeted by parasites.
+
+
+```{r echo=FALSE, out.width='100%', fig.align='center', fig.cap=""}
 library(knitr)
-knitr::include_graphics("zombie_ant.png")
+# knitr::include_graphics("zombie_ant.png")
+knitr::include_graphics(paste0(path_to_repo, "/images/research/phd3.png"))
 ```
 
 <h6 style="text-align: center;" markdown="-1">
-*Camponotus floridanus* cadaver, killed by the fungal parasite *Ophiocordyceps camponoti-floridani*. Photo by [Danny Goodding](https://www.dannygoodding.com/)
-</h6>     
+Left: *Camponotus floridanus* cadaver, killed by the fungal parasite *Ophiocordyceps camponoti-floridani*.
+
+Right: A worker of *Camponotus floridanus*. Photo source: [Fullbright-Australia](https://www.fulbright.org.au/news-and-events/2019/10/from-bee-suit-and-microscope-to-white-coat-and-stethoscope/)
+</h6> 
+
+While clock-controlled behavioral plasticity is crucial to a species’ survival and fitness, it has also been hypothesized to be a conserved target for several manipulative parasites that induce timely changes to host behavior in order to maximize growth and transmission.
   
-During my Phd, I studied the Florida carpenter ant *Camponotus floridanus*, and its specialized _Ophiocordyceps_ fungi, to explore questions at the intersection of sociobiology, chronobiology, and parasitology by combining controlled behavioral experiments with time-course transcriptomics.
+During my Phd, I studied the Florida carpenter ant *Camponotus floridanus*, and its specialized _Ophiocordyceps_ fungi, to explore questions at the intersection of sociobiology, chronobiology, and parasitology by combining controlled behavioral experiments with time-course transcriptomics. The major take-home messages from my dissertation are shown below.
+
+
+```{r echo=FALSE, out.width='100%', fig.align='center', fig.cap=""}
+knitr::include_graphics(paste0(path_to_repo, "/images/research/phd2.png"))
+```
+
+**Relevent publications:**
+
+[Das and de Bekker 2022](https://rdcu.be/cHq80), 
+[de Bekker and Das 2023](https://doi.org/10.1111/pim.12909),
+[Das et al. 2023a](https://www.biorxiv.org/content/10.1101/2023.01.19.524837v2.abstract),
+[Das et al. 2023b](https://www.biorxiv.org/content/10.1101/2023.01.20.524843v2.abstract)
 
 
 ___
+___
 
-## Ecological functions of the clock
+## 2. Ecology
 
-> Do biological clocks play an ecological function?
+> Do biological clocks play an ecological function in harvester ants?
 
-**Goal: more info here**
+Harvester ant colonies show daily temporal patterns in foraging. In the desert-living harvester ant, *Pogonomyrmex barbatus*, colonies differ consistently in how they regulate foraging in response to low humidity in natural desert conditions; some *Pogonomyrmex barbatus* colonies reduce foraging in dry conditions while others do not.
 
-Explain briefly the necessary Background and the questions involved.
+> We examined the role of the biological clock in regulating the differences among *Pogonomyrmex barbatus* colonies in their collective response to day-to-day changes in humidity conditions.
+
+
+```{r echo=FALSE, out.width='50%', fig.align='center', fig.cap=""}
+# knitr::include_graphics(paste0(path_to_repo, "/images/research/phd1.png"))
+knitr::include_graphics(paste0(path_to_repo, "/images/research/ccb_poster_2023.png"))
+```
+
+<h6 style="text-align: center;" markdown="-1">
+Our preliminary findings are shown in the above poster which I created for the [2023 CCB Symposium](https://ccb.ucsd.edu/activities-and-events/ccb-symposium.html).
+</h6> 
+
+We compared the daily transcriptome of *C. floridanus* foragers, discussed above, to previously identified *P. barbatus* genes of interest, whose expression in the forager’s brain was correlated to the extent of reduction in colony foraging in response to humidity. Intriguingly, *P. barbatus* genes of interest significantly overlap with *C. floridanus* genes whose expression oscillates at different periodicity; 24h in foragers’ brains and 8h in nurses. 
+
+> Our preliminary findings suggest that the same rhythmic genes and pathways associated with the plasticity of behavioral states in individual C. floridanus ants also underlie consistent differences among P. barbatus colonies in their response to dry and hot conditions, a phenotypic variation that natural selection can act on. 
+
+*ANALYSES OF TIME-COURSE RNASeq DATA FROM HARVESTER ANTS - ONGOING*
+
+**Relevant publications:**
+
+[Das and de Bekker 2022](https://rdcu.be/cHq80), [de Bekker and Das 2023](https://doi.org/10.1111/pim.12909), [Friedman et al. 2020](https://www.nature.com/articles/s42003-020-0813-8), manuscript [in prep]()
 
 ___
 
-## Analyzing timeseries -omics data
+## 3. Tempo of task allocation
 
-> Goal: more info here
+In *Pogonomyrmex barbatus*, the red harvester ants, one task group of workers, **the foragers**,  forages for seeds while another task group, **the nest maintenance workers**, takes out refuse such as husks. 
 
-Explain briefly the necessary Background and the questions involved.
+> In natural, field conditions, we examined the relation between temporal patterns in allocating colony effort towards foraging and waste removal. 
+
+In a field study of 39 identified colonies at a long-term study site, conducted in two successive summers, we provided plastic seed mimics that foragers collected and monitored the rate at which nest maintenance workers removed them as refuse. 
+
+```{r echo=FALSE, out.width='75%', fig.align='center', fig.cap=""}
+knitr::include_graphics(paste0(path_to_repo, "/images/research/bead_data_all.png"))
+```
+
+<h6 style="text-align: center;" markdown="-1">
+A subset of the data obtained from the field experiment. Panels represent unique colony-replicate.
+</h6> 
+
+The preliminary findings from our analyses show that:
+
+- all colonies shifted the tempo of waste removal from year to year, with a higher rate in a dry summer compared to a wet one the following year, although the foraging rate was similar. 
+- colonies differ consistently in the rate of waste removal over the course of the morning activity period. 
+- the tempo of waste removal is associated with the foraging rate
+
+*DATA ANALYSES - ONGOING*
+
+**Relevant publications:**
+
+[Gordon 2013](https://www.nature.com/articles/nature12137), manuscript [in prep]()
+
+___
+
+
