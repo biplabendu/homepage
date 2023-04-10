@@ -11,6 +11,9 @@ output:
 library(rmarkdown)
 library(knitr)
 library(jpeg)
+## path to folder
+path_to_repo <- "/Users/biplabendudas/Documents/GitHub/homepage"
+
 ```
 
 ###
@@ -25,7 +28,14 @@ knitr::include_graphics("dp2.jpeg")
        
 ### 
 
-I am integrative biologist working at the intersection of chronobiology, animal behavior, infectious diseases, and aging. I am currently working with [Prof. Deborah Gordon](http://web.stanford.edu/~dmgordon/index.html) as a postdoctoral researcher. For my dissertation, I worked with [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), exploring the role of biological clocks in behavioral plasticity and parasitic manipulation of host behavior using the "zombie ant" system. Complete list of contributed works can be found below and on [Google Scholar](https://scholar.google.co.in/citations?user=Xrx37IoAAAAJ).
+I am integrative biologist working at the intersection of chronobiology, animal behavior, infectious diseases, and aging. I am currently working with [Prof. Deborah Gordon](http://web.stanford.edu/~dmgordon/index.html) as a postdoctoral researcher. For my dissertation, I worked with [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), exploring the role of biological clocks in behavioral plasticity and parasitic manipulation of host behavior using the "zombie ant" system.
+
+
+```{r echo=FALSE, out.width='75%', fig.align='center', fig.cap=""}
+knitr::include_graphics(paste0(path_to_repo, "/images/research/career.png"))
+```
+
+> List of contributed works can be found below and on [Google Scholar](https://scholar.google.co.in/citations?user=Xrx37IoAAAAJ).
 
 <style>
 body {text-align: justify}
@@ -43,7 +53,7 @@ library(vembedr)
 
 ----------------------------------
 
-> Publications, Tutorials, R code
+> ## Publications, Tutorials, R code
 
 
 7. _**Das, B.**, Gordon, D.M. (2023)_ Biological rhythms and task allocation in ant colonies. _Current Opinion in Insect Science_ (submitted; in review)
