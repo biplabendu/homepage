@@ -28,11 +28,31 @@ library(vembedr)
 
 ### Course Materials Created
 
+##### 4. [Building website using R, Markdown, and GitHub](#3)
 ##### 3. [Plotting publication-quality figures using R](#3)
 ##### 2. [Plotting means and standard deviations in Excel](#2)
 ##### 1. [F-test and T-test Cheat Sheet](#1)
 
   
+
+----------------------------------
+
+<a id="4"></a>
+----------------------------------
+
+#### Building website using R, Markdown, and GitHub
+
+The tutorial shows how to deploy a website, hosted on GitHub Pages for free, using R and Markdown.
+
+> The tutorial is available as a written document: https://biplabendu.github.io/my_dummy_website/website_tutorial.html
+
+To make the process highly accessible, I have created a [dummy website](https://biplabendu.github.io/my_dummy_website) that provides a template for building a professional website with two pages: a homepage and a webpage for describing your research experience. The template can be customized by renaming and repurposing the individual pages.
+
+The following video is a recording from the workshop I hosted on May 3rd, 2023 for my lab group. Sadly, some parts of the video is blocked by giant faces, but you should be able to follow along by combining the video tutorial with the step-by-step instructions provided in this document.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v6OhIfecNS4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    
+[Go to top](#headlines)  
 
 ----------------------------------
 
