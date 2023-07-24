@@ -39,7 +39,7 @@ body {text-align: left}
 
 ___
 
-# VISUAL ABSTRACT
+# Recipe
 
 ```{r echo=FALSE, out.width='85%', fig.align='center', fig.cap=""}
 knitr::include_graphics(paste0(path_to_repo, "/images/recipes/01_tikka_masala/01_marinate_chicken.png"))
