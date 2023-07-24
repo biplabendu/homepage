@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="by Beep Boop" />
+
+
+<title>Chicken Tikka Masala</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-121215066-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-121215066-1');
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Biplabendu Das</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="research.html">
+    <span class="fa fa-flask"></span>
+     
+    Research
+  </a>
+</li>
+<li>
+  <a href="camponotus_floridanus.html">
+    <span class="fa fa-bug"></span>
+     
+    Software
+  </a>
+</li>
+<li>
+  <a href="resume_10Mar23.pdf">
+    <span class="fa fa-address-card"></span>
+     
+    Resume
+  </a>
+</li>
+<li>
+  <a href="ecology.html">
+    <span class="fa fa-leaf"></span>
+     
+    Teaching
+  </a>
+</li>
+<li>
+  <a href="IUSSI2022.html">
+    <span class="fa fa-pie-chart"></span>
+     
+    IUSSI
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://twitter.com/another_ant_guy">
+    <span class="fa fa-twitter"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/biplabendu/">
+    <span class="fa fa-linkedin"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/biplabendu">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Chicken Tikka Masala</h1>
+<h4 class="author">by Beep Boop</h4>
+
+</div>
+
+
+<style>
+body {text-align: left}
+</style>
+<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+<hr />
+<div id="visual-abstract" class="section level1">
+<h1>VISUAL ABSTRACT</h1>
+<p><img src="images/recipes/01_tikka_masala/01_marinate_chicken.png" width="85%" style="display: block; margin: auto;" /></p>
+<p><img src="images/recipes/01_tikka_masala/02_fry_marinated_chicken.png" width="85%" style="display: block; margin: auto;" /></p>
+<p><img src="images/recipes/01_tikka_masala/03_make_sauce.png" width="85%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="step-by-step" class="section level1">
+<h1>STEP BY STEP</h1>
+<hr />
+<div id="step-1-marinate-chicken" class="section level2">
+<h2>Step 1: Marinate chicken</h2>
+<blockquote>
+<p>If vegetarian, fry some Paneer or Tofu lightly coated in the <strong>magic masala</strong>, and keep aside.</p>
+</blockquote>
+<div id="ingredients-for-marinade" class="section level3">
+<h3>Ingredients for marinade:</h3>
+<ul>
+<li>28 oz (800g) boneless and skinless chicken thighs cut into bite-sized pieces</li>
+<li>1 cup plain yogurt</li>
+<li>1.5 tablespoons garlic (4-6 cloves; minced/paste)</li>
+<li>1 tablespoon ginger (1-1.5 inch; minced/paste)</li>
+<li>5 tsp <strong>Magic Masala</strong></li>
+<li>1 teaspoon of salt</li>
+</ul>
+<p>In a bowl, combine chicken with all of the ingredients for the marinade; let marinate for 10 minutes to an hour (or overnight if time allows).</p>
+<hr />
+</div>
+</div>
+<div id="step-2-fry-marinated-chicken" class="section level2">
+<h2>Step 2: Fry marinated chicken</h2>
+<ul>
+<li><p>2.1 | Heat 2-3 tablespoons of oil in a large skillet over medium-high heat.</p></li>
+<li><p>2.2 | When sizzling, add chicken pieces in batches, making sure not to crowd the pan.</p></li>
+<li><p>2.3 | Fry until browned, approximately 3-5 minutes on each side.</p></li>
+<li><p>2.4 | Set aside, remove and save browned bits stuck to the pan.</p></li>
+<li><p>2.5 | Repeat steps 2.1 to 2.4.</p></li>
+</ul>
+<hr />
+</div>
+<div id="step-3-make-sauce" class="section level2">
+<h2>Step 3: Make sauce</h2>
+<blockquote>
+<p><em>Finely dicing onions and tomatoes are recommended for a smooth-ish texture of the sauce.</em></p>
+</blockquote>
+<div id="prep-and-keep-ready" class="section level3">
+<h3>Prep and keep ready</h3>
+<ul>
+<li>1 large onion (red preferred) - finely diced</li>
+<li>14 oz (400 g) tomato - pureed or finely diced</li>
+<li>1.5 tablespoons garlic (4-6 cloves; minced/paste)</li>
+<li>1.5 tablespoon ginger (1.5 inch; minced/paste)</li>
+</ul>
+</div>
+<div id="other-ingredients" class="section level3">
+<h3>Other ingredients</h3>
+<ul>
+<li>2 tbsp Butter</li>
+<li>5 tsp <strong>Magic Masala</strong></li>
+<li>1 cup heavy cream or half-n-half</li>
+<li>1 tsp sugar</li>
+<li>1 tsp salt</li>
+</ul>
+</div>
+<div id="step-by-step-1" class="section level3">
+<h3>Step-by-Step</h3>
+<ul>
+<li><p>3.1 | Melt 2 tbsp butter in the same pan (if possible) in which chicken was shallow fried.</p></li>
+<li><p>3.2 | Fry onions until soft and translucent, while scraping up any browned bits stuck on the bottom of the pan.</p></li>
+<li><p>3.3 | Add 1.5 tbsp garlic and ginger paste, each, and sauté for 1 minute until fragrant.</p></li>
+<li><p>3.4 | Add 5 tsp <strong>Magic Masala</strong>; fry for about 20 seconds until fragrant, while stirring occasionally.</p></li>
+<li><p>3.5 | Add tomatoes and 1 tsp salt; cover and simmer for about 15-20 minutes on low-medium heat, stirring occasionally until sauce thickens and becomes a deep brown red colour.</p></li>
+<li><p>3.6 | [Optional] Stir 1 cup heavy cream (half and half works as well) and 1 tsp sugar through the sauce.</p></li>
+<li><p>3.7 | Add chicken (or paneer/tofu) and burned bits back into the pan; mix well and cook for an additional 10-15 minutes at low-medium heat until chicken is cooked and the sauce is thick and bubbling. Stir occasionally (~5 mins).</p></li>
+<li><p>3.8 | Pour in 0.5 cup of water to thin out the sauce. Add more water if needed (adjust consistency to your liking).</p></li>
+<li><p>3.9 | Taste sauce, and adjust salt/sugar if needed. That’s it; now, enjoy with rice/naan/tortilla and cucumbers :)</p></li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
