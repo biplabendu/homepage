@@ -4,6 +4,8 @@ output:
   html_document:
     includes:
       in_header: analytics.html
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -12,7 +14,7 @@ library(rmarkdown)
 library(knitr)
 library(jpeg)
 ## path to folder
-path_to_repo <- "/Users/biplabendudas/Documents/GitHub/homepage"
+path_to_repo <- "/Users/bidas/Documents/GitHub/homepage"
 
 ```
 
