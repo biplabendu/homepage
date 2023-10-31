@@ -30,14 +30,18 @@ knitr::include_graphics("dp2.jpeg")
        
 ### 
 
-I am integrative biologist working at the intersection of chronobiology, animal behavior, infectious diseases, and aging. I am currently working with [Prof. Deborah Gordon](http://web.stanford.edu/~dmgordon/index.html) as a postdoctoral researcher. For my dissertation, I worked with [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/), exploring the role of biological clocks in behavioral plasticity and parasitic manipulation of host behavior using the "zombie ant" system.
+As an integrative biologist, Billu works at the intersection of chronobiology, animal behavior, and infectious diseases. 
 
+Billu is currently employed by University of California San Diego Health as a Data Scientist, working on two nationwide, longitudinal studies aimed at understanding brain and cognitive development in adolescents ([ABCD Study](https://abcdstudy.org/)) and newborn babies ([HBCD Study](https://hbcdstudy.org/)). 
+
+Prior to his current employment, Billu worked with [Prof. Deborah Gordon](http://web.stanford.edu/~dmgordon/index.html) for his postdoctoral research and with [Dr. Charissa de Bekker](http://sciences.ucf.edu/biology/debekkerlab/) for his doctoral research trying to understand the links between biological clocks and behavioral plasticity in social organisms. List of contributed works can be found below and on [Google Scholar](https://scholar.google.co.in/citations?user=Xrx37IoAAAAJ).
+
+##
 
 ```{r echo=FALSE, out.width='75%', fig.align='center', fig.cap=""}
 knitr::include_graphics(paste0(path_to_repo, "/images/research/career.png"))
 ```
 
-> List of contributed works can be found below and on [Google Scholar](https://scholar.google.co.in/citations?user=Xrx37IoAAAAJ).
 
 <style>
 body {text-align: justify}
@@ -57,8 +61,15 @@ library(vembedr)
 
 > ## Publications, Tutorials, R code
 
+8. _Gordon, D.M., Steiner, E., **Das, B.**, Walker, N.S. (2023)_ Harvester ant colonies differ in collective behavioural plasticity to regulate water loss. _Royal Society Open Science_
+[*PDF*](https://royalsocietypublishing.org/doi/full/10.1098/rsos.230726)
+<div class='altmetric-embed' data-badge-popover="right" data-badge-type='medium-bar' data-doi="10.1098/rsos.230726"></div>
 
-7. _**Das, B.**, Gordon, D.M. (2023)_ Biological rhythms and task allocation in ant colonies. _Current Opinion in Insect Science_ (submitted; in review)
+----------------------------------
+
+7. _**Das, B.**, Gordon, D.M. (2023)_ Biological rhythms and task allocation in ant colonies. _Current Opinion in Insect Science_
+[*PDF*](https://web.stanford.edu/~dmgordon/articles/doi/10.1016-j.cois.2023.101062/Das%20and%20Gordon%20COIS%202023.pdf)
+<div class='altmetric-embed' data-badge-popover="right" data-badge-type='medium-bar' data-doi="10.1016/j.cois.2023.101062"></div>
 
 ----------------------------------
 
@@ -95,7 +106,7 @@ ant brains indicate links between plasticity in the biological clock and behavio
 
 ----------------------------------
 
-1. _de Bekker, C., Will, I., **Das, B**., Adams, R.M.M. (2018)_, The ants (Hymenoptera: Formicidae) and their parasites: effects of parasitic manipulations and host responses on ant behavioral ecology. _Myrmecological News_ [*PDF*](https://myrmecologicalnews.org/cms/index.php?option=com_content&view=category&id=1528&Itemid=425)
+1. _de Bekker, C., Will, I., **Das, B**., Adams, R.M.M. (2018)_, The ants (Hymenoptera: Formicidae) and their parasites: effects of parasitic manipulations and host responses on ant behavioral ecology. _Myrmecological News_ [*PDF*](https://www.biotaxa.org/mn/article/view/40755)
 
 ----------------------------------
 

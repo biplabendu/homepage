@@ -28,7 +28,7 @@ library(vembedr)
 
 ### Course Materials Created
 
-##### 4. [Building website using R, Markdown, and GitHub](#3)
+##### 4. [Building website using R, Markdown, and GitHub](#4)
 ##### 3. [Plotting publication-quality figures using R](#3)
 ##### 2. [Plotting means and standard deviations in Excel](#2)
 ##### 1. [F-test and T-test Cheat Sheet](#1)

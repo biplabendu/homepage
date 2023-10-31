@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -14,17 +13,27 @@
 
 <title>Statistical Programming for Ecologists</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121215066-1"></script>
 <script>
@@ -35,12 +44,16 @@
   gtag('config', 'UA-121215066-1');
 </script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -53,32 +66,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -88,10 +77,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -108,40 +93,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -169,7 +130,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -181,7 +142,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -191,11 +152,28 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.parent().addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -207,13 +185,12 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -221,16 +198,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -243,6 +213,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -273,7 +244,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -349,7 +320,7 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -362,7 +333,8 @@ $(document).ready(function () {
 <div id="courses-taught" class="section level4">
 <h4>Courses taught:</h4>
 <ul>
-<li>Instructor of record, PCB3044L Principles of Ecology, UCF-Biology (2 yrs)</li>
+<li>Instructor of record, PCB3044L Principles of Ecology, UCF-Biology (2
+yrs)</li>
 <li>Lab instructor, General Biology II (2 yrs)</li>
 </ul>
 <hr />
@@ -374,31 +346,50 @@ body {text-align: justify}
 <h2><a id="headlines"></a></h2>
 <div id="course-materials-created" class="section level3">
 <h3>Course Materials Created</h3>
-<div id="building-website-using-r-markdown-and-github" class="section level5">
-<h5>4. <a href="#3">Building website using R, Markdown, and GitHub</a></h5>
+<div id="building-website-using-r-markdown-and-github"
+class="section level5">
+<h5>4. <a href="#id_4">Building website using R, Markdown, and
+GitHub</a></h5>
 </div>
-<div id="plotting-publication-quality-figures-using-r" class="section level5">
-<h5>3. <a href="#3">Plotting publication-quality figures using R</a></h5>
+<div id="plotting-publication-quality-figures-using-r"
+class="section level5">
+<h5>3. <a href="#id_3">Plotting publication-quality figures using
+R</a></h5>
 </div>
-<div id="plotting-means-and-standard-deviations-in-excel" class="section level5">
-<h5>2. <a href="#2">Plotting means and standard deviations in Excel</a></h5>
+<div id="plotting-means-and-standard-deviations-in-excel"
+class="section level5">
+<h5>2. <a href="#id_2">Plotting means and standard deviations in
+Excel</a></h5>
 </div>
 <div id="f-test-and-t-test-cheat-sheet" class="section level5">
-<h5>1. <a href="#1">F-test and T-test Cheat Sheet</a></h5>
+<h5>1. <a href="#id_1">F-test and T-test Cheat Sheet</a></h5>
 <hr />
 </div>
 </div>
 </div>
 <div id="section-1" class="section level2">
 <h2><a id="4"></a></h2>
-<div id="building-website-using-r-markdown-and-github-1" class="section level4">
+<div id="building-website-using-r-markdown-and-github-1"
+class="section level4">
 <h4>Building website using R, Markdown, and GitHub</h4>
-<p>The tutorial shows how to deploy a website, hosted on GitHub Pages for free, using R and Markdown.</p>
+<p>The tutorial shows how to deploy a website, hosted on GitHub Pages
+for free, using R and Markdown.</p>
 <blockquote>
-<p>The tutorial is available as a written document: <a href="https://biplabendu.github.io/my_dummy_website/website_tutorial.html">link to tutorial</a></p>
+<p>The tutorial is available as a written document: <a
+href="https://biplabendu.github.io/my_dummy_website/website_tutorial.html">link
+to tutorial</a></p>
 </blockquote>
-<p>To make the process highly accessible, I have created a <a href="https://biplabendu.github.io/my_dummy_website">dummy website</a> that provides a template for building a professional website with two pages: a homepage and a webpage for describing your research experience. The template can be customized by renaming and repurposing the individual pages.</p>
-<p>The following video is a recording from the workshop I hosted on May 3rd, 2023 for my lab group. Sadly, some parts of the video is blocked by giant faces, but you should be able to follow along by combining the video tutorial with the step-by-step instructions provided in the tutorial document linked above.</p>
+<p>To make the process highly accessible, I have created a <a
+href="https://biplabendu.github.io/my_dummy_website">dummy website</a>
+that provides a template for building a professional website with two
+pages: a homepage and a webpage for describing your research experience.
+The template can be customized by renaming and repurposing the
+individual pages.</p>
+<p>The following video is a recording from the workshop I hosted on May
+3rd, 2023 for my lab group. Sadly, some parts of the video is blocked by
+giant faces, but you should be able to follow along by combining the
+video tutorial with the step-by-step instructions provided in the
+tutorial document linked above.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/v6OhIfecNS4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
 </iframe>
 <p><a href="#headlines">Go to top</a></p>
@@ -407,11 +398,18 @@ body {text-align: justify}
 </div>
 <div id="section-2" class="section level2">
 <h2><a id="3"></a></h2>
-<div id="plotting-publication-quality-figures-using-r-1" class="section level4">
+<div id="plotting-publication-quality-figures-using-r-1"
+class="section level4">
 <h4>Plotting publication-quality figures using R</h4>
-<p>This tutorial is intended to get you started with programming in R, using RStudio (Cloud) for working on a shared project (link provided <a href="https://rstudio.cloud/project/1049250">below</a>). The code in the R script will generate high-quality plots using an example dataset, and save them to your local hard disk for use.</p>
-<p>Shared project link: <a href="https://rstudio.cloud/project/1049250" class="uri">https://rstudio.cloud/project/1049250</a></p>
-<p>Note: This tutorial was created for students taking PCB3044L-Principles of Ecology lab at UCF.</p>
+<p>This tutorial is intended to get you started with programming in R,
+using RStudio (Cloud) for working on a shared project (link provided <a
+href="https://rstudio.cloud/project/1049250">below</a>). The code in the
+R script will generate high-quality plots using an example dataset, and
+save them to your local hard disk for use.</p>
+<p>Shared project link: <a href="https://rstudio.cloud/project/1049250"
+class="uri">https://rstudio.cloud/project/1049250</a></p>
+<p>Note: This tutorial was created for students taking
+PCB3044L-Principles of Ecology lab at UCF.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KYS8pbr_bvg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
 <p><a href="#headlines">Go to top</a></p>
@@ -420,7 +418,8 @@ body {text-align: justify}
 </div>
 <div id="section-3" class="section level2">
 <h2><a id="2"></a></h2>
-<div id="tutorial---plotting-means-and-standard-deviations-in-excel" class="section level4">
+<div id="tutorial---plotting-means-and-standard-deviations-in-excel"
+class="section level4">
 <h4>Tutorial - Plotting means and standard deviations in Excel</h4>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3wo29oDkyG0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
@@ -448,7 +447,7 @@ body {text-align: justify}
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -466,7 +465,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
