@@ -1,46 +1,47 @@
 ---
-title: "Statistical Programming for Ecologists"
+title: ""
 output:
   html_document:
+    toc: true
+    toc_float: true
     includes:
       in_header: analytics.html
 ---
 
 ___
 
-#### Courses taught: 
-* Instructor of record, PCB3044L Principles of Ecology, UCF-Biology (2 yrs)
-* Lab instructor, General Biology II (2 yrs)
+> Teaching History:
+
+
+* Instructor of record, Principles of Ecology, UCF-Biology (2 yrs)
+* Lab instructor, General Biology II, UCF-Biology (2 yrs)
 
 ___
 
-<style>
-body {text-align: justify}
-</style>
 
 ```{r, echo=F, warning=F}
 library(htmltools)
 library(vembedr)
 ```
 
-<a id="headlines"></a>
-----------------------------------
+<!-- <a id="headlines"></a> -->
+<!-- ---------------------------------- -->
 
-### Course Materials Created
+<!-- ### Course Materials Created -->
 
-##### 4. [Building website using R, Markdown, and GitHub](#4)
-##### 3. [Plotting publication-quality figures using R](#3)
-##### 2. [Plotting means and standard deviations in Excel](#2)
-##### 1. [F-test and T-test Cheat Sheet](#1)
+<!-- ##### 4. [Building website using R, Markdown, and GitHub](#4) -->
+<!-- ##### 3. [Plotting publication-quality figures using R](#3) -->
+<!-- ##### 2. [Plotting means and standard deviations in Excel](#2) -->
+<!-- ##### 1. [F-test and T-test Cheat Sheet](#1) -->
 
   
 
-----------------------------------
+<!-- ---------------------------------- -->
 
-<a id="4"></a>
-----------------------------------
+<!-- <a id="4"></a> -->
+<!-- ---------------------------------- -->
 
-#### Building website using R, Markdown, and GitHub
+## Building website using R, Markdown, and GitHub
 
 The tutorial shows how to deploy a website, hosted on GitHub Pages for free, using R and Markdown.
 
@@ -54,15 +55,18 @@ To make the process highly accessible, I have created a [dummy website](https://
 Source: Workshop hosted by Billu in September, 2024.
 
 
+___
+
+
     
-[Go to top](#headlines)  
+<!-- [Go to top](#headlines)   -->
 
-----------------------------------
+<!-- ---------------------------------- -->
 
-<a id="3"></a>
-----------------------------------
+<!-- <a id="3"></a> -->
+<!-- ---------------------------------- -->
 
-#### Plotting publication-quality figures using R 
+## Plotting publication-quality figures using R 
 
 This tutorial is intended to get you started with programming in R, using RStudio (Cloud) for working on a shared project (link provided [below](https://rstudio.cloud/project/1049250)). The code in the R script will generate high-quality plots using an example dataset, and save them to your local hard disk for use.
 
@@ -72,28 +76,33 @@ Note: This tutorial was created for students taking PCB3044L-Principles of Ecolo
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KYS8pbr_bvg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-    
-[Go to top](#headlines)      
+___
+
+
+<!-- [Go to top](#headlines)       -->
    
-----------------------------------
+<!-- ---------------------------------- -->
 
-<a id="2"></a>
-----------------------------------
+<!-- <a id="2"></a> -->
+<!-- ---------------------------------- -->
 
-#### Tutorial - Plotting means and standard deviations in Excel   
+## Plotting means and standard deviations in Excel   
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3wo29oDkyG0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+
+___
+
+
+<!-- [Go to top](#headlines)       -->
    
-[Go to top](#headlines)      
-   
 
-----------------------------------
+<!-- ---------------------------------- -->
 
-<a id="1"></a>
-----------------------------------
+<!-- <a id="1"></a> -->
+<!-- ---------------------------------- -->
 
-#### F-test and T-test Cheat Sheet  
+## F-test and T-test Cheat Sheet  
 
 
   
@@ -111,7 +120,7 @@ knitr::include_graphics("images/cheatsheet-images/cheatsheet6.jpg")
 ```
 
     
-[Go to top](#headlines)      
+<!-- [Go to top](#headlines)       -->
    
   
 ```{r}

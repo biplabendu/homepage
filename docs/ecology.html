@@ -11,7 +11,7 @@
 
 
 
-<title>Statistical Programming for Ecologists</title>
+<title>ecology.knit</title>
 
 <script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -230,6 +233,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -237,6 +303,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -324,54 +400,33 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Statistical Programming for Ecologists</h1>
 
 </div>
 
 
 <hr />
-<div id="courses-taught" class="section level4">
-<h4>Courses taught:</h4>
+<blockquote>
+<p>Teaching History:</p>
+</blockquote>
 <ul>
-<li>Instructor of record, PCB3044L Principles of Ecology, UCF-Biology (2
+<li>Instructor of record, Principles of Ecology, UCF-Biology (2
 yrs)</li>
-<li>Lab instructor, General Biology II (2 yrs)</li>
+<li>Lab instructor, General Biology II, UCF-Biology (2 yrs)</li>
 </ul>
 <hr />
-<style>
-body {text-align: justify}
-</style>
-</div>
-<div id="section" class="section level2">
-<h2><a id="headlines"></a></h2>
-<div id="course-materials-created" class="section level3">
-<h3>Course Materials Created</h3>
+<!-- <a id="headlines"></a> -->
+<!-- ---------------------------------- -->
+<!-- ### Course Materials Created -->
+<!-- ##### 4. [Building website using R, Markdown, and GitHub](#4) -->
+<!-- ##### 3. [Plotting publication-quality figures using R](#3) -->
+<!-- ##### 2. [Plotting means and standard deviations in Excel](#2) -->
+<!-- ##### 1. [F-test and T-test Cheat Sheet](#1) -->
+<!-- ---------------------------------- -->
+<!-- <a id="4"></a> -->
+<!-- ---------------------------------- -->
 <div id="building-website-using-r-markdown-and-github"
-class="section level5">
-<h5>4. <a href="#id_4">Building website using R, Markdown, and
-GitHub</a></h5>
-</div>
-<div id="plotting-publication-quality-figures-using-r"
-class="section level5">
-<h5>3. <a href="#id_3">Plotting publication-quality figures using
-R</a></h5>
-</div>
-<div id="plotting-means-and-standard-deviations-in-excel"
-class="section level5">
-<h5>2. <a href="#id_2">Plotting means and standard deviations in
-Excel</a></h5>
-</div>
-<div id="f-test-and-t-test-cheat-sheet" class="section level5">
-<h5>1. <a href="#id_1">F-test and T-test Cheat Sheet</a></h5>
-<hr />
-</div>
-</div>
-</div>
-<div id="section-1" class="section level2">
-<h2><a id="4"></a></h2>
-<div id="building-website-using-r-markdown-and-github-1"
-class="section level4">
-<h4>Building website using R, Markdown, and GitHub</h4>
+class="section level2">
+<h2>Building website using R, Markdown, and GitHub</h2>
 <p>The tutorial shows how to deploy a website, hosted on GitHub Pages
 for free, using R and Markdown.</p>
 <blockquote>
@@ -388,15 +443,15 @@ individual pages.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/r0TKAu-H2kc?si=fCPygvJjoIj1zZhS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
 </iframe>
 <p>Source: Workshop hosted by Billu in September, 2024.</p>
-<p><a href="#headlines">Go to top</a></p>
 <hr />
+<!-- [Go to top](#headlines)   -->
+<!-- ---------------------------------- -->
+<!-- <a id="3"></a> -->
+<!-- ---------------------------------- -->
 </div>
-</div>
-<div id="section-2" class="section level2">
-<h2><a id="3"></a></h2>
-<div id="plotting-publication-quality-figures-using-r-1"
-class="section level4">
-<h4>Plotting publication-quality figures using R</h4>
+<div id="plotting-publication-quality-figures-using-r"
+class="section level2">
+<h2>Plotting publication-quality figures using R</h2>
 <p>This tutorial is intended to get you started with programming in R,
 using RStudio (Cloud) for working on a shared project (link provided <a
 href="https://rstudio.cloud/project/1049250">below</a>). The code in the
@@ -408,34 +463,35 @@ class="uri">https://rstudio.cloud/project/1049250</a></p>
 PCB3044L-Principles of Ecology lab at UCF.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KYS8pbr_bvg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
-<p><a href="#headlines">Go to top</a></p>
 <hr />
+<!-- [Go to top](#headlines)       -->
+<!-- ---------------------------------- -->
+<!-- <a id="2"></a> -->
+<!-- ---------------------------------- -->
 </div>
-</div>
-<div id="section-3" class="section level2">
-<h2><a id="2"></a></h2>
-<div id="tutorial---plotting-means-and-standard-deviations-in-excel"
-class="section level4">
-<h4>Tutorial - Plotting means and standard deviations in Excel</h4>
+<div id="plotting-means-and-standard-deviations-in-excel"
+class="section level2">
+<h2>Plotting means and standard deviations in Excel</h2>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3wo29oDkyG0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
-<p><a href="#headlines">Go to top</a></p>
 <hr />
+<!-- [Go to top](#headlines)       -->
+<!-- ---------------------------------- -->
+<!-- <a id="1"></a> -->
+<!-- ---------------------------------- -->
 </div>
-</div>
-<div id="section-4" class="section level2">
-<h2><a id="1"></a></h2>
-<div id="f-test-and-t-test-cheat-sheet-1" class="section level4">
-<h4>F-test and T-test Cheat Sheet</h4>
+<div id="f-test-and-t-test-cheat-sheet" class="section level2">
+<h2>F-test and T-test Cheat Sheet</h2>
 <p><img src="images/cheatsheet-images/cheatsheet1.jpg" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/cheatsheet-images/cheatsheet2.jpg" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/cheatsheet-images/cheatsheet3.jpg" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/cheatsheet-images/cheatsheet4.jpg" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /><img src="images/cheatsheet-images/cheatsheet5.jpg" width="100%" style="background-color: #9ecff7; padding:10px; display: inline-block;" style="display: block; margin: auto;" /></p>
 <p><img src="images/cheatsheet-images/cheatsheet6.jpg" width="75%" style="display: block; margin: auto;" /></p>
-<p><a href="#headlines">Go to top</a></p>
+<!-- [Go to top](#headlines)       -->
 <pre class="r"><code># Check this space for more materials!</code></pre>
 </div>
+
+
+
 </div>
-
-
-
+</div>
 
 </div>
 
@@ -468,6 +524,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
